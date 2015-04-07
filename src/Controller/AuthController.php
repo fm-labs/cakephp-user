@@ -8,6 +8,7 @@
 
 namespace User\Controller;
 
+use Cake\Auth\DefaultPasswordHasher;
 use Cake\Core\Exception\Exception;
 use Cake\Event\Event;
 use Cake\Core\Configure;
@@ -20,6 +21,8 @@ class AuthController extends AppController
         parent::beforeFilter($event);
 
         $this->layout = (Configure::read('User.authLayout')) ?: 'User.auth';
+
+        $this->Auth->allow(['login']);
     }
 
     /**
@@ -27,6 +30,7 @@ class AuthController extends AppController
      */
     public function login()
     {
+        // authentication via form post
         if ($this->request->is('post')) {
             $user = $this->Auth->identify();
             if ($user) {
@@ -36,6 +40,9 @@ class AuthController extends AppController
             } else {
                 $this->Auth->flash(__('USER_AUTH_LOGIN_FAILURE'));
             }
+        // already authenticated
+        } elseif ($this->Auth->user()) {
+            $this->redirect($this->Auth->redirectUrl());
         }
     }
 

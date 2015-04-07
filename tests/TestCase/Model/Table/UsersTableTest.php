@@ -1,6 +1,7 @@
 <?php
 namespace User\Test\TestCase\Model\Table;
 
+use Cake\Auth\DefaultPasswordHasher;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use User\Model\Table\UsersTable;
@@ -138,6 +139,7 @@ class UsersTableTest extends TestCase
         $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
         $this->assertEmpty($user->errors());
         $this->assertNotEmpty($user->id);
+        $this->assertTrue((new DefaultPasswordHasher())->check('rosebud1', $user->password));
     }
 
 }

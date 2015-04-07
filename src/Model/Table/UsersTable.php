@@ -1,6 +1,7 @@
 <?php
 namespace User\Model\Table;
 
+use Cake\Log\Log;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -94,6 +95,8 @@ class UsersTable extends Table
     {
         $user = $this->newEntity(null, ['validate' => 'register']);
         $user->accessible('username', true);
+        $user->accessible('password1', true);
+        $user->accessible('password2', true);
 
         if ($data !== null) {
             //@TODO Configure automatic login enabling
@@ -111,7 +114,9 @@ class UsersTable extends Table
             unset($user->password1);
             unset($user->password2);
 
-            $this->save($user);
+            if ($this->save($user)) {
+                Log::info('[plugin:user] New user registered with ID ' . $user->id);
+            }
         }
         return $user;
     }

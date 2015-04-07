@@ -27,6 +27,11 @@ class RegistrationController extends AppController
         parent::beforeFilter($event);
 
         $this->Auth->allow(['index']);
+
+        // handle already authenticated users
+        if ($this->Auth->user()) {
+            $this->redirect($this->Auth->redirectUrl());
+        }
     }
 
     /**
@@ -40,30 +45,15 @@ class RegistrationController extends AppController
 
         if ($this->request->is('post')) {
             $user = $this->Users->register($this->request->data);
-            debug($user->errors());
             if ($user->id) {
                 $this->Flash->success(__('USER_REGISTRATION_SUCCESS'));
-                //return $this->redirect(Configure::read('User.Auth.loginAction'));
+                return $this->redirect($this->Auth->redirectUrl());
             } else {
                 $this->Flash->error(__('USER_REGISTRATION_FAILURE'));
             }
         } else {
             $user = $this->Users->register(null);
         }
-
-        /*
-        $user = $this->Users->newEntity();
-        if ($this->request->is('post')) {
-            $user = $this->Users->patchEntity($user, $this->request->data);
-            if ($this->Users->register($user)) {
-                $this->Flash->success('The user has been saved.');
-                return $this->redirect(Configure::read('User.Auth.loginAction'));
-            } else {
-                $this->Flash->error('The user could not be saved. Please, try again.');
-                debug($user->errors());
-            }
-        }
-        */
 
         $this->set(compact('user'));
         $this->set('_serialize', ['user']);
