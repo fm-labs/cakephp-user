@@ -100,7 +100,6 @@ class UsersTable extends Table
             $data['is_login_allowed'] = true;
 
             $this->patchEntity($user, $data, ['validate' => 'register']);
-            debug($user);
             if ($user->errors()) {
                 return $user;
             }
@@ -126,7 +125,6 @@ class UsersTable extends Table
      */
     public function validateNewPassword1($value, $context)
     {
-        debug("validate new password1");
         $value = trim($value);
 
         // @TODO Configure min password length
