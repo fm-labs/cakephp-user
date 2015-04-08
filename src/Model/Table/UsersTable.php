@@ -2,6 +2,7 @@
 namespace User\Model\Table;
 
 use Cake\Log\Log;
+use Cake\ORM\Entity;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -91,6 +92,12 @@ class UsersTable extends Table
         return $validator;
     }
 
+    /**
+     * Register new user with form data array
+     *
+     * @param $data
+     * @return \Cake\Datasource\EntityInterface|Entity
+     */
     public function register($data)
     {
         $user = $this->newEntity(null, ['validate' => 'register']);
@@ -99,7 +106,7 @@ class UsersTable extends Table
         $user->accessible('password2', true);
 
         if ($data !== null) {
-            //@TODO Configure automatic login enabling
+            //@TODO Make setting 'allow login' on registration configurable
             $data['is_login_allowed'] = true;
 
             $this->patchEntity($user, $data, ['validate' => 'register']);
@@ -119,6 +126,60 @@ class UsersTable extends Table
             }
         }
         return $user;
+    }
+
+    public function validationChangePassword(Validator $validator)
+    {
+        $validator
+            ->add('id', 'valid', ['rule' => 'numeric'])
+            ->requirePresence('password0')
+            ->notEmpty('password0')
+            ->requirePresence('password1', 'create')
+            ->notEmpty('password1')
+            ->add('password1', 'password', [
+                'rule' => 'validateNewPassword1',
+                'provider' => 'table',
+                'message' => __('Invalid password')
+            ])
+            ->requirePresence('password2', 'create')
+            ->notEmpty('password2')
+            ->add('password2', 'password', [
+                'rule' => 'validateNewPassword2',
+                'provider' => 'table',
+                'message' => __('Passwords do not match')
+            ]);
+
+        return $validator;
+    }
+
+    public function changePassword(Entity &$user, array $data)
+    {
+        $user->accessible('password0', true);
+        $user->accessible('password1', true);
+        $user->accessible('password2', true);
+
+        $user = $this->patchEntity($user, $data, ['validate' => 'changePassword']);
+        if ($user->errors()) {
+            return false;
+        }
+
+        // validate current password
+        if (!$user->getPasswordHasher()->check($data['password0'], $user->password)) {
+            debug('USER_CHANGE_PASSWORD_ERROR_INVALID_PASSWORD');
+            $user->errors('password0', 'USER_CHANGE_PASSWORD_ERROR_INVALID_PASSWORD');
+            return false;
+        }
+
+        $user->accessible('password0', false);
+        $user->accessible('password1', false);
+        $user->accessible('password2', false);
+        $user->accessible('password', true);
+        $user->password = $data['password1'];
+        if ($this->save($user)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

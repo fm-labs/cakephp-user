@@ -12,7 +12,16 @@ use Cake\Auth\DefaultPasswordHasher;
 use Cake\Core\Exception\Exception;
 use Cake\Event\Event;
 use Cake\Core\Configure;
+use Cake\ORM\TableRegistry;
+use User\Model\Table\UsersTable;
 
+/**
+ * Class AuthController
+ *
+ * @package User\Controller
+ *
+ * @property UsersTable $Users
+ */
 class AuthController extends AppController
 {
 
@@ -23,6 +32,8 @@ class AuthController extends AppController
         $this->layout = (Configure::read('User.authLayout')) ?: 'User.auth';
 
         $this->Auth->allow(['login']);
+
+        $this->Users = TableRegistry::get(Configure::read('User.userModel') ?: 'User.Users');
     }
 
     /**
@@ -53,5 +64,18 @@ class AuthController extends AppController
     {
         $this->Flash->success(__('USER_AUTH_LOGOUT_SUCCESS'));
         $this->redirect($this->Auth->logout());
+    }
+
+    public function change_password()
+    {
+        $user = $this->Users->get($this->Auth->user('id'));
+        if ($this->request->is('post') || $this->request->is('put')) {
+            if ($this->Users->changePassword($user, $this->request->data)) {
+                $this->Flash->success(__('USER_CHANGE_PASSWORD_SUCCESS'));
+            } else {
+                $this->Flash->error(__('USER_CHANGE_PASSWORD_FAILURE'));
+            }
+        }
+        $this->set('user', $user);
     }
 }

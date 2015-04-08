@@ -142,4 +142,20 @@ class UsersTableTest extends TestCase
         $this->assertTrue((new DefaultPasswordHasher())->check('rosebud1', $user->password));
     }
 
+    public function testChangePassword()
+    {
+        $user = $this->Users->register(['username' => 'test', 'password1' => 'rosebud1', 'password2' => 'rosebud1']);
+        $this->assertNotEmpty($user->id);
+
+        $this->assertTrue($this->Users->changePassword(
+            $user,
+            ['password0' => 'rosebud1', 'password1' => 'basejump', 'password2' => 'basejump']
+        ));
+        $this->assertFalse($user->dirty('password'));
+        $this->assertFalse($user->dirty('password0'));
+        $this->assertFalse($user->dirty('password1'));
+        $this->assertFalse($user->dirty('password2'));
+        $this->assertTrue((new DefaultPasswordHasher())->check('basejump', $user->password));
+    }
+
 }

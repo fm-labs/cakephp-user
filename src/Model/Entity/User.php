@@ -23,6 +23,14 @@ class User extends Entity
 
     protected function _setPassword($password)
     {
-        return (new DefaultPasswordHasher)->hash($password);
+        return $this->getPasswordHasher()->hash($password);
+    }
+
+    /**
+     * @return AbstractPasswordHasher
+     */
+    public function getPasswordHasher()
+    {
+        return (new DefaultPasswordHasher());
     }
 }
