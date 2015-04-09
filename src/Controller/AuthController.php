@@ -45,11 +45,11 @@ class AuthController extends AppController
         if ($this->request->is('post')) {
             $user = $this->Auth->identify();
             if ($user) {
-                $this->Flash->set(__('USER_AUTH_LOGIN_SUCCESS'));
+                $this->Flash->set(__('You are logged in now!'));
                 $this->Auth->setUser($user);
                 return $this->redirect($this->Auth->redirectUrl());
             } else {
-                $this->Auth->flash(__('USER_AUTH_LOGIN_FAILURE'));
+                $this->Auth->flash(__('Login failed'));
             }
         // already authenticated
         } elseif ($this->Auth->user()) {
@@ -62,7 +62,7 @@ class AuthController extends AppController
      */
     public function logout()
     {
-        $this->Flash->success(__('USER_AUTH_LOGOUT_SUCCESS'));
+        $this->Flash->success(__('You are logged out now!'));
         $this->redirect($this->Auth->logout());
     }
 
@@ -71,11 +71,11 @@ class AuthController extends AppController
         $user = $this->Users->get($this->Auth->user('id'));
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Users->changePassword($user, $this->request->data)) {
-                $this->Flash->success(__('USER_CHANGE_PASSWORD_SUCCESS'));
+                $this->Flash->success(__('Your password has been changed.'));
                 //@todo make configurable 'user password change' success redirect url
                 $this->redirect('/');
             } else {
-                $this->Flash->error(__('USER_CHANGE_PASSWORD_FAILURE'));
+                $this->Flash->error(__('Ups, something went wrong'));
             }
         }
         $this->set('user', $user);

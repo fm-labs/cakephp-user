@@ -41,16 +41,18 @@ class RegistrationController extends AppController
      */
     public function index()
     {
+        //@TODO Make user registration configurable
+
         $this->loadModel(Configure::read('User.model'));
 
         if ($this->request->is('post')) {
             $user = $this->Users->register($this->request->data);
             if ($user && $user->id) {
-                $this->Flash->success(__('USER_REGISTRATION_SUCCESS'));
+                $this->Flash->success(__('Your registration was successful!'));
                 $this->redirect($this->Auth->redirectUrl());
                 return;
             } else {
-                $this->Flash->error(__('USER_REGISTRATION_FAILURE'));
+                $this->Flash->error(__('Ups, something went wrong. Please check the form.'));
             }
         } else {
             $user = $this->Users->register(null);

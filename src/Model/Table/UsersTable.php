@@ -14,6 +14,9 @@ use User\Model\Entity\User;
  */
 class UsersTable extends Table
 {
+    protected $_userConfig = [
+        'emailAsUsername' => true,
+    ];
 
     /**
      * Initialize method
@@ -27,6 +30,14 @@ class UsersTable extends Table
         $this->displayField('username');
         $this->primaryKey('id');
         $this->addBehavior('Timestamp');
+        $this->_userConfig($config);
+    }
+
+    protected function _userConfig($config)
+    {
+        if (isset($config['userConfig'])) {
+            $this->_userConfig = array_merge($this->_userConfig, (array) $config['userConfig']);
+        }
     }
 
     /**
@@ -88,6 +99,14 @@ class UsersTable extends Table
             ->add('is_login_allowed', 'valid', ['rule' => 'boolean'])
             ->requirePresence('is_login_allowed', 'create')
             ->notEmpty('is_login_allowed');
+
+        //@todo Make email-as-username configurable
+        if ($this->_userConfig['emailAsUsername']) {
+            $validator->add('username', 'email', [
+                'rule' => ['email'],
+                'message' => __('The provided email address is invalid')
+            ]);
+        }
 
         return $validator;
     }
@@ -165,7 +184,7 @@ class UsersTable extends Table
 
         // validate current password
         if (!$user->getPasswordHasher()->check($data['password0'], $user->password)) {
-            $user->errors('password0', ['password' => 'USER_CHANGE_PASSWORD_ERROR_INVALID_PASSWORD']);
+            $user->errors('password0', ['password' => __('This is not your current password')]);
             unset($user->password0);
             unset($user->password1);
             unset($user->password2);
@@ -174,7 +193,9 @@ class UsersTable extends Table
 
         // new password should not match current password
         if (strcmp($user->password0, $user->password1) === 0) {
-            $user->errors('password0', ['password' => 'USER_CHANGE_PASSWORD_ERROR_SAME_PASSWORD']);
+            $user->errors('password0', [
+                'password' => __('This is your current password. Please create a new one!')
+            ]);
             unset($user->password1);
             unset($user->password2);
             return false;
@@ -208,18 +229,18 @@ class UsersTable extends Table
         // @TODO Configure min password length
         // Check password length
         if (strlen($value) < 8) {
-            return __('USER_PASSWORD_ERROR_MIN_LENGTH {0}', 8);
+            return __('Password too short. Minimum {0} characters', 8);
         }
 
         // @TODO Configure allowed Chars
         // Check for illegal characters
         if (!preg_match('/^(\w)+$/', $value)) {
-            return __('USER_PASSWORD_ERROR_ILLEGAL_CHARS');
+            return __('Password contains illegal characters');
         }
 
         // Check for weak password
         if (isset($context['data']['username']) && $value == $context['data']['username']) {
-            return __('USER_PASSWORD_WEAK_SAME_AS_USERNAME');
+            return __('Password can not be the same as ');
         }
 
         return true;

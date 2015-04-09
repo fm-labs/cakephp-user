@@ -1,5 +1,5 @@
 <div id="user-change-password-form">
-    <h2><?= __('Password Change'); ?></h2>
+    <h2><?= __('Create a new password'); ?></h2>
     <?= $this->Form->create($user); ?>
     <?= $this->Form->input('password0', [
         'label' => __('Current password'),
@@ -16,7 +16,7 @@
         'type' => 'password',
         'required' => true
     ]); ?>
-    <?= $this->Form->submit(__('Change my password')); ?>
+    <?= $this->Form->submit(__('Change my password now')); ?>
     <?= $this->Form->end(); ?>
 
     <br />

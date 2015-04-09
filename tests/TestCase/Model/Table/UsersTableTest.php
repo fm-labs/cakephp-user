@@ -31,7 +31,10 @@ class UsersTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Users') ? [] : ['className' => 'User\Model\Table\UsersTable'];
+        $config = TableRegistry::exists('Users') ? [] : [
+            'className' => 'User\Model\Table\UsersTable',
+            'userConfig' => ['emailAsUsername' => false]
+        ];
         $this->Users = TableRegistry::get('Users', $config);
     }
 
@@ -140,6 +143,26 @@ class UsersTableTest extends TestCase
         $this->assertEmpty($user->errors());
         $this->assertNotEmpty($user->id);
         $this->assertTrue((new DefaultPasswordHasher())->check('rosebud1', $user->password));
+    }
+
+    public function testRegisterWithEmailAsUsername()
+    {
+        TableRegistry::remove('Users');
+        $this->Users = TableRegistry::get('Users', [
+            'className' => 'User\Model\Table\UsersTable',
+            'userConfig' => ['emailAsUsername' => true]
+        ]);
+
+        // test with invalid username and password
+        $user = $this->Users->register(['username' => 'test', 'password1' => 'rosebud1', 'password2' => 'rosebud1']);
+        $this->assertNotEmpty($user->errors('username'));
+
+        // test with valid username and password
+        $user = $this->Users->register(['username' => 'test@example.org', 'password1' => 'rosebud1', 'password2' => 'rosebud1']);
+        $this->assertEmpty($user->errors());
+        $this->assertNotEmpty($user->id);
+
+        TableRegistry::remove('Users');
     }
 
     public function testChangePassword()
