@@ -32,6 +32,8 @@
 
         <div class="row">
             <?= $this->fetch('content') ?>
+
+            <?php debug($this->Session->read()); ?>
         </div>
     </div>
     <footer>

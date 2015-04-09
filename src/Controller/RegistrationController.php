@@ -45,9 +45,10 @@ class RegistrationController extends AppController
 
         if ($this->request->is('post')) {
             $user = $this->Users->register($this->request->data);
-            if ($user->id) {
+            if ($user && $user->id) {
                 $this->Flash->success(__('USER_REGISTRATION_SUCCESS'));
-                return $this->redirect($this->Auth->redirectUrl());
+                $this->redirect($this->Auth->redirectUrl());
+                return;
             } else {
                 $this->Flash->error(__('USER_REGISTRATION_FAILURE'));
             }

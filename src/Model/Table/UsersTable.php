@@ -165,21 +165,33 @@ class UsersTable extends Table
 
         // validate current password
         if (!$user->getPasswordHasher()->check($data['password0'], $user->password)) {
-            debug('USER_CHANGE_PASSWORD_ERROR_INVALID_PASSWORD');
-            $user->errors('password0', 'USER_CHANGE_PASSWORD_ERROR_INVALID_PASSWORD');
+            $user->errors('password0', ['password' => 'USER_CHANGE_PASSWORD_ERROR_INVALID_PASSWORD']);
+            unset($user->password0);
+            unset($user->password1);
+            unset($user->password2);
             return false;
         }
 
-        $user->accessible('password0', false);
-        $user->accessible('password1', false);
-        $user->accessible('password2', false);
-        $user->accessible('password', true);
-        $user->password = $data['password1'];
-        if ($this->save($user)) {
-            return true;
+        // new password should not match current password
+        if (strcmp($user->password0, $user->password1) === 0) {
+            $user->errors('password0', ['password' => 'USER_CHANGE_PASSWORD_ERROR_SAME_PASSWORD']);
+            unset($user->password1);
+            unset($user->password2);
+            return false;
         }
 
-        return false;
+        // apply new password
+        $user->accessible('password', true);
+        $user->password = $data['password1'];
+        $saved = $this->save($user);
+
+        // cleanup
+        unset($user->password0);
+        unset($user->password1);
+        unset($user->password2);
+        #unset($user->password); // hide password
+
+        return ($saved) ? true : false;
     }
 
     /**

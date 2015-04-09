@@ -147,6 +147,34 @@ class UsersTableTest extends TestCase
         $user = $this->Users->register(['username' => 'test', 'password1' => 'rosebud1', 'password2' => 'rosebud1']);
         $this->assertNotEmpty($user->id);
 
+        // test with new password same as current password
+        $this->assertFalse($this->Users->changePassword(
+            $user,
+            ['password0' => 'rosebud1', 'password1' => 'rosebud1', 'password2' => 'rosebud1']
+        ));
+        $this->assertNotEmpty($user->errors('password0'));
+        $this->assertFalse($user->dirty('password1'));
+        $this->assertFalse($user->dirty('password2'));
+
+
+        // test with empty password
+        $this->assertFalse($this->Users->changePassword(
+            $user,
+            ['password0' => '', 'password1' => 'basejump', 'password2' => 'basejump']
+        ));
+        $this->assertNotEmpty($user->errors('password0'));
+        $this->assertNotEmpty($user->errors('password0')['_empty']);
+
+        // test with bad new password
+        $this->assertFalse($this->Users->changePassword(
+            $user,
+            ['password0' => '2short', 'password1' => 'basejump', 'password2' => 'basejump']
+        ));
+        $this->assertNotEmpty($user->errors('password0'));
+        $this->assertNotEmpty($user->errors('password0')['password']);
+
+
+        // test with good data
         $this->assertTrue($this->Users->changePassword(
             $user,
             ['password0' => 'rosebud1', 'password1' => 'basejump', 'password2' => 'basejump']
@@ -155,6 +183,8 @@ class UsersTableTest extends TestCase
         $this->assertFalse($user->dirty('password0'));
         $this->assertFalse($user->dirty('password1'));
         $this->assertFalse($user->dirty('password2'));
+        #$this->assertEmpty($user->password); // hide (encrypted) password
+        #$user = $this->Users->get($user->id);
         $this->assertTrue((new DefaultPasswordHasher())->check('basejump', $user->password));
     }
 

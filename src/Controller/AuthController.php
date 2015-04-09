@@ -66,12 +66,14 @@ class AuthController extends AppController
         $this->redirect($this->Auth->logout());
     }
 
-    public function change_password()
+    public function password_change()
     {
         $user = $this->Users->get($this->Auth->user('id'));
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Users->changePassword($user, $this->request->data)) {
                 $this->Flash->success(__('USER_CHANGE_PASSWORD_SUCCESS'));
+                //@todo make configurable 'user password change' success redirect url
+                $this->redirect('/');
             } else {
                 $this->Flash->error(__('USER_CHANGE_PASSWORD_FAILURE'));
             }
