@@ -1,5 +1,5 @@
 <div id="user-change-password-form">
-    <h2><?= __('USER_CHANGE_PASSWORD'); ?></h2>
+    <h2><?= __('Password Change'); ?></h2>
     <?= $this->Form->create($user); ?>
     <?= $this->Form->input('password0', [
         'label' => __('Current password'),
@@ -16,8 +16,13 @@
         'type' => 'password',
         'required' => true
     ]); ?>
-    <?= $this->Form->submit(__('USER_CHANGE_PASSWORD_SUBMIT')); ?>
+    <?= $this->Form->submit(__('Change my password')); ?>
     <?= $this->Form->end(); ?>
 
-    <?= $this->element('User.customize', ['template' => 'src/Template/Plugin/User/Auth/change_password.ctp']); ?>
+    <br />
+    <?= $this->Html->link(__('Back'), '/', [
+       'onclick' => "javascript:history.go(-1)"
+    ]); ?>
+
+    <?= $this->element('User.customize', ['template' => 'src/Template/Plugin/User/Auth/password_change.ctp']); ?>
 </div>
