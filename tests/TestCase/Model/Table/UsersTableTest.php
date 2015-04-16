@@ -31,9 +31,9 @@ class UsersTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
+        UsersTable::$emailAsUsername = false;
         $config = TableRegistry::exists('Users') ? [] : [
-            'className' => 'User\Model\Table\UsersTable',
-            'userConfig' => ['emailAsUsername' => false]
+            'className' => 'User\Model\Table\UsersTable'
         ];
         $this->Users = TableRegistry::get('Users', $config);
     }
@@ -148,9 +148,9 @@ class UsersTableTest extends TestCase
     public function testRegisterWithEmailAsUsername()
     {
         TableRegistry::remove('Users');
+        UsersTable::$emailAsUsername = true;
         $this->Users = TableRegistry::get('Users', [
-            'className' => 'User\Model\Table\UsersTable',
-            'userConfig' => ['emailAsUsername' => true]
+            'className' => 'User\Model\Table\UsersTable'
         ]);
 
         // test with invalid username and password

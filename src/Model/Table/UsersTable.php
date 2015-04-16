@@ -14,9 +14,14 @@ use User\Model\Entity\User;
  */
 class UsersTable extends Table
 {
-    protected $_userConfig = [
-        'emailAsUsername' => true,
-    ];
+    /**
+     * @var int Minimum length of passwords
+     */
+    public static $minPasswordLength = 8;
+
+    public static $emailAsUsername = true;
+
+    public static $passwordRegex = '/^(\w)+$/';
 
     /**
      * Initialize method
@@ -30,14 +35,6 @@ class UsersTable extends Table
         $this->displayField('username');
         $this->primaryKey('id');
         $this->addBehavior('Timestamp');
-        $this->_userConfig($config);
-    }
-
-    protected function _userConfig($config)
-    {
-        if (isset($config['userConfig'])) {
-            $this->_userConfig = array_merge($this->_userConfig, (array) $config['userConfig']);
-        }
     }
 
     /**
@@ -100,8 +97,7 @@ class UsersTable extends Table
             ->requirePresence('is_login_allowed', 'create')
             ->notEmpty('is_login_allowed');
 
-        //@todo Make email-as-username configurable
-        if ($this->_userConfig['emailAsUsername']) {
+        if (static::$emailAsUsername) {
             $validator->add('username', 'email', [
                 'rule' => ['email'],
                 'message' => __('The provided email address is invalid')
@@ -125,7 +121,7 @@ class UsersTable extends Table
         $user->accessible('password2', true);
 
         if ($data !== null) {
-            //@TODO Make setting 'allow login' on registration configurable
+            // permit new registered users to login
             $data['is_login_allowed'] = true;
 
             $this->patchEntity($user, $data, ['validate' => 'register']);
@@ -226,15 +222,13 @@ class UsersTable extends Table
     {
         $value = trim($value);
 
-        // @TODO Configure min password length
         // Check password length
-        if (strlen($value) < 8) {
-            return __('Password too short. Minimum {0} characters', 8);
+        if (strlen($value) < static::$minPasswordLength) {
+            return __('Password too short. Minimum {0} characters', static::$minPasswordLength);
         }
 
-        // @TODO Configure allowed Chars
         // Check for illegal characters
-        if (!preg_match('/^(\w)+$/', $value)) {
+        if (!preg_match(static::$passwordRegex, $value)) {
             return __('Password contains illegal characters');
         }
 
