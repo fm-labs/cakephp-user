@@ -9,10 +9,14 @@
 namespace User\Controller\Component;
 
 use Cake\Controller\Component\AuthComponent as BaseAuthComponent;
+use Cake\Core\Configure;
 use Cake\Event\Event;
+use Cake\Controller\ComponentRegistry;
 
 class AuthComponent extends BaseAuthComponent
 {
+    public static $loadDefaultConfigFile = true;
+
     protected $_defaultConfig = [
         'authenticate' => [
             'Form' => ['userModel' => 'User.Users']
@@ -30,6 +34,15 @@ class AuthComponent extends BaseAuthComponent
         'authError' => null,
         'unauthorizedRedirect' => true
     ];
+
+    public function __construct(ComponentRegistry $registry, array $config = [])
+    {
+        if (self::$loadDefaultConfigFile === true && Configure::check('User.Auth') === true) {
+            $this->_defaultConfig = array_merge($this->_defaultConfig, (array) Configure::read('User.Auth'));
+        }
+
+        parent::__construct($registry, $config);
+    }
 
     public function initialize(array $config)
     {
