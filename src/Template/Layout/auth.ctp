@@ -33,7 +33,7 @@
         <div class="row">
             <?= $this->fetch('content') ?>
 
-            <?php debug($this->Session->read()); ?>
+            <?php debug($this->request->session()->read()); ?>
         </div>
     </div>
     <footer>

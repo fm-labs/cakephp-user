@@ -50,7 +50,7 @@ class UsersTable extends Table
             ->allowEmpty('id', 'create')
             ->requirePresence('username', 'create')
             ->notEmpty('username')
-            ->requirePresence('password', 'create')
+            //->requirePresence('password', 'create')
             ->notEmpty('password')
             ->add('is_login_allowed', 'valid', ['rule' => 'boolean'])
             ->requirePresence('is_login_allowed', 'create')
