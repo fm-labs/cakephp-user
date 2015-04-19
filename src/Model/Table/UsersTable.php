@@ -236,7 +236,7 @@ class UsersTable extends Table
 
         // new password should not match current password
         if (strcmp($user->password0, $user->password1) === 0) {
-            $user->errors('password0', [
+            $user->errors('password1', [
                 'password' => __('This is your current password. Please create a new one!')
             ]);
             unset($user->password1);
