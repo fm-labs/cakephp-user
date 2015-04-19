@@ -37,6 +37,7 @@ class AuthComponent extends BaseAuthComponent
 
     public function __construct(ComponentRegistry $registry, array $config = [])
     {
+        //@TODO refactor
         if (self::$loadDefaultConfigFile === true && Configure::check('User.Auth') === true) {
             $this->_defaultConfig = array_merge($this->_defaultConfig, (array) Configure::read('User.Auth'));
         }

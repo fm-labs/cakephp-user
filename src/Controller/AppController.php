@@ -8,11 +8,11 @@
 
 namespace User\Controller;
 
-use App\Controller\AppController as BaseController;
+use App\Controller\AppController as BaseAppController;
 use Cake\Core\Configure;
 use Cake\Core\Exception\Exception;
 
-class AppController extends BaseController
+class AppController extends BaseAppController
 {
     public function initialize()
     {
