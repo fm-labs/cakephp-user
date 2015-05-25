@@ -11,6 +11,7 @@ namespace User\Controller;
 use App\Controller\AppController as BaseAppController;
 use Cake\Core\Configure;
 use Cake\Core\Exception\Exception;
+use User\Controller\Component\AuthComponent;
 use User\Model\Table\UsersTable;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
@@ -20,6 +21,7 @@ use Cake\ORM\TableRegistry;
  * @package User\Controller
  *
  * @property UsersTable $Users
+ * @property AuthComponent $Auth
  */
 class AppController extends BaseAppController
 {
@@ -34,6 +36,8 @@ class AppController extends BaseAppController
 
         if (!$this->components()->has('Auth')) {
             throw new Exception('User: AuthComponent not loaded');
+        } elseif (!$this->Auth instanceof AuthComponent) {
+            throw new Exception('User: AuthComponent is not an instance of User.AuthComponent');
         }
 
         if (!$this->components()->has('Flash')) {
@@ -45,10 +49,7 @@ class AppController extends BaseAppController
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
-
-        // user model
-        $this->_userModel = Configure::read('User.userModel') ?: 'User.Users';
-        $this->Users = TableRegistry::get($this->_userModel);
+        $this->Users = $this->Auth->userModel();
     }
 
 }
