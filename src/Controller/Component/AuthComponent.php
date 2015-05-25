@@ -65,12 +65,10 @@ class AuthComponent extends CakeAuthComponent
 
         // default authorize
         if (!$this->config('authorize')) {
-            $this->config('authorize', [
-                'Controller'
-            ]);
+            //$this->config('authorize', [
+            //    'Controller'
+            //]);
         }
-
-        debug($this->_config);
     }
 
     public function startup(Event $event)
