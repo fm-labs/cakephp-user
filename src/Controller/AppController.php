@@ -11,9 +11,23 @@ namespace User\Controller;
 use App\Controller\AppController as BaseAppController;
 use Cake\Core\Configure;
 use Cake\Core\Exception\Exception;
+use User\Model\Table\UsersTable;
+use Cake\Event\Event;
+use Cake\ORM\TableRegistry;
 
+/**
+ * Class AppController
+ * @package User\Controller
+ *
+ * @property UsersTable $Users
+ */
 class AppController extends BaseAppController
 {
+    /**
+     * @var string Name of user model used for authentication
+     */
+    protected $_userModel;
+
     public function initialize()
     {
         parent::initialize();
@@ -25,7 +39,16 @@ class AppController extends BaseAppController
         if (!$this->components()->has('Flash')) {
             throw new Exception('User: FlashComponent not loaded');
         }
-
-        $this->layout = (Configure::read('User.userLayout')) ?: 'User.user';
     }
+
+
+    public function beforeFilter(Event $event)
+    {
+        parent::beforeFilter($event);
+
+        // user model
+        $this->_userModel = Configure::read('User.userModel') ?: 'User.Users';
+        $this->Users = TableRegistry::get($this->_userModel);
+    }
+
 }

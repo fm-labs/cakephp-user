@@ -7,4 +7,8 @@ use Cake\Core\Configure;
  * Copy user.default.php to your app's config folder,
  * rename to user.php and adjust contents
  */
-Configure::load('user');
+try {
+    Configure::load('user');
+} catch (\Exception $ex) {
+    // do nothing
+}
