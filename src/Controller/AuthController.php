@@ -46,10 +46,25 @@ class AuthController extends AppController
             $user = $this->Auth->identify();
             if ($user) {
                 $this->Flash->set(__('You are logged in now!'));
-                $this->Auth->setUser($user);
+
+                // dispatch 'User.Auth.afterLogin' event
+                $event = new Event('User.Auth.afterLogin', $this, [
+                    'user' => $user
+                ]);
+                $this->eventManager()->dispatch($event);
+
+                // authenticate user
+                $this->Auth->setUser($event->data['user']);
+
                 return $this->redirect($this->Auth->redirectUrl());
             } else {
                 $this->Auth->flash(__('Login failed'));
+
+                // dispatch 'User.Auth.loginFailure' event
+                $event = new Event('User.Auth.loginFailure', $this, [
+                    'request' => $this->request
+                ]);
+                $this->eventManager()->dispatch($event);
             }
         // already authenticated
         } elseif ($this->Auth->user()) {

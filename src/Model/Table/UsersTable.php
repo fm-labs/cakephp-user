@@ -1,23 +1,29 @@
 <?php
 namespace User\Model\Table;
 
-use Cake\Log\Log;
-use Cake\ORM\Entity;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 use User\Model\Entity\User;
+use Cake\Log\Log;
+use Cake\ORM\Entity;
 
 /**
  * Users Model
  */
 class UsersTable extends Table
 {
-    protected $_userConfig = [
-        'emailAsUsername' => true,
-    ];
 
+    /**
+     * @var int Minimum length of passwords
+     */
+    public static $minPasswordLength = 8;
+
+    public static $emailAsUsername = true;
+
+    public static $passwordRegex = '/^(\w)+$/';
+    
     /**
      * Initialize method
      *
@@ -26,18 +32,20 @@ class UsersTable extends Table
      */
     public function initialize(array $config)
     {
-        $this->table('users');
+        $this->table('user_users');
         $this->displayField('username');
         $this->primaryKey('id');
         $this->addBehavior('Timestamp');
-        $this->_userConfig($config);
-    }
-
-    protected function _userConfig($config)
-    {
-        if (isset($config['userConfig'])) {
-            $this->_userConfig = array_merge($this->_userConfig, (array) $config['userConfig']);
-        }
+        $this->belongsTo('PrimaryUserGroup', [
+            'foreignKey' => 'user_group_id',
+            'className' => 'User.UserGroups'
+        ]);
+        $this->belongsToMany('UserGroups', [
+            'foreignKey' => 'user_id',
+            'targetForeignKey' => 'user_group_id',
+            'joinTable' => 'user_user_groups_users',
+            'className' => 'User.UserGroups'
+        ]);
     }
 
     /**
@@ -51,13 +59,47 @@ class UsersTable extends Table
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
             ->allowEmpty('id', 'create')
+            ->requirePresence('name', 'create')
+            ->notEmpty('name')
             ->requirePresence('username', 'create')
             ->notEmpty('username')
             ->requirePresence('password', 'create')
             ->notEmpty('password')
-            ->add('is_login_allowed', 'valid', ['rule' => 'boolean'])
-            ->requirePresence('is_login_allowed', 'create')
-            ->notEmpty('is_login_allowed');
+            ->add('email', 'valid', ['rule' => 'email'])
+            ->allowEmpty('email')
+            ->add('email_verification_required', 'valid', ['rule' => 'boolean'])
+            ->allowEmpty('email_verification_required')
+            ->allowEmpty('email_verification_code')
+            ->allowEmpty('email_verification_expiry_timestamp')
+            ->add('email_verified', 'valid', ['rule' => 'boolean'])
+            ->allowEmpty('email_verified')
+            ->add('password_change_min_days', 'valid', ['rule' => 'numeric'])
+            ->allowEmpty('password_change_min_days')
+            ->add('password_change_max_days', 'valid', ['rule' => 'numeric'])
+            ->allowEmpty('password_change_max_days')
+            ->add('password_change_warning_days', 'valid', ['rule' => 'numeric'])
+            ->allowEmpty('password_change_warning_days')
+            ->allowEmpty('password_change_timestamp')
+            ->allowEmpty('password_expiry_timestamp')
+            ->add('password_force_change', 'valid', ['rule' => 'boolean'])
+            ->allowEmpty('password_force_change')
+            ->allowEmpty('password_reset_code')
+            ->allowEmpty('password_reset_expiry_timestamp')
+            ->add('login_enabled', 'valid', ['rule' => 'boolean'])
+            ->allowEmpty('login_enabled')
+            ->allowEmpty('login_last_login_ip')
+            ->allowEmpty('login_last_login_host')
+            ->add('login_last_login_datetime', 'valid', ['rule' => 'datetime'])
+            ->allowEmpty('login_last_login_datetime')
+            ->add('login_failure_count', 'valid', ['rule' => 'numeric'])
+            ->allowEmpty('login_failure_count')
+            ->add('login_failure_datetime', 'valid', ['rule' => 'datetime'])
+            ->allowEmpty('login_failure_datetime')
+            ->add('block_enabled', 'valid', ['rule' => 'boolean'])
+            ->allowEmpty('block_enabled')
+            ->allowEmpty('block_reason')
+            ->add('block_datetime', 'valid', ['rule' => 'datetime'])
+            ->allowEmpty('block_datetime');
 
         return $validator;
     }
@@ -72,6 +114,8 @@ class UsersTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['username']));
+        $rules->add($rules->isUnique(['email']));
+        $rules->add($rules->existsIn(['user_group_id'], 'UserGroups'));
         return $rules;
     }
 
@@ -96,12 +140,11 @@ class UsersTable extends Table
                 'provider' => 'table',
                 'message' => __('Passwords do not match')
             ])
-            ->add('is_login_allowed', 'valid', ['rule' => 'boolean'])
-            ->requirePresence('is_login_allowed', 'create')
-            ->notEmpty('is_login_allowed');
+            ->add('login_enabled', 'valid', ['rule' => 'boolean'])
+            ->requirePresence('login_enabled', 'create')
+            ->notEmpty('login_enabled');
 
-        //@todo Make email-as-username configurable
-        if ($this->_userConfig['emailAsUsername']) {
+        if (static::$emailAsUsername) {
             $validator->add('username', 'email', [
                 'rule' => ['email'],
                 'message' => __('The provided email address is invalid')
@@ -125,8 +168,8 @@ class UsersTable extends Table
         $user->accessible('password2', true);
 
         if ($data !== null) {
-            //@TODO Make setting 'allow login' on registration configurable
-            $data['is_login_allowed'] = true;
+            // permit new registered users to login
+            $data['login_enabled'] = true;
 
             $this->patchEntity($user, $data, ['validate' => 'register']);
             if ($user->errors()) {
@@ -193,7 +236,7 @@ class UsersTable extends Table
 
         // new password should not match current password
         if (strcmp($user->password0, $user->password1) === 0) {
-            $user->errors('password0', [
+            $user->errors('password1', [
                 'password' => __('This is your current password. Please create a new one!')
             ]);
             unset($user->password1);
@@ -226,15 +269,13 @@ class UsersTable extends Table
     {
         $value = trim($value);
 
-        // @TODO Configure min password length
         // Check password length
-        if (strlen($value) < 8) {
-            return __('Password too short. Minimum {0} characters', 8);
+        if (strlen($value) < static::$minPasswordLength) {
+            return __('Password too short. Minimum {0} characters', static::$minPasswordLength);
         }
 
-        // @TODO Configure allowed Chars
         // Check for illegal characters
-        if (!preg_match('/^(\w)+$/', $value)) {
+        if (!preg_match(static::$passwordRegex, $value)) {
             return __('Password contains illegal characters');
         }
 
@@ -266,5 +307,8 @@ class UsersTable extends Table
 
         return false;
     }
-
+    
+    
+    
+    
 }
