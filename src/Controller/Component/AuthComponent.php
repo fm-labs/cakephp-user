@@ -28,8 +28,6 @@ use Cake\ORM\TableRegistry;
  */
 class AuthComponent extends CakeAuthComponent
 {
-    public $components = ['Flash'];
-
     protected $_userModel;
 
     public function __construct(ComponentRegistry $registry, array $config = [])
@@ -86,7 +84,7 @@ class AuthComponent extends CakeAuthComponent
         // attempt to identify user (any request method)
         $user = $this->identify();
         if ($user) {
-            $this->Flash->set(__('You are logged in now!'));
+            $this->Flash->success(__('You are logged in now!'), ['key' => 'auth']);
 
             // dispatch 'User.login' event
             $event = new Event('User.login', $this, [
@@ -102,7 +100,7 @@ class AuthComponent extends CakeAuthComponent
 
             // form login obviously failed
         } elseif ($this->request->is('post')) {
-            $this->Flash->set(__('Login failed'));
+            $this->flash(__('Login failed'));
 
             // dispatch 'User.login' event
             $event = new Event('User.login', $this, [
@@ -123,7 +121,7 @@ class AuthComponent extends CakeAuthComponent
      */
     public function userLogout()
     {
-        $this->Flash->success(__('You are logged out now!'));
+        $this->Flash->success(__('You are logged out now!'), ['key' => 'auth']);
         $this->redirect($this->logout());
     }
 
