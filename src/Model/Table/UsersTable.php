@@ -23,6 +23,12 @@ class UsersTable extends Table
     public static $emailAsUsername = true;
 
     public static $passwordRegex = '/^(\w)+$/';
+
+    //public static $usersModel = 'Users.Users';
+    //public static $groupsModel = 'User.Groups';
+    //public static $rolesModel = 'User.Roles';
+    //public static $permissionsModel = 'User.Permissions';
+
     
     /**
      * Initialize method
@@ -36,15 +42,15 @@ class UsersTable extends Table
         $this->displayField('username');
         $this->primaryKey('id');
         $this->addBehavior('Timestamp');
-        $this->belongsTo('PrimaryUserGroup', [
-            'foreignKey' => 'user_group_id',
-            'className' => 'User.UserGroups'
+        $this->belongsTo('PrimaryGroup', [
+            'foreignKey' => 'group_id',
+            'className' => 'User.Groups'
         ]);
-        $this->belongsToMany('UserGroups', [
+        $this->belongsToMany('Groups', [
             'foreignKey' => 'user_id',
-            'targetForeignKey' => 'user_group_id',
-            'joinTable' => 'user_user_groups_users',
-            'className' => 'User.UserGroups'
+            'targetForeignKey' => 'group_id',
+            'joinTable' => 'user_groups_users',
+            'className' => 'User.Groups'
         ]);
     }
 
@@ -115,8 +121,95 @@ class UsersTable extends Table
     {
         $rules->add($rules->isUnique(['username']));
         $rules->add($rules->isUnique(['email']));
-        $rules->add($rules->existsIn(['user_group_id'], 'UserGroups'));
+        $rules->add($rules->existsIn(['group_id'], 'Groups'));
         return $rules;
+    }
+
+
+    public function validationAdd(Validator $validator)
+    {
+        $validator
+            ->add('id', 'valid', ['rule' => 'numeric'])
+            ->allowEmpty('id', 'create')
+            ->requirePresence('username', 'create')
+            ->notEmpty('username')
+            ->requirePresence('password1', 'create')
+            ->notEmpty('password1')
+            ->add('password1', 'password', [
+                'rule' => 'validateNewPassword1',
+                'provider' => 'table',
+                'message' => __('Invalid password')
+            ])
+            ->requirePresence('password2', 'create')
+            ->notEmpty('password2')
+            ->add('password2', 'password', [
+                'rule' => 'validateNewPassword2',
+                'provider' => 'table',
+                'message' => __('Passwords do not match')
+            ])
+            ->add('is_login_allowed', 'valid', ['rule' => 'boolean'])
+            //->requirePresence('is_login_allowed', 'create')
+            ->notEmpty('is_login_allowed');
+
+
+        if (static::$emailAsUsername) {
+            $validator->add('username', 'email', [
+                'rule' => ['email'],
+                'message' => __('The provided email address is invalid')
+            ]);
+        }
+
+
+        return $validator;
+    }
+
+    public function add(array $data)
+    {
+        $user = $this->newEntity(null);
+        $user->accessible('username', true);
+        $user->accessible('password1', true);
+        $user->accessible('password2', true);
+        $this->patchEntity($user, $data, ['validate' => 'add']);
+        if ($user->errors()) {
+            return $user;
+        }
+
+        $user->password = $user->password1;
+
+        if ($this->save($user)) {
+            Log::info('[plugin:backend] User added with ID ' . $user->id);
+        }
+        return $user;
+    }
+
+    public function createRootUser()
+    {
+        // check if there is already a root user
+        if ($this->find()->where(['id' => 1])->first()) {
+            return false;
+        }
+
+        $data = [
+            'id' => 1,
+            'name' => 'root',
+            'username' => 'root',
+            'email' => 'change_me@example.org',
+            'password' => 'change_me',
+            'login_enabled' => true,
+            'email_verification_required' => false,
+        ];
+
+        $user = $this->newEntity();
+        $user->accessible([
+            'id', 'name', 'username', 'email', 'password', 'login_enabled', 'email_verification_required'
+        ], true);
+        $this->patchEntity($user, $data);
+
+        if ($this->save($user)) {
+            Log::info('[plugin:backend] ROOT User added with ID ' . $user->id);
+        }
+
+        return $user;
     }
 
     public function validationRegister(Validator $validator)
@@ -307,8 +400,5 @@ class UsersTable extends Table
 
         return false;
     }
-    
-    
-    
-    
+
 }

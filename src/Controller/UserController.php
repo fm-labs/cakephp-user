@@ -14,11 +14,6 @@ use User\Model\Table\UsersTable;
 class UserController extends AppController
 {
     /**
-     * @var string Name of user layout
-     */
-    public $layout = 'User.auth';
-
-    /**
      * @param Event $event
      */
     public function beforeFilter(Event $event)
@@ -26,6 +21,8 @@ class UserController extends AppController
         parent::beforeFilter($event);
 
         $this->Auth->allow(['register']);
+
+        $this->viewBuilder()->layout('User.auth');
     }
 
     /**

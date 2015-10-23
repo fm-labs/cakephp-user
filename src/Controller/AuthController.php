@@ -24,17 +24,14 @@ use User\Model\Table\UsersTable;
  */
 class AuthController extends AppController
 {
-    /**
-     * @var string Name of auth layout
-     */
-    public $layout = 'User.auth';
-
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
 
         // allow login method to pass authentication
         $this->Auth->allow(['login']);
+
+        $this->viewBuilder()->layout('User.auth');
     }
 
     /**
@@ -42,7 +39,7 @@ class AuthController extends AppController
      */
     public function login()
     {
-        $this->Auth->userLogin();
+        $this->Auth->login();
     }
 
     /**
@@ -50,6 +47,6 @@ class AuthController extends AppController
      */
     public function logout()
     {
-        $this->Auth->userLogout();
+        $this->redirect($this->Auth->logout());
     }
 }

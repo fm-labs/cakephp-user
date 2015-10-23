@@ -4,18 +4,11 @@ namespace User\Test\Fixture;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
- * UserGroupsUsersFixture
+ * GroupsFixture
  *
  */
-class UserGroupsUsersFixture extends TestFixture
+class GroupsFixture extends TestFixture
 {
-
-    /**
-     * Table name
-     *
-     * @var string
-     */
-    public $table = 'user_user_groups_users';
 
     /**
      * Fields
@@ -25,10 +18,11 @@ class UserGroupsUsersFixture extends TestFixture
     // @codingStandardsIgnoreStart
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 10, 'unsigned' => true, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
-        'user_id' => ['type' => 'integer', 'length' => 10, 'unsigned' => true, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'user_group_id' => ['type' => 'integer', 'length' => 10, 'unsigned' => true, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
+        'name' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'fixed' => null],
+        'password' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'fixed' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
+            'name_UNIQUE' => ['type' => 'unique', 'columns' => ['name'], 'length' => []],
         ],
         '_options' => [
 'engine' => 'InnoDB', 'collation' => 'utf8_general_ci'
@@ -44,8 +38,8 @@ class UserGroupsUsersFixture extends TestFixture
     public $records = [
         [
             'id' => 1,
-            'user_id' => 1,
-            'user_group_id' => 1
+            'name' => 'Lorem ipsum dolor sit amet',
+            'password' => 'Lorem ipsum dolor sit amet'
         ],
     ];
 }

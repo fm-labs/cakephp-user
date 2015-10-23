@@ -25,7 +25,7 @@ class Initial extends AbstractMigration
                 'limit' => 10,
                 'null' => false,
             ])
-            ->addColumn('user_group_id', 'integer', [
+            ->addColumn('group_id', 'integer', [
                 'default' => null,
                 'limit' => 10,
                 'null' => false,
@@ -38,7 +38,7 @@ class Initial extends AbstractMigration
                 'limit' => 255,
                 'null' => false,
             ])
-            ->addColumn('user_group_id', 'integer', [
+            ->addColumn('group_id', 'integer', [
                 'default' => null,
                 'limit' => 10,
                 'null' => true,

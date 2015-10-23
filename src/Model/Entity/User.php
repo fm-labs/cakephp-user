@@ -19,7 +19,7 @@ class User extends Entity
      */
     protected $_accessible = [
         'name' => false,
-        'user_group_id' => false,
+        'group_id' => false,
         'username' => false,
         'password' => false,
         'email' => false,
@@ -44,7 +44,7 @@ class User extends Entity
         'block_enabled' => false,
         'block_reason' => false,
         'block_datetime' => false,
-        'user_groups' => false,
+        'groups' => false,
     ];
 
     protected function _setPassword($password)

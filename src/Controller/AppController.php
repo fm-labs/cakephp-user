@@ -1,17 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: flow
- * Date: 4/6/15
- * Time: 11:31 PM
- */
-
 namespace User\Controller;
 
 use App\Controller\AppController as BaseAppController;
 use Cake\Core\Configure;
 use Cake\Core\Exception\Exception;
-use User\Controller\Component\AuthComponent;
+use User\Controller\Component\AuthComponent as UserAuthComponent;
 use User\Model\Table\UsersTable;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
@@ -25,18 +18,13 @@ use Cake\ORM\TableRegistry;
  */
 class AppController extends BaseAppController
 {
-    /**
-     * @var string Name of user model used for authentication
-     */
-    protected $_userModel;
-
     public function initialize()
     {
         parent::initialize();
 
         if (!$this->components()->has('Auth')) {
             throw new Exception('User: AuthComponent not loaded');
-        } elseif (!$this->Auth instanceof AuthComponent) {
+        } elseif (!$this->Auth instanceof UserAuthComponent) {
             throw new Exception('User: AuthComponent is not an instance of User.AuthComponent');
         }
 
@@ -44,7 +32,6 @@ class AppController extends BaseAppController
             throw new Exception('User: FlashComponent not loaded');
         }
     }
-
 
     public function beforeFilter(Event $event)
     {

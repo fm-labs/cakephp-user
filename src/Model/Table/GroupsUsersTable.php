@@ -5,12 +5,12 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use User\Model\Entity\UserGroupsUser;
+use User\Model\Entity\GroupsUser;
 
 /**
- * UserGroupsUsers Model
+ * GroupsUsers Model
  */
-class UserGroupsUsersTable extends Table
+class GroupsUsersTable extends Table
 {
 
     /**
@@ -21,7 +21,7 @@ class UserGroupsUsersTable extends Table
      */
     public function initialize(array $config)
     {
-        $this->table('user_user_groups_users');
+        $this->table('user_groups_users');
         $this->displayField('id');
         $this->primaryKey('id');
         $this->belongsTo('Users', [
@@ -29,10 +29,10 @@ class UserGroupsUsersTable extends Table
             'joinType' => 'INNER',
             'className' => 'User.Users'
         ]);
-        $this->belongsTo('UserGroups', [
-            'foreignKey' => 'user_group_id',
+        $this->belongsTo('Groups', [
+            'foreignKey' => 'group_id',
             'joinType' => 'INNER',
-            'className' => 'User.UserGroups'
+            'className' => 'User.Groups'
         ]);
     }
 
@@ -61,7 +61,7 @@ class UserGroupsUsersTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
-        $rules->add($rules->existsIn(['user_group_id'], 'UserGroups'));
+        $rules->add($rules->existsIn(['group_id'], 'Groups'));
         return $rules;
     }
 }

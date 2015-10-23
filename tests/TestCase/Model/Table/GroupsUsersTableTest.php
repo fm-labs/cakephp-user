@@ -3,12 +3,12 @@ namespace User\Test\TestCase\Model\Table;
 
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use User\Model\Table\UserGroupsTable;
+use User\Model\Table\GroupsUsersTable;
 
 /**
- * User\Model\Table\UserGroupsTable Test Case
+ * User\Model\Table\GroupsUsersTable Test Case
  */
-class UserGroupsTableTest extends TestCase
+class GroupsUsersTableTest extends TestCase
 {
 
     /**
@@ -17,9 +17,11 @@ class UserGroupsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.user.user_groups',
+        'plugin.user.groups_users',
         'plugin.user.users',
-        'plugin.user.user_groups_users'
+        'plugin.user.primary_group',
+        'plugin.user.primary_users',
+        'plugin.user.groups'
     ];
 
     /**
@@ -30,8 +32,8 @@ class UserGroupsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('UserGroups') ? [] : ['className' => 'User\Model\Table\UserGroupsTable'];
-        $this->UserGroups = TableRegistry::get('UserGroups', $config);
+        $config = TableRegistry::exists('GroupsUsers') ? [] : ['className' => 'User\Model\Table\GroupsUsersTable'];
+        $this->GroupsUsers = TableRegistry::get('GroupsUsers', $config);
     }
 
     /**
@@ -41,7 +43,7 @@ class UserGroupsTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->UserGroups);
+        unset($this->GroupsUsers);
 
         parent::tearDown();
     }
@@ -62,6 +64,16 @@ class UserGroupsTableTest extends TestCase
      * @return void
      */
     public function testValidationDefault()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test buildRules method
+     *
+     * @return void
+     */
+    public function testBuildRules()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: flow
- * Date: 4/7/15
- * Time: 8:04 PM
- */
-
 namespace User\Controller\Component;
 
 use Cake\Controller\Component\AuthComponent as CakeAuthComponent;
@@ -23,23 +16,20 @@ use Cake\ORM\TableRegistry;
  * @package User\Controller\Component
  *
  * @property FlashComponent $Flash
- *
- * @TODO Localize User AuthComponent
  */
 class AuthComponent extends CakeAuthComponent
 {
-    protected $_userModel;
-
     public function __construct(ComponentRegistry $registry, array $config = [])
     {
+        // Inject additional config values
+        $this->_defaultConfig['userModel'] = 'User.Users';
+
         parent::__construct($registry, $config);
     }
 
     public function initialize(array $config)
     {
         parent::initialize($config);
-
-        $this->_userModel = Configure::read('User.userModel') ?: 'User.Users';
 
         // default login action
         if (!$this->config('loginAction')) {
@@ -53,8 +43,8 @@ class AuthComponent extends CakeAuthComponent
         // default authenticate
         if (!$this->config('authenticate')) {
             $this->config('authenticate', [
-                self::ALL => ['userModel' => $this->_userModel],
-                'Form' => ['userModel' => $this->_userModel]
+                self::ALL => ['userModel' => $this->config('userModel')],
+                'Form' => ['userModel' => $this->config('userModel')]
             ]);
         }
 
@@ -74,7 +64,7 @@ class AuthComponent extends CakeAuthComponent
     /**
      * Login method
      */
-    public function userLogin()
+    public function login()
     {
         // check if user is already authenticated
         if ($this->user()) {
@@ -84,7 +74,7 @@ class AuthComponent extends CakeAuthComponent
         // attempt to identify user (any request method)
         $user = $this->identify();
         if ($user) {
-            $this->Flash->success(__('You are logged in now!'), ['key' => 'auth']);
+            $this->Flash->success(__d('user', 'You are logged in now!'), ['key' => 'auth']);
 
             // dispatch 'User.login' event
             $event = new Event('User.login', $this, [
@@ -100,7 +90,7 @@ class AuthComponent extends CakeAuthComponent
 
             // form login obviously failed
         } elseif ($this->request->is('post')) {
-            $this->flash(__('Login failed'));
+            $this->flash(__d('user', 'Login failed'));
 
             // dispatch 'User.login' event
             $event = new Event('User.login', $this, [
@@ -119,10 +109,17 @@ class AuthComponent extends CakeAuthComponent
     /**
      * Logout method
      */
-    public function userLogout()
+    public function logout()
     {
-        $this->Flash->success(__('You are logged out now!'), ['key' => 'auth']);
-        $this->redirect($this->logout());
+        $this->Flash->success(__d('user', 'You are logged out now!'), ['key' => 'auth']);
+
+        // dispatch 'User.login' event
+        $event = new Event('User.logout', $this, [
+            'user' => false,
+            'request' => $this->request
+        ]);
+        $this->eventManager()->dispatch($event);
+        return parent::logout();
     }
 
     /**
@@ -131,6 +128,22 @@ class AuthComponent extends CakeAuthComponent
     public function userModel()
     {
         return TableRegistry::get($this->_userModel);
+    }
+
+    /**
+     * @deprecated Use login() method instead
+     */
+    public function userLogin()
+    {
+        $this->login();
+    }
+
+    /**
+     * @deprecated Use logout() method instead
+     */
+    public function userLogout()
+    {
+        $this->logout();
     }
 
     protected function redirect($url)

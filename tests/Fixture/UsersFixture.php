@@ -19,7 +19,7 @@ class UsersFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 10, 'unsigned' => true, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
         'name' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'fixed' => null],
-        'user_group_id' => ['type' => 'integer', 'length' => 10, 'unsigned' => true, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
+        'group_id' => ['type' => 'integer', 'length' => 10, 'unsigned' => true, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'username' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'fixed' => null],
         'password' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'fixed' => null],
         'email' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'fixed' => null],
@@ -66,7 +66,7 @@ class UsersFixture extends TestFixture
         [
             'id' => 1,
             'name' => 'Lorem ipsum dolor sit amet',
-            'user_group_id' => 1,
+            'group_id' => 1,
             'username' => 'Lorem ipsum dolor sit amet',
             'password' => 'Lorem ipsum dolor sit amet',
             'email' => 'Lorem ipsum dolor sit amet',
@@ -97,7 +97,7 @@ class UsersFixture extends TestFixture
         [
             'id' => 2,
             'name' => 'Lorem ipsum dolor sit amet',
-            'user_group_id' => 2,
+            'group_id' => 2,
             'username' => 'Lorem ipsum dolor sit amet',
             'password' => 'Lorem ipsum dolor sit amet',
             'email' => 'Lorem ipsum dolor sit amet',
@@ -128,7 +128,7 @@ class UsersFixture extends TestFixture
         [
             'id' => 3,
             'name' => 'Lorem ipsum dolor sit amet',
-            'user_group_id' => 3,
+            'group_id' => 3,
             'username' => 'Lorem ipsum dolor sit amet',
             'password' => 'Lorem ipsum dolor sit amet',
             'email' => 'Lorem ipsum dolor sit amet',
@@ -159,7 +159,7 @@ class UsersFixture extends TestFixture
         [
             'id' => 4,
             'name' => 'Lorem ipsum dolor sit amet',
-            'user_group_id' => 4,
+            'group_id' => 4,
             'username' => 'Lorem ipsum dolor sit amet',
             'password' => 'Lorem ipsum dolor sit amet',
             'email' => 'Lorem ipsum dolor sit amet',
@@ -190,7 +190,7 @@ class UsersFixture extends TestFixture
         [
             'id' => 5,
             'name' => 'Lorem ipsum dolor sit amet',
-            'user_group_id' => 5,
+            'group_id' => 5,
             'username' => 'Lorem ipsum dolor sit amet',
             'password' => 'Lorem ipsum dolor sit amet',
             'email' => 'Lorem ipsum dolor sit amet',
@@ -221,7 +221,7 @@ class UsersFixture extends TestFixture
         [
             'id' => 6,
             'name' => 'Lorem ipsum dolor sit amet',
-            'user_group_id' => 6,
+            'group_id' => 6,
             'username' => 'Lorem ipsum dolor sit amet',
             'password' => 'Lorem ipsum dolor sit amet',
             'email' => 'Lorem ipsum dolor sit amet',
@@ -252,7 +252,7 @@ class UsersFixture extends TestFixture
         [
             'id' => 7,
             'name' => 'Lorem ipsum dolor sit amet',
-            'user_group_id' => 7,
+            'group_id' => 7,
             'username' => 'Lorem ipsum dolor sit amet',
             'password' => 'Lorem ipsum dolor sit amet',
             'email' => 'Lorem ipsum dolor sit amet',
@@ -283,7 +283,7 @@ class UsersFixture extends TestFixture
         [
             'id' => 8,
             'name' => 'Lorem ipsum dolor sit amet',
-            'user_group_id' => 8,
+            'group_id' => 8,
             'username' => 'Lorem ipsum dolor sit amet',
             'password' => 'Lorem ipsum dolor sit amet',
             'email' => 'Lorem ipsum dolor sit amet',
@@ -314,7 +314,7 @@ class UsersFixture extends TestFixture
         [
             'id' => 9,
             'name' => 'Lorem ipsum dolor sit amet',
-            'user_group_id' => 9,
+            'group_id' => 9,
             'username' => 'Lorem ipsum dolor sit amet',
             'password' => 'Lorem ipsum dolor sit amet',
             'email' => 'Lorem ipsum dolor sit amet',
@@ -345,7 +345,7 @@ class UsersFixture extends TestFixture
         [
             'id' => 10,
             'name' => 'Lorem ipsum dolor sit amet',
-            'user_group_id' => 10,
+            'group_id' => 10,
             'username' => 'Lorem ipsum dolor sit amet',
             'password' => 'Lorem ipsum dolor sit amet',
             'email' => 'Lorem ipsum dolor sit amet',

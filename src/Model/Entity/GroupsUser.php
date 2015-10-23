@@ -4,9 +4,9 @@ namespace User\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * UserGroup Entity.
+ * GroupsUser Entity.
  */
-class UserGroup extends Entity
+class GroupsUser extends Entity
 {
 
     /**
@@ -15,8 +15,9 @@ class UserGroup extends Entity
      * @var array
      */
     protected $_accessible = [
-        'name' => true,
-        'password' => true,
-        'users' => true,
+        'user_id' => true,
+        'group_id' => true,
+        'user' => true,
+        'group' => true,
     ];
 }
