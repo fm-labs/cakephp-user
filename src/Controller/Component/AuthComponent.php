@@ -44,7 +44,7 @@ class AuthComponent extends CakeAuthComponent
         if (!$this->config('authenticate')) {
             $this->config('authenticate', [
                 self::ALL => ['userModel' => $this->config('userModel')],
-                'Form' => ['userModel' => $this->config('userModel')]
+                'Form' => ['userModel' => $this->config('userModel'), 'finder' => 'auth']
             ]);
         }
 
@@ -56,11 +56,6 @@ class AuthComponent extends CakeAuthComponent
         }
     }
 
-    public function startup(Event $event)
-    {
-        parent::startup($event);
-    }
-
     /**
      * Login method
      */
@@ -69,6 +64,7 @@ class AuthComponent extends CakeAuthComponent
         // check if user is already authenticated
         if ($this->user()) {
             $this->redirect($this->redirectUrl());
+            return;
         }
 
         // attempt to identify user (any request method)
@@ -78,7 +74,8 @@ class AuthComponent extends CakeAuthComponent
 
             // dispatch 'User.login' event
             $event = new Event('User.login', $this, [
-                'user' => $user
+                'user' => $user,
+                'request' => $this->request
             ]);
             $this->eventManager()->dispatch($event);
 
