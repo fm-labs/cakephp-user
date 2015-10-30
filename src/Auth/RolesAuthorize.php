@@ -28,6 +28,7 @@ class RolesAuthorize extends BaseAuthorize
      */
     public function authorize($user, Request $request)
     {
+        debug($user);
         /*
         $modelName = 'Users';
         $modelId = $user['id'];

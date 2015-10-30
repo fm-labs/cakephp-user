@@ -2,19 +2,25 @@
 
 namespace User\Controller\Component;
 
-
 use Cake\Controller\Component;
 use Cake\ORM\TableRegistry;
-use Cake\Test\TestCase\ORM\UsersTable;
+use User\Model\Table\PermissionsTable;
+use User\Model\Table\RolesTable;
+use User\Model\Table\UsersTable;
 
+/**
+ * Class RbacComponent
+ * @package User\Controller\Component
+ * @property AuthComponent $Auth
+ */
 class RbacComponent extends Component
 {
     public $components = ['Auth'];
 
     protected $_defaultConfig = [
         'users_table' => 'User.Users',
-        'roles_table' => 'User.UserRoles',
-        'permissions_table' => 'User.UserPermissions'
+        'roles_table' => 'User.Roles',
+        'permissions_table' => 'User.Permissions'
     ];
 
     /**
@@ -22,8 +28,14 @@ class RbacComponent extends Component
      */
     public $Users;
 
+    /**
+     * @var RolesTable
+     */
     public $Roles;
 
+    /**
+     * @var PermissionsTable
+     */
     public $Permissions;
 
     public function initialize(array $config)
@@ -39,7 +51,7 @@ class RbacComponent extends Component
      */
     public function getAuthUser()
     {
-
+        return $this->Auth->user();
     }
 
 
