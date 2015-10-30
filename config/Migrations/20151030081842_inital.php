@@ -1,11 +1,11 @@
 <?php
-use Phinx\Migration\AbstractMigration;
+use Migrations\AbstractMigration;
 
-class Initial extends AbstractMigration
+class Inital extends AbstractMigration
 {
     public function up()
     {
-        $table = $this->table('user_user_groups');
+        $table = $this->table('user_groups');
         $table
             ->addColumn('name', 'string', [
                 'default' => null,
@@ -18,19 +18,79 @@ class Initial extends AbstractMigration
                 'null' => true,
             ])
             ->create();
-        $table = $this->table('user_user_groups_users');
+
+        $table = $this->table('user_groups_users');
+        $table
+            ->addColumn('user_id', 'integer', [
+                'default' => null,
+                'limit' => 11,
+                'null' => false,
+            ])
+            ->addColumn('group_id', 'integer', [
+                'default' => null,
+                'limit' => 11,
+                'null' => false,
+            ])
+            ->create();
+
+        $table = $this->table('user_permissions');
+        $table
+            ->addColumn('name', 'string', [
+                'default' => null,
+                'limit' => 45,
+                'null' => false,
+            ])
+            ->addIndex(
+                [
+                    'name',
+                ],
+                ['unique' => true]
+            )
+            ->create();
+
+        $table = $this->table('user_roles');
+        $table
+            ->addColumn('name', 'string', [
+                'default' => null,
+                'limit' => 255,
+                'null' => false,
+            ])
+            ->addIndex(
+                [
+                    'name',
+                ],
+                ['unique' => true]
+            )
+            ->create();
+
+        $table = $this->table('user_roles_permissions');
+        $table
+            ->addColumn('role_id', 'integer', [
+                'default' => null,
+                'limit' => 10,
+                'null' => false,
+            ])
+            ->addColumn('permission_id', 'integer', [
+                'default' => null,
+                'limit' => 10,
+                'null' => false,
+            ])
+            ->create();
+
+        $table = $this->table('user_roles_users');
         $table
             ->addColumn('user_id', 'integer', [
                 'default' => null,
                 'limit' => 10,
                 'null' => false,
             ])
-            ->addColumn('group_id', 'integer', [
+            ->addColumn('role_id', 'integer', [
                 'default' => null,
                 'limit' => 10,
                 'null' => false,
             ])
             ->create();
+
         $table = $this->table('user_users');
         $table
             ->addColumn('name', 'string', [
@@ -40,7 +100,7 @@ class Initial extends AbstractMigration
             ])
             ->addColumn('group_id', 'integer', [
                 'default' => null,
-                'limit' => 10,
+                'limit' => 11,
                 'null' => true,
             ])
             ->addColumn('username', 'string', [
@@ -174,12 +234,17 @@ class Initial extends AbstractMigration
                 'null' => true,
             ])
             ->create();
+
     }
 
     public function down()
     {
-        $this->dropTable('user_user_groups');
-        $this->dropTable('user_user_groups_users');
+        $this->dropTable('user_groups');
+        $this->dropTable('user_groups_users');
+        $this->dropTable('user_permissions');
+        $this->dropTable('user_roles');
+        $this->dropTable('user_roles_permissions');
+        $this->dropTable('user_roles_users');
         $this->dropTable('user_users');
     }
 }
