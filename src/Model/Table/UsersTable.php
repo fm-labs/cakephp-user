@@ -65,6 +65,8 @@ class UsersTable extends Table
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
             ->allowEmpty('id', 'create')
+            ->add('superuser', 'valid', ['rule' => 'boolean'])
+            ->allowEmpty('superuser')
             ->requirePresence('name', 'create')
             ->notEmpty('name')
             ->requirePresence('username', 'create')
@@ -148,6 +150,8 @@ class UsersTable extends Table
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
             ->allowEmpty('id', 'create')
+            ->add('superuser', 'valid', ['rule' => 'boolean'])
+            ->allowEmpty('superuser')
             ->requirePresence('username', 'create')
             ->notEmpty('username')
             ->requirePresence('password1', 'create')
@@ -211,7 +215,7 @@ class UsersTable extends Table
      *
      * @return bool|\Cake\Datasource\EntityInterface|Entity
      */
-    public function createRootUser()
+    public function createRootUser($password = 'change_me')
     {
         // check if there is already a root user
         if ($this->find()->where(['id' => 1])->first()) {
@@ -220,6 +224,7 @@ class UsersTable extends Table
 
         $data = [
             'id' => 1,
+            'superuser' => true,
             'name' => 'root',
             'username' => 'root',
             'email' => 'change_me@example.org',
