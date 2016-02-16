@@ -8,8 +8,9 @@
 
 namespace User\Controller\Admin;
 
+use App\Controller\Admin\AppController as BaseAdminAppController;
 
-class AppController extends AbstractBackendController
+class AppController extends BaseAdminAppController
 {
 
 }

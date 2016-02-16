@@ -8,7 +8,14 @@ Router::connect('/logout', ['plugin' => 'User', 'controller' => 'Auth', 'action'
 // User registration routes
 Router::connect('/register', ['plugin' => 'User', 'controller' => 'User', 'action' => 'register']);
 
-// User routes
-Router::connect('/user/:action/*', ['plugin' => 'User', 'controller' => 'User']);
-Router::connect('/user/:action', ['plugin' => 'User', 'controller' => 'User']);
-Router::connect('/user', ['plugin' => 'User', 'controller' => 'User', 'action' => 'index']);
+//Plugin routes
+Router::plugin('User', function ($routes) {
+
+    $routes->prefix('admin', function ($routes) {
+        $routes->connect('/:controller');
+        $routes->fallbacks('DashedRoute');
+    });
+
+    $routes->connect('/:controller');
+    $routes->fallbacks('DashedRoute');
+});

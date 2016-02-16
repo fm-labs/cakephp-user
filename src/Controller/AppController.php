@@ -14,22 +14,24 @@ use Cake\ORM\TableRegistry;
  * @package User\Controller
  *
  * @property UsersTable $Users
- * @property AuthComponent $Auth
+ * @property UserAuthComponent $Auth
  */
 class AppController extends BaseAppController
 {
+
     public function initialize()
     {
         parent::initialize();
 
         if (!$this->components()->has('Auth')) {
             throw new Exception('User: AuthComponent not loaded');
+
         } elseif (!$this->Auth instanceof UserAuthComponent) {
             throw new Exception('User: AuthComponent is not an instance of User.AuthComponent');
         }
 
         if (!$this->components()->has('Flash')) {
-            throw new Exception('User: FlashComponent not loaded');
+            $this->components()->load('Flash');
         }
     }
 
