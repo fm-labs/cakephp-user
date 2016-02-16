@@ -15,10 +15,11 @@
     ['icon' => 'add']
 ); ?>
 <div class="users index">
-    <table class="ui table striped">
+    <table class="ui table compact striped">
     <thead>
         <tr>
             <th><?= $this->Paginator->sort('id') ?></th>
+            <th><?= $this->Paginator->sort('login_enabled') ?></th>
             <th><?= $this->Paginator->sort('superuser') ?></th>
             <th><?= $this->Paginator->sort('username') ?></th>
             <th><?= $this->Paginator->sort('group_id') ?></th>
@@ -31,6 +32,7 @@
     <?php foreach ($users as $user): ?>
         <tr>
             <td><?= $this->Number->format($user->id) ?></td>
+            <td><?= $this->Ui->statusLabel($user->login_enabled) ?></td>
             <td><?= $this->Ui->statusLabel($user->is_superuser) ?></td>
             <td><?= h($user->username) ?></td>
             <td>
@@ -39,7 +41,7 @@
             <td><?= h($user->name) ?></td>
             <td><?= h($user->email) ?></td>
             <td class="actions">
-                <div class="ui basic small buttons">
+                <div class="ui basic tiny buttons">
                     <div class="ui button">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $user->id]) ?>
                     </div>

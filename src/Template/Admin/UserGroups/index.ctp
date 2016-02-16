@@ -10,7 +10,7 @@
     ['icon' => 'list']
 ); ?>
 <div class="userGroups index">
-    <table class="ui table striped">
+    <table class="ui table compact striped">
     <thead>
         <tr>
             <th><?= $this->Paginator->sort('id') ?></th>
@@ -26,7 +26,7 @@
             <td><?= h($userGroup->name) ?></td>
             <td><?= h($userGroup->password) ?></td>
             <td class="actions">
-                <div class="ui basic small buttons">
+                <div class="ui basic tiny buttons">
                     <div class="ui button">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $userGroup->id]) ?>
                     </div>
