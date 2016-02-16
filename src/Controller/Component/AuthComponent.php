@@ -43,8 +43,8 @@ class AuthComponent extends CakeAuthComponent
         // default authenticate
         if (!$this->config('authenticate')) {
             $this->config('authenticate', [
-                self::ALL => ['userModel' => $this->config('userModel')],
-                'Form' => ['userModel' => $this->config('userModel'), 'finder' => 'auth']
+                self::ALL => ['userModel' => $this->config('userModel'), 'finder' => 'authUser'],
+                'Form' => ['userModel' => $this->config('userModel')]
             ]);
         }
 

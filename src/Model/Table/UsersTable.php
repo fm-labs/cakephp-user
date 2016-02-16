@@ -127,13 +127,10 @@ class UsersTable extends Table
         return $rules;
     }
 
-    public function findAuth(\Cake\ORM\Query $query, array $options)
+    public function findAuthUser(Query $query, array $options)
     {
-        //$query
-            //->select(['id', 'username', 'password'])
-            //->where(['Users.active' => 1]);
-
         $query
+            ->where(['Users.login_enabled' => true])
             ->contain(['Groups']);
 
         return $query;
