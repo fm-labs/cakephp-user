@@ -134,7 +134,7 @@ class UsersController extends AppController
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Users->changePassword($user, $this->request->data)) {
                 $this->Flash->success(__('Your password has been changed.'));
-                $this->redirect(['controller' => 'User', 'action' => 'index']);
+                $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('Ups, something went wrong'));
             }
@@ -161,7 +161,7 @@ class UsersController extends AppController
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Users->resetPassword($user, $this->request->data)) {
                 $this->Flash->success(__('Your password has been changed.'));
-                $this->redirect(['controller' => 'User', 'action' => 'index']);
+                $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('Ups, something went wrong'));
             }
