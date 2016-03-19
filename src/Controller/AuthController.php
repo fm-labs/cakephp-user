@@ -24,16 +24,14 @@ use User\Model\Table\UsersTable;
  */
 class AuthController extends AppController
 {
-
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
 
-        $this->layout = (Configure::read('User.authLayout')) ?: 'User.auth';
-
+        // allow login method to pass authentication
         $this->Auth->allow(['login']);
 
-        $this->Users = TableRegistry::get(Configure::read('User.userModel') ?: 'User.Users');
+        $this->viewBuilder()->layout('User.auth');
     }
 
     /**
@@ -41,35 +39,7 @@ class AuthController extends AppController
      */
     public function login()
     {
-        // authentication via form post
-        if ($this->request->is('post')) {
-            $user = $this->Auth->identify();
-            if ($user) {
-                $this->Flash->set(__('You are logged in now!'));
-
-                // dispatch 'User.Auth.afterLogin' event
-                $event = new Event('User.Auth.afterLogin', $this, [
-                    'user' => $user
-                ]);
-                $this->eventManager()->dispatch($event);
-
-                // authenticate user
-                $this->Auth->setUser($event->data['user']);
-
-                return $this->redirect($this->Auth->redirectUrl());
-            } else {
-                $this->Auth->flash(__('Login failed'));
-
-                // dispatch 'User.Auth.loginFailure' event
-                $event = new Event('User.Auth.loginFailure', $this, [
-                    'request' => $this->request
-                ]);
-                $this->eventManager()->dispatch($event);
-            }
-        // already authenticated
-        } elseif ($this->Auth->user()) {
-            $this->redirect($this->Auth->redirectUrl());
-        }
+        $this->Auth->login();
     }
 
     /**
@@ -77,22 +47,6 @@ class AuthController extends AppController
      */
     public function logout()
     {
-        $this->Flash->success(__('You are logged out now!'));
         $this->redirect($this->Auth->logout());
-    }
-
-    public function password_change()
-    {
-        $user = $this->Users->get($this->Auth->user('id'));
-        if ($this->request->is('post') || $this->request->is('put')) {
-            if ($this->Users->changePassword($user, $this->request->data)) {
-                $this->Flash->success(__('Your password has been changed.'));
-                //@todo make configurable 'user password change' success redirect url
-                $this->redirect('/');
-            } else {
-                $this->Flash->error(__('Ups, something went wrong'));
-            }
-        }
-        $this->set('user', $user);
     }
 }

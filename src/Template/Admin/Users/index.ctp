@@ -1,34 +1,30 @@
 <?php $this->Html->addCrumb(__('Users')); ?>
-<div class="actions">
-    <div class="ui secondary menu">
-        <div class="item"></div>
-        <div class="right menu">
-            <div class="item">
-                <i class="add icon"></i>
-                <?= $this->Html->link(__('New {0}', __('User')), ['action' => 'add']) ?>
-            </div>
-            <div class="ui dropdown item">
-                <i class="dropdown icon"></i>
-                <i class="tasks icon"></i>Actions
-                <div class="menu">
-                    <div class="item">No Actions</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="ui divider"></div>
-
+<?= $this->Toolbar->addLink(
+    __('New {0}', __('User')),
+    ['controller' => 'Users', 'action' => 'add'],
+    ['icon' => 'add']
+); ?>
+<?= $this->Toolbar->addLink(
+    __('List {0}', __('User Groups')),
+    ['controller' => 'UserGroups', 'action' => 'index'],
+    ['icon' => 'list']
+); ?>
+<?= $this->Toolbar->addLink(
+    __('New {0}', __('User Group')),
+    ['controller' => 'UserGroups', 'action' => 'add'],
+    ['icon' => 'add']
+); ?>
 <div class="users index">
-    <table class="ui table striped">
+    <table class="ui table compact striped">
     <thead>
         <tr>
             <th><?= $this->Paginator->sort('id') ?></th>
+            <th><?= $this->Paginator->sort('login_enabled') ?></th>
+            <th><?= $this->Paginator->sort('superuser') ?></th>
             <th><?= $this->Paginator->sort('username') ?></th>
-            <th><?= $this->Paginator->sort('password') ?></th>
-            <th><?= $this->Paginator->sort('is_login_allowed') ?></th>
-            <th><?= $this->Paginator->sort('created') ?></th>
-            <th><?= $this->Paginator->sort('modified') ?></th>
+            <th><?= $this->Paginator->sort('group_id') ?></th>
+            <th><?= $this->Paginator->sort('name') ?></th>
+            <th><?= $this->Paginator->sort('email') ?></th>
             <th class="actions"><?= __('Actions') ?></th>
         </tr>
     </thead>
@@ -36,29 +32,32 @@
     <?php foreach ($users as $user): ?>
         <tr>
             <td><?= $this->Number->format($user->id) ?></td>
+            <td><?= $this->Ui->statusLabel($user->login_enabled) ?></td>
+            <td><?= $this->Ui->statusLabel($user->is_superuser) ?></td>
             <td><?= h($user->username) ?></td>
-            <td><?= h($user->password) ?></td>
-            <td><?= h($user->is_login_allowed) ?></td>
-            <td><?= h($user->created) ?></td>
-            <td><?= h($user->modified) ?></td>
+            <td>
+                <?= $user->has('primary_group') ? $this->Html->link($user->primary_group->name, ['controller' => 'UserGroups', 'action' => 'view', $user->primary_group->id]) : '' ?>
+            </td>
+            <td><?= h($user->name) ?></td>
+            <td><?= h($user->email) ?></td>
             <td class="actions">
-                <div class="ui basic mini buttons">
+                <div class="ui basic tiny buttons">
                     <div class="ui button">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $user->id]) ?>
                     </div>
                     <div class="ui floating dropdown icon button">
                         <i class="dropdown icon"></i>
                         <div class="menu">
-                            <div class="item"><i class="edit icon"></i>
-                                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id]) ?>
-                            </div>
-                            <div class="item"><i class="delete icon"></i>
-                                <?= $this->Form->postLink(
-                                    __('Delete'),
-                                    ['action' => 'delete', $user->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]
-                                ) ?>
-                            </div>
+                            <?= $this->Ui->link(
+                                __('Edit'),
+                                ['action' => 'edit', $user->id],
+                                ['class' => 'item', 'icon' => 'edit']
+                            ) ?>
+                            <?= $this->Ui->postLink(
+                                __('Delete'),
+                                ['action' => 'delete', $user->id],
+                                ['class' => 'item', 'icon' => 'trash', 'confirm' => __('Are you sure you want to delete # {0}?', $user->id)]
+                            ) ?>
                         </div>
                     </div>
                 </div>
@@ -79,4 +78,6 @@
             </div>
         </div>
     </div>
+
+    <?php debug($users); ?>
 </div>

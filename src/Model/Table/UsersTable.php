@@ -20,9 +20,15 @@ class UsersTable extends Table
      */
     public static $minPasswordLength = 8;
 
-    public static $emailAsUsername = true;
+    public static $emailAsUsername = false;
 
     public static $passwordRegex = '/^(\w)+$/';
+
+    //public static $usersModel = 'Users.Users';
+    //public static $groupsModel = 'User.Groups';
+    //public static $rolesModel = 'User.Roles';
+    //public static $permissionsModel = 'User.Permissions';
+
     
     /**
      * Initialize method
@@ -36,15 +42,15 @@ class UsersTable extends Table
         $this->displayField('username');
         $this->primaryKey('id');
         $this->addBehavior('Timestamp');
-        $this->belongsTo('PrimaryUserGroup', [
-            'foreignKey' => 'user_group_id',
-            'className' => 'User.UserGroups'
+        $this->belongsTo('PrimaryGroup', [
+            'foreignKey' => 'group_id',
+            'className' => 'User.Groups'
         ]);
-        $this->belongsToMany('UserGroups', [
+        $this->belongsToMany('Groups', [
             'foreignKey' => 'user_id',
-            'targetForeignKey' => 'user_group_id',
-            'joinTable' => 'user_user_groups_users',
-            'className' => 'User.UserGroups'
+            'targetForeignKey' => 'group_id',
+            'joinTable' => 'user_groups_users',
+            'className' => 'User.Groups'
         ]);
     }
 
@@ -59,6 +65,8 @@ class UsersTable extends Table
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
             ->allowEmpty('id', 'create')
+            ->add('superuser', 'valid', ['rule' => 'boolean'])
+            ->allowEmpty('superuser')
             ->requirePresence('name', 'create')
             ->notEmpty('name')
             ->requirePresence('username', 'create')
@@ -115,10 +123,132 @@ class UsersTable extends Table
     {
         $rules->add($rules->isUnique(['username']));
         $rules->add($rules->isUnique(['email']));
-        $rules->add($rules->existsIn(['user_group_id'], 'UserGroups'));
+        $rules->add($rules->existsIn(['group_id'], 'Groups'));
         return $rules;
     }
 
+    public function findAuthUser(Query $query, array $options)
+    {
+        $query
+            ->where(['Users.login_enabled' => true])
+            ->contain(['Groups']);
+
+        return $query;
+    }
+
+    /**
+     * Validation rules for adding new users
+     *
+     * @param Validator $validator
+     * @return Validator
+     */
+    public function validationAdd(Validator $validator)
+    {
+        $validator
+            ->add('id', 'valid', ['rule' => 'numeric'])
+            ->allowEmpty('id', 'create')
+            ->add('superuser', 'valid', ['rule' => 'boolean'])
+            ->allowEmpty('superuser')
+            ->requirePresence('username', 'create')
+            ->notEmpty('username')
+            ->requirePresence('password1', 'create')
+            ->notEmpty('password1')
+            ->add('password1', 'password', [
+                'rule' => 'validateNewPassword1',
+                'provider' => 'table',
+                'message' => __('Invalid password')
+            ])
+            ->requirePresence('password2', 'create')
+            ->notEmpty('password2')
+            ->add('password2', 'password', [
+                'rule' => 'validateNewPassword2',
+                'provider' => 'table',
+                'message' => __('Passwords do not match')
+            ])
+            ->add('is_login_allowed', 'valid', ['rule' => 'boolean'])
+            //->requirePresence('is_login_allowed', 'create')
+            ->notEmpty('is_login_allowed');
+
+
+        if (static::$emailAsUsername) {
+            $validator->add('username', 'email', [
+                'rule' => ['email'],
+                'message' => __('The provided email address is invalid')
+            ]);
+        }
+
+
+        return $validator;
+    }
+
+    /**
+     * Add new user
+     *
+     * @param array $data
+     * @return \Cake\Datasource\EntityInterface|Entity
+     */
+    public function add(array $data)
+    {
+        $user = $this->newEntity(null);
+        $user->accessible('*', true);
+        $user->accessible(['password1', 'password2'], true);
+        $user->accessible('password', false);
+
+        $this->patchEntity($user, $data, ['validate' => 'add']);
+        if ($user->errors()) {
+            return $user;
+        }
+
+        $user->password = $user->password1;
+
+        if ($this->save($user)) {
+            Log::info('User added with ID ' . $user->id);
+        }
+        return $user;
+    }
+
+    /**
+     * Create root user with default credentials
+     *
+     * @return bool|\Cake\Datasource\EntityInterface|Entity
+     */
+    public function createRootUser($password = 'change_me')
+    {
+        // check if there is already a root user
+        if ($this->find()->where(['id' => 1])->first()) {
+            return false;
+        }
+
+        $data = [
+            'id' => 1,
+            'superuser' => true,
+            'name' => 'root',
+            'username' => 'root',
+            'email' => 'change_me@example.org',
+            'password' => 'change_me',
+            'login_enabled' => true,
+            'email_verification_required' => false,
+        ];
+
+        $user = $this->newEntity();
+        $user->accessible([
+            'id', 'name', 'username', 'email', 'password', 'login_enabled', 'email_verification_required'
+        ], true);
+        $this->patchEntity($user, $data);
+
+        if ($this->save($user)) {
+            Log::info('User \'root\' added with ID ' . $user->id);
+        }
+
+        return $user;
+    }
+
+    /**
+     * Validation rules for the register method
+     *
+     * @param Validator $validator
+     * @return Validator
+     */
     public function validationRegister(Validator $validator)
     {
         $validator
@@ -190,6 +320,12 @@ class UsersTable extends Table
         return $user;
     }
 
+    /**
+     * Validation rules to change password
+     *
+     * @param Validator $validator
+     * @return Validator
+     */
     public function validationChangePassword(Validator $validator)
     {
         $validator
@@ -214,6 +350,15 @@ class UsersTable extends Table
         return $validator;
     }
 
+    /**
+     * Change user password
+     * - Requires the current user password
+     * - The new password MUST NOT match the current user password
+     *
+     * @param Entity $user
+     * @param array $data
+     * @return bool
+     */
     public function changePassword(Entity &$user, array $data)
     {
         $user->accessible('password0', true);
@@ -258,6 +403,65 @@ class UsersTable extends Table
         return ($saved) ? true : false;
     }
 
+
+    /**
+     * Validation rules to reset password
+     *
+     * @param Validator $validator
+     * @return Validator
+     */
+    public function validationResetPassword(Validator $validator)
+    {
+        $validator
+            ->add('id', 'valid', ['rule' => 'numeric'])
+            ->requirePresence('password1', 'create')
+            ->notEmpty('password1')
+            ->add('password1', 'password', [
+                'rule' => 'validateNewPassword1',
+                'provider' => 'table',
+                'message' => __('Invalid password')
+            ])
+            ->requirePresence('password2', 'create')
+            ->notEmpty('password2')
+            ->add('password2', 'password', [
+                'rule' => 'validateNewPassword2',
+                'provider' => 'table',
+                'message' => __('Passwords do not match')
+            ]);
+
+        return $validator;
+    }
+
+    /**
+     * Reset user password
+     *
+     * @param Entity $user
+     * @param array $data
+     * @return bool
+     */
+    public function resetPassword(Entity &$user, array $data)
+    {
+        $user->accessible('password1', true);
+        $user->accessible('password2', true);
+
+        $user = $this->patchEntity($user, $data, ['validate' => 'resetPassword']);
+        if ($user->errors()) {
+            return false;
+        }
+
+        // apply new password
+        $user->accessible('password', true);
+        $user->password = $data['password1'];
+        $saved = $this->save($user);
+
+        // cleanup
+        unset($user->password1);
+        unset($user->password2);
+        #unset($user->password); // hide password
+
+        return ($saved) ? true : false;
+    }
+
     /**
      * Password Validation Rule
      *
@@ -281,7 +485,7 @@ class UsersTable extends Table
 
         // Check for weak password
         if (isset($context['data']['username']) && $value == $context['data']['username']) {
-            return __('Password can not be the same as ');
+            return __('Password can not be the same as your username');
         }
 
         return true;
@@ -307,8 +511,5 @@ class UsersTable extends Table
 
         return false;
     }
-    
-    
-    
-    
+
 }

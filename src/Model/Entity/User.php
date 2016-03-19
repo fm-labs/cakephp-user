@@ -18,8 +18,9 @@ class User extends Entity
      * @var array
      */
     protected $_accessible = [
+        'superuser' => false,
         'name' => false,
-        'user_group_id' => false,
+        'group_id' => false,
         'username' => false,
         'password' => false,
         'email' => false,
@@ -44,8 +45,23 @@ class User extends Entity
         'block_enabled' => false,
         'block_reason' => false,
         'block_datetime' => false,
-        'user_groups' => false,
+        'groups' => false,
     ];
+
+    protected $_virtual = [
+        'is_root',
+        'is_superuser'
+    ];
+
+    protected function _getIsRoot()
+    {
+        return ($this->username === 'root');
+    }
+
+    protected function _getIsSuperuser()
+    {
+        return ($this->superuser || $this->username === 'root');
+    }
 
     protected function _setPassword($password)
     {

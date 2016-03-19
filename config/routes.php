@@ -1,16 +1,21 @@
 <?php
 use Cake\Routing\Router;
 
+// User auth routes
 Router::connect('/login', ['plugin' => 'User', 'controller' => 'Auth', 'action' => 'login']);
 Router::connect('/logout', ['plugin' => 'User', 'controller' => 'Auth', 'action' => 'logout']);
 
-Router::plugin('User', function (\Cake\Routing\RouteBuilder $routes) {
+// User registration routes
+Router::connect('/register', ['plugin' => 'User', 'controller' => 'User', 'action' => 'register']);
 
-    $routes->prefix('admin', function (\Cake\Routing\RouteBuilder $routes) {
-        $routes->connect('/:controller', ['action' => 'index', 'prefix' => null], ['routeClass' => 'InflectedRoute']);
-        $routes->connect('/:controller/:action/*', ['prefix' => null], ['routeClass' => 'InflectedRoute']);
-        $routes->fallbacks('InflectedRoute');
+//Plugin routes
+Router::plugin('User', function ($routes) {
+
+    $routes->prefix('admin', function ($routes) {
+        $routes->connect('/:controller');
+        $routes->fallbacks('DashedRoute');
     });
 
-    $routes->fallbacks('InflectedRoute');
+    $routes->connect('/:controller');
+    $routes->fallbacks('DashedRoute');
 });

@@ -5,12 +5,13 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use User\Model\Entity\UserGroup;
+use User\Model\Entity\Role;
 
 /**
- * UserGroups Model
+ * Roles Model
+ *
  */
-class UserGroupsTable extends Table
+class RolesTable extends Table
 {
 
     /**
@@ -21,19 +22,12 @@ class UserGroupsTable extends Table
      */
     public function initialize(array $config)
     {
-        $this->table('user_user_groups');
+        parent::initialize($config);
+
+        $this->table('user_roles');
         $this->displayField('name');
         $this->primaryKey('id');
-        $this->hasMany('PrimaryUsers', [
-            'foreignKey' => 'user_group_id',
-            'className' => 'User.Users'
-        ]);
-        $this->belongsToMany('Users', [
-            'foreignKey' => 'user_group_id',
-            'targetForeignKey' => 'user_id',
-            'joinTable' => 'user_user_groups_users',
-            'className' => 'User.Users'
-        ]);
+
     }
 
     /**
@@ -46,10 +40,12 @@ class UserGroupsTable extends Table
     {
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
-            ->allowEmpty('id', 'create')
+            ->allowEmpty('id', 'create');
+
+        $validator
             ->requirePresence('name', 'create')
             ->notEmpty('name')
-            ->allowEmpty('password');
+            ->add('name', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         return $validator;
     }
