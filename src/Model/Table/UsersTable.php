@@ -212,7 +212,7 @@ class UsersTable extends Table
      *
      * @return bool|\Cake\Datasource\EntityInterface|Entity
      */
-    public function createRootUser($password = 'change_me')
+    public function createRootUser($email, $password)
     {
         // check if there is already a root user
         if ($this->find()->where(['id' => 1])->first()) {
@@ -224,8 +224,8 @@ class UsersTable extends Table
             'superuser' => true,
             'name' => 'root',
             'username' => 'root',
-            'email' => 'change_me@example.org',
-            'password' => 'change_me',
+            'email' => $email,
+            'password' => $password,
             'login_enabled' => true,
             'email_verification_required' => false,
         ];
@@ -236,8 +236,9 @@ class UsersTable extends Table
         ], true);
         $this->patchEntity($user, $data);
 
+        //@TODO Add validation
         if ($this->save($user)) {
-            Log::info('User \'root\' added with ID ' . $user->id);
+            Log::info('User \'root\' added with ID ' . $user->id, ['backend', 'user']);
         }
 
         return $user;
@@ -314,7 +315,7 @@ class UsersTable extends Table
             unset($user->password2);
 
             if ($this->save($user)) {
-                Log::info('[plugin:user] New user registered with ID ' . $user->id);
+                Log::info('[plugin:user] New user registered with ID ' . $user->id, ['backend', 'user']);
             }
         }
         return $user;
