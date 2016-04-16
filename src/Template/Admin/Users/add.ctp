@@ -13,7 +13,7 @@
 <?= $this->Toolbar->addLink(
     __('New {0}', __('User Group')),
     ['controller' => 'Groups', 'action' => 'add'],
-    ['icon' => 'add']
+    ['icon' => 'plus']
 ) ?>
 <div class="users">
 

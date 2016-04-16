@@ -2,7 +2,7 @@
 <?= $this->Toolbar->addLink(
     __('New {0}', __('User Group')),
     ['action' => 'add'],
-    ['icon' => 'add']
+    ['icon' => 'plus']
 ) ?>
 <?= $this->Toolbar->addLink(
     __('List {0}', __('Users')),

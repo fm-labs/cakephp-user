@@ -22,7 +22,7 @@
             <?= $this->Ui->link(
                 __('New {0}', __('User Group')),
                 ['action' => 'add'],
-                ['class' => 'item', 'icon' => 'add']
+                ['class' => 'item', 'icon' => 'plus']
             ) ?>
             <div class="ui item dropdown">
                 <div class="menu">
@@ -34,7 +34,7 @@
                     <?= $this->Ui->link(
                         __('New {0}', __('User')),
                         ['controller' => 'Users', 'action' => 'add'],
-                        ['class' => 'item', 'icon' => 'add']
+                        ['class' => 'item', 'icon' => 'plus']
                     ) ?>
                 </div>
             </div>

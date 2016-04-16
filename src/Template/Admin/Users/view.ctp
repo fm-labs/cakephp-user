@@ -19,7 +19,7 @@
 <?= $this->Toolbar->addLink(
     __('New {0}', __('User')),
     ['action' => 'add'],
-    ['icon' => 'add']
+    ['icon' => 'plus']
 ) ?>
 <?php $this->Toolbar->startGroup(__('More')); ?>
 <?= $this->Toolbar->addLink(
@@ -30,7 +30,7 @@
 <?= $this->Toolbar->addLink(
     __('New {0}', __('User Group')),
     ['controller' => 'Groups', 'action' => 'add'],
-    ['icon' => 'add']
+    ['icon' => 'plus']
 ) ?>
 <?php $this->Toolbar->endGroup(); ?>
 <?php $this->Toolbar->render(); ?>

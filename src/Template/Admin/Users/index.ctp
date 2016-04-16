@@ -2,7 +2,7 @@
 <?= $this->Toolbar->addLink(
     __('New {0}', __('User')),
     ['controller' => 'Users', 'action' => 'add'],
-    ['icon' => 'add']
+    ['icon' => 'plus']
 ); ?>
 <?= $this->Toolbar->addLink(
     __('List {0}', __('User Groups')),
@@ -12,7 +12,7 @@
 <?= $this->Toolbar->addLink(
     __('New {0}', __('User Group')),
     ['controller' => 'UserGroups', 'action' => 'add'],
-    ['icon' => 'add']
+    ['icon' => 'plus']
 ); ?>
 <div class="users index">
 
