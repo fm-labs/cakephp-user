@@ -1,6 +1,6 @@
 <?php
 return [
-    'plugin.user' => [
+    'Backend.Plugin.User.Menu' => [
         'url' => ['plugin' => 'User', 'controller' => 'Users', 'action' => 'index'],
         'icon' => 'lock',
         'requireRoot' => true, // temporary access control workaround
