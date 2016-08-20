@@ -58,13 +58,14 @@ class AuthComponent extends CakeAuthComponent
 
     /**
      * Login method
+     *
+     * @return string|array Redirect url
      */
     public function login()
     {
         // check if user is already authenticated
         if ($this->user()) {
-            $this->redirect($this->redirectUrl());
-            return;
+            return $this->redirectUrl();
         }
 
         // attempt to identify user (any request method)
@@ -83,7 +84,7 @@ class AuthComponent extends CakeAuthComponent
             $this->setUser($event->data['user']);
 
             // redirect to originally requested url (or login redirect url)
-            return $this->redirect($this->redirectUrl());
+            return $this->redirectUrl();
 
             // form login obviously failed
         } elseif ($this->request->is('post')) {
@@ -141,10 +142,5 @@ class AuthComponent extends CakeAuthComponent
     public function userLogout()
     {
         $this->logout();
-    }
-
-    protected function redirect($url)
-    {
-        $this->_registry->getController()->redirect($url);
     }
 }
