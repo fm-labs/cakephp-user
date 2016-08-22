@@ -71,7 +71,6 @@ class AuthComponent extends CakeAuthComponent
         // attempt to identify user (any request method)
         $user = $this->identify();
         if ($user) {
-            $this->Flash->success(__d('user', 'You are logged in now!'), ['key' => 'auth']);
 
             // dispatch 'User.login' event
             $event = new Event('User.login', $this, [
