@@ -13,22 +13,4 @@ use App\Controller\Admin\AppController as BaseAdminAppController;
 class AppController extends BaseAdminAppController
 {
 
-    /**
-     * @return array
-     * @deprecated Use backend config file instead
-     */
-    public static function backendMenu()
-    {
-        return [
-            'plugin.user' => [
-                'title' => 'Users',
-                'url' => ['plugin' => 'User', 'controller' => 'Users', 'action' => 'index'],
-                'icon' => 'lock',
-                'requireRoot' => true, // temporary access control workaround
-
-                '_children' => [
-                ]
-            ],
-        ];
-    }
 }
