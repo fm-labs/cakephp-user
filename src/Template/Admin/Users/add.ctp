@@ -3,17 +3,17 @@
 <?= $this->Toolbar->addLink(
     __('List {0}', __('Users')),
     ['controller' => 'Users', 'action' => 'index'],
-    ['icon' => 'list']
+    ['data-icon' => 'list']
 ); ?>
 <?= $this->Toolbar->addLink(
     __('List {0}', __('User Groups')),
     ['controller' => 'Groups', 'action' => 'index'],
-    ['icon' => 'list']
+    ['data-icon' => 'list']
 ) ?>
 <?= $this->Toolbar->addLink(
     __('New {0}', __('User Group')),
     ['controller' => 'Groups', 'action' => 'add'],
-    ['icon' => 'plus']
+    ['data-icon' => 'plus']
 ) ?>
 <div class="users">
 

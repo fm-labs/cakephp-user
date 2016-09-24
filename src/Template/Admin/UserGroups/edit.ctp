@@ -8,13 +8,13 @@
                 <?= $this->Ui->postLink(
                 __('Delete'),
                 ['action' => 'delete', $userGroup->id],
-                ['class' => 'item', 'icon' => 'trash', 'confirm' => __('Are you sure you want to delete # {0}?', $userGroup->id)]
+                ['class' => 'item', 'data-icon' => 'trash', 'confirm' => __('Are you sure you want to delete # {0}?', $userGroup->id)]
             )
             ?>
                     <?= $this->Ui->link(
                     __('List {0}', __('User Groups')),
                     ['action' => 'index'],
-                    ['class' => 'item', 'icon' => 'list']
+                    ['class' => 'item', 'data-icon' => 'list']
                 ) ?>
                 <div class="ui dropdown item">
                     <i class="dropdown icon"></i>
@@ -24,13 +24,13 @@
                         <?= $this->Ui->link(
                             __('List {0}', __('Users')),
                             ['controller' => 'Users', 'action' => 'index'],
-                            ['class' => 'item', 'icon' => 'list']
+                            ['class' => 'item', 'data-icon' => 'list']
                         ) ?>
 
                         <?= $this->Ui->link(
                             __('New {0}', __('User')),
                             ['controller' => 'Users', 'action' => 'add'],
-                            ['class' => 'item', 'icon' => 'plus']
+                            ['class' => 'item', 'data-icon' => 'plus']
                         ) ?>
                             </div>
                 </div>

@@ -2,12 +2,12 @@
 <?= $this->Toolbar->addLink(
     __('New {0}', __('User Group')),
     ['action' => 'add'],
-    ['icon' => 'plus']
+    ['data-icon' => 'plus']
 ) ?>
 <?= $this->Toolbar->addLink(
     __('List {0}', __('Users')),
     ['controller' => 'Users', 'action' => 'index'],
-    ['icon' => 'list']
+    ['data-icon' => 'list']
 ); ?>
 <div class="userGroups index">
     <table class="ui table compact striped">
@@ -36,12 +36,12 @@
                             <?= $this->Ui->link(
                                 __('Edit'),
                                 ['action' => 'edit', $userGroup->id],
-                                ['class' => 'item', 'icon' => 'edit']
+                                ['class' => 'item', 'data-icon' => 'edit']
                             ) ?>
                             <?= $this->Ui->postLink(
                                 __('Delete'),
                                 ['action' => 'delete', $userGroup->id],
-                                ['class' => 'item', 'icon' => 'trash', 'confirm' => __('Are you sure you want to delete # {0}?', $userGroup->id)]
+                                ['class' => 'item', 'data-icon' => 'trash', 'confirm' => __('Are you sure you want to delete # {0}?', $userGroup->id)]
                             ) ?>
                         </div>
                     </div>

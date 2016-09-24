@@ -4,33 +4,33 @@
 <?= $this->Toolbar->addLink(
     __('Edit {0}', __('User')),
     ['action' => 'edit', $user->id],
-    ['icon' => 'edit']
+    ['data-icon' => 'edit']
 ) ?>
 <?= $this->Toolbar->addPostLink(
     __('Delete {0}', __('User')),
     ['action' => 'delete', $user->id],
-    ['icon' => 'trash', 'confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
+    ['data-icon' => 'trash', 'confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
 
 <?= $this->Toolbar->addLink(
     __('List {0}', __('Users')),
     ['action' => 'index'],
-    ['icon' => 'list']
+    ['data-icon' => 'list']
 ) ?>
 <?= $this->Toolbar->addLink(
     __('New {0}', __('User')),
     ['action' => 'add'],
-    ['icon' => 'plus']
+    ['data-icon' => 'plus']
 ) ?>
 <?php $this->Toolbar->startGroup(__('More')); ?>
 <?= $this->Toolbar->addLink(
     __('List {0}', __('User Groups')),
     ['controller' => 'Groups', 'action' => 'index'],
-    ['icon' => 'list']
+    ['data-icon' => 'list']
 ) ?>
 <?= $this->Toolbar->addLink(
     __('New {0}', __('User Group')),
     ['controller' => 'Groups', 'action' => 'add'],
-    ['icon' => 'plus']
+    ['data-icon' => 'plus']
 ) ?>
 <?php $this->Toolbar->endGroup(); ?>
 <?php $this->Toolbar->render(); ?>
