@@ -1,5 +1,5 @@
-<?php $this->Html->addCrumb(__('Users'), ['action' => 'index']); ?>
-<?php $this->Html->addCrumb(__('New {0}', __('User'))); ?>
+<?php $this->Breadcrumbs->add(__('Users'), ['action' => 'index']); ?>
+<?php $this->Breadcrumbs->add(__('New {0}', __('User'))); ?>
 <?= $this->Toolbar->addLink(
     __('List {0}', __('Users')),
     ['controller' => 'Users', 'action' => 'index'],

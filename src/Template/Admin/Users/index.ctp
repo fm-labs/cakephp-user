@@ -1,4 +1,4 @@
-<?php $this->Html->addCrumb(__('Users')); ?>
+<?php $this->Breadcrumbs->add(__('Users')); ?>
 <?= $this->Toolbar->addLink(
     __('New {0}', __('User')),
     ['controller' => 'Users', 'action' => 'add'],

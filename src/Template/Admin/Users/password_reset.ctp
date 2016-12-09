@@ -1,5 +1,5 @@
-<?php $this->Html->addCrumb(__('Users'), ['action' => 'index']); ?>
-<?php $this->Html->addCrumb(__('Reset password')); ?>
+<?php $this->Breadcrumbs->add(__('Users'), ['action' => 'index']); ?>
+<?php $this->Breadcrumbs->add(__('Reset password')); ?>
 <div id="user-change-password-form">
     <?= $this->Form->create($user, ['class' => 'ui form']); ?>
     <h2 class="ui top attached header">

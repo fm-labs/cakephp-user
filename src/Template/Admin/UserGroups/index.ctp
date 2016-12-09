@@ -1,4 +1,4 @@
-<?php $this->Html->addCrumb(__('User Groups')); ?>
+<?php $this->Breadcrumbs->add(__('User Groups')); ?>
 <?= $this->Toolbar->addLink(
     __('New {0}', __('User Group')),
     ['action' => 'add'],

@@ -1,5 +1,5 @@
-<?php $this->Html->addCrumb(__('User Groups'), ['action' => 'index']); ?>
-<?php $this->Html->addCrumb(__('New {0}', __('User Group'))); ?>
+<?php $this->Breadcrumbs->add(__('User Groups'), ['action' => 'index']); ?>
+<?php $this->Breadcrumbs->add(__('New {0}', __('User Group'))); ?>
 <div class="userGroups">
     <?= $this->Form->create($userGroup); ?>
     <h2 class="ui top attached header">

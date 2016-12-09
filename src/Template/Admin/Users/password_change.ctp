@@ -1,5 +1,5 @@
-<?php $this->Html->addCrumb(__('Users'), ['action' => 'index']); ?>
-<?php $this->Html->addCrumb(__('Change my password')); ?>
+<?php $this->Breadcrumbs->add(__('Users'), ['action' => 'index']); ?>
+<?php $this->Breadcrumbs->add(__('Change my password')); ?>
 <?php $this->assign('title', __('Change password')); ?>
 <div id="user-change-password-form">
     <?= $this->Form->create($user, ['class' => 'ui form']); ?>

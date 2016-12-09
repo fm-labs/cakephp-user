@@ -1,5 +1,5 @@
-<?php $this->Html->addCrumb(__('Users'), ['action' => 'index']); ?>
-<?php $this->Html->addCrumb($user->username); ?>
+<?php $this->Breadcrumbs->add(__('Users'), ['action' => 'index']); ?>
+<?php $this->Breadcrumbs->add($user->username); ?>
 
 <?= $this->Toolbar->addLink(
     __('Edit {0}', __('User')),

@@ -1,5 +1,5 @@
-<?php $this->Html->addCrumb(__('User Groups'), ['action' => 'index']); ?>
-<?php $this->Html->addCrumb($userGroup->name); ?>
+<?php $this->Breadcrumbs->add(__('User Groups'), ['action' => 'index']); ?>
+<?php $this->Breadcrumbs->add($userGroup->name); ?>
 <div class="actions">
     <div class="ui secondary menu">
         <div class="item"></div>
