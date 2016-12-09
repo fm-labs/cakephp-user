@@ -33,11 +33,7 @@ class AuthComponent extends CakeAuthComponent
 
         // default login action
         if (!$this->config('loginAction')) {
-            $this->config('loginAction', [
-                'controller' => 'Auth',
-                'action' => 'login',
-                'plugin' => 'User'
-            ]);
+            $this->config('loginAction', ['controller' => 'User', 'action' => 'login']);
         }
 
         // default authenticate

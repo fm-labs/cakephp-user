@@ -23,11 +23,18 @@ class AppController extends BaseAppController
     {
         parent::initialize();
 
+        /*
         if (!$this->components()->has('Auth')) {
             throw new Exception('User: AuthComponent not loaded');
 
         } elseif (!$this->Auth instanceof UserAuthComponent) {
             throw new Exception('User: AuthComponent is not an instance of User.AuthComponent');
+        }
+        */
+
+        if (!$this->components()->has('Auth')) {
+            $this->loadComponent('User.Auth');
+
         }
 
         if (!$this->components()->has('Flash')) {

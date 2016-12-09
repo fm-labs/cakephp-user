@@ -13,16 +13,33 @@ use User\Model\Table\UsersTable;
  */
 class UserController extends AppController
 {
-    /**
-     * @param Event $event
-     */
+
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
 
-        $this->Auth->allow(['register']);
+        $this->Auth->allow(['login', 'register']);
 
-        $this->viewBuilder()->layout('User.auth');
+        //$this->viewBuilder()->layout('User.auth');
+    }
+
+    /**
+     * Login method
+     */
+    public function login()
+    {
+        $redirect = $this->Auth->login();
+        if ($redirect) {
+            $this->redirect($redirect);
+        }
+    }
+
+    /**
+     * Logout method
+     */
+    public function logout()
+    {
+        $this->redirect($this->Auth->logout());
     }
 
     /**
