@@ -4,9 +4,9 @@ return [
 
         'system' => [
             [
-                'title' => 'User',
+                'title' => 'Users',
                 'url' => ['plugin' => 'User', 'controller' => 'Users', 'action' => 'index'],
-                'data-icon' => 'users',
+                'data-icon' => 'user',
             ]
         ]
 
