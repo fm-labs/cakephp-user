@@ -117,10 +117,11 @@ class AuthComponent extends CakeAuthComponent
 
     /**
      * @return UsersTable
+     * @deprecated
      */
     public function userModel()
     {
-        return TableRegistry::get($this->_userModel);
+        return TableRegistry::get($this->config('userModel'));
     }
 
     /**

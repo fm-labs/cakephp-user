@@ -37,6 +37,25 @@ Router::plugin('User', ['_namePrefix' => 'user:'], function ($routes) {
         ['plugin' => 'User', 'controller' => 'User', 'action' => 'register'],
         ['_name' => 'register']
     );
+    $routes->connect('/password-forgotten',
+        ['plugin' => 'User', 'controller' => 'User', 'action' => 'passwordforgotten'],
+        ['_name' => 'passwordforgotten']
+    );
+    $routes->connect('/password-reset',
+        ['plugin' => 'User', 'controller' => 'User', 'action' => 'passwordreset'],
+        ['_name' => 'passwordreset']
+    );
+    $routes->connect('/password-change',
+        ['plugin' => 'User', 'controller' => 'User', 'action' => 'passwordchange'],
+        ['_name' => 'passwordchange']
+    );
+    $routes->connect('/:action',
+        ['plugin' => 'User', 'controller' => 'User']
+    );
+    $routes->connect('/',
+        ['plugin' => 'User', 'controller' => 'User', 'action' => 'index'],
+        ['_name' => 'profile']
+    );
 
     $routes->connect('/:controller');
     $routes->fallbacks('DashedRoute');
