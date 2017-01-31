@@ -1,3 +1,8 @@
+<?php
+// Privacy directives
+$this->set('_private', true);
+$this->set('_no_tracking', true);
+?>
 <style>
     .user-view {
         max-width: 500px;
