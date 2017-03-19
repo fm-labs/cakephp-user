@@ -3,6 +3,7 @@ namespace User\Model\Entity;
 
 use Cake\ORM\Entity;
 use Cake\Auth\AbstractPasswordHasher;
+use Cake\Routing\Router;
 
 /**
  * User Entity.
@@ -50,7 +51,8 @@ class User extends Entity
 
     protected $_virtual = [
         'is_root',
-        'is_superuser'
+        'is_superuser',
+        'password_reset_url'
     ];
 
     protected function _getIsRoot()
@@ -61,6 +63,13 @@ class User extends Entity
     protected function _getIsSuperuser()
     {
         return ($this->superuser || $this->username === 'root');
+    }
+
+    protected function _getPasswordResetUrl()
+    {
+        $username = base64_encode($this->username);
+        $code = base64_encode($this->password_reset_code);
+        return Router::url(['plugin' => 'User', 'controller' => 'User', 'action' => 'passwordreset', 'u' => $username, 'c' => $code], true);
     }
 
     protected function _setPassword($password)

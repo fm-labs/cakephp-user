@@ -33,9 +33,11 @@ class UserController extends AppController
      */
     public function login()
     {
-        $redirect = $this->Auth->login();
-        if ($redirect) {
-            $this->redirect($redirect);
+        $redirectUrl = $this->Auth->login();
+        if ($redirectUrl) {
+            // Use Authcomponents User.login event instead
+            //$event = $this->eventManager()->dispatch(new Event('User.Model.User.login', $this->Auth->user()));
+            $this->redirect($redirectUrl);
         }
 
         $user = $this->Users->newEntity();
@@ -48,6 +50,10 @@ class UserController extends AppController
      */
     public function logout()
     {
+        // Use Authcomponents User.logout event instead
+        //$event = $this->eventManager()->dispatch(new Event('User.Model.User.logout', $this->Auth->user()));
+
+        //$this->Flash->success(__d('user', 'You are logged out now!'), ['key' => 'auth']);
         $this->redirect($this->Auth->logout());
     }
 
@@ -102,15 +108,10 @@ class UserController extends AppController
         $user = $this->Users->newEntity();
         $user->username = ($this->request->query('u')) ? base64_decode($this->request->query('u')) : null;
         if ($this->request->is('post') || $this->request->is('put')) {
-            //@TODO Set accessible fields
-            //$user = $this->Users->patchEntity($user, $this->request->data, ['validate' => 'passwordForgotten']);
-            if ($this->Users->forgotPassword($user, $this->request->data)) {
-                //Log::info(sprintf("User %s requested new password", $this->request->data('email')), 'activity');
-                $resetUrl = Router::url(['action' => 'passwordReset', 'c' => $user->password_reset_code, 'm' => base64_encode($user->username)], true);
-                $this->Flash->success('Ein Link zum Zurücksetzen deines Passworts wurde dir soeben per Email zugesandt! ' . $resetUrl, ['key' => 'auth']);
-                $this->redirect(['_name' => 'user:login']);
+            if ($this->Users->forgotPassword($user, $this->request->data) && !$user->errors()) {
+                $this->Flash->success('A password reset link has been sent to you via email. Please check your inbox.', ['key' => 'auth']);
+                $this->redirect(['action' => 'passwordreset', 'u' => base64_encode($user->username),]);
             } else {
-                debug($user->errors());
                 $this->Flash->error(__('Something went wrong'));
             }
         }
@@ -130,12 +131,14 @@ class UserController extends AppController
 
         $user = $this->Users->newEntity();
         $user->username = ($this->request->query('u')) ? base64_decode($this->request->query('u')) : null;
-        $user->password_reset_code = $this->request->query('c');
+        $user->password_reset_code = ($this->request->query('c')) ? base64_decode($this->request->query('c')) : null;
 
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Users->resetPassword($user, $this->request->data)) {
-                //Log::info(sprintf("User %s reseted password", $this->request->data('User.email')), 'activity');
-                $this->Flash->success(__('Your password has been changed'), ['key' => 'auth']);
+
+                $event = $this->eventManager()->dispatch(new Event('User.Model.User.passwordReset', $user));
+
+                $this->Flash->success(__('You can now login with your new password'), ['key' => 'auth']);
                 $this->redirect(['_name' => 'user:login', 'u' => base64_encode($user->username)]);
             } else {
                 //@todo check if link has expired -> Document expired
@@ -155,8 +158,7 @@ class UserController extends AppController
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Users->changePassword($user, $this->request->data)) {
                 $this->Flash->success(__('Your password has been changed.'), ['key' => 'auth']);
-                //@todo make configurable 'user password change' success redirect url
-                $this->redirect('/');
+                $this->redirect(['_name' => 'user:profile']);
             } else {
                 $this->Flash->error(__('Ups, something went wrong'), ['key' => 'auth']);
             }

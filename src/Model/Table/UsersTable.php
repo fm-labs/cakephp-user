@@ -3,6 +3,7 @@ namespace User\Model\Table;
 
 use Cake\Chronos\Chronos;
 use Cake\Datasource\EntityInterface;
+use Cake\Event\Event;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -185,7 +186,7 @@ class UsersTable extends Table
      * Add new user
      *
      * @param array $data
-     * @return \Cake\Datasource\EntityInterface|Entity
+     * @return User
      */
     public function add(array $data)
     {
@@ -256,7 +257,9 @@ class UsersTable extends Table
     /**
      * Create root user with default credentials
      *
-     * @return bool|\Cake\Datasource\EntityInterface|Entity
+     * @param $email
+     * @param $password
+     * @return bool|User
      */
     public function createRootUser($email, $password)
     {
@@ -294,10 +297,10 @@ class UsersTable extends Table
     /**
      * Register new user with form data array
      *
-     * @param $data
-     * @return \Cake\Datasource\EntityInterface|Entity
+     * @param array $data
+     * @return User
      */
-    public function register($data)
+    public function register(array $data, $dispatchEvent = true)
     {
         $user = $this->newEntity(null, ['validate' => 'register']);
         $user->accessible('username', true);
@@ -321,8 +324,12 @@ class UsersTable extends Table
             unset($user->password2);
 
             if ($this->save($user)) {
-                Log::info('[plugin:user] New user registered with ID ' . $user->id, ['backend', 'user']);
+                Log::info('[user] New user \'' . $user->username . '\' registered with ID ' . $user->id, ['user']);
             }
+        }
+
+        if ($dispatchEvent === true) {
+            $event = $this->eventManager()->dispatch(new Event('User.Model.User.register', $user));
         }
         return $user;
     }
@@ -369,17 +376,16 @@ class UsersTable extends Table
     }
 
 
-
     /**
      * Change user password
      * - Requires the current user password
      * - The new password MUST NOT match the current user password
      *
-     * @param Entity $user
+     * @param Entity|User $user
      * @param array $data
      * @return bool
      */
-    public function changePassword(Entity &$user, array $data)
+    public function changePassword(User &$user, array $data)
     {
         $user->accessible('password0', true);
         $user->accessible('password1', true);
@@ -456,11 +462,11 @@ class UsersTable extends Table
     /**
      * Reset user password
      *
-     * @param Entity $user
+     * @param Entity|User $user
      * @param array $data
      * @return bool
      */
-    public function resetPassword(Entity &$user, array $data)
+    public function resetPassword(User &$user, array $data)
     {
         $username = (isset($data['username'])) ? $data['username'] : null;
         $resetCode = (isset($data['password_reset_code'])) ? $data['password_reset_code'] : null;
@@ -595,17 +601,18 @@ class UsersTable extends Table
         return false;
     }
 
-    public function forgotPassword(Entity &$user, $data = array())
+    public function forgotPassword(User &$user, $data = array(), $dispatchEvent = true)
     {
         $username = ($data['username']) ? $data['username'] : null;
         if (!$username) {
-            $user->errors('username', ['This is a required field']);
+            $user->errors('username', ['required' => __('This is a required field')]);
             return false;
         }
 
         $_user = $this->find()->where(['username' => $username])->first();
         if (!$_user) {
-            $user->errors('username', ['This is a required field']);
+            $user->username = "";
+            $user->errors('username', ['notfound' => __('User "{0}" not found', h($username))]);
             return $user;
         }
 
@@ -616,9 +623,9 @@ class UsersTable extends Table
             return false;
         }
 
-        Log::info(sprintf('[user] User %s (%s) has requested a password reset', $user->username, $user->email));
-
-        //@TODO Send email or dispatch event
+        if ($dispatchEvent === true) {
+            $event = $this->eventManager()->dispatch(new Event('User.Model.User.passwordForgotten', $user));
+        }
         return $user;
     }
 

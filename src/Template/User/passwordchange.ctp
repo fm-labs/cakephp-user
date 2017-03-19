@@ -8,7 +8,7 @@ $this->Breadcrumbs->add(__('Change password'));
 // no robots
 $this->Html->meta('robots', 'noindex,nofollow', ['block' => true]);
 
-$this->assign('title', __('Password forgotten?'));
+$this->assign('title', __('Set a new password'));
 ?>
 <div id="user-password-change-form" class="user-form">
     <?= $this->Form->create($user); ?>

@@ -104,7 +104,6 @@ class AuthComponent extends CakeAuthComponent
      */
     public function logout()
     {
-        $this->Flash->success(__d('user', 'You are logged out now!'), ['key' => 'auth']);
 
         // dispatch 'User.login' event
         $event = new Event('User.logout', $this, [
