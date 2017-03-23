@@ -63,7 +63,7 @@ Router::plugin('User', ['_namePrefix' => 'user:'], function ($routes) {
 
     // Admin routes
     $routes->prefix('admin', function ($routes) {
-        $routes->connect('/:controller');
+        //$routes->connect('/:controller');
         $routes->fallbacks('DashedRoute');
     });
 });
