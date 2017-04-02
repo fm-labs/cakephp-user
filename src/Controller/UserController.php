@@ -23,8 +23,9 @@ class UserController extends AppController
 
         $this->Auth->allow(['login', 'register', 'passwordForgotten', 'passwordReset']);
 
-        //$this->viewBuilder()->layout('User.auth');
-
+        if (Configure::read('User.layout')) {
+            $this->viewBuilder()->layout(Configure::read('User.layout'));
+        }
     }
 
     /**
@@ -33,6 +34,12 @@ class UserController extends AppController
      */
     public function login()
     {
+
+        if ($this->request->query('goto')) {
+            //@TODO Check if goto URL is within app scope and/or use a token
+            $this->request->session()->write('Auth.redirect', urldecode($this->request->query('goto')));
+        }
+
         $redirectUrl = $this->Auth->login();
         if ($redirectUrl) {
             // Use Authcomponents User.login event instead
@@ -41,8 +48,11 @@ class UserController extends AppController
         }
 
         $user = $this->Users->newEntity();
-        //debug($user->errors());
         $this->set('user', $user);
+
+        if (Configure::read('User.loginLayout')) {
+            $this->viewBuilder()->layout(Configure::read('User.loginLayout'));
+        }
     }
 
     /**
