@@ -40,12 +40,17 @@ class UserController extends AppController
             $this->request->session()->write('Auth.redirect', urldecode($this->request->query('goto')));
         }
 
-        $redirectUrl = $this->Auth->login();
-        if ($redirectUrl) {
-            // Use Authcomponents User.login event instead
-            //$event = $this->eventManager()->dispatch(new Event('User.Model.User.login', $this->Auth->user()));
-            $this->redirect($redirectUrl);
+        if (Configure::read('User.Login.disabled') != true) {
+            $redirectUrl = $this->Auth->login();
+            if ($redirectUrl) {
+                // Use Authcomponents User.login event instead
+                //$event = $this->eventManager()->dispatch(new Event('User.Model.User.login', $this->Auth->user()));
+                $this->redirect($redirectUrl);
+            }
+        } elseif ($this->request->is(['post'])) {
+            $this->Flash->error('Sorry, but login is currently disabled.', ['key' => 'auth']);
         }
+
 
         $user = $this->Users->newEntity();
         $this->set('user', $user);
@@ -88,18 +93,26 @@ class UserController extends AppController
         //@TODO Make user registration configurable
         //@TODO Dispatch 'User.register' event
 
-        if ($this->request->is('post')) {
-            $user = $this->Users->register($this->request->data);
-            if ($user && $user->id) {
-                $this->Flash->success(__('Your registration was successful!'), ['key' => 'auth']);
-                $this->redirect($this->Auth->redirectUrl());
-                return;
+
+        if (Configure::read('User.Signup.disabled') != true) {
+
+            if ($this->request->is('post')) {
+                $user = $this->Users->register($this->request->data);
+                if ($user && $user->id) {
+                    $this->Flash->success(__('Your registration was successful!'), ['key' => 'auth']);
+                    $this->redirect($this->Auth->redirectUrl());
+                    return;
+                } else {
+                    $this->Flash->error(__('Ups, something went wrong. Please check the form.'), ['key' => 'auth']);
+                }
             } else {
-                $this->Flash->error(__('Ups, something went wrong. Please check the form.'), ['key' => 'auth']);
+                $user = $this->Users->register(null);
             }
+
         } else {
-            $user = $this->Users->register(null);
+            $this->Flash->error('Sorry, but user registration is currently disabled.', ['key' => 'auth']);
         }
+
 
         $this->set(compact('user'));
         $this->set('_serialize', ['user']);
@@ -122,7 +135,7 @@ class UserController extends AppController
                 $this->Flash->success('A password reset link has been sent to you via email. Please check your inbox.', ['key' => 'auth']);
                 $this->redirect(['action' => 'passwordreset', 'u' => base64_encode($user->username),]);
             } else {
-                $this->Flash->error(__('Something went wrong'));
+                $this->Flash->error(__('Something went wrong'), ['key' => 'auth']);
             }
         }
         $this->set('user', $user);
