@@ -33,7 +33,7 @@ class AuthComponent extends CakeAuthComponent
 
         // default login action
         if (!$this->config('loginAction')) {
-            $this->config('loginAction', ['controller' => 'User', 'action' => 'login']);
+            $this->config('loginAction', ['plugin' => 'User', 'controller' => 'User', 'action' => 'login']);
         }
 
         // default authenticate
@@ -86,8 +86,7 @@ class AuthComponent extends CakeAuthComponent
             $this->flash(__d('user', 'Login failed'));
 
             // dispatch 'User.login' event
-            $event = new Event('User.login', $this, [
-                'user' => false,
+            $event = new Event('User.loginFailed', $this, [
                 'request' => $this->request
             ]);
             $this->eventManager()->dispatch($event);
