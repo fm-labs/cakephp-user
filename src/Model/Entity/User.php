@@ -50,6 +50,7 @@ class User extends Entity
     ];
 
     protected $_virtual = [
+        'display_name',
         'is_root',
         'is_superuser',
         'password_reset_url'
@@ -63,6 +64,11 @@ class User extends Entity
     protected function _getIsSuperuser()
     {
         return ($this->superuser || $this->username === 'root');
+    }
+
+    protected function _getDisplayName()
+    {
+        return $this->_properties['name'];
     }
 
     protected function _getPasswordResetUrl()
