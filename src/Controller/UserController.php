@@ -43,8 +43,7 @@ class UserController extends AppController
         if (Configure::read('User.Login.disabled') != true) {
             $redirectUrl = $this->Auth->login();
             if ($redirectUrl) {
-                // Use Authcomponents User.login event instead
-                //$event = $this->eventManager()->dispatch(new Event('User.Model.User.login', $this->Auth->user()));
+                //$this->Flash->success('Login. Redirect to '. $redirectUrl);
                 $this->redirect($redirectUrl);
             }
         } elseif ($this->request->is(['post'])) {
@@ -65,9 +64,6 @@ class UserController extends AppController
      */
     public function logout()
     {
-        // Use Authcomponents User.logout event instead
-        //$event = $this->eventManager()->dispatch(new Event('User.Model.User.logout', $this->Auth->user()));
-
         //$this->Flash->success(__d('user', 'You are logged out now!'), ['key' => 'auth']);
         $this->redirect($this->Auth->logout());
     }
