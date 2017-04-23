@@ -1,33 +1,33 @@
 <?php $this->Breadcrumbs->add(__('Users'), ['action' => 'index']); ?>
 <?php $this->Breadcrumbs->add($user->username); ?>
 
-<?= $this->Toolbar->addLink(
+<?php $this->Toolbar->addLink(
     __('Edit {0}', __('User')),
     ['action' => 'edit', $user->id],
     ['data-icon' => 'edit']
 ) ?>
-<?= $this->Toolbar->addPostLink(
+<?php $this->Toolbar->addPostLink(
     __('Delete {0}', __('User')),
     ['action' => 'delete', $user->id],
     ['data-icon' => 'trash', 'confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
 
-<?= $this->Toolbar->addLink(
+<?php $this->Toolbar->addLink(
     __('List {0}', __('Users')),
     ['action' => 'index'],
     ['data-icon' => 'list']
 ) ?>
-<?= $this->Toolbar->addLink(
+<?php $this->Toolbar->addLink(
     __('New {0}', __('User')),
     ['action' => 'add'],
     ['data-icon' => 'plus']
 ) ?>
 <?php $this->Toolbar->startGroup(__('More')); ?>
-<?= $this->Toolbar->addLink(
+<?php $this->Toolbar->addLink(
     __('List {0}', __('User Groups')),
     ['controller' => 'Groups', 'action' => 'index'],
     ['data-icon' => 'list']
 ) ?>
-<?= $this->Toolbar->addLink(
+<?php $this->Toolbar->addLink(
     __('New {0}', __('User Group')),
     ['controller' => 'Groups', 'action' => 'add'],
     ['data-icon' => 'plus']

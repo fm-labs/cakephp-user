@@ -1,10 +1,10 @@
 <?php $this->Breadcrumbs->add(__('User Groups')); ?>
-<?= $this->Toolbar->addLink(
+<?php $this->Toolbar->addLink(
     __('New {0}', __('User Group')),
     ['action' => 'add'],
     ['data-icon' => 'plus']
 ) ?>
-<?= $this->Toolbar->addLink(
+<?php $this->Toolbar->addLink(
     __('List {0}', __('Users')),
     ['controller' => 'Users', 'action' => 'index'],
     ['data-icon' => 'list']

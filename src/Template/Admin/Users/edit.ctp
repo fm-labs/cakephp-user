@@ -10,13 +10,13 @@
     ['action' => 'index'],
     ['data-icon' => 'list']
 );?>
-<?= $this->Toolbar->addLink(
+<?php $this->Toolbar->addLink(
     __('List {0}', __('User Groups')),
     ['controller' => 'Groups', 'action' => 'index'],
     ['data-icon' => 'list']
 ) ?>
 
-<?= $this->Toolbar->addLink(
+<?php $this->Toolbar->addLink(
     __('New {0}', __('User Group')),
     ['controller' => 'Groups', 'action' => 'add'],
     ['data-icon' => 'plus']
