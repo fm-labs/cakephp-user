@@ -1,0 +1,599 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2017-04-23 22:55+0000\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:50
+msgid "Sorry, but login is currently disabled."
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:98
+msgid "Your registration was successful!"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:102
+msgid "Ups, something went wrong. Please check the form."
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:109
+msgid "Sorry, but user registration is currently disabled."
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:134
+msgid "Something went wrong"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:160
+msgid "You can now login with your new password"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:165
+msgid "Failed to reset password"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:179
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:136;163
+msgid "Your password has been changed."
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:182
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:139;166
+msgid "Ups, something went wrong"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserGroupsController.php:52;77
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserPermissionsController.php:52;77
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserRolesController.php:52;77
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:60;88
+msgid "The {0} has been saved."
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserGroupsController.php:52;55;77;80;99;101
+msgid "user group"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserGroupsController.php:55;80
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserPermissionsController.php:55;80
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserRolesController.php:55;80
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:63;91
+msgid "The {0} could not be saved. Please, try again."
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserGroupsController.php:99
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserPermissionsController.php:99
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserRolesController.php:99
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:112
+msgid "The {0} has been deleted."
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserGroupsController.php:101
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserPermissionsController.php:101
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserRolesController.php:101
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:114
+msgid "The {0} could not be deleted. Please, try again."
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserPermissionsController.php:52;55;77;80;99;101
+msgid "permission"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserRolesController.php:52;55;77;80;99;101
+msgid "role"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:60;63;88;91;112;114
+msgid "user"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:129
+msgid "You are not allowed to do this"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:156
+msgid "Only root can do this"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Component/AuthComponent.php:86
+msgid "Login failed"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:231;355;449;540
+msgid "Invalid password"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:238;362;456;547
+msgid "Passwords do not match"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:248;371
+msgid "The provided email address is invalid"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:401
+msgid "This is not your current password"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:411
+msgid "This is your current password. Please create a new one!"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:567
+msgid "Password too short. Minimum {0} characters"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:572
+msgid "Password contains illegal characters"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:577
+msgid "Password can not be the same as your username"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:608
+msgid "This is a required field"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:615
+msgid "User \"{0}\" not found"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/add.ctp:1
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/edit.ctp:1;15
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/index.ctp:1
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/view.ctp:1;18
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/add.ctp:9
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/edit.ctp:14
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/index.ctp:8
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:26
+msgid "User Groups"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/add.ctp:2
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/edit.ctp:31
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/index.ctp:3
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/view.ctp:23;35
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/add.ctp:2;14
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/edit.ctp:20
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/index.ctp:3;13
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:20;31
+msgid "New {0}"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/add.ctp:2;6
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/edit.ctp:2;44
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/index.ctp:3
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/view.ctp:8;13;23
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/add.ctp:14
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/edit.ctp:20
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/index.ctp:13
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:31
+msgid "User Group"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/add.ctp:6
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/add.ctp:21
+msgid "Add {0}"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/add.ctp:18
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/edit.ctp:56
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/add.ctp:60
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/edit.ctp:64
+msgid "Submit"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/edit.ctp:2;44
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/view.ctp:8
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/edit.ctp:2;26
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:5
+msgid "Edit {0}"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/edit.ctp:9
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/index.ctp:42
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/edit.ctp:4
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/index.ctp:49
+msgid "Delete"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/edit.ctp:11
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/index.ctp:44
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/view.ctp:15
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/edit.ctp:6
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/index.ctp:49
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:12
+msgid "Are you sure you want to delete # {0}?"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/edit.ctp:15;25
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/index.ctp:8
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/view.ctp:18;30
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/add.ctp:4;9
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/edit.ctp:9;14
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/index.ctp:8
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:15;26
+msgid "List {0}"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/edit.ctp:25
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/index.ctp:8
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/view.ctp:30;108
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/add.ctp:1;4
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/edit.ctp:1;9
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/index.ctp:1
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/password_change.ctp:1
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/password_reset.ctp:1
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:1;15
+msgid "Users"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/edit.ctp:31
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/view.ctp:35
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/add.ctp:2;21
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/edit.ctp:2;26
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/index.ctp:3
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:5;10;20
+msgid "User"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/index.ctp:19
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/view.ctp:87;116
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:183
+msgid "Actions"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/index.ctp:31
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/view.ctp:96;125
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/index.ctp:47
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:191
+msgid "View"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/index.ctp:37
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/view.ctp:97;126
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/index.ctp:48
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:193
+msgid "Edit"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/index.ctp:57
+msgid "previous"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/index.ctp:59
+msgid "next"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/view.ctp:13
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:10
+msgid "Delete {0}"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/view.ctp:54
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:46
+msgid "Label"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/view.ctp:55
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:47
+msgid "Value"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/view.ctp:61
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:53;182
+msgid "Name"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/view.ctp:65
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:65
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:15
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:15
+msgid "Password"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/view.ctp:71;84;113
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:95;181
+msgid "Id"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/view.ctp:79;108
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:177
+msgid "Related {0}"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/view.ctp:79
+msgid "Primary Users"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/view.ctp:85;114
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:61
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:14
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordreset.ctp:16
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:14
+msgid "Username"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/view.ctp:86;115
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:69
+msgid "Email"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/add.ctp:30
+msgid "Real name"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/password_change.ctp:2
+msgid "Change my password"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/password_change.ctp:3;7
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:66
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/index.ctp:20
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordchange.ctp:6
+msgid "Change password"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/password_change.ctp:11
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordchange.ctp:16
+msgid "Current password"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/password_change.ctp:16
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/password_reset.ctp:10
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordchange.ctp:21
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordreset.ctp:27
+msgid "New password"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/password_change.ctp:21
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/password_reset.ctp:16
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordchange.ctp:26
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordreset.ctp:33
+msgid "Repeat password"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/password_change.ctp:27
+msgid "Change password now"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/password_reset.ctp:2
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordreset.ctp:38
+msgid "Reset password"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/password_reset.ctp:6
+msgid "Set a new password for user {0} (ID: {1})"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/password_reset.ctp:23
+msgid "Update password now"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:24
+msgid "More"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:57
+msgid "Primary Group"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:73
+msgid "Email Verification Code"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:77
+msgid "Password Reset Code"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:81
+msgid "Login Last Login Ip"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:85
+msgid "Login Last Login Host"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:89
+msgid "Block Reason"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:99
+msgid "Email Verification Expiry Timestamp"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:103
+msgid "Password Change Min Days"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:107
+msgid "Password Change Max Days"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:111
+msgid "Password Change Warning Days"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:115
+msgid "Password Change Timestamp"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:119
+msgid "Password Expiry Timestamp"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:123
+msgid "Password Reset Expiry Timestamp"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:127
+msgid "Login Failure Count"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:133
+msgid "Login Last Login Datetime"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:137
+msgid "Login Failure Datetime"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:141
+msgid "Block Datetime"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:145
+msgid "Created"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:149
+msgid "Modified"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:154
+msgid "Email Verification Required"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:155;159;163;167;171
+msgid "Yes"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:155;159;163;167;171
+msgid "No"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:158
+msgid "Email Verified"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:162
+msgid "Password Force Change"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:166
+msgid "Login Enabled"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:170
+msgid "Block Enabled"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/view.ctp:177
+msgid "Groups"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/index.ctp:5;10
+msgid "My Account"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/index.ctp:21
+msgid "Logout"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:5;10;16
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordforgotten.ctp:5
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordreset.ctp:5
+msgid "Login"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:14
+msgid "Type your email here"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:15
+msgid "Type your password here"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:17
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:17
+msgid "Signup"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:21
+msgid "Forgot password?"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:23
+msgid "Activate account"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordchange.ctp:5
+msgid "My account"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordchange.ctp:11
+msgid "Set a new password"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordchange.ctp:30
+msgid "Update my password"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordchange.ctp:31
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordforgotten.ctp:21
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordreset.ctp:39
+msgid "Cancel"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordforgotten.ctp:6
+msgid "Password recovery"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordforgotten.ctp:11
+msgid "Password forgotten?"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordforgotten.ctp:16
+msgid "Your username"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordforgotten.ctp:17
+msgid "Enter username or email address"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordforgotten.ctp:20
+msgid "Send password recovery instructions"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordreset.ctp:6
+msgid "Reset account password"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordreset.ctp:11
+msgid "Reset your password"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordreset.ctp:17
+msgid "Enter username or email"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordreset.ctp:21
+msgid "Password reset code received via email"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:5
+msgid "Account Registration"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:10
+msgid "Registration"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:16
+msgid "Repat password"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:18
+msgid "I'm already registered"
+msgstr ""
+
