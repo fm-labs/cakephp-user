@@ -47,7 +47,7 @@ class UserController extends AppController
                 $this->redirect($redirectUrl);
             }
         } elseif ($this->request->is(['post'])) {
-            $this->Flash->error('Sorry, but login is currently disabled.', ['key' => 'auth']);
+            $this->Flash->error(__d('user','Sorry, but login is currently disabled.'), ['key' => 'auth']);
         }
 
 
@@ -89,24 +89,24 @@ class UserController extends AppController
         //@TODO Make user registration configurable
         //@TODO Dispatch 'User.register' event
 
-
+        $user = null;
         if (Configure::read('User.Signup.disabled') != true) {
 
             if ($this->request->is('post')) {
                 $user = $this->Users->register($this->request->data);
                 if ($user && $user->id) {
-                    $this->Flash->success(__('Your registration was successful!'), ['key' => 'auth']);
+                    $this->Flash->success(__d('user','Your registration was successful!'), ['key' => 'auth']);
                     $this->redirect($this->Auth->redirectUrl());
                     return;
                 } else {
-                    $this->Flash->error(__('Ups, something went wrong. Please check the form.'), ['key' => 'auth']);
+                    $this->Flash->error(__d('user','Ups, something went wrong. Please check the form.'), ['key' => 'auth']);
                 }
             } else {
                 $user = $this->Users->register(null);
             }
 
         } else {
-            $this->Flash->error('Sorry, but user registration is currently disabled.', ['key' => 'auth']);
+            $this->Flash->error(__d('user','Sorry, but user registration is currently disabled.'), ['key' => 'auth']);
         }
 
 
@@ -131,7 +131,7 @@ class UserController extends AppController
                 $this->Flash->success('A password reset link has been sent to you via email. Please check your inbox.', ['key' => 'auth']);
                 $this->redirect(['action' => 'passwordreset', 'u' => base64_encode($user->username),]);
             } else {
-                $this->Flash->error(__('Something went wrong'), ['key' => 'auth']);
+                $this->Flash->error(__d('user','Something went wrong'), ['key' => 'auth']);
             }
         }
         $this->set('user', $user);
@@ -157,12 +157,12 @@ class UserController extends AppController
 
                 $event = $this->eventManager()->dispatch(new Event('User.Model.User.passwordReset', $user));
 
-                $this->Flash->success(__('You can now login with your new password'), ['key' => 'auth']);
+                $this->Flash->success(__d('user','You can now login with your new password'), ['key' => 'auth']);
                 $this->redirect(['_name' => 'user:login', 'u' => base64_encode($user->username)]);
             } else {
                 //@todo check if link has expired -> Document expired
                 debug($user->errors());
-                $this->Flash->error(__('Failed to reset password'), ['key' => 'auth']);
+                $this->Flash->error(__d('user','Failed to reset password'), ['key' => 'auth']);
             }
         }
         $this->set('user', $user);
@@ -176,10 +176,10 @@ class UserController extends AppController
         $user = $this->Users->get($this->Auth->user('id'));
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Users->changePassword($user, $this->request->data)) {
-                $this->Flash->success(__('Your password has been changed.'), ['key' => 'auth']);
+                $this->Flash->success(__d('user','Your password has been changed.'), ['key' => 'auth']);
                 $this->redirect(['_name' => 'user:profile']);
             } else {
-                $this->Flash->error(__('Ups, something went wrong'), ['key' => 'auth']);
+                $this->Flash->error(__d('user','Ups, something went wrong'), ['key' => 'auth']);
             }
         }
         $this->set('user', $user);

@@ -1,24 +1,24 @@
-<?php $this->Breadcrumbs->add(__('Users'), ['action' => 'index']); ?>
-<?php $this->Breadcrumbs->add(__('New {0}', __('User'))); ?>
+<?php $this->Breadcrumbs->add(__d('user','Users'), ['action' => 'index']); ?>
+<?php $this->Breadcrumbs->add(__d('user','New {0}', __d('user','User'))); ?>
 <?php $this->Toolbar->addLink(
-    __('List {0}', __('Users')),
+    __d('user','List {0}', __d('user','Users')),
     ['controller' => 'Users', 'action' => 'index'],
     ['data-icon' => 'list']
 ); ?>
 <?php $this->Toolbar->addLink(
-    __('List {0}', __('User Groups')),
+    __d('user','List {0}', __d('user','User Groups')),
     ['controller' => 'Groups', 'action' => 'index'],
     ['data-icon' => 'list']
 ) ?>
 <?php $this->Toolbar->addLink(
-    __('New {0}', __('User Group')),
+    __d('user','New {0}', __d('user','User Group')),
     ['controller' => 'Groups', 'action' => 'add'],
     ['data-icon' => 'plus']
 ) ?>
 <div class="users">
 
     <h2 class="ui header">
-        <?= __('Add {0}', __('User')) ?>
+        <?= __d('user','Add {0}', __d('user','User')) ?>
     </h2>
     <?= $this->Form->create($user); ?>
     <div class="users ui attached basic segment">
@@ -27,7 +27,7 @@
         echo $this->Form->input('superuser');
         echo $this->Form->input('group_id', ['options' => $primaryGroup, 'empty' => true]);
         echo $this->Form->input('username');
-        echo $this->Form->input('name', ['label' => __('Real name')]);
+        echo $this->Form->input('name', ['label' => __d('user','Real name')]);
         echo $this->Form->input('password1', ['type' => 'password']);
         echo $this->Form->input('password2', ['type' => 'password']);
         echo $this->Form->input('email');
@@ -57,7 +57,7 @@
         </div>
     </div>
     <div class="ui bottom attached segment">
-        <?= $this->Form->button(__('Submit')) ?>
+        <?= $this->Form->button(__d('user','Submit')) ?>
     </div>
     <?= $this->Form->end() ?>
     <?php debug($user->errors()); ?>

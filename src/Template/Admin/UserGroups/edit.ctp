@@ -1,18 +1,18 @@
-<?php $this->Breadcrumbs->add(__('User Groups'), ['action' => 'index']); ?>
-<?php $this->Breadcrumbs->add(__('Edit {0}', __('User Group'))); ?>
+<?php $this->Breadcrumbs->add(__d('user','User Groups'), ['action' => 'index']); ?>
+<?php $this->Breadcrumbs->add(__d('user','Edit {0}', __d('user','User Group'))); ?>
 <div class="userGroups">
     <div class="actions">
         <div class="ui secondary menu">
             <div class="item"></div>
             <div class="right menu">
                 <?= $this->Ui->postLink(
-                __('Delete'),
+                __d('user','Delete'),
                 ['action' => 'delete', $userGroup->id],
-                ['class' => 'item', 'data-icon' => 'trash', 'confirm' => __('Are you sure you want to delete # {0}?', $userGroup->id)]
+                ['class' => 'item', 'data-icon' => 'trash', 'confirm' => __d('user','Are you sure you want to delete # {0}?', $userGroup->id)]
             )
             ?>
                     <?= $this->Ui->link(
-                    __('List {0}', __('User Groups')),
+                    __d('user','List {0}', __d('user','User Groups')),
                     ['action' => 'index'],
                     ['class' => 'item', 'data-icon' => 'list']
                 ) ?>
@@ -22,13 +22,13 @@
                     <div class="menu">
     
                         <?= $this->Ui->link(
-                            __('List {0}', __('Users')),
+                            __d('user','List {0}', __d('user','Users')),
                             ['controller' => 'Users', 'action' => 'index'],
                             ['class' => 'item', 'data-icon' => 'list']
                         ) ?>
 
                         <?= $this->Ui->link(
-                            __('New {0}', __('User')),
+                            __d('user','New {0}', __d('user','User')),
                             ['controller' => 'Users', 'action' => 'add'],
                             ['class' => 'item', 'data-icon' => 'plus']
                         ) ?>
@@ -41,7 +41,7 @@
 
     <?= $this->Form->create($userGroup); ?>
     <h2 class="ui top attached header">
-        <?= __('Edit {0}', __('User Group')) ?>
+        <?= __d('user','Edit {0}', __d('user','User Group')) ?>
     </h2>
     <div class="users ui attached segment">
         <div class="ui form">
@@ -53,7 +53,7 @@
         </div>
     </div>
     <div class="ui bottom attached segment">
-        <?= $this->Form->button(__('Submit')) ?>
+        <?= $this->Form->button(__d('user','Submit')) ?>
     </div>
     <?= $this->Form->end() ?>
 

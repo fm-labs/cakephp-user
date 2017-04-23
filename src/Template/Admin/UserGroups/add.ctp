@@ -1,9 +1,9 @@
-<?php $this->Breadcrumbs->add(__('User Groups'), ['action' => 'index']); ?>
-<?php $this->Breadcrumbs->add(__('New {0}', __('User Group'))); ?>
+<?php $this->Breadcrumbs->add(__d('user','User Groups'), ['action' => 'index']); ?>
+<?php $this->Breadcrumbs->add(__d('user','New {0}', __d('user','User Group'))); ?>
 <div class="userGroups">
     <?= $this->Form->create($userGroup); ?>
     <h2 class="ui top attached header">
-        <?= __('Add {0}', __('User Group')) ?>
+        <?= __d('user','Add {0}', __d('user','User Group')) ?>
     </h2>
     <div class="users ui attached segment">
         <div class="ui form">
@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="ui bottom attached segment">
-        <?= $this->Form->button(__('Submit')) ?>
+        <?= $this->Form->button(__d('user','Submit')) ?>
     </div>
     <?= $this->Form->end() ?>
 

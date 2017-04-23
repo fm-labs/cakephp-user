@@ -228,14 +228,14 @@ class UsersTable extends Table
             ->add('password1', 'password', [
                 'rule' => 'validateNewPassword1',
                 'provider' => 'table',
-                'message' => __('Invalid password')
+                'message' => __d('user','Invalid password')
             ])
             ->requirePresence('password2', 'create')
             ->notEmpty('password2')
             ->add('password2', 'password', [
                 'rule' => 'validateNewPassword2',
                 'provider' => 'table',
-                'message' => __('Passwords do not match')
+                'message' => __d('user','Passwords do not match')
             ])
             ->add('is_login_allowed', 'valid', ['rule' => 'boolean'])
             //->requirePresence('is_login_allowed', 'create')
@@ -245,7 +245,7 @@ class UsersTable extends Table
         if (static::$emailAsUsername) {
             $validator->add('username', 'email', [
                 'rule' => ['email'],
-                'message' => __('The provided email address is invalid')
+                'message' => __d('user','The provided email address is invalid')
             ]);
         }
 
@@ -352,14 +352,14 @@ class UsersTable extends Table
             ->add('password1', 'password', [
                 'rule' => 'validateNewPassword1',
                 'provider' => 'table',
-                'message' => __('Invalid password')
+                'message' => __d('user','Invalid password')
             ])
             ->requirePresence('password2', 'create')
             ->notEmpty('password2')
             ->add('password2', 'password', [
                 'rule' => 'validateNewPassword2',
                 'provider' => 'table',
-                'message' => __('Passwords do not match')
+                'message' => __d('user','Passwords do not match')
             ])
             ->add('login_enabled', 'valid', ['rule' => 'boolean'])
             ->requirePresence('login_enabled', 'create')
@@ -368,7 +368,7 @@ class UsersTable extends Table
         if (static::$emailAsUsername) {
             $validator->add('username', 'email', [
                 'rule' => ['email'],
-                'message' => __('The provided email address is invalid')
+                'message' => __d('user','The provided email address is invalid')
             ]);
         }
 
@@ -398,7 +398,7 @@ class UsersTable extends Table
 
         // validate current password
         if (!$user->getPasswordHasher()->check($data['password0'], $user->password)) {
-            $user->errors('password0', ['password' => __('This is not your current password')]);
+            $user->errors('password0', ['password' => __d('user','This is not your current password')]);
             unset($user->password0);
             unset($user->password1);
             unset($user->password2);
@@ -408,7 +408,7 @@ class UsersTable extends Table
         // new password should not match current password
         if (strcmp($user->password0, $user->password1) === 0) {
             $user->errors('password1', [
-                'password' => __('This is your current password. Please create a new one!')
+                'password' => __d('user','This is your current password. Please create a new one!')
             ]);
             unset($user->password1);
             unset($user->password2);
@@ -446,14 +446,14 @@ class UsersTable extends Table
             ->add('password1', 'password', [
                 'rule' => 'validateNewPassword1',
                 'provider' => 'table',
-                'message' => __('Invalid password')
+                'message' => __d('user','Invalid password')
             ])
             ->requirePresence('password2', 'create')
             ->notEmpty('password2')
             ->add('password2', 'password', [
                 'rule' => 'validateNewPassword2',
                 'provider' => 'table',
-                'message' => __('Passwords do not match')
+                'message' => __d('user','Passwords do not match')
             ]);
 
         return $validator;
@@ -537,14 +537,14 @@ class UsersTable extends Table
             ->add('password1', 'password', [
                 'rule' => 'validateNewPassword1',
                 'provider' => 'table',
-                'message' => __('Invalid password')
+                'message' => __d('user','Invalid password')
             ])
             ->requirePresence('password2', 'create')
             ->notEmpty('password2')
             ->add('password2', 'password', [
                 'rule' => 'validateNewPassword2',
                 'provider' => 'table',
-                'message' => __('Passwords do not match')
+                'message' => __d('user','Passwords do not match')
             ]);
 
         return $validator;
@@ -564,17 +564,17 @@ class UsersTable extends Table
 
         // Check password length
         if (strlen($value) < static::$minPasswordLength) {
-            return __('Password too short. Minimum {0} characters', static::$minPasswordLength);
+            return __d('user','Password too short. Minimum {0} characters', static::$minPasswordLength);
         }
 
         // Check for illegal characters
         if (!preg_match(static::$passwordRegex, $value)) {
-            return __('Password contains illegal characters');
+            return __d('user','Password contains illegal characters');
         }
 
         // Check for weak password
         if (isset($context['data']['username']) && $value == $context['data']['username']) {
-            return __('Password can not be the same as your username');
+            return __d('user','Password can not be the same as your username');
         }
 
         return true;
@@ -605,14 +605,14 @@ class UsersTable extends Table
     {
         $username = ($data['username']) ? $data['username'] : null;
         if (!$username) {
-            $user->errors('username', ['required' => __('This is a required field')]);
+            $user->errors('username', ['required' => __d('user','This is a required field')]);
             return false;
         }
 
         $_user = $this->find()->where(['username' => $username])->first();
         if (!$_user) {
             $user->username = "";
-            $user->errors('username', ['notfound' => __('User "{0}" not found', h($username))]);
+            $user->errors('username', ['notfound' => __d('user','User "{0}" not found', h($username))]);
             return $user;
         }
 

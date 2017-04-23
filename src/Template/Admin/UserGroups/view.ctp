@@ -1,38 +1,38 @@
-<?php $this->Breadcrumbs->add(__('User Groups'), ['action' => 'index']); ?>
+<?php $this->Breadcrumbs->add(__d('user','User Groups'), ['action' => 'index']); ?>
 <?php $this->Breadcrumbs->add($userGroup->name); ?>
 <div class="actions">
     <div class="ui secondary menu">
         <div class="item"></div>
         <div class="right menu">
             <?= $this->Ui->link(
-                __('Edit {0}', __('User Group')),
+                __d('user','Edit {0}', __d('user','User Group')),
                 ['action' => 'edit', $userGroup->id],
                 ['class' => 'item', 'data-icon' => 'edit']
             ) ?>
             <?= $this->Ui->postLink(
-                __('Delete {0}', __('User Group')),
+                __d('user','Delete {0}', __d('user','User Group')),
                 ['action' => 'delete', $userGroup->id],
-                ['class' => 'item', 'data-icon' => 'trash', 'confirm' => __('Are you sure you want to delete # {0}?', $userGroup->id)]) ?>
+                ['class' => 'item', 'data-icon' => 'trash', 'confirm' => __d('user','Are you sure you want to delete # {0}?', $userGroup->id)]) ?>
 
             <?= $this->Ui->link(
-                __('List {0}', __('User Groups')),
+                __d('user','List {0}', __d('user','User Groups')),
                 ['action' => 'index'],
                 ['class' => 'item', 'data-icon' => 'list']
             ) ?>
             <?= $this->Ui->link(
-                __('New {0}', __('User Group')),
+                __d('user','New {0}', __d('user','User Group')),
                 ['action' => 'add'],
                 ['class' => 'item', 'data-icon' => 'plus']
             ) ?>
             <div class="ui item dropdown">
                 <div class="menu">
                     <?= $this->Ui->link(
-                        __('List {0}', __('Users')),
+                        __d('user','List {0}', __d('user','Users')),
                         ['controller' => 'Users', 'action' => 'index'],
                         ['class' => 'item', 'data-icon' => 'list']
                     ) ?>
                     <?= $this->Ui->link(
-                        __('New {0}', __('User')),
+                        __d('user','New {0}', __d('user','User')),
                         ['controller' => 'Users', 'action' => 'add'],
                         ['class' => 'item', 'data-icon' => 'plus']
                     ) ?>
@@ -51,24 +51,24 @@
         <!--
         <thead>
         <tr>
-            <th><?= __('Label'); ?></th>
-            <th><?= __('Value'); ?></th>
+            <th><?= __d('user','Label'); ?></th>
+            <th><?= __d('user','Value'); ?></th>
         </tr>
         </thead>
         -->
 
         <tr>
-            <td><?= __('Name') ?></td>
+            <td><?= __d('user','Name') ?></td>
             <td><?= h($userGroup->name) ?></td>
         </tr>
         <tr>
-            <td><?= __('Password') ?></td>
+            <td><?= __d('user','Password') ?></td>
             <td><?= h($userGroup->password) ?></td>
         </tr>
 
 
         <tr>
-            <td><?= __('Id') ?></td>
+            <td><?= __d('user','Id') ?></td>
             <td><?= $this->Number->format($userGroup->id) ?></td>
         </tr>
 
@@ -76,15 +76,15 @@
 </div>
 <div class="related">
     <div class="">
-    <h4><?= __('Related {0}', __('Primary Users')) ?></h4>
+    <h4><?= __d('user','Related {0}', __d('user','Primary Users')) ?></h4>
     <?php if (!empty($userGroup->primary_users)): ?>
     <table class="ui table">
         <thead>
         <tr>
-            <th><?= __('Id') ?></th>
-            <th><?= __('Username') ?></th>
-            <th><?= __('Email') ?></th>
-            <th class="actions"><?= __('Actions') ?></th>
+            <th><?= __d('user','Id') ?></th>
+            <th><?= __d('user','Username') ?></th>
+            <th><?= __d('user','Email') ?></th>
+            <th class="actions"><?= __d('user','Actions') ?></th>
         </tr>
         </thead>
         <?php foreach ($userGroup->primary_users as $primaryUsers): ?>
@@ -93,8 +93,8 @@
             <td><?= h($primaryUsers->username) ?></td>
             <td><?= h($primaryUsers->email) ?></td>
             <td class="actions">
-                <?= $this->Html->link(__('View'), ['controller' => 'Users', 'action' => 'view', $primaryUsers->id]) ?>
-                <?= $this->Html->link(__('Edit'), ['controller' => 'Users', 'action' => 'edit', $primaryUsers->id]) ?>
+                <?= $this->Html->link(__d('user','View'), ['controller' => 'Users', 'action' => 'view', $primaryUsers->id]) ?>
+                <?= $this->Html->link(__d('user','Edit'), ['controller' => 'Users', 'action' => 'edit', $primaryUsers->id]) ?>
             </td>
         </tr>
 
@@ -105,15 +105,15 @@
 </div>
 <div class="related">
     <div class="">
-    <h4><?= __('Related {0}', __('Users')) ?></h4>
+    <h4><?= __d('user','Related {0}', __d('user','Users')) ?></h4>
     <?php if (!empty($userGroup->users)): ?>
     <table class="ui table">
         <thead>
         <tr>
-            <th><?= __('Id') ?></th>
-            <th><?= __('Username') ?></th>
-            <th><?= __('Email') ?></th>
-            <th class="actions"><?= __('Actions') ?></th>
+            <th><?= __d('user','Id') ?></th>
+            <th><?= __d('user','Username') ?></th>
+            <th><?= __d('user','Email') ?></th>
+            <th class="actions"><?= __d('user','Actions') ?></th>
         </tr>
         </thead>
         <?php foreach ($userGroup->users as $users): ?>
@@ -122,8 +122,8 @@
             <td><?= h($users->username) ?></td>
             <td><?= h($users->email) ?></td>
             <td class="actions">
-                <?= $this->Html->link(__('View'), ['controller' => 'Users', 'action' => 'view', $users->id]) ?>
-                <?= $this->Html->link(__('Edit'), ['controller' => 'Users', 'action' => 'edit', $users->id]) ?>
+                <?= $this->Html->link(__d('user','View'), ['controller' => 'Users', 'action' => 'view', $users->id]) ?>
+                <?= $this->Html->link(__d('user','Edit'), ['controller' => 'Users', 'action' => 'edit', $users->id]) ?>
             </td>
         </tr>
 

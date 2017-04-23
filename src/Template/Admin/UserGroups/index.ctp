@@ -1,11 +1,11 @@
-<?php $this->Breadcrumbs->add(__('User Groups')); ?>
+<?php $this->Breadcrumbs->add(__d('user','User Groups')); ?>
 <?php $this->Toolbar->addLink(
-    __('New {0}', __('User Group')),
+    __d('user','New {0}', __d('user','User Group')),
     ['action' => 'add'],
     ['data-icon' => 'plus']
 ) ?>
 <?php $this->Toolbar->addLink(
-    __('List {0}', __('Users')),
+    __d('user','List {0}', __d('user','Users')),
     ['controller' => 'Users', 'action' => 'index'],
     ['data-icon' => 'list']
 ); ?>
@@ -16,7 +16,7 @@
             <th><?= $this->Paginator->sort('id') ?></th>
             <th><?= $this->Paginator->sort('name') ?></th>
             <th><?= $this->Paginator->sort('password') ?></th>
-            <th class="actions"><?= __('Actions') ?></th>
+            <th class="actions"><?= __d('user','Actions') ?></th>
         </tr>
     </thead>
     <tbody>
@@ -28,20 +28,20 @@
             <td class="actions">
                 <div class="ui basic tiny buttons">
                     <div class="ui button">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $userGroup->id]) ?>
+                        <?= $this->Html->link(__d('user','View'), ['action' => 'view', $userGroup->id]) ?>
                     </div>
                     <div class="ui floating dropdown icon button">
                         <i class="dropdown icon"></i>
                         <div class="menu">
                             <?= $this->Ui->link(
-                                __('Edit'),
+                                __d('user','Edit'),
                                 ['action' => 'edit', $userGroup->id],
                                 ['class' => 'item', 'data-icon' => 'edit']
                             ) ?>
                             <?= $this->Ui->postLink(
-                                __('Delete'),
+                                __d('user','Delete'),
                                 ['action' => 'delete', $userGroup->id],
-                                ['class' => 'item', 'data-icon' => 'trash', 'confirm' => __('Are you sure you want to delete # {0}?', $userGroup->id)]
+                                ['class' => 'item', 'data-icon' => 'trash', 'confirm' => __d('user','Are you sure you want to delete # {0}?', $userGroup->id)]
                             ) ?>
                         </div>
                     </div>
@@ -54,9 +54,9 @@
     </table>
     <div class="paginator">
         <div class="ui pagination menu">
-            <?= $this->Paginator->prev(__('previous')) ?>
+            <?= $this->Paginator->prev(__d('user','previous')) ?>
             <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next')) ?>
+            <?= $this->Paginator->next(__d('user','next')) ?>
 
             <div class="item">
                 <?= $this->Paginator->counter() ?>

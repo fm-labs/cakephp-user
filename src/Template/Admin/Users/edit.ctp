@@ -1,29 +1,29 @@
-<?php $this->Breadcrumbs->add(__('Users'), ['action' => 'index']); ?>
-<?php $this->Breadcrumbs->add(__('Edit {0}', __('User'))); ?>
+<?php $this->Breadcrumbs->add(__d('user','Users'), ['action' => 'index']); ?>
+<?php $this->Breadcrumbs->add(__d('user','Edit {0}', __d('user','User'))); ?>
 <?php $this->Toolbar->addLink(
-    __('Delete'),
+    __d('user','Delete'),
     ['action' => 'delete', $user->id],
-    ['data-icon' => 'trash', 'confirm' => __('Are you sure you want to delete # {0}?', $user->id)]
+    ['data-icon' => 'trash', 'confirm' => __d('user','Are you sure you want to delete # {0}?', $user->id)]
 );?>
 <?php $this->Toolbar->addLink(
-    __('List {0}', __('Users')),
+    __d('user','List {0}', __d('user','Users')),
     ['action' => 'index'],
     ['data-icon' => 'list']
 );?>
 <?php $this->Toolbar->addLink(
-    __('List {0}', __('User Groups')),
+    __d('user','List {0}', __d('user','User Groups')),
     ['controller' => 'Groups', 'action' => 'index'],
     ['data-icon' => 'list']
 ) ?>
 
 <?php $this->Toolbar->addLink(
-    __('New {0}', __('User Group')),
+    __d('user','New {0}', __d('user','User Group')),
     ['controller' => 'Groups', 'action' => 'add'],
     ['data-icon' => 'plus']
 ); ?>
 <div class="backend user">
     <h2 class="ui header">
-        <?= __('Edit {0}', __('User')) ?>
+        <?= __d('user','Edit {0}', __d('user','User')) ?>
     </h2>
     <?= $this->Form->create($user); ?>
     <div class="users ui attached segment">
@@ -61,7 +61,7 @@
         </div>
     </div>
     <div class="ui bottom attached segment">
-        <?= $this->Form->button(__('Submit')) ?>
+        <?= $this->Form->button(__d('user','Submit')) ?>
     </div>
     <?= $this->Form->end() ?>
 
