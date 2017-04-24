@@ -22,8 +22,5 @@ class GroupsUsersFixture extends TestFixture
      *
      * @var array
      */
-    public $records = [
-        [
-        ],
-    ];
+    public $records = [];
 }

@@ -55,7 +55,7 @@ class UsersFixture extends TestFixture
             'modified' => '2015-04-19 15:52:37'
         ],
         [
-            'id' => 1,
+            'id' => 2,
             'name' => 'Normal User',
             'group_id' => 2,
             'username' => 'test',
@@ -73,7 +73,7 @@ class UsersFixture extends TestFixture
             'password_force_change' => null,
             'password_reset_code' => null,
             'password_reset_expiry_timestamp' => null,
-            'login_enabled' => 1,
+            'login_enabled' => true,
             'login_last_login_ip' => null,
             'login_last_login_host' => null,
             'login_last_login_datetime' => null,
