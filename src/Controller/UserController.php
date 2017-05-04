@@ -4,6 +4,7 @@ namespace User\Controller;
 use Cake\Event\Event;
 use Cake\Core\Configure;
 use Cake\Routing\Router;
+use User\Model\Table\GroupsTable;
 use User\Model\Table\UsersTable;
 
 /**
@@ -11,6 +12,7 @@ use User\Model\Table\UsersTable;
  * @package User\Controller
  *
  * @property UsersTable $Users
+ * @property GroupsTable $Groups
  */
 class UserController extends AppController
 {
@@ -38,6 +40,13 @@ class UserController extends AppController
         if ($this->request->query('goto')) {
             //@TODO Check if goto URL is within app scope and/or use a token
             $this->request->session()->write('Auth.redirect', urldecode($this->request->query('goto')));
+        } elseif (!$this->request->session()->check('Auth.redirect')) {
+
+            $referer = $this->referer();
+            if ($referer && Router::normalize($referer) != Router::normalize(['action' => __FUNCTION__])) {
+                debug("set referer to " . Router::normalize($referer));
+                $this->request->session()->write('Auth.redirect', $referer);
+            }
         }
 
         if (Configure::read('User.Login.disabled') != true) {
@@ -89,11 +98,23 @@ class UserController extends AppController
         //@TODO Make user registration configurable
         //@TODO Dispatch 'User.register' event
 
+        if (Configure::read('User.Signup.groupAuth') === true) {
+            if (!$this->request->session()->read('User.Signup.group_id')) {
+                $this->redirect(['action' => 'registerAuth']);
+                return;
+            }
+        }
+
         $user = null;
         if (Configure::read('User.Signup.disabled') != true) {
 
             if ($this->request->is('post')) {
-                $user = $this->Users->register($this->request->data);
+                $data = $this->request->data;
+                if (Configure::read('User.Signup.groupAuth') === true) {
+                    $data['group_id'] = $this->request->session()->read('User.Signup.group_id');
+                }
+
+                $user = $this->Users->register($data);
                 if ($user && $user->id) {
                     $this->Flash->success(__d('user','Your registration was successful!'), ['key' => 'auth']);
                     $this->redirect($this->Auth->redirectUrl());
@@ -102,7 +123,7 @@ class UserController extends AppController
                     $this->Flash->error(__d('user','Ups, something went wrong. Please check the form.'), ['key' => 'auth']);
                 }
             } else {
-                $user = $this->Users->register(null);
+                $user = $this->Users->register([]);
             }
 
         } else {
@@ -112,6 +133,35 @@ class UserController extends AppController
 
         $this->set(compact('user'));
         $this->set('_serialize', ['user']);
+    }
+
+    public function registerAuth()
+    {
+        if ($this->request->is(['put', 'post'])) {
+
+            $grpPass = $this->request->data('group_pass');
+            $grpPass = trim($grpPass);
+            if (!$grpPass) {
+                $this->Flash->error('Es wurde kein Passwort eingegeben', ['key' => 'auth']);
+                return;
+            }
+
+            // find user group with that password
+            $this->loadModel('User.Groups');
+            $userGroup = $this->Groups->find()->where(['password' => $grpPass])->first();
+
+            if (!$userGroup) {
+                $this->Flash->error('Ungültiges Passwort', ['key' => 'auth']);
+                return;
+            }
+
+            // store group auth info in session
+            $this->request->session()->write('User.Signup.group_id', $userGroup->id);
+            $this->request->session()->write('User.Signup.group_pass', $grpPass);
+
+            // continue registration
+            $this->redirect(['action' => 'register']);
+        }
     }
 
     /**

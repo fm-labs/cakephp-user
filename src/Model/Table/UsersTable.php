@@ -306,8 +306,9 @@ class UsersTable extends Table
         $user->accessible('username', true);
         $user->accessible('password1', true);
         $user->accessible('password2', true);
+        $user->accessible('group_id', true);
 
-        if ($data !== null) {
+        if (!empty($data)) {
             // permit new registered users to login
             $data['login_enabled'] = true;
 
@@ -325,12 +326,13 @@ class UsersTable extends Table
 
             if ($this->save($user)) {
                 Log::info('[user] New user \'' . $user->username . '\' registered with ID ' . $user->id, ['user']);
+
+                if ($dispatchEvent === true) {
+                    $event = $this->eventManager()->dispatch(new Event('User.Model.User.register', $user));
+                }
             }
         }
 
-        if ($dispatchEvent === true) {
-            $event = $this->eventManager()->dispatch(new Event('User.Model.User.register', $user));
-        }
         return $user;
     }
 
