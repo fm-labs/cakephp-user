@@ -304,13 +304,16 @@ class UsersTable extends Table
     {
         $user = $this->newEntity(null, ['validate' => 'register']);
         $user->accessible('username', true);
+        $user->accessible('name', true);
         $user->accessible('password1', true);
         $user->accessible('password2', true);
         $user->accessible('group_id', true);
+        $user->accessible('login_enabled', false);
 
         if (!empty($data)) {
             // permit new registered users to login
             $data['login_enabled'] = true;
+            $data['email'] = $data['username'];
 
             $this->patchEntity($user, $data, ['validate' => 'register']);
             if ($user->errors()) {

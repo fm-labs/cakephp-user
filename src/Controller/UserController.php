@@ -23,7 +23,7 @@ class UserController extends AppController
     {
         parent::beforeFilter($event);
 
-        $this->Auth->allow(['login', 'register', 'passwordForgotten', 'passwordReset']);
+        $this->Auth->allow(['login', 'register', 'registerGroup', 'passwordForgotten', 'passwordReset']);
 
         if (Configure::read('User.layout')) {
             $this->viewBuilder()->layout(Configure::read('User.layout'));
@@ -44,8 +44,8 @@ class UserController extends AppController
 
             $referer = $this->referer();
             if ($referer && Router::normalize($referer) != Router::normalize(['action' => __FUNCTION__])) {
-                debug("set referer to " . Router::normalize($referer));
-                $this->request->session()->write('Auth.redirect', $referer);
+                //debug("set referer to " . Router::normalize($referer));
+                //$this->request->session()->write('Auth.redirect', $referer);
             }
         }
 
@@ -98,9 +98,14 @@ class UserController extends AppController
         //@TODO Make user registration configurable
         //@TODO Dispatch 'User.register' event
 
+        if ($this->Auth->user('id')) {
+            $this->redirect('/');
+            return;
+        }
+
         if (Configure::read('User.Signup.groupAuth') === true) {
             if (!$this->request->session()->read('User.Signup.group_id')) {
-                $this->redirect(['action' => 'registerAuth']);
+                $this->redirect(['action' => 'registerGroup']);
                 return;
             }
         }
@@ -116,8 +121,9 @@ class UserController extends AppController
 
                 $user = $this->Users->register($data);
                 if ($user && $user->id) {
-                    $this->Flash->success(__d('user','Your registration was successful!'), ['key' => 'auth']);
-                    $this->redirect($this->Auth->redirectUrl());
+                    //$this->request->session()->delete('User.Signup');
+                    $this->Flash->success(__d('user','An activation email has been sent to your email address!'), ['key' => 'auth']);
+                    $this->redirect(['_name' => 'user:login']);
                     return;
                 } else {
                     $this->Flash->error(__d('user','Ups, something went wrong. Please check the form.'), ['key' => 'auth']);
@@ -135,7 +141,7 @@ class UserController extends AppController
         $this->set('_serialize', ['user']);
     }
 
-    public function registerAuth()
+    public function registerGroup()
     {
         if ($this->request->is(['put', 'post'])) {
 
@@ -151,6 +157,7 @@ class UserController extends AppController
             $userGroup = $this->Groups->find()->where(['password' => $grpPass])->first();
 
             if (!$userGroup) {
+                $this->request->session()->delete('User.Signup.group_id');
                 $this->Flash->error('Ungültiges Passwort', ['key' => 'auth']);
                 return;
             }
@@ -161,6 +168,11 @@ class UserController extends AppController
 
             // continue registration
             $this->redirect(['action' => 'register']);
+
+        } elseif ($this->request->session()->read('User.Signup.group_id')) {
+
+            // continue registration
+            //$this->redirect(['action' => 'register']);
         }
     }
 
