@@ -1,16 +1,16 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: flow
- * Date: 2/16/16
- * Time: 6:32 PM
- */
 
 namespace User\Controller\Admin;
 
-use App\Controller\Admin\AppController as BaseAdminAppController;
+use Backend\Controller\BackendActionsTrait;
+use Cake\Controller\Controller;
 
-class AppController extends BaseAdminAppController
+class AppController extends Controller
 {
+    use BackendActionsTrait;
 
+    public function initialize()
+    {
+        $this->loadComponent('Backend.Backend');
+    }
 }

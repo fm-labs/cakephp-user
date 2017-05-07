@@ -1,8 +1,6 @@
 <?php
 namespace User\Controller\Admin;
 
-use User\Controller\Admin\AppController;
-
 /**
  * Users Controller
  *
@@ -10,8 +8,12 @@ use User\Controller\Admin\AppController;
  */
 class UsersController extends AppController
 {
-
     public $modelClass = 'User.Users';
+
+    public $actions = [
+        'index' => 'Backend.Index',
+        'view' => 'Backend.View'
+    ];
 
     /**
      * Index method
@@ -23,8 +25,28 @@ class UsersController extends AppController
         $this->paginate = [
             'contain' => ['PrimaryGroup']
         ];
+
+        $this->set('fields', [
+            'username' => ['formatter' => function($val, $row, $args, $view) {
+                return $view->Html->link(
+                    $val,
+                    ['action' => 'edit', $row->id]);
+            }],
+           'primary_group.name' => ['formatter' => function($val, $row, $args, $view) {
+               if ($row->primary_group) {
+                   return $view->Html->link(
+                       $row->primary_group->name,
+                       ['plugin' => 'User', 'controller' => 'UserGroups', 'action' => 'edit', $row->primary_group->id]);
+               }
+           }]
+        ]);
+        $this->set('fields.whitelist', ['id', 'name', 'primary_group.name', 'username', 'email', 'login_enabled']);
+
+        $this->Backend->executeAction();
+        /*
         $this->set('users', $this->paginate($this->Users));
         $this->set('_serialize', ['users']);
+        */
     }
 
     /**
@@ -36,11 +58,12 @@ class UsersController extends AppController
      */
     public function view($id = null)
     {
-        $user = $this->Users->get($id, [
-            'contain' => ['PrimaryGroup', 'Groups']
+        $this->set('fields', [
+            'email' => ['formatter' => 'email'],
+            'password_reset_url' => ['formatter' => 'link']
         ]);
-        $this->set('user', $user);
-        $this->set('_serialize', ['user']);
+        $this->set('fields.blacklist', ['password']);
+        $this->Backend->executeAction();
     }
 
     /**

@@ -17,6 +17,7 @@ try { Configure::load('local/user'); } catch (\Exception $ex) {}
     'path' => LOGS,
     'file' => 'user',
     //'levels' => ['info'],
+    'scopes' => ['user', 'auth']
 ]);
 
 
@@ -26,6 +27,7 @@ try { Configure::load('local/user'); } catch (\Exception $ex) {}
     'path' => LOGS,
     'file' => 'auth',
     //'levels' => ['info'],
+    'scopes' => ['auth']
 ]);
 
 \Cake\Event\EventManager::instance()->on(new \User\UserPlugin());

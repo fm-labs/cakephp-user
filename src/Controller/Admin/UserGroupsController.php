@@ -1,5 +1,7 @@
 <?php
 namespace User\Controller\Admin;
+use Backend\Controller\BackendActionsTrait;
+use Cake\Controller\Controller;
 
 /**
  * Groups Controller
@@ -11,32 +13,10 @@ class UserGroupsController extends AppController
 
     public $modelClass = 'User.Groups';
 
-    /**
-     * Index method
-     *
-     * @return void
-     */
-    public function index()
-    {
-        $this->set('userGroups', $this->paginate($this->Groups));
-        $this->set('_serialize', ['userGroups']);
-    }
-
-    /**
-     * View method
-     *
-     * @param string|null $id User Group id.
-     * @return void
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
-    public function view($id = null)
-    {
-        $userGroup = $this->Groups->get($id, [
-            'contain' => ['PrimaryUsers', 'Users']
-        ]);
-        $this->set('userGroup', $userGroup);
-        $this->set('_serialize', ['userGroup']);
-    }
+    public $actions = [
+        'index' => 'Backend.Index',
+        'view' => 'Backend.View'
+    ];
 
     /**
      * Add method
