@@ -119,18 +119,13 @@ class UsersTableTest extends TestCase
 
     public function testRegister()
     {
-        // test with null data
-        $user = $this->Users->register(null);
-        $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
-        $this->assertEmpty($user->id);
-
         // test with no data
         $user = $this->Users->register([]);
         $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
         $this->assertEmpty($user->id);
 
         // test with incomplete data - missing password
-        $user = $this->Users->register(['username' => 'test']);
+        $user = $this->Users->register(['username' => 'test1']);
         $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
         $this->assertEmpty($user->id);
         $this->assertEmpty($user->errors('username'));
@@ -138,10 +133,22 @@ class UsersTableTest extends TestCase
         $this->assertNotEmpty($user->errors('password2'));
 
         // test with valid username and password
-        $user = $this->Users->register(['username' => 'test', 'password1' => 'rosebud1', 'password2' => 'rosebud1']);
+        $user = $this->Users->register(['username' => 'test2', 'password1' => 'rosebud1', 'password2' => 'rosebud1']);
         $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
         $this->assertEmpty($user->errors());
         $this->assertNotEmpty($user->id);
+        $this->assertEmpty($user->email);
+        $this->assertTrue((new DefaultPasswordHasher())->check('rosebud1', $user->password));
+
+        // test with valid username and password + extra data
+        $data = ['username' => 'test3', 'password1' => 'rosebud1', 'password2' => 'rosebud1', 'first_name' => 'Foo', 'last_name' => 'Bar'];
+        $user = $this->Users->register($data);
+        $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
+        $this->assertEmpty($user->errors());
+        $this->assertNotEmpty($user->id);
+        $this->assertEquals($data['first_name'], $user->first_name);
+        $this->assertEquals($data['last_name'], $user->last_name);
+        $this->assertEquals(sprintf("%s %s",$data['first_name'], $data['last_name']), $user->name);
         $this->assertTrue((new DefaultPasswordHasher())->check('rosebud1', $user->password));
     }
 
@@ -153,21 +160,32 @@ class UsersTableTest extends TestCase
             'className' => 'User\Model\Table\UsersTable'
         ]);
 
-        // test with invalid username and password
-        $user = $this->Users->register(['username' => 'test', 'password1' => 'rosebud1', 'password2' => 'rosebud1']);
+        // test with username instead of email
+        $user = $this->Users->register(['username' => 'test1', 'password1' => 'rosebud1', 'password2' => 'rosebud1']);
         $this->assertNotEmpty($user->errors('username'));
+        $this->assertNotEmpty($user->errors('email'));
 
         // test with valid username and password
-        $user = $this->Users->register(['username' => 'test@example.org', 'password1' => 'rosebud1', 'password2' => 'rosebud1']);
+        $user = $this->Users->register(['email' => 'test1@example.org', 'password1' => 'rosebud1', 'password2' => 'rosebud1']);
         $this->assertEmpty($user->errors());
         $this->assertNotEmpty($user->id);
+        $this->assertEquals('test1@example.org', $user->username);
+        $this->assertEquals('test1@example.org', $user->email);
+
+        // test with email, password AND username (ignore additional username field)
+        $user = $this->Users->register(['email' => 'test2@example.org', 'password1' => 'rosebud1', 'password2' => 'rosebud1', 'username' => 'admin']);
+        $this->assertEmpty($user->errors());
+        $this->assertNotEmpty($user->id);
+        $this->assertEquals('test2@example.org', $user->username);
+        $this->assertEquals('test2@example.org', $user->email);
+
 
         TableRegistry::remove('Users');
     }
 
     public function testChangePassword()
     {
-        $user = $this->Users->register(['username' => 'test', 'password1' => 'rosebud1', 'password2' => 'rosebud1']);
+        $user = $this->Users->register(['username' => 'test1', 'password1' => 'rosebud1', 'password2' => 'rosebud1']);
         $this->assertNotEmpty($user->id);
 
         // test with new password same as current password
@@ -175,7 +193,7 @@ class UsersTableTest extends TestCase
             $user,
             ['password0' => 'rosebud1', 'password1' => 'rosebud1', 'password2' => 'rosebud1']
         ));
-        $this->assertNotEmpty($user->errors('password0'));
+        $this->assertNotEmpty($user->errors('password1'));
         $this->assertFalse($user->dirty('password1'));
         $this->assertFalse($user->dirty('password2'));
 
@@ -206,8 +224,6 @@ class UsersTableTest extends TestCase
         $this->assertFalse($user->dirty('password0'));
         $this->assertFalse($user->dirty('password1'));
         $this->assertFalse($user->dirty('password2'));
-        #$this->assertEmpty($user->password); // hide (encrypted) password
-        #$user = $this->Users->get($user->id);
         $this->assertTrue((new DefaultPasswordHasher())->check('basejump', $user->password));
     }
 

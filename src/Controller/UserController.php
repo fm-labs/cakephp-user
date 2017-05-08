@@ -120,13 +120,14 @@ class UserController extends AppController
                 }
 
                 $user = $this->Users->register($data);
+                debug($user->errors());
                 if ($user && $user->id) {
                     //$this->request->session()->delete('User.Signup');
                     $this->Flash->success(__d('user','An activation email has been sent to your email address!'), ['key' => 'auth']);
                     $this->redirect(['_name' => 'user:login']);
                     return;
                 } else {
-                    $this->Flash->error(__d('user','Ups, something went wrong. Please check the form.'), ['key' => 'auth']);
+                    $this->Flash->error(__d('user','Please fill all required fields'), ['key' => 'auth']);
                 }
             } else {
                 $user = $this->Users->register([]);

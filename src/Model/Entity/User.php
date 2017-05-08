@@ -7,6 +7,9 @@ use Cake\Routing\Router;
 
 /**
  * User Entity.
+ *
+ * @property string first_name
+ * @property string last_name
  */
 class User extends Entity
 {
@@ -24,6 +27,8 @@ class User extends Entity
         'group_id' => false,
         'username' => false,
         'password' => false,
+        'password1' => false,
+        'password2' => false,
         'email' => false,
         'email_verification_required' => false,
         'email_verification_code' => false,

@@ -237,9 +237,7 @@ class UsersTable extends Table
                 'provider' => 'table',
                 'message' => __d('user','Passwords do not match')
             ])
-            ->add('is_login_allowed', 'valid', ['rule' => 'boolean'])
-            //->requirePresence('is_login_allowed', 'create')
-            ->notEmpty('is_login_allowed');
+            ->add('login_enabled', 'valid', ['rule' => 'boolean']);
 
 
         if (static::$emailAsUsername) {
@@ -303,17 +301,47 @@ class UsersTable extends Table
     public function register(array $data, $dispatchEvent = true)
     {
         $user = $this->newEntity(null, ['validate' => 'register']);
+        $user->accessible('_nologin', true);
         $user->accessible('username', true);
         $user->accessible('name', true);
+        $user->accessible('first_name', true);
+        $user->accessible('last_name', true);
         $user->accessible('password1', true);
         $user->accessible('password2', true);
         $user->accessible('group_id', true);
+        $user->accessible('email', true);
+        $user->accessible('id', false);
         $user->accessible('login_enabled', false);
 
         if (!empty($data)) {
+
+            // no login
+            $noLogin = (isset($data['_nologin'])) ? (bool) $data['_nologin'] : false;
+            if ($noLogin) {
+                $data['login_enabled'] = false;
+
+                $this->validator('register')
+                    ->allowEmpty('password1')
+                    ->requirePresence('password1', false)
+                    ->allowEmpty('password2')
+                    ->requirePresence('password2', false);
+
+                $user->accessible('password1', true);
+                $user->accessible('password2', true);
+            }
+
             // permit new registered users to login
-            $data['login_enabled'] = true;
-            $data['email'] = $data['username'];
+            $data['login_enabled'] = !$noLogin;
+
+            // email has been entered as username, so copy value to email field
+            if (self::$emailAsUsername && isset($data['email'])) {
+                $data['username'] = $data['email'];
+            }
+
+            // generate full name
+            if (!isset($data['name']) && isset($data['first_name']) && isset($data['last_name'])) {
+                $data['name'] = sprintf("%s %s", $data['first_name'], $data['last_name']);
+            }
 
             $this->patchEntity($user, $data, ['validate' => 'register']);
             if ($user->errors()) {
@@ -350,8 +378,16 @@ class UsersTable extends Table
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
             ->allowEmpty('id', 'create')
+            //->requirePresence('first_name', 'create')
+            //->notEmpty('first_name')
+            //->requirePresence('last_name', 'create')
+            //->notEmpty('last_name')
             ->requirePresence('username', 'create')
             ->notEmpty('username')
+            ->add('email', 'email', [
+                'rule' => ['email'],
+                'message' => __d('user','The provided email address is invalid')
+            ])
             ->requirePresence('password1', 'create')
             ->notEmpty('password1')
             ->add('password1', 'password', [
@@ -371,10 +407,14 @@ class UsersTable extends Table
             ->notEmpty('login_enabled');
 
         if (static::$emailAsUsername) {
+            // email validation for 'username'
             $validator->add('username', 'email', [
                 'rule' => ['email'],
                 'message' => __d('user','The provided email address is invalid')
             ]);
+            // require 'email'
+            $validator->requirePresence('email', 'create')
+                ->notEmpty('email');
         }
 
         return $validator;
