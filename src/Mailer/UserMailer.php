@@ -22,7 +22,7 @@ class UserMailer extends BananaMailer
 
         $this
             ->to($user->email)
-            ->subject('Password forgotten')
+            ->subject(__('Password forgotten'))
             ->template('User.password_forgotten')
             ->set(compact('user'));
     }
@@ -36,7 +36,7 @@ class UserMailer extends BananaMailer
     {
         $this
             ->to($user->email)
-            ->subject('Password change notification')
+            ->subject(__('Password change notification'))
             ->template('User.password_reset')
             ->set(compact('user'));
     }

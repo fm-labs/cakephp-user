@@ -1,12 +1,22 @@
-You forgot your password?
+Sie haben Ihr Passwort vergessen?
 
-No worries, just click the link below (or copy and paste the url into your browser) and choose a new password.
+
+
+
+Klicken Sie einfach auf den folgenden Link um Ihr Passwort zurückzusetzen (bzw. kopieren Sie den Link in die Addresszeile Ihres Browsers)
+
 
 ---
+
 
 <?= $user->password_reset_url; ?>
 
 
+Der Link ist 24h gültig.
+
 ---
 
-This link is valid for 24 hours.
+
+IHR PASSWORT-WIEDERHERSTELLUNGS-CODE:
+
+<?= $user->passwort_reset_code; ?>

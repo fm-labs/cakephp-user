@@ -227,4 +227,13 @@ class UsersTableTest extends TestCase
         $this->assertTrue((new DefaultPasswordHasher())->check('basejump', $user->password));
     }
 
+    public function testForgottPassword()
+    {
+        $user = $this->Users->find()->first();
+        if (!$user) {
+            $this->fail('No test user found');
+        }
+
+
+    }
 }

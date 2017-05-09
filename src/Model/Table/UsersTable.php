@@ -330,9 +330,6 @@ class UsersTable extends Table
                 $user->accessible('password2', true);
             }
 
-            // permit new registered users to login
-            $data['login_enabled'] = !$noLogin;
-
             // email has been entered as username, so copy value to email field
             if (self::$emailAsUsername && isset($data['email'])) {
                 $data['username'] = $data['email'];
@@ -354,6 +351,9 @@ class UsersTable extends Table
             $user->password = $user->password1;
             unset($user->password1);
             unset($user->password2);
+
+            // permit new registered users to login
+            $user->login_enabled = !$noLogin;
 
             if ($this->save($user)) {
                 Log::info('[user] New user \'' . $user->username . '\' registered with ID ' . $user->id, ['user']);
@@ -403,8 +403,9 @@ class UsersTable extends Table
                 'message' => __d('user','Passwords do not match')
             ])
             ->add('login_enabled', 'valid', ['rule' => 'boolean'])
-            ->requirePresence('login_enabled', 'create')
-            ->notEmpty('login_enabled');
+            //->requirePresence('login_enabled', 'create')
+            //->notEmpty('login_enabled')
+        ;
 
         if (static::$emailAsUsername) {
             // email validation for 'username'
