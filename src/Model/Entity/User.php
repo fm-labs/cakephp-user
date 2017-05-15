@@ -73,7 +73,10 @@ class User extends Entity
 
     protected function _getDisplayName()
     {
-        return $this->_properties['name'];
+        if ($this->first_name && $this->last_name) {
+            return sprintf("%s, %s", $this->last_name, $this->first_name);
+        }
+        return $this->username;
     }
 
     protected function _getPasswordResetUrl()
