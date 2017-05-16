@@ -88,6 +88,9 @@ class User extends Entity
 
     protected function _setPassword($password)
     {
+        if (self::$passwordHasherClass === false) {
+            return $password;
+        }
         return $this->getPasswordHasher()->hash($password);
     }
 

@@ -6,6 +6,7 @@ use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Component\FlashComponent;
+use Cake\Log\Log;
 use User\Model\Table\UsersTable;
 use Cake\ORM\TableRegistry;
 
@@ -19,6 +20,11 @@ use Cake\ORM\TableRegistry;
  */
 class AuthComponent extends CakeAuthComponent
 {
+    /**
+     * @var UsersTable
+     */
+    public $Users;
+
     public function __construct(ComponentRegistry $registry, array $config = [])
     {
         // Inject additional config values
@@ -50,6 +56,8 @@ class AuthComponent extends CakeAuthComponent
             //    'Controller'
             //]);
         }
+
+        $this->Users = $this->_registry->getController()->loadModel($this->config('userModel'));
     }
 
     /**
@@ -77,6 +85,15 @@ class AuthComponent extends CakeAuthComponent
 
             // authenticate user
             $this->setUser($event->data['user']);
+
+            // rehash, if required
+            if ($this->authenticationProvider()->needsPasswordRehash()) {
+                $user = $this->Users->get($this->user('id'));
+                $user->password = $this->request->data('password');
+                $this->Users->save($user);
+
+                Log::info(sprintf("AuthComponent: User %s (%s): Password rehashed", $this->user('id'), $this->user('username')), ['user']);
+            }
 
             // redirect to originally requested url (or login redirect url)
             return $this->redirectUrl();
