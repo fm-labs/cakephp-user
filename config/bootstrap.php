@@ -29,6 +29,3 @@ try { Configure::load('local/user'); } catch (\Exception $ex) {}
     //'levels' => ['info'],
     'scopes' => ['auth']
 ]);
-
-\Cake\Event\EventManager::instance()->on(new \User\UserPlugin());
-\Cake\Event\EventManager::instance()->on(new \User\Event\UserEventListener());
