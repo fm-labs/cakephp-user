@@ -39,7 +39,6 @@ class UserPlugin implements EventListenerInterface
 
     public function __invoke()
     {
-        \Cake\Event\EventManager::instance()->on(new \User\UserPlugin());
         \Cake\Event\EventManager::instance()->on(new \User\Event\UserEventListener());
     }
 }
