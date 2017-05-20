@@ -2,6 +2,7 @@
 namespace User\Model\Table;
 
 use Cake\Chronos\Chronos;
+use Cake\Core\Plugin;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\ORM\Query;
@@ -72,6 +73,51 @@ class UsersTable extends Table
             'joinTable' => 'user_groups_users',
             'className' => 'User.Groups'
         ]);
+
+
+        if (Plugin::loaded('Search')) {
+            $this->addBehavior('Search.Search');
+            $this->searchManager()
+                ->add('first_name', 'Search.Like', [
+                    'before' => true,
+                    'after' => true,
+                    'fieldMode' => 'OR',
+                    'comparison' => 'LIKE',
+                    'wildcardAny' => '*',
+                    'wildcardOne' => '?',
+                    'field' => ['title']
+                ])
+                ->add('last_name', 'Search.Like', [
+                    'before' => true,
+                    'after' => true,
+                    'fieldMode' => 'OR',
+                    'comparison' => 'LIKE',
+                    'wildcardAny' => '*',
+                    'wildcardOne' => '?',
+                    'field' => ['title']
+                ])
+                ->add('username', 'Search.Like', [
+                    'before' => true,
+                    'after' => true,
+                    'fieldMode' => 'OR',
+                    'comparison' => 'LIKE',
+                    'wildcardAny' => '*',
+                    'wildcardOne' => '?',
+                    'field' => ['title']
+                ])
+                ->add('email', 'Search.Like', [
+                    'before' => true,
+                    'after' => true,
+                    'fieldMode' => 'OR',
+                    'comparison' => 'LIKE',
+                    'wildcardAny' => '*',
+                    'wildcardOne' => '?',
+                    'field' => ['title']
+                ])
+                ->value('login_enabled', [
+                    'filterEmpty' => true
+                ]);
+        }
     }
 
     /**
