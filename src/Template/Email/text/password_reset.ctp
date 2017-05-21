@@ -1,7 +1,7 @@
-A new password has been set.
+Für Ihr Benutzerkonto bei lederleitner.at wurde soeben ein neues Passwort wurde gesetzt.
 
 --
 
-This is a security notification, that a new password has been set for your account.
+Hiermit handelt es sich um eine Sicherheits-Benachrichtigung.
 
-If you did not change your password yourself, please contact us.
+Sollten Sie Ihr Passwort nicht selbst geändert haben, kontaktieren Sie uns.
