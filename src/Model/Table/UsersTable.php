@@ -424,10 +424,10 @@ class UsersTable extends Table
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
             ->allowEmpty('id', 'create')
-            //->requirePresence('first_name', 'create')
-            //->notEmpty('first_name')
-            //->requirePresence('last_name', 'create')
-            //->notEmpty('last_name')
+            ->requirePresence('first_name', 'create')
+            ->notEmpty('first_name')
+            ->requirePresence('last_name', 'create')
+            ->notEmpty('last_name')
             ->requirePresence('username', 'create')
             ->notEmpty('username')
             ->add('email', 'email', [
