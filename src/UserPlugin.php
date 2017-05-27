@@ -24,7 +24,29 @@ class UserPlugin implements EventListenerInterface
     public function implementedEvents()
     {
         return [
+            'Settings.get' => 'getSettings',
             'Backend.Menu.get' => 'getBackendMenu'
+        ];
+    }
+
+    public function getSettings(Event $event)
+    {
+        $event->result['User'] = [
+            'layout' => [
+                'type' => 'string',
+            ],
+            'Login.disabled' => [
+                'type' => 'boolean',
+                'default' => false
+            ],
+            'Signup.disabled' => [
+                'type' => 'boolean',
+                'default' => false
+            ],
+            'Signup.groupAuth' => [
+                'type' => 'boolean',
+                'default' => false
+            ],
         ];
     }
 
