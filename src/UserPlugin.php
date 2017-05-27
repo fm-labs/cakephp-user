@@ -25,7 +25,7 @@ class UserPlugin implements EventListenerInterface
     {
         return [
             'Settings.get' => 'getSettings',
-            'Backend.Menu.get' => 'getBackendMenu'
+            'Backend.Menu.get' => ['callable' => 'getBackendMenu', 'priority' => 99]
         ];
     }
 
