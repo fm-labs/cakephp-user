@@ -1,10 +1,7 @@
 <?php
 namespace User\Mailer;
 
-use Cake\Event\Event;
 use Cake\Log\Log;
-use Cake\Mailer\Mailer;
-use Cake\Routing\Router;
 use Banana\Mailer\BananaMailer;
 use User\Model\Entity\User;
 

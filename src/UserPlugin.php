@@ -2,13 +2,8 @@
 
 namespace User;
 
-
-use Banana\Plugin\PluginInterface;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
-use Cake\Event\EventManager;
-use User\Event\UserEventListener;
-use User\Mailer\UserMailer;
 
 class UserPlugin implements EventListenerInterface
 {
