@@ -78,6 +78,7 @@ class UsersTable extends Table
         if (Plugin::loaded('Search')) {
             $this->addBehavior('Search.Search');
             $this->searchManager()
+                /*
                 ->add('first_name', 'Search.Like', [
                     'before' => true,
                     'after' => true,
@@ -88,6 +89,16 @@ class UsersTable extends Table
                     'field' => ['title']
                 ])
                 ->add('last_name', 'Search.Like', [
+                    'before' => true,
+                    'after' => true,
+                    'fieldMode' => 'OR',
+                    'comparison' => 'LIKE',
+                    'wildcardAny' => '*',
+                    'wildcardOne' => '?',
+                    'field' => ['title']
+                ])
+                */
+                ->add('name', 'Search.Like', [
                     'before' => true,
                     'after' => true,
                     'fieldMode' => 'OR',
@@ -350,8 +361,8 @@ class UsersTable extends Table
         $user->accessible('_nologin', true);
         $user->accessible('username', true);
         $user->accessible('name', true);
-        $user->accessible('first_name', true);
-        $user->accessible('last_name', true);
+        //$user->accessible('first_name', true);
+        //$user->accessible('last_name', true);
         $user->accessible('password1', true);
         $user->accessible('password2', true);
         $user->accessible('group_id', true);
@@ -382,6 +393,7 @@ class UsersTable extends Table
             }
 
             // generate full name
+            // @TODO first_name and last_name properties are deprecated
             if (!isset($data['name']) && isset($data['first_name']) && isset($data['last_name'])) {
                 $data['name'] = sprintf("%s %s", $data['first_name'], $data['last_name']);
             }
@@ -424,10 +436,10 @@ class UsersTable extends Table
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
             ->allowEmpty('id', 'create')
-            ->requirePresence('first_name', 'create')
-            ->notEmpty('first_name')
-            ->requirePresence('last_name', 'create')
-            ->notEmpty('last_name')
+            //->requirePresence('first_name', 'create')
+            //->notEmpty('first_name')
+            //->requirePresence('last_name', 'create')
+            //->notEmpty('last_name')
             ->requirePresence('username', 'create')
             ->notEmpty('username')
             ->add('email', 'email', [
