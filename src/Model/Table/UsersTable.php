@@ -368,8 +368,8 @@ class UsersTable extends Table
 
             // generate full name
             // @TODO first_name and last_name properties are deprecated
-            if (!isset($data['name']) && isset($data['first_name']) && isset($data['last_name'])) {
-                $data['name'] = sprintf("%s %s", $data['first_name'], $data['last_name']);
+            if (!isset($data['name'])) {
+                $data['name'] = $data['username'];
             }
 
             $this->patchEntity($user, $data, ['validate' => 'register']);
@@ -410,10 +410,8 @@ class UsersTable extends Table
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
             ->allowEmpty('id', 'create')
-            //->requirePresence('first_name', 'create')
-            //->notEmpty('first_name')
-            //->requirePresence('last_name', 'create')
-            //->notEmpty('last_name')
+            ->requirePresence('name', 'create')
+            ->notEmpty('name')
             ->requirePresence('username', 'create')
             ->notEmpty('username')
             ->add('email', 'email', [
