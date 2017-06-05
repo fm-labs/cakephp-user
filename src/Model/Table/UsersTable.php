@@ -3,16 +3,14 @@ namespace User\Model\Table;
 
 use Cake\Chronos\Chronos;
 use Cake\Core\Plugin;
-use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
+use Cake\Log\Log;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
-use Cake\Utility\Text;
+use Cake\ORM\Entity;
 use Cake\Validation\Validator;
 use User\Model\Entity\User;
-use Cake\Log\Log;
-use Cake\ORM\Entity;
 
 /**
  * Users Model
@@ -74,30 +72,9 @@ class UsersTable extends Table
             'className' => 'User.Groups'
         ]);
 
-
         if (Plugin::loaded('Search')) {
             $this->addBehavior('Search.Search');
             $this->searchManager()
-                /*
-                ->add('first_name', 'Search.Like', [
-                    'before' => true,
-                    'after' => true,
-                    'fieldMode' => 'OR',
-                    'comparison' => 'LIKE',
-                    'wildcardAny' => '*',
-                    'wildcardOne' => '?',
-                    'field' => ['title']
-                ])
-                ->add('last_name', 'Search.Like', [
-                    'before' => true,
-                    'after' => true,
-                    'fieldMode' => 'OR',
-                    'comparison' => 'LIKE',
-                    'wildcardAny' => '*',
-                    'wildcardOne' => '?',
-                    'field' => ['title']
-                ])
-                */
                 ->add('name', 'Search.Like', [
                     'before' => true,
                     'after' => true,
@@ -304,10 +281,8 @@ class UsersTable extends Table
             ]);
         }
 
-
         return $validator;
     }
-
 
     /**
      * Create root user with default credentials
@@ -347,7 +322,6 @@ class UsersTable extends Table
 
         return $user;
     }
-
 
     /**
      * Register new user with form data array
@@ -478,7 +452,6 @@ class UsersTable extends Table
 
         return $validator;
     }
-
 
     /**
      * Change user password
@@ -654,7 +627,6 @@ class UsersTable extends Table
         return $validator;
     }
 
-
     /**
      * Password Validation Rule
      *
@@ -705,6 +677,14 @@ class UsersTable extends Table
         return false;
     }
 
+    /**
+     * Forgot password
+     *
+     * @param User $user
+     * @param array $data
+     * @param bool|true $dispatchEvent
+     * @return bool|mixed|User
+     */
     public function forgotPassword(User &$user, $data = array(), $dispatchEvent = true)
     {
         $username = ($data['username']) ? $data['username'] : null;
@@ -733,8 +713,14 @@ class UsersTable extends Table
         return $user;
     }
 
+    /**
+     * Generate random password reset code
+     *
+     * @return string
+     */
     protected function _generatePasswordResetCode()
     {
+        //@TODO Make use of random_compat vendor lib
         return strtoupper(self::random_str(self::$passwordResetCodeLength));
     }
 
@@ -761,5 +747,4 @@ class UsersTable extends Table
         }
         return $str;
     }
-
 }
