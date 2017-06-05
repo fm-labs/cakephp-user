@@ -121,14 +121,11 @@ class UsersTableTest extends TestCase
         $this->assertTrue((new DefaultPasswordHasher())->check('rosebud1', $user->password));
 
         // test with valid username and password + extra data
-        $data = ['username' => 'test3', 'password1' => 'rosebud1', 'password2' => 'rosebud1', 'first_name' => 'Foo', 'last_name' => 'Bar'];
+        $data = ['username' => 'test3', 'password1' => 'rosebud1', 'password2' => 'rosebud1'];
         $user = $this->Users->register($data);
         $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
         $this->assertEmpty($user->errors());
         $this->assertNotEmpty($user->id);
-        $this->assertEquals($data['first_name'], $user->first_name);
-        $this->assertEquals($data['last_name'], $user->last_name);
-        $this->assertEquals(sprintf("%s %s",$data['first_name'], $data['last_name']), $user->name);
         $this->assertTrue((new DefaultPasswordHasher())->check('rosebud1', $user->password));
     }
 
