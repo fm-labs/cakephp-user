@@ -2,7 +2,6 @@
 
 namespace User\Event;
 
-
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Log\Log;

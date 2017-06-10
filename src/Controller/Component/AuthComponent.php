@@ -75,7 +75,6 @@ class AuthComponent extends CakeAuthComponent
         // attempt to identify user (any request method)
         $user = $this->identify();
         if ($user) {
-
             // dispatch 'User.login' event
             $event = new Event('User.login', $this, [
                 'user' => $user,
@@ -127,6 +126,7 @@ class AuthComponent extends CakeAuthComponent
             'request' => $this->request
         ]);
         $this->eventManager()->dispatch($event);
+
         return parent::logout();
     }
 

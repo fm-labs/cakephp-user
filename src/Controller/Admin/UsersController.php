@@ -27,18 +27,20 @@ class UsersController extends AppController
         ];
 
         $this->set('fields', [
-            'username' => ['formatter' => function($val, $row, $args, $view) {
+            'username' => ['formatter' => function ($val, $row, $args, $view) {
                 return $view->Html->link(
                     $val,
-                    ['action' => 'edit', $row->id]);
+                    ['action' => 'edit', $row->id]
+                );
             }],
-           'primary_group.name' => ['formatter' => function($val, $row, $args, $view) {
-               if ($row->primary_group) {
-                   return $view->Html->link(
-                       $row->primary_group->name,
-                       ['plugin' => 'User', 'controller' => 'UserGroups', 'action' => 'edit', $row->primary_group->id]);
-               }
-           }]
+            'primary_group.name' => ['formatter' => function ($val, $row, $args, $view) {
+                if ($row->primary_group) {
+                    return $view->Html->link(
+                        $row->primary_group->name,
+                        ['plugin' => 'User', 'controller' => 'UserGroups', 'action' => 'edit', $row->primary_group->id]
+                    );
+                }
+            }]
         ]);
         $this->set('fields.whitelist', ['id', 'display_name', 'primary_group.name', 'username', 'email', 'login_enabled']);
 
@@ -80,10 +82,11 @@ class UsersController extends AppController
         if ($this->request->is('post')) {
             $user = $this->Users->add($this->request->data);
             if ($user->id) {
-                $this->Flash->success(__d('user','The {0} has been saved.', __d('user','user')));
+                $this->Flash->success(__d('user', 'The {0} has been saved.', __d('user', 'user')));
+
                 return $this->redirect(['action' => 'edit', $user->id]);
             } else {
-                $this->Flash->error(__d('user','The {0} could not be saved. Please, try again.', __d('user','user')));
+                $this->Flash->error(__d('user', 'The {0} could not be saved. Please, try again.', __d('user', 'user')));
             }
         }
         $primaryGroup = $this->Users->PrimaryGroup->find('list', ['limit' => 200]);
@@ -108,10 +111,11 @@ class UsersController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($user)) {
-                $this->Flash->success(__d('user','The {0} has been saved.', __d('user','user')));
+                $this->Flash->success(__d('user', 'The {0} has been saved.', __d('user', 'user')));
+
                 return $this->redirect(['action' => 'index']);
             } else {
-                $this->Flash->error(__d('user','The {0} could not be saved. Please, try again.', __d('user','user')));
+                $this->Flash->error(__d('user', 'The {0} could not be saved. Please, try again.', __d('user', 'user')));
             }
         }
         $primaryGroup = $this->Users->PrimaryGroup->find('list', ['limit' => 200]);
@@ -132,10 +136,11 @@ class UsersController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
         if ($this->Users->delete($user)) {
-            $this->Flash->success(__d('user','The {0} has been deleted.', __d('user','user')));
+            $this->Flash->success(__d('user', 'The {0} has been deleted.', __d('user', 'user')));
         } else {
-            $this->Flash->error(__d('user','The {0} could not be deleted. Please, try again.', __d('user','user')));
+            $this->Flash->error(__d('user', 'The {0} could not be deleted. Please, try again.', __d('user', 'user')));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 
@@ -149,17 +154,18 @@ class UsersController extends AppController
         if ($userId === null) {
             $userId = $this->Auth->user('id');
         } elseif ($userId !== $this->Auth->user('id')) {
-            $this->Flash->error(__d('user','You are not allowed to do this'));
+            $this->Flash->error(__d('user', 'You are not allowed to do this'));
+
             return $this->redirect($this->referer(['action' => 'index']));
         }
 
         $user = $this->Users->get($userId);
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Users->changePassword($user, $this->request->data)) {
-                $this->Flash->success(__d('user','Your password has been changed.'));
+                $this->Flash->success(__d('user', 'Your password has been changed.'));
                 $this->redirect(['action' => 'index']);
             } else {
-                $this->Flash->error(__d('user','Ups, something went wrong'));
+                $this->Flash->error(__d('user', 'Ups, something went wrong'));
             }
         }
         $this->set('user', $user);
@@ -176,20 +182,20 @@ class UsersController extends AppController
         if ($userId === null) {
             $userId = $authUserId;
         } elseif ($userId !== $authUserId && $authUserId !== 1) {
-            $this->Flash->error(__d('user','Only root can do this'));
+            $this->Flash->error(__d('user', 'Only root can do this'));
+
             return $this->redirect($this->referer(['action' => 'index']));
         }
 
         $user = $this->Users->get($userId);
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Users->resetPassword($user, $this->request->data)) {
-                $this->Flash->success(__d('user','Your password has been changed.'));
+                $this->Flash->success(__d('user', 'Your password has been changed.'));
                 $this->redirect(['action' => 'index']);
             } else {
-                $this->Flash->error(__d('user','Ups, something went wrong'));
+                $this->Flash->error(__d('user', 'Ups, something went wrong'));
             }
         }
         $this->set('user', $user);
     }
-
 }

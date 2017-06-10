@@ -1,5 +1,6 @@
 <?php
 namespace User\Controller\Admin;
+
 use Backend\Controller\BackendActionsTrait;
 use Cake\Controller\Controller;
 
@@ -29,10 +30,11 @@ class UserGroupsController extends AppController
         if ($this->request->is('post')) {
             $userGroup = $this->Groups->patchEntity($userGroup, $this->request->data);
             if ($this->Groups->save($userGroup)) {
-                $this->Flash->success(__d('user','The {0} has been saved.', __d('user','user group')));
+                $this->Flash->success(__d('user', 'The {0} has been saved.', __d('user', 'user group')));
+
                 return $this->redirect(['action' => 'index']);
             } else {
-                $this->Flash->error(__d('user','The {0} could not be saved. Please, try again.', __d('user','user group')));
+                $this->Flash->error(__d('user', 'The {0} could not be saved. Please, try again.', __d('user', 'user group')));
             }
         }
         $this->set(compact('userGroup'));
@@ -54,10 +56,11 @@ class UserGroupsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $userGroup = $this->Groups->patchEntity($userGroup, $this->request->data);
             if ($this->Groups->save($userGroup)) {
-                $this->Flash->success(__d('user','The {0} has been saved.', __d('user','user group')));
+                $this->Flash->success(__d('user', 'The {0} has been saved.', __d('user', 'user group')));
+
                 return $this->redirect(['action' => 'index']);
             } else {
-                $this->Flash->error(__d('user','The {0} could not be saved. Please, try again.', __d('user','user group')));
+                $this->Flash->error(__d('user', 'The {0} could not be saved. Please, try again.', __d('user', 'user group')));
             }
         }
         $this->set(compact('userGroup'));
@@ -76,10 +79,11 @@ class UserGroupsController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $userGroup = $this->Groups->get($id);
         if ($this->Groups->delete($userGroup)) {
-            $this->Flash->success(__d('user','The {0} has been deleted.', __d('user','user group')));
+            $this->Flash->success(__d('user', 'The {0} has been deleted.', __d('user', 'user group')));
         } else {
-            $this->Flash->error(__d('user','The {0} could not be deleted. Please, try again.', __d('user','user group')));
+            $this->Flash->error(__d('user', 'The {0} could not be deleted. Please, try again.', __d('user', 'user group')));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

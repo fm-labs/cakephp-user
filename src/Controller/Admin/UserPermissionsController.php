@@ -49,10 +49,11 @@ class PermissionsController extends AppController
         if ($this->request->is('post')) {
             $permission = $this->Permissions->patchEntity($permission, $this->request->data);
             if ($this->Permissions->save($permission)) {
-                $this->Flash->success(__d('user','The {0} has been saved.', __d('user','permission')));
+                $this->Flash->success(__d('user', 'The {0} has been saved.', __d('user', 'permission')));
+
                 return $this->redirect(['action' => 'index']);
             } else {
-                $this->Flash->error(__d('user','The {0} could not be saved. Please, try again.', __d('user','permission')));
+                $this->Flash->error(__d('user', 'The {0} could not be saved. Please, try again.', __d('user', 'permission')));
             }
         }
         $this->set(compact('permission'));
@@ -74,10 +75,11 @@ class PermissionsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $permission = $this->Permissions->patchEntity($permission, $this->request->data);
             if ($this->Permissions->save($permission)) {
-                $this->Flash->success(__d('user','The {0} has been saved.', __d('user','permission')));
+                $this->Flash->success(__d('user', 'The {0} has been saved.', __d('user', 'permission')));
+
                 return $this->redirect(['action' => 'index']);
             } else {
-                $this->Flash->error(__d('user','The {0} could not be saved. Please, try again.', __d('user','permission')));
+                $this->Flash->error(__d('user', 'The {0} could not be saved. Please, try again.', __d('user', 'permission')));
             }
         }
         $this->set(compact('permission'));
@@ -96,10 +98,11 @@ class PermissionsController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $permission = $this->Permissions->get($id);
         if ($this->Permissions->delete($permission)) {
-            $this->Flash->success(__d('user','The {0} has been deleted.', __d('user','permission')));
+            $this->Flash->success(__d('user', 'The {0} has been deleted.', __d('user', 'permission')));
         } else {
-            $this->Flash->error(__d('user','The {0} could not be deleted. Please, try again.', __d('user','permission')));
+            $this->Flash->error(__d('user', 'The {0} could not be deleted. Please, try again.', __d('user', 'permission')));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

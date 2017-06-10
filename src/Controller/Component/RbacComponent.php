@@ -54,14 +54,12 @@ class RbacComponent extends Component
         return $this->Auth->user();
     }
 
-
     /**
      * Get user by model and id
      * @param $userId
      */
     public function getUser($userId)
     {
-
     }
 
     /**
@@ -70,7 +68,6 @@ class RbacComponent extends Component
      */
     public function getUserRoles($userId)
     {
-
     }
 
     /**
@@ -79,7 +76,6 @@ class RbacComponent extends Component
      */
     public function getUserPermissions($userId)
     {
-
     }
 
     /**
@@ -88,7 +84,6 @@ class RbacComponent extends Component
      */
     public function getRole($roleId)
     {
-
     }
 
     /**
@@ -97,7 +92,6 @@ class RbacComponent extends Component
      */
     public function getRoleUsers($roleId)
     {
-
     }
 
     /**
@@ -106,7 +100,6 @@ class RbacComponent extends Component
      */
     public function getRolePermissions($roleId)
     {
-
     }
 
     /**
@@ -115,7 +108,6 @@ class RbacComponent extends Component
      */
     public function getPermission($permId)
     {
-
     }
 
     /**
@@ -124,7 +116,6 @@ class RbacComponent extends Component
      */
     public function getPermissionRoles($permId)
     {
-
     }
 
     /**
@@ -133,16 +124,13 @@ class RbacComponent extends Component
      */
     public function getPermissionUsers($permId)
     {
-
     }
 
     public function userAddRole($user, $role)
     {
-
     }
 
     public function roleAddPermission($role, $permission)
     {
-
     }
 }

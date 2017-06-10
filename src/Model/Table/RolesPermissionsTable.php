@@ -68,6 +68,7 @@ class RolesPermissionsTable extends Table
     {
         $rules->add($rules->existsIn(['role_id'], 'Roles'));
         $rules->add($rules->existsIn(['permission_id'], 'Permissions'));
+
         return $rules;
     }
 }

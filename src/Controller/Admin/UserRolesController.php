@@ -49,10 +49,11 @@ class RolesController extends AppController
         if ($this->request->is('post')) {
             $role = $this->Roles->patchEntity($role, $this->request->data);
             if ($this->Roles->save($role)) {
-                $this->Flash->success(__d('user','The {0} has been saved.', __d('user','role')));
+                $this->Flash->success(__d('user', 'The {0} has been saved.', __d('user', 'role')));
+
                 return $this->redirect(['action' => 'index']);
             } else {
-                $this->Flash->error(__d('user','The {0} could not be saved. Please, try again.', __d('user','role')));
+                $this->Flash->error(__d('user', 'The {0} could not be saved. Please, try again.', __d('user', 'role')));
             }
         }
         $this->set(compact('role'));
@@ -74,10 +75,11 @@ class RolesController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $role = $this->Roles->patchEntity($role, $this->request->data);
             if ($this->Roles->save($role)) {
-                $this->Flash->success(__d('user','The {0} has been saved.', __d('user','role')));
+                $this->Flash->success(__d('user', 'The {0} has been saved.', __d('user', 'role')));
+
                 return $this->redirect(['action' => 'index']);
             } else {
-                $this->Flash->error(__d('user','The {0} could not be saved. Please, try again.', __d('user','role')));
+                $this->Flash->error(__d('user', 'The {0} could not be saved. Please, try again.', __d('user', 'role')));
             }
         }
         $this->set(compact('role'));
@@ -96,10 +98,11 @@ class RolesController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $role = $this->Roles->get($id);
         if ($this->Roles->delete($role)) {
-            $this->Flash->success(__d('user','The {0} has been deleted.', __d('user','role')));
+            $this->Flash->success(__d('user', 'The {0} has been deleted.', __d('user', 'role')));
         } else {
-            $this->Flash->error(__d('user','The {0} could not be deleted. Please, try again.', __d('user','role')));
+            $this->Flash->error(__d('user', 'The {0} could not be deleted. Please, try again.', __d('user', 'role')));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

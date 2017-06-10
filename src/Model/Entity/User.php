@@ -76,6 +76,7 @@ class User extends Entity
         if ($this->first_name && $this->last_name) {
             return sprintf("%s %s", $this->first_name, $this->last_name);
         }
+
         return $this->username;
     }
 
@@ -83,6 +84,7 @@ class User extends Entity
     {
         $username = base64_encode($this->username);
         $code = base64_encode($this->password_reset_code);
+
         return Router::url(['plugin' => 'User', 'controller' => 'User', 'action' => 'passwordreset', 'u' => $username, 'c' => $code], true);
     }
 
@@ -91,6 +93,7 @@ class User extends Entity
         if (self::$passwordHasherClass === false) {
             return $password;
         }
+
         return $this->getPasswordHasher()->hash($password);
     }
 

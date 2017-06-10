@@ -68,6 +68,7 @@ class RolesUsersTable extends Table
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['role_id'], 'Roles'));
+
         return $rules;
     }
 }

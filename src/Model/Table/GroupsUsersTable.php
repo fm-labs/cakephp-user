@@ -62,6 +62,7 @@ class GroupsUsersTable extends Table
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['group_id'], 'Groups'));
+
         return $rules;
     }
 }

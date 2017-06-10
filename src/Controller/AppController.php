@@ -28,8 +28,6 @@ class AppController extends BaseAppController
         if (!$this->Auth instanceof UserAuthComponent) {
             throw new Exception('User: AuthComponent is not an instance of User.AuthComponent');
         }
-
-
     }
 
     public function beforeFilter(Event $event)
@@ -37,5 +35,4 @@ class AppController extends BaseAppController
         parent::beforeFilter($event);
         //$this->Users = $this->Auth->userModel();
     }
-
 }

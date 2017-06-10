@@ -27,7 +27,6 @@ class PermissionsTable extends Table
         $this->table('user_permissions');
         $this->displayField('name');
         $this->primaryKey('id');
-
     }
 
     /**

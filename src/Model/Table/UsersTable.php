@@ -48,7 +48,7 @@ class UsersTable extends Table
     //public static $rolesModel = 'User.Roles';
     //public static $permissionsModel = 'User.Permissions';
 
-    
+
     /**
      * Initialize method
      *
@@ -178,6 +178,7 @@ class UsersTable extends Table
         $rules->add($rules->isUnique(['username']));
         $rules->add($rules->isUnique(['email']));
         $rules->add($rules->existsIn(['group_id'], 'Groups'));
+
         return $rules;
     }
 
@@ -239,6 +240,7 @@ class UsersTable extends Table
         if ($this->save($user)) {
             Log::info('User added with ID ' . $user->id);
         }
+
         return $user;
     }
 
@@ -262,22 +264,21 @@ class UsersTable extends Table
             ->add('password1', 'password', [
                 'rule' => 'validateNewPassword1',
                 'provider' => 'table',
-                'message' => __d('user','Invalid password')
+                'message' => __d('user', 'Invalid password')
             ])
             ->requirePresence('password2', 'create')
             ->notEmpty('password2')
             ->add('password2', 'password', [
                 'rule' => 'validateNewPassword2',
                 'provider' => 'table',
-                'message' => __d('user','Passwords do not match')
+                'message' => __d('user', 'Passwords do not match')
             ])
             ->add('login_enabled', 'valid', ['rule' => 'boolean']);
-
 
         if (static::$emailAsUsername) {
             $validator->add('username', 'email', [
                 'rule' => ['email'],
-                'message' => __d('user','The provided email address is invalid')
+                'message' => __d('user', 'The provided email address is invalid')
             ]);
         }
 
@@ -345,9 +346,8 @@ class UsersTable extends Table
         $user->accessible('login_enabled', false);
 
         if (!empty($data)) {
-
             // no login
-            $noLogin = (isset($data['_nologin'])) ? (bool) $data['_nologin'] : false;
+            $noLogin = (isset($data['_nologin'])) ? (bool)$data['_nologin'] : false;
             if ($noLogin) {
                 $data['login_enabled'] = false;
 
@@ -416,32 +416,32 @@ class UsersTable extends Table
             ->notEmpty('username')
             ->add('email', 'email', [
                 'rule' => ['email'],
-                'message' => __d('user','The provided email address is invalid')
+                'message' => __d('user', 'The provided email address is invalid')
             ])
             ->requirePresence('password1', 'create')
             ->notEmpty('password1')
             ->add('password1', 'password', [
                 'rule' => 'validateNewPassword1',
                 'provider' => 'table',
-                'message' => __d('user','Invalid password')
+                'message' => __d('user', 'Invalid password')
             ])
             ->requirePresence('password2', 'create')
             ->notEmpty('password2')
             ->add('password2', 'password', [
                 'rule' => 'validateNewPassword2',
                 'provider' => 'table',
-                'message' => __d('user','Passwords do not match')
+                'message' => __d('user', 'Passwords do not match')
             ])
-            ->add('login_enabled', 'valid', ['rule' => 'boolean'])
+            ->add('login_enabled', 'valid', ['rule' => 'boolean']);
             //->requirePresence('login_enabled', 'create')
             //->notEmpty('login_enabled')
-        ;
+
 
         if (static::$emailAsUsername) {
             // email validation for 'username'
             $validator->add('username', 'email', [
                 'rule' => ['email'],
-                'message' => __d('user','The provided email address is invalid')
+                'message' => __d('user', 'The provided email address is invalid')
             ]);
             // require 'email'
             $validator->requirePresence('email', 'create')
@@ -473,20 +473,22 @@ class UsersTable extends Table
 
         // validate current password
         if (!$user->getPasswordHasher()->check($data['password0'], $user->password)) {
-            $user->errors('password0', ['password' => __d('user','This is not your current password')]);
+            $user->errors('password0', ['password' => __d('user', 'This is not your current password')]);
             unset($user->password0);
             unset($user->password1);
             unset($user->password2);
+
             return false;
         }
 
         // new password should not match current password
         if (strcmp($user->password0, $user->password1) === 0) {
             $user->errors('password1', [
-                'password' => __d('user','This is your current password. Please create a new one!')
+                'password' => __d('user', 'This is your current password. Please create a new one!')
             ]);
             unset($user->password1);
             unset($user->password2);
+
             return false;
         }
 
@@ -521,14 +523,14 @@ class UsersTable extends Table
             ->add('password1', 'password', [
                 'rule' => 'validateNewPassword1',
                 'provider' => 'table',
-                'message' => __d('user','Invalid password')
+                'message' => __d('user', 'Invalid password')
             ])
             ->requirePresence('password2', 'create')
             ->notEmpty('password2')
             ->add('password2', 'password', [
                 'rule' => 'validateNewPassword2',
                 'provider' => 'table',
-                'message' => __d('user','Passwords do not match')
+                'message' => __d('user', 'Passwords do not match')
             ]);
 
         return $validator;
@@ -547,10 +549,12 @@ class UsersTable extends Table
         $resetCode = (isset($data['password_reset_code'])) ? $data['password_reset_code'] : null;
         if (!$username) {
             $user->errors('username', ['This is a required field']);
+
             return false;
         }
         if (!$resetCode) {
             $user->errors('password_reset_code', ['This is a required field']);
+
             return false;
         }
 
@@ -560,6 +564,7 @@ class UsersTable extends Table
         ])->first();
         if (!$_user) {
             $user->errors('username', ['User not found']);
+
             return false;
         }
         if ($_user->password_reset_expiry_timestamp && Chronos::now()->gt($_user->password_reset_expiry_timestamp)) {
@@ -612,14 +617,14 @@ class UsersTable extends Table
             ->add('password1', 'password', [
                 'rule' => 'validateNewPassword1',
                 'provider' => 'table',
-                'message' => __d('user','Invalid password')
+                'message' => __d('user', 'Invalid password')
             ])
             ->requirePresence('password2', 'create')
             ->notEmpty('password2')
             ->add('password2', 'password', [
                 'rule' => 'validateNewPassword2',
                 'provider' => 'table',
-                'message' => __d('user','Passwords do not match')
+                'message' => __d('user', 'Passwords do not match')
             ]);
 
         return $validator;
@@ -638,17 +643,17 @@ class UsersTable extends Table
 
         // Check password length
         if (strlen($value) < static::$minPasswordLength) {
-            return __d('user','Password too short. Minimum {0} characters', static::$minPasswordLength);
+            return __d('user', 'Password too short. Minimum {0} characters', static::$minPasswordLength);
         }
 
         // Check for illegal characters
         if (!preg_match(static::$passwordRegex, $value)) {
-            return __d('user','Password contains illegal characters');
+            return __d('user', 'Password contains illegal characters');
         }
 
         // Check for weak password
         if (isset($context['data']['username']) && $value == $context['data']['username']) {
-            return __d('user','Password can not be the same as your username');
+            return __d('user', 'Password can not be the same as your username');
         }
 
         return true;
@@ -683,18 +688,20 @@ class UsersTable extends Table
      * @param bool|true $dispatchEvent
      * @return bool|mixed|User
      */
-    public function forgotPassword(User &$user, $data = array(), $dispatchEvent = true)
+    public function forgotPassword(User &$user, $data = [], $dispatchEvent = true)
     {
         $username = ($data['username']) ? $data['username'] : null;
         if (!$username) {
-            $user->errors('username', ['required' => __d('user','This is a required field')]);
+            $user->errors('username', ['required' => __d('user', 'This is a required field')]);
+
             return false;
         }
 
         $_user = $this->find()->where(['username' => $username])->first();
         if (!$_user) {
             $user->username = "";
-            $user->errors('username', ['notfound' => __d('user','User "{0}" not found', h($username))]);
+            $user->errors('username', ['notfound' => __d('user', 'User "{0}" not found', h($username))]);
+
             return $user;
         }
 
@@ -708,6 +715,7 @@ class UsersTable extends Table
         if ($dispatchEvent === true) {
             $event = $this->eventManager()->dispatch(new Event('User.Model.User.passwordForgotten', $user));
         }
+
         return $user;
     }
 
@@ -736,13 +744,14 @@ class UsersTable extends Table
      *                         to select from
      * @return string
      */
-    static public function random_str($length, $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    public static function random_str($length, $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
     {
         $str = '';
         $max = mb_strlen($keyspace, '8bit') - 1;
         for ($i = 0; $i < $length; ++$i) {
             $str .= $keyspace[random_int(0, $max)];
         }
+
         return $str;
     }
 }

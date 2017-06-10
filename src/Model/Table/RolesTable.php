@@ -27,7 +27,6 @@ class RolesTable extends Table
         $this->table('user_roles');
         $this->displayField('name');
         $this->primaryKey('id');
-
     }
 
     /**
