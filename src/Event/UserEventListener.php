@@ -17,40 +17,43 @@ class UserEventListener implements EventListenerInterface
     /**
      * @param Event $event
      * @param array $context
+     * @return void
      */
     protected function _logEvent(Event $event, array $context = ['user'])
     {
-        Log::info(sprintf("%s [User:%s]", $event->name(), $event->subject()->id), $context);
+        Log::info(sprintf("[User:%s] %s", $event->subject()->id, $event->name()), $context);
     }
 
     /**
      * @param Event $event
+     * @return void
      */
-    public function onEvent(Event $event)
+    public function onRegister(Event $event)
     {
         $this->_logEvent($event);
     }
 
     /**
      * @param Event $event
+     * @return void
      */
     public function onLogin(Event $event)
     {
         $this->_logEvent($event);
-        Log::info(sprintf("[login][user:%s]", $event->subject()->id), ['auth']);
     }
 
     /**
      * @param Event $event
+     * @return void
      */
     public function onLogout(Event $event)
     {
         $this->_logEvent($event);
-        Log::info(sprintf("[logout][user:%s]", $event->subject()->id), ['auth']);
     }
 
     /**
      * @param Event $event
+     * @return void
      */
     public function onPasswordForgotten(Event $event)
     {
@@ -62,6 +65,7 @@ class UserEventListener implements EventListenerInterface
 
     /**
      * @param Event $event
+     * @return void
      */
     public function onPasswordReset(Event $event)
     {
@@ -79,7 +83,7 @@ class UserEventListener implements EventListenerInterface
         return [
             'User.Model.User.passwordForgotten' => 'onPasswordForgotten',
             'User.Model.User.passwordReset'     => 'onPasswordReset',
-            'User.Model.User.register'          => 'onEvent',
+            'User.Model.User.register'          => 'onRegister',
             'User.login'                        => 'onLogin',
             'User.logout'                       => 'onLogout',
         ];

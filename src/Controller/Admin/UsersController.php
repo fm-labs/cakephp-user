@@ -8,8 +8,14 @@ namespace User\Controller\Admin;
  */
 class UsersController extends AppController
 {
+    /**
+     * @var string
+     */
     public $modelClass = 'User.Users';
 
+    /**
+     * @var array
+     */
     public $actions = [
         'index' => 'Backend.Index',
         'view' => 'Backend.View'
@@ -45,10 +51,6 @@ class UsersController extends AppController
         $this->set('fields.whitelist', ['id', 'display_name', 'primary_group.name', 'username', 'email', 'login_enabled']);
 
         $this->Backend->executeAction();
-        /*
-        $this->set('users', $this->paginate($this->Users));
-        $this->set('_serialize', ['users']);
-        */
     }
 
     /**

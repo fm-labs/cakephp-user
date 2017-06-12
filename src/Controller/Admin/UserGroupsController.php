@@ -1,9 +1,6 @@
 <?php
 namespace User\Controller\Admin;
 
-use Backend\Controller\BackendActionsTrait;
-use Cake\Controller\Controller;
-
 /**
  * Groups Controller
  *
@@ -11,9 +8,14 @@ use Cake\Controller\Controller;
  */
 class UserGroupsController extends AppController
 {
-
+    /**
+     * @var string
+     */
     public $modelClass = 'User.Groups';
 
+    /**
+     * @var array
+     */
     public $actions = [
         'index' => 'Backend.Index',
         'view' => 'Backend.View'

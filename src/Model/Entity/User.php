@@ -85,8 +85,8 @@ class User extends Entity
      */
     protected function _getDisplayName()
     {
-        if ($this->first_name && $this->last_name) {
-            return sprintf("%s %s", $this->first_name, $this->last_name);
+        if ($this->name) {
+            return $this->name;
         }
 
         return $this->username;

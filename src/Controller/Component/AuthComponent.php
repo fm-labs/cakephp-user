@@ -11,11 +11,9 @@ use User\Model\Table\UsersTable;
 use Cake\ORM\TableRegistry;
 
 /**
- * Plugin User
  * Class AuthComponent
  *
  * @package User\Controller\Component
- *
  * @property FlashComponent $Flash
  */
 class AuthComponent extends CakeAuthComponent
@@ -25,6 +23,10 @@ class AuthComponent extends CakeAuthComponent
      */
     public $Users;
 
+    /**
+     * @param ComponentRegistry $registry
+     * @param array $config
+     */
     public function __construct(ComponentRegistry $registry, array $config = [])
     {
         // Inject additional config values
@@ -33,6 +35,10 @@ class AuthComponent extends CakeAuthComponent
         parent::__construct($registry, $config);
     }
 
+    /**
+     * @param array $config
+     * @return void
+     */
     public function initialize(array $config)
     {
         parent::initialize($config);
@@ -137,21 +143,5 @@ class AuthComponent extends CakeAuthComponent
     public function userModel()
     {
         return TableRegistry::get($this->config('userModel'));
-    }
-
-    /**
-     * @deprecated Use login() method instead
-     */
-    public function userLogin()
-    {
-        $this->login();
-    }
-
-    /**
-     * @deprecated Use logout() method instead
-     */
-    public function userLogout()
-    {
-        $this->logout();
     }
 }

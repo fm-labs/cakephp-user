@@ -3,6 +3,7 @@
 namespace User\Controller\Component;
 
 use Cake\Controller\Component;
+use Cake\Network\Exception\NotImplementedException;
 use Cake\ORM\TableRegistry;
 use User\Model\Table\PermissionsTable;
 use User\Model\Table\RolesTable;
@@ -10,13 +11,20 @@ use User\Model\Table\UsersTable;
 
 /**
  * Class RbacComponent
+ *
  * @package User\Controller\Component
  * @property AuthComponent $Auth
  */
 class RbacComponent extends Component
 {
+    /**
+     * @var array
+     */
     public $components = ['Auth'];
 
+    /**
+     * @var array
+     */
     protected $_defaultConfig = [
         'users_table' => 'User.Users',
         'roles_table' => 'User.Roles',
@@ -38,6 +46,9 @@ class RbacComponent extends Component
      */
     public $Permissions;
 
+    /**
+     * {@inheritDoc}
+     */
     public function initialize(array $config)
     {
         $this->Users = TableRegistry::get($this->config('users_table'));
@@ -60,6 +71,7 @@ class RbacComponent extends Component
      */
     public function getUser($userId)
     {
+        throw new NotImplementedException(__CLASS__ . '::' . __FUNCTION__ . "() not implemented yet");
     }
 
     /**
@@ -68,6 +80,7 @@ class RbacComponent extends Component
      */
     public function getUserRoles($userId)
     {
+        throw new NotImplementedException(__CLASS__ . '::' . __FUNCTION__ . "() not implemented yet");
     }
 
     /**
@@ -76,6 +89,7 @@ class RbacComponent extends Component
      */
     public function getUserPermissions($userId)
     {
+        throw new NotImplementedException(__CLASS__ . '::' . __FUNCTION__ . "() not implemented yet");
     }
 
     /**
@@ -84,6 +98,7 @@ class RbacComponent extends Component
      */
     public function getRole($roleId)
     {
+        throw new NotImplementedException(__CLASS__ . '::' . __FUNCTION__ . "() not implemented yet");
     }
 
     /**
@@ -92,6 +107,7 @@ class RbacComponent extends Component
      */
     public function getRoleUsers($roleId)
     {
+        throw new NotImplementedException(__CLASS__ . '::' . __FUNCTION__ . "() not implemented yet");
     }
 
     /**
@@ -100,6 +116,7 @@ class RbacComponent extends Component
      */
     public function getRolePermissions($roleId)
     {
+        throw new NotImplementedException(__CLASS__ . '::' . __FUNCTION__ . "() not implemented yet");
     }
 
     /**
@@ -108,6 +125,7 @@ class RbacComponent extends Component
      */
     public function getPermission($permId)
     {
+        throw new NotImplementedException(__CLASS__ . '::' . __FUNCTION__ . "() not implemented yet");
     }
 
     /**
@@ -116,6 +134,7 @@ class RbacComponent extends Component
      */
     public function getPermissionRoles($permId)
     {
+        throw new NotImplementedException(__CLASS__ . '::' . __FUNCTION__ . "() not implemented yet");
     }
 
     /**
@@ -124,13 +143,24 @@ class RbacComponent extends Component
      */
     public function getPermissionUsers($permId)
     {
+        throw new NotImplementedException(__CLASS__ . '::' . __FUNCTION__ . "() not implemented yet");
     }
 
+    /**
+     * @param $user
+     * @param $role
+     */
     public function userAddRole($user, $role)
     {
+        throw new NotImplementedException(__CLASS__ . '::' . __FUNCTION__ . "() not implemented yet");
     }
 
+    /**
+     * @param $role
+     * @param $permission
+     */
     public function roleAddPermission($role, $permission)
     {
+        throw new NotImplementedException(__CLASS__ . '::' . __FUNCTION__ . "() not implemented yet");
     }
 }

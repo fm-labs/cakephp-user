@@ -9,8 +9,8 @@ use User\Model\Table\UsersTable;
 
 /**
  * Class AppController
- * @package User\Controller
  *
+ * @package User\Controller
  * @property UsersTable $Users
  * @property UserAuthComponent $Auth
  */

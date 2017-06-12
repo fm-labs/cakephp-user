@@ -9,8 +9,8 @@ use User\Model\Table\UsersTable;
 
 /**
  * Class RegistrationController
- * @package User\Controller
  *
+ * @package User\Controller
  * @property UsersTable $Users
  * @property GroupsTable $Groups
  */

@@ -1,8 +1,6 @@
 <?php
 namespace User\Controller\Admin;
 
-use User\Controller\Admin\AppController;
-
 /**
  * Permissions Controller
  *
@@ -10,7 +8,6 @@ use User\Controller\Admin\AppController;
  */
 class PermissionsController extends AppController
 {
-
     /**
      * Index method
      *
