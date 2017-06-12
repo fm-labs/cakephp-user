@@ -6,7 +6,6 @@ use Cake\Core\Configure;
 use Cake\Core\Exception\Exception;
 use User\Controller\Component\AuthComponent as UserAuthComponent;
 use User\Model\Table\UsersTable;
-use Cake\Event\Event;
 
 /**
  * Class AppController
@@ -17,7 +16,9 @@ use Cake\Event\Event;
  */
 class AppController extends BaseAppController
 {
-
+    /**
+     * {@inheritDoc}
+     */
     public function initialize()
     {
         parent::initialize();
@@ -28,11 +29,5 @@ class AppController extends BaseAppController
         if (!$this->Auth instanceof UserAuthComponent) {
             throw new Exception('User: AuthComponent is not an instance of User.AuthComponent');
         }
-    }
-
-    public function beforeFilter(Event $event)
-    {
-        parent::beforeFilter($event);
-        //$this->Users = $this->Auth->userModel();
     }
 }

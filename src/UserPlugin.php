@@ -4,11 +4,12 @@ namespace User;
 
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
+use Cake\Event\EventManager;
 use Cake\Routing\Router;
+use User\Event\UserEventListener;
 
 class UserPlugin implements EventListenerInterface
 {
-
     /**
      * Returns a list of events this object is implementing. When the class is registered
      * in an event manager, each individual method will be associated with the respective event.
@@ -26,6 +27,9 @@ class UserPlugin implements EventListenerInterface
         ];
     }
 
+    /**
+     * @param Event $event
+     */
     public function getSettings(Event $event)
     {
         $event->result['User'] = [
@@ -47,14 +51,21 @@ class UserPlugin implements EventListenerInterface
         ];
     }
 
-    public function buildBackendRoutes()
+    /**
+     * @param Event $event
+     */
+    public function buildBackendRoutes(Event $event)
     {
-        Router::scope('/user/admin', ['plugin' => 'User', 'prefix' => 'admin', '_namePrefix' => 'user:admin:'], function ($routes) {
-            //$routes->connect('/:controller');
-            $routes->fallbacks('DashedRoute');
-        });
+        Router::scope('/user/admin', ['plugin' => 'User', 'prefix' => 'admin', '_namePrefix' => 'user:admin:'],
+            function ($routes) {
+                //$routes->connect('/:controller');
+                $routes->fallbacks('DashedRoute');
+            });
     }
 
+    /**
+     * @param Event $event
+     */
     public function getBackendMenu(Event $event)
     {
         $event->subject()->addItem([
@@ -64,8 +75,11 @@ class UserPlugin implements EventListenerInterface
         ]);
     }
 
+    /**
+     *
+     */
     public function __invoke()
     {
-        \Cake\Event\EventManager::instance()->on(new \User\Event\UserEventListener());
+        EventManager::instance()->on(new UserEventListener());
     }
 }

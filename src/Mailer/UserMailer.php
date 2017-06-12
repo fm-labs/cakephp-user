@@ -1,13 +1,17 @@
 <?php
 namespace User\Mailer;
 
-use Cake\Log\Log;
 use Banana\Mailer\BananaMailer;
+use Cake\Log\Log;
 use User\Model\Entity\User;
 
+/**
+ * Class UserMailer
+ *
+ * @package User\Mailer
+ */
 class UserMailer extends BananaMailer
 {
-
     /**
      * Password forgotten email with password reset link
      *

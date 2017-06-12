@@ -6,6 +6,11 @@ use Cake\Auth\BaseAuthorize;
 use Cake\Controller\ComponentRegistry;
 use Cake\Network\Request;
 
+/**
+ * Class RolesAuthorize
+ *
+ * @package User\Auth
+ */
 class RolesAuthorize extends BaseAuthorize
 {
     /**
@@ -28,7 +33,7 @@ class RolesAuthorize extends BaseAuthorize
      */
     public function authorize($user, Request $request)
     {
-        debug($user);
+        //@TODO Implemented RolesAuthorize::authorize() method
         /*
         $modelName = 'Users';
         $modelId = $user['id'];

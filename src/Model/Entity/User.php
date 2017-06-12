@@ -7,13 +7,12 @@ use Cake\Routing\Router;
 
 /**
  * User Entity.
- *
- * @property string first_name
- * @property string last_name
  */
 class User extends Entity
 {
-
+    /**
+     * @var string
+     */
     public static $passwordHasherClass = 'Cake\\Auth\\DefaultPasswordHasher';
 
     /**
@@ -22,6 +21,7 @@ class User extends Entity
      * @var array
      */
     protected $_accessible = [
+        'id' => false,
         'superuser' => false,
         'name' => false,
         'group_id' => false,
@@ -54,6 +54,9 @@ class User extends Entity
         'groups' => false,
     ];
 
+    /**
+     * @var array
+     */
     protected $_virtual = [
         'display_name',
         'is_root',
@@ -61,16 +64,25 @@ class User extends Entity
         'password_reset_url'
     ];
 
+    /**
+     * @return bool
+     */
     protected function _getIsRoot()
     {
         return ($this->username === 'root');
     }
 
+    /**
+     * @return bool
+     */
     protected function _getIsSuperuser()
     {
         return ($this->superuser || $this->username === 'root');
     }
 
+    /**
+     * @return null|string
+     */
     protected function _getDisplayName()
     {
         if ($this->first_name && $this->last_name) {
@@ -80,6 +92,10 @@ class User extends Entity
         return $this->username;
     }
 
+    /**
+     * @return string
+     * @todo Move url creation to controller (SOC)
+     */
     protected function _getPasswordResetUrl()
     {
         $username = base64_encode($this->username);
@@ -88,6 +104,10 @@ class User extends Entity
         return Router::url(['plugin' => 'User', 'controller' => 'User', 'action' => 'passwordreset', 'u' => $username, 'c' => $code], true);
     }
 
+    /**
+     * @param $password
+     * @return string
+     */
     protected function _setPassword($password)
     {
         if (self::$passwordHasherClass === false) {

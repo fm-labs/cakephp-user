@@ -16,9 +16,15 @@ use User\Model\Table\UsersTable;
  */
 class UserController extends AppController
 {
-
+    /**
+     * @var string
+     */
     public $modelClass = "User.Users";
 
+    /**
+     * @param Event $event
+     * @return \Cake\Network\Response|null|void
+     */
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
@@ -36,7 +42,6 @@ class UserController extends AppController
      */
     public function login()
     {
-
         if ($this->request->query('goto')) {
             //@TODO Check if goto URL is within app scope and/or use a token
             $this->request->session()->write('Auth.redirect', urldecode($this->request->query('goto')));
@@ -140,6 +145,9 @@ class UserController extends AppController
         $this->set('_serialize', ['user']);
     }
 
+    /**
+     * Group registration
+     */
     public function registerGroup()
     {
         if ($this->request->is(['put', 'post'])) {
