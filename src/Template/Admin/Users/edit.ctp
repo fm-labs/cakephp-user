@@ -22,12 +22,7 @@
     ['data-icon' => 'plus']
 ); ?>
 <div class="backend user">
-    <h2 class="ui header">
-        <?= __d('user','Edit {0}', __d('user','User')) ?>
-    </h2>
-    <?= $this->Form->create($user); ?>
-    <div class="users ui attached segment">
-        <div class="ui form">
+    <?= $this->Form->create($user, ['horizontal' => true]); ?>
         <?php
         echo $this->Form->input('superuser');
         echo $this->Form->input('group_id', ['options' => $primaryGroup, 'empty' => true]);
@@ -58,11 +53,7 @@
         //echo $this->Form->input('block_datetime');
         echo $this->Form->input('groups._ids', ['options' => $userGroups]);
         ?>
-        </div>
-    </div>
-    <div class="ui bottom attached segment">
-        <?= $this->Form->button(__d('user','Submit')) ?>
-    </div>
+    <?= $this->Form->button(__d('user','Submit')) ?>
     <?= $this->Form->end() ?>
 
 </div>

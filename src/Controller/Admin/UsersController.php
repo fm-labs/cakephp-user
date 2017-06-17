@@ -48,7 +48,7 @@ class UsersController extends AppController
                 }
             }]
         ]);
-        $this->set('fields.whitelist', ['id', 'display_name', 'primary_group.name', 'username', 'email', 'login_enabled']);
+        $this->set('fields.whitelist', ['id', 'username', 'primary_group.name', 'email', 'display_name', 'login_enabled']);
 
         $this->Backend->executeAction();
     }
