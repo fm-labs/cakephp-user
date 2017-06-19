@@ -50,7 +50,7 @@ class UsersController extends AppController
         ]);
         $this->set('fields.whitelist', ['id', 'username', 'primary_group.name', 'email', 'display_name', 'login_enabled']);
 
-        $this->Backend->executeAction();
+        $this->Action->execute();
     }
 
     /**
@@ -67,7 +67,7 @@ class UsersController extends AppController
             'password_reset_url' => ['formatter' => 'link']
         ]);
         $this->set('fields.blacklist', ['password']);
-        $this->Backend->executeAction();
+        $this->Action->execute();
     }
 
     /**
