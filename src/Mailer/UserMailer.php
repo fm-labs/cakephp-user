@@ -1,8 +1,10 @@
 <?php
 namespace User\Mailer;
 
-use Banana\Mailer\BananaMailer;
+use Cake\Core\Configure;
 use Cake\Log\Log;
+use Cake\Mailer\Email;
+use Cake\Mailer\Mailer;
 use User\Model\Entity\User;
 
 /**
@@ -10,8 +12,20 @@ use User\Model\Entity\User;
  *
  * @package User\Mailer
  */
-class UserMailer extends BananaMailer
+class UserMailer extends Mailer
 {
+    /**
+     * @param Email|null $email
+     */
+    public function __construct(Email $email = null)
+    {
+        parent::__construct($email);
+
+        if (Configure::check('User.Email.profile')) {
+            $this->_email->profile(Configure::read('User.Email.profile'));
+        }
+    }
+
     /**
      * Password forgotten email with password reset link
      *
@@ -19,8 +33,6 @@ class UserMailer extends BananaMailer
      */
     public function passwordForgotten(User $user)
     {
-        Log::debug('[email] passwordf: create email');
-
         $this
             ->to($user->email)
             ->subject(__d('user', 'Password forgotten'))
