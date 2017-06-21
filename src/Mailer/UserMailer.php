@@ -2,7 +2,6 @@
 namespace User\Mailer;
 
 use Cake\Core\Configure;
-use Cake\Log\Log;
 use Cake\Mailer\Email;
 use Cake\Mailer\Mailer;
 use User\Model\Entity\User;
@@ -30,6 +29,7 @@ class UserMailer extends Mailer
      * Password forgotten email with password reset link
      *
      * @param User $user
+     * @return void
      */
     public function passwordForgotten(User $user)
     {
@@ -44,6 +44,7 @@ class UserMailer extends Mailer
      * Password reset notification email
      *
      * @param User $user
+     * @return void
      */
     public function passwordReset(User $user)
     {
