@@ -3,12 +3,12 @@ namespace User\Controller\Component;
 
 use Cake\Controller\Component\AuthComponent as CakeAuthComponent;
 use Cake\Core\Configure;
-use Cake\Event\Event;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Component\FlashComponent;
+use Cake\ORM\TableRegistry;
+use Cake\Event\Event;
 use Cake\Log\Log;
 use User\Model\Table\UsersTable;
-use Cake\ORM\TableRegistry;
 
 /**
  * Class AuthComponent
@@ -122,10 +122,11 @@ class AuthComponent extends CakeAuthComponent
 
     /**
      * Logout method
+     *
+     * @return string Redirect url
      */
     public function logout()
     {
-
         // dispatch 'User.login' event
         $event = new Event('User.logout', $this, [
             'user' => false,
