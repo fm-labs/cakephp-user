@@ -18,7 +18,9 @@ class UserGroupsController extends AppController
      */
     public $actions = [
         'index' => 'Backend.Index',
-        'view' => 'Backend.View'
+        'view' => 'Backend.View',
+        'edit' => 'Backend.Edit',
+        'delete' => 'Backend.Delete'
     ];
 
     /**

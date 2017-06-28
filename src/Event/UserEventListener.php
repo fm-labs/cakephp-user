@@ -31,24 +31,9 @@ class UserEventListener implements EventListenerInterface
     public function onRegister(Event $event)
     {
         $this->_logEvent($event);
-    }
 
-    /**
-     * @param Event $event
-     * @return void
-     */
-    public function onLogin(Event $event)
-    {
-        $this->_logEvent($event);
-    }
-
-    /**
-     * @param Event $event
-     * @return void
-     */
-    public function onLogout(Event $event)
-    {
-        $this->_logEvent($event);
+        $mailer = new UserMailer();
+        $mailer->send('userRegistration', [$event->subject()]);
     }
 
     /**
@@ -74,6 +59,25 @@ class UserEventListener implements EventListenerInterface
         $mailer = new UserMailer();
         $mailer->send('passwordReset', [$event->subject()]);
     }
+
+    /**
+     * @param Event $event
+     * @return void
+     */
+    public function onLogin(Event $event)
+    {
+        $this->_logEvent($event);
+    }
+
+    /**
+     * @param Event $event
+     * @return void
+     */
+    public function onLogout(Event $event)
+    {
+        $this->_logEvent($event);
+    }
+
 
     /**
      * @return array

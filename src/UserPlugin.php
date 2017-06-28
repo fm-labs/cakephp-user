@@ -8,6 +8,11 @@ use Cake\Event\EventManager;
 use Cake\Routing\Router;
 use User\Event\UserEventListener;
 
+/**
+ * Class UserPlugin
+ *
+ * @package User
+ */
 class UserPlugin implements EventListenerInterface
 {
     /**
@@ -72,11 +77,35 @@ class UserPlugin implements EventListenerInterface
             'title' => 'Users',
             'url' => ['plugin' => 'User', 'controller' => 'Users', 'action' => 'index'],
             'data-icon' => 'user',
+            'children' => [
+                [
+                    'title' => 'Users',
+                    'url' => ['plugin' => 'User', 'controller' => 'Users', 'action' => 'index'],
+                    'data-icon' => 'users',
+                ],
+                [
+                    'title' => 'User Groups',
+                    'url' => ['plugin' => 'User', 'controller' => 'UserGroups', 'action' => 'index'],
+                    'data-icon' => 'users',
+                ],
+                [
+                    'title' => 'User Roles',
+                    'url' => ['plugin' => 'User', 'controller' => 'UserRoles', 'action' => 'index'],
+                    'data-icon' => 'user',
+                ],
+                [
+                    'title' => 'User Permissions',
+                    'url' => ['plugin' => 'User', 'controller' => 'UserPermissions', 'action' => 'index'],
+                    'data-icon' => 'user',
+                ]
+            ]
         ]);
     }
 
     /**
+     * Run user plugin
      *
+     * @return void
      */
     public function __invoke()
     {

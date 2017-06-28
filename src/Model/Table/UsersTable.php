@@ -328,6 +328,7 @@ class UsersTable extends Table
      * Register new user with form data array
      *
      * @param array $data
+     * @param bool $dispatchEvent
      * @return User
      */
     public function register(array $data, $dispatchEvent = true)
@@ -336,14 +337,15 @@ class UsersTable extends Table
         $user->accessible('_nologin', true);
         $user->accessible('username', true);
         $user->accessible('name', true);
-        //$user->accessible('first_name', true);
-        //$user->accessible('last_name', true);
         $user->accessible('password1', true);
         $user->accessible('password2', true);
         $user->accessible('group_id', true);
         $user->accessible('email', true);
         $user->accessible('id', false);
         $user->accessible('login_enabled', false);
+        // @TODO first_name and last_name properties are deprecated
+        $user->accessible('first_name', true);
+        $user->accessible('last_name', true);
 
         if (!empty($data)) {
             // no login
@@ -368,6 +370,9 @@ class UsersTable extends Table
 
             // generate full name
             // @TODO first_name and last_name properties are deprecated
+            if (isset($data['first_name']) && isset($data['last_name'])) {
+                $data['name'] = sprintf("%s %s", $data['first_name'], $data['last_name']);
+            }
             if (!isset($data['name'])) {
                 $data['name'] = $data['username'];
             }
@@ -412,6 +417,8 @@ class UsersTable extends Table
             ->allowEmpty('id', 'create')
             ->requirePresence('name', 'create')
             ->notEmpty('name')
+            ->notEmpty('first_name')
+            ->notEmpty('last_name')
             ->requirePresence('username', 'create')
             ->notEmpty('username')
             ->add('email', 'email', [

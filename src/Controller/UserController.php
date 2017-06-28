@@ -3,6 +3,7 @@ namespace User\Controller;
 
 use Cake\Event\Event;
 use Cake\Core\Configure;
+use Cake\Network\Response;
 use Cake\Routing\Router;
 use User\Model\Table\GroupsTable;
 use User\Model\Table\UsersTable;
@@ -94,24 +95,20 @@ class UserController extends AppController
      * Register method
      * No authentication required
      *
-     * @return void Redirects on successful add, renders view otherwise.
+     * @return void|null|Response Redirects on successful add, renders view otherwise.
      */
     public function register()
     {
-        //@TODO Make user registration configurable
-        //@TODO Dispatch 'User.register' event
-
         if ($this->Auth->user('id')) {
-            $this->redirect('/');
 
-            return;
+            return $this->redirect('/');
         }
 
-        if (Configure::read('User.Signup.groupAuth') === true) {
+        // force group auth
+        if (Configure::read('User.Signup.groupAuth') == true) {
             if (!$this->request->session()->read('User.Signup.group_id')) {
-                $this->redirect(['action' => 'registerGroup']);
 
-                return;
+                return $this->redirect(['action' => 'registerGroup']);
             }
         }
 
@@ -128,9 +125,7 @@ class UserController extends AppController
                 if ($user && $user->id) {
                     //$this->request->session()->delete('User.Signup');
                     $this->Flash->success(__d('user', 'An activation email has been sent to your email address!'), ['key' => 'auth']);
-                    $this->redirect(['_name' => 'user:login']);
-
-                    return;
+                    return $this->redirect(['_name' => 'user:login']);
                 } else {
                     $this->Flash->error(__d('user', 'Please fill all required fields'), ['key' => 'auth']);
                 }
@@ -215,9 +210,8 @@ class UserController extends AppController
     public function passwordreset()
     {
         if ($this->Auth->user()) {
-            $this->redirect(['action' => 'index']);
 
-            return;
+            return $this->redirect(['action' => 'index']);
         }
 
         $user = $this->Users->newEntity();

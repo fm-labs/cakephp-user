@@ -26,6 +26,21 @@ class UserMailer extends Mailer
     }
 
     /**
+     * User registration email
+     *
+     * @param User $user
+     * @return void
+     */
+    public function userRegistration(User $user)
+    {
+        $this
+            ->to($user->email)
+            ->subject(__d('user', 'Your registration'))
+            ->template('User.user_registration')
+            ->set(compact('user'));
+    }
+
+    /**
      * Password forgotten email with password reset link
      *
      * @param User $user
