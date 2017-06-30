@@ -53,6 +53,10 @@ class UserPlugin implements EventListenerInterface
                 'type' => 'boolean',
                 'default' => false
             ],
+            'Signup.verifyEmail' => [
+                'type' => 'boolean',
+                'default' => false
+            ],
         ];
     }
 

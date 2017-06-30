@@ -2,6 +2,7 @@
 namespace User\Test\TestCase\Model\Table;
 
 use Cake\Auth\DefaultPasswordHasher;
+use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use User\Model\Table\UsersTable;
@@ -31,6 +32,13 @@ class UsersTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
+
+        Configure::write([
+            'User.Signup.disabled' => false,
+            'User.Signup.verifyEmail' => false,
+            'User.Signup.groupAuth' => false
+        ]);
+
         UsersTable::$emailAsUsername = false;
         $config = TableRegistry::exists('Users') ? [] : [
             'className' => 'User\Model\Table\UsersTable'
@@ -119,6 +127,7 @@ class UsersTableTest extends TestCase
         $this->assertNotEmpty($user->id);
         $this->assertEmpty($user->email);
         $this->assertTrue((new DefaultPasswordHasher())->check('rosebud1', $user->password));
+        $this->assertTrue($user->login_enabled);
 
         // test with valid username and password + extra data
         $data = ['username' => 'test3', 'password1' => 'rosebud1', 'password2' => 'rosebud1'];
@@ -156,8 +165,24 @@ class UsersTableTest extends TestCase
         $this->assertEquals('test2@example.org', $user->username);
         $this->assertEquals('test2@example.org', $user->email);
 
-
         TableRegistry::remove('Users');
+    }
+
+    public function testRegisterWithEmailVerification()
+    {
+        Configure::write('User.Signup.verifyEmail', true);
+
+        $user = $this->Users->register(['username' => 'test1', 'password1' => 'rosebud1', 'password2' => 'rosebud1']);
+
+        $this->assertFalse($user->email_verified);
+        $this->assertTrue($user->login_enabled);
+    }
+
+    public function testRegisterWithGroupAuth()
+    {
+        Configure::write('User.Signup.groupAuth', true);
+
+        $this->markTestIncomplete();
     }
 
     public function testChangePassword()
@@ -211,6 +236,6 @@ class UsersTableTest extends TestCase
             $this->fail('No test user found');
         }
 
-
+        $this->markTestIncomplete();
     }
 }

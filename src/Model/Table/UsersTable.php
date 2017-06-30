@@ -2,6 +2,7 @@
 namespace User\Model\Table;
 
 use Cake\Chronos\Chronos;
+use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\Event\Event;
 use Cake\Log\Log;
@@ -334,15 +335,16 @@ class UsersTable extends Table
     public function register(array $data, $dispatchEvent = true)
     {
         $user = $this->newEntity(null, ['validate' => 'register']);
-        $user->accessible('_nologin', true);
+        $user->accessible('id', false);
+        $user->accessible('login_enabled', true);
+        $user->accessible('block_enabled', true);
         $user->accessible('username', true);
         $user->accessible('name', true);
         $user->accessible('password1', true);
         $user->accessible('password2', true);
+        $user->accessible('password_force_change', true);
         $user->accessible('group_id', true);
         $user->accessible('email', true);
-        $user->accessible('id', false);
-        $user->accessible('login_enabled', false);
         // @TODO first_name and last_name properties are deprecated
         $user->accessible('first_name', true);
         $user->accessible('last_name', true);
@@ -377,6 +379,20 @@ class UsersTable extends Table
                 $data['name'] = $data['username'];
             }
 
+            $data['login_enabled'] = !$noLogin;
+            $data['block_enabled'] = false;
+            $data['password_force_change'] = false;
+
+            // email verification
+            $user->accessible([
+                'email_verification_required', 'email_verification_code', 'email_verified'
+            ], true);
+
+            $data['email_verification_required'] = (bool) Configure::read('User.Signup.verifyEmail');
+            $data['email_verification_code'] = substr(strtoupper(uniqid()), 0, 5);
+            $data['email_verified'] = false;
+
+            // patch and validate
             $this->patchEntity($user, $data, ['validate' => 'register']);
             if ($user->errors()) {
                 return $user;
@@ -389,14 +405,11 @@ class UsersTable extends Table
             unset($user->password1);
             unset($user->password2);
 
-            // permit new registered users to login
-            $user->login_enabled = !$noLogin;
-
             if ($this->save($user)) {
-                Log::info('[user] New user \'' . $user->username . '\' registered with ID ' . $user->id, ['user']);
+                Log::info(sprintf('New user \'%s\' (ID:%s)', $user->username, $user->id), ['user']);
 
                 if ($dispatchEvent === true) {
-                    $event = $this->eventManager()->dispatch(new Event('User.Model.User.register', $user));
+                    $this->eventManager()->dispatch(new Event('User.Model.User.register', $user));
                 }
             }
         }
@@ -688,6 +701,46 @@ class UsersTable extends Table
     }
 
     /**
+     * Validation rules to reset password
+     *
+     * @param Validator $validator
+     * @return Validator
+     */
+    public function validationActivate(Validator $validator)
+    {
+        $validator
+            ->add('id', 'valid', ['rule' => 'numeric'])
+            ->requirePresence('email')
+            ->notEmpty('email')
+            ->requirePresence('email_verification_code')
+            ->notEmpty('email_verification_code');
+
+        return $validator;
+    }
+
+    /**
+     * Activate user
+     *
+     * @param array $data
+     * @return bool
+     * @todo Refactor with Form
+     */
+    public function activate(array $data = [])
+    {
+        $email = (isset($data['email'])) ? strtolower(trim($data['email'])) : null;
+        $code = (isset($data['email_verification_code'])) ? trim($data['email_verification_code']) : null;
+        $user = $this->find()->where(['email' => $email])->contain([])->first();
+
+        if (!$user || strcmp(strtoupper($user->get('email_verification_code')),strtoupper($code)) !== 0) {
+
+            return false;
+        }
+
+        $user->email_verified = true;
+        return $this->save($user);
+    }
+
+    /**
      * Forgot password
      *
      * @param User $user
@@ -695,7 +748,7 @@ class UsersTable extends Table
      * @param bool|true $dispatchEvent
      * @return bool|mixed|User
      */
-    public function forgotPassword(User &$user, $data = [], $dispatchEvent = true)
+    public function forgotPassword(User &$user, array $data = [], $dispatchEvent = true)
     {
         $username = ($data['username']) ? $data['username'] : null;
         if (!$username) {

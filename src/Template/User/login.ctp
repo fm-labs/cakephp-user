@@ -18,8 +18,10 @@ $this->assign('title', __d('user','Login'));
     <?= $this->Form->end(); ?>
 
     <hr />
-    <?= $this->Html->link(__d('user','Forgot password?'), ['_name' => 'user:passwordforgotten']); ?><br />
-    <!--
+
+    <?php if (\Cake\Core\Configure::read('User.Signup.verifyEmail')): ?>
         <?= $this->Html->link(__d('user','Activate account'), ['action' => 'activate']); ?>
-        -->
+        <br />
+    <?php endif; ?>
+    <?= $this->Html->link(__d('user','Forgot password?'), ['_name' => 'user:passwordforgotten']); ?>
 </div>
