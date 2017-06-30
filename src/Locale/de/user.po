@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cakephp3-user\n"
-"POT-Creation-Date: 2017-05-10 05:19+0000\n"
-"PO-Revision-Date: 2017-05-10 07:24+0100\n"
+"POT-Creation-Date: 2017-06-30 08:52+0000\n"
+"PO-Revision-Date: 2017-06-30 10:59+0100\n"
 "Last-Translator: fm-labs <flowmotionlabs@gmail.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -15,149 +15,190 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:59
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:67
+msgid "Your account has not been activated yet"
+msgstr "Ihr Konto wurde noch nicht aktiviert."
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:75
 msgid "Sorry, but login is currently disabled."
 msgstr ""
 "Die Anmeldung ist zur Zeit nicht möglich. Bitte versuchen Sie es später "
 "nocheinmal."
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:126
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:138
 msgid "An activation email has been sent to your email address!"
 msgstr "Ein Aktivierungslink wurde an Ihre Emailaddresse versendet!"
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:130
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:141
 msgid "Please fill all required fields"
 msgstr "Bitte alle Pflichtfelder ausfüllen"
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:137
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:147
 msgid "Sorry, but user registration is currently disabled."
 msgstr ""
 "Die Registrierung ist zur Zeit nicht möglich. Bitte versuchen Sie es später "
 "nocheinmal."
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:197
-msgid "Something went wrong"
-msgstr "Etwas ist schief gegangen"
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:163
+msgid "No password entered"
+msgstr "Kein Passwort eingegeben."
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:223
-msgid "You can now login with your new password"
-msgstr "Sie können sich jetzt mit Ihrem neuen Passwort einloggen"
-
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:228
-msgid "Failed to reset password"
-msgstr "Password konnte nicht zurückgesetzt werden"
-
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:242
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:159;186
-msgid "Your password has been changed."
-msgstr "Ihr Passwort wurde geändert"
-
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:245
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:162;189
-msgid "Ups, something went wrong"
-msgstr "Etwas ist schief gegangen"
-
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserGroupsController.php:32;57
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserPermissionsController.php:52;77
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserRolesController.php:52;77
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:83;111
-msgid "The {0} has been saved."
-msgstr ""
-
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserGroupsController.php:32;35;57;60;79;81
-msgid "user group"
-msgstr ""
-
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserGroupsController.php:35;60
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserPermissionsController.php:55;80
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserRolesController.php:55;80
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:86;114
-msgid "The {0} could not be saved. Please, try again."
-msgstr ""
-
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserGroupsController.php:79
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserPermissionsController.php:99
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserRolesController.php:99
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:135
-msgid "The {0} has been deleted."
-msgstr ""
-
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserGroupsController.php:81
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserPermissionsController.php:101
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserRolesController.php:101
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:137
-msgid "The {0} could not be deleted. Please, try again."
-msgstr ""
-
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserPermissionsController.php:52;55;77;80;99;101
-msgid "permission"
-msgstr ""
-
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserRolesController.php:52;55;77;80;99;101
-msgid "role"
-msgstr ""
-
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:83;86;111;114;135;137
-msgid "user"
-msgstr ""
-
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:152
-msgid "You are not allowed to do this"
-msgstr "Keine Berechtigung"
-
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:179
-msgid "Only root can do this"
-msgstr ""
-
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Component/AuthComponent.php:86
-msgid "Login failed"
-msgstr "Login fehlgeschlagen"
-
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Mailer/UserMailer.php:25
-msgid "Password forgotten"
-msgstr "Passwort vergessen"
-
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Mailer/UserMailer.php:39
-msgid "Password change notification"
-msgstr "Passwort wurde geändert"
-
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:231;396;495;586
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:174
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:268;446;546;640
 msgid "Invalid password"
 msgstr "Ungültiges Passwort"
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:238;403;502;593
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:204
+msgid "Your account has been activated. You can login now."
+msgstr "Ihr Konto wurde aktiviert. Sie können sich nun einloggen."
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:207
+msgid "Account activation failed"
+msgstr "Kontoaktivierung fehlgeschlagen"
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:234
+msgid "Please enter an email address"
+msgstr "Bitte geben Sie eine gültige Email-Adresse ein"
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:241
+msgid "No user with such email address"
+msgstr "Kein Benutzer mit dieser Emailadresse gefunden"
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:248
+msgid "An activation email has been sent to {0}"
+msgstr "Ein Aktivierungsmail wurde an %s gesendet"
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:251;279
+msgid "Something went wrong"
+msgstr "Etwas ist schief gegangen"
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:276
+msgid ""
+"A password reset link has been sent to you via email. Please check your "
+"inbox."
+msgstr ""
+"Ein Link zum Zurücksetzen Ihres Passworts wurde Ihnen per Email zugesandt. "
+"Bitte überprüfen Sie Ihr Emailpostfach."
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:305
+msgid "You can now login with your new password"
+msgstr "Sie können sich jetzt mit Ihrem neuen Passwort einloggen"
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:310
+msgid "Failed to reset password"
+msgstr "Password konnte nicht zurückgesetzt werden"
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:324
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:167;195
+msgid "Your password has been changed."
+msgstr "Ihr Passwort wurde geändert"
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:327
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:170;198
+msgid "Ups, something went wrong"
+msgstr "Etwas ist schief gegangen"
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserGroupsController.php:37;63
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserPermissionsController.php:49;75
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserRolesController.php:49;75
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:87;116
+msgid "The {0} has been saved."
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserGroupsController.php:37;41;63;67;86;88
+msgid "user group"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserGroupsController.php:41;67
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserPermissionsController.php:53;79
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserRolesController.php:53;79
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:91;120
+msgid "The {0} could not be saved. Please, try again."
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserGroupsController.php:86
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserPermissionsController.php:98
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserRolesController.php:98
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:141
+msgid "The {0} has been deleted."
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserGroupsController.php:88
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserPermissionsController.php:100
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserRolesController.php:100
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:143
+msgid "The {0} could not be deleted. Please, try again."
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserPermissionsController.php:49;53;75;79;98;100
+msgid "permission"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UserRolesController.php:49;53;75;79;98;100
+msgid "role"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:87;91;116;120;141;143
+msgid "user"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:159
+msgid "You are not allowed to do this"
+msgstr "Keine Berechtigung"
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Admin/UsersController.php:187
+msgid "Only root can do this"
+msgstr ""
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Controller/Component/AuthComponent.php:108
+msgid "Login failed"
+msgstr "Login fehlgeschlagen"
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Mailer/UserMailer.php:38
+msgid "Your registration"
+msgstr "Ihre Anmeldung"
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Mailer/UserMailer.php:53
+msgid "Password forgotten"
+msgstr "Passwort vergessen"
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Mailer/UserMailer.php:68
+msgid "Password change notification"
+msgstr "Passwort wurde geändert"
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:275;453;553;647
 msgid "Passwords do not match"
 msgstr "Die Passwörter stimmen nicht überein"
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:246;389;414
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:282;439;464
 msgid "The provided email address is invalid"
 msgstr "Das ist keine gülte Emailadresse"
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:447
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:496
 msgid "This is not your current password"
 msgstr "Das Passwort ist falsch"
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:457
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:507
 msgid "This is your current password. Please create a new one!"
 msgstr "Das ist ihr aktuelles Passwort. Bitte wähhlen Sie ein neues Passwort."
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:613
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:666
 msgid "Password too short. Minimum {0} characters"
 msgstr "Passwort zu kurz. Mindestens {0} Zeichen"
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:618
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:671
 msgid "Password contains illegal characters"
 msgstr "Das Passwort enthält ungültige Zeichen"
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:623
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:676
 msgid "Password can not be the same as your username"
 msgstr "Passwort kann nicht das selbe wie der Benutzername sein"
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:654
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:755
 msgid "This is a required field"
 msgstr "Das ist ein Pflichtfeld"
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:661
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:763
 msgid "User \"{0}\" not found"
 msgstr ""
 
@@ -202,14 +243,14 @@ msgstr ""
 #: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/add.ctp:18
 #: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/edit.ctp:56
 #: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/add.ctp:60
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/edit.ctp:64
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/edit.ctp:56
 msgid "Submit"
 msgstr ""
 
 #: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/edit.ctp:2;44
 #: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/view.ctp:8
 #: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/_view.ctp:5
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/edit.ctp:2;26
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/edit.ctp:2
 msgid "Edit {0}"
 msgstr ""
 
@@ -256,7 +297,7 @@ msgstr ""
 #: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/_index.ctp:3
 #: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/_view.ctp:5;10;20
 #: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/add.ctp:2;21
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/edit.ctp:2;26
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/edit.ctp:2
 msgid "User"
 msgstr ""
 
@@ -311,7 +352,7 @@ msgstr ""
 #: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/view.ctp:65
 #: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/_view.ctp:65
 #: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:15
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:17
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:21
 msgid "Password"
 msgstr "Passwort"
 
@@ -338,7 +379,7 @@ msgstr "Benutzername"
 #: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/UserGroups/view.ctp:86;115
 #: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/_view.ctp:69
 #: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:14
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:16
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:19
 msgid "Email"
 msgstr "Email"
 
@@ -359,7 +400,7 @@ msgstr "Passwort ändern"
 
 #: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/_view.ctp:73
 msgid "Email Verification Code"
-msgstr ""
+msgstr "Aktivierungscode"
 
 #: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/Admin/Users/_view.ctp:77
 msgid "Password Reset Code"
@@ -505,6 +546,30 @@ msgstr ""
 msgid "Update password now"
 msgstr "Passwort jetzt ändern"
 
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/activate.ctp:5
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/activate_resend.ctp:5
+msgid "Account Verification"
+msgstr "Kontoverifizierung"
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/activate.ctp:10
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/activate_resend.ctp:10
+msgid "Verify your email address"
+msgstr "Emailadresse verifizieren"
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/activate.ctp:15
+msgid ""
+"An activation code has been sent to your email upon registration. Please "
+"check your inbox."
+msgstr ""
+"Ein Aktivierungslink wurde bei der Registrierung an Ihre Emailaddresse "
+"gesendet! Bitte überprüfen Sie Ihr Emailpostfach."
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/activate.ctp:26
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/activate_resend.ctp:17
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register_group.ctp:17
+msgid "Continue"
+msgstr "Weiter"
+
 #: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/index.ctp:5;10
 msgid "My Account"
 msgstr "Mein Konto"
@@ -528,17 +593,17 @@ msgid "Type your password here"
 msgstr "Passwort"
 
 #: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:17
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:19
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:24
 msgid "Signup"
 msgstr "Registrieren"
-
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:21
-msgid "Forgot password?"
-msgstr "Passwort vergessen?"
 
 #: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:23
 msgid "Activate account"
 msgstr "Konto aktivieren"
+
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:26
+msgid "Forgot password?"
+msgstr "Passwort vergessen?"
 
 #: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/passwordchange.ctp:5
 msgid "My account"
@@ -604,37 +669,33 @@ msgstr "Registrierung"
 msgid "Registration"
 msgstr "Registrierung"
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:14
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:15
 msgid "First name"
 msgstr "Vorname"
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:14
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:15
 msgid "Firstname"
 msgstr "Vorname"
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:15
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:17
 msgid "Last name"
 msgstr "Nachname"
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:15
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:17
 msgid "Lastname"
 msgstr "Nachname"
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:17
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:21
 msgid "Min 8 characters"
 msgstr "Mind. 8 Zeichen"
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:18
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:23
 msgid "Repat password"
 msgstr "Passwort wiederholen"
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:20
+#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:25
 msgid "I'm already registered"
 msgstr "Ich bin bereits registriert"
-
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register_group.ctp:17
-msgid "Continue"
-msgstr "Weiter"
 
 #~ msgid "Your registration was successful!"
 #~ msgstr "Die Registrierung war erfolgreich!"
