@@ -409,7 +409,7 @@ class UsersTable extends Table
                 Log::info(sprintf('New user \'%s\' (ID:%s)', $user->username, $user->id), ['user']);
 
                 if ($dispatchEvent === true) {
-                    $this->eventManager()->dispatch(new Event('User.Model.User.register', $user));
+                    $this->eventManager()->dispatch(new Event('User.Model.User.register', $user, $data));
                 }
             }
         }

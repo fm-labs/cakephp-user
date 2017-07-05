@@ -175,6 +175,7 @@ class UsersTableTest extends TestCase
         $user = $this->Users->register(['username' => 'test1', 'password1' => 'rosebud1', 'password2' => 'rosebud1']);
 
         $this->assertFalse($user->email_verified);
+        $this->assertNotEmpty($user->email_verification_code);
         $this->assertTrue($user->login_enabled);
     }
 
@@ -235,6 +236,12 @@ class UsersTableTest extends TestCase
         if (!$user) {
             $this->fail('No test user found');
         }
+
+        $this->markTestIncomplete();
+    }
+
+    public function testActivate()
+    {
 
         $this->markTestIncomplete();
     }
