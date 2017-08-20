@@ -1,11 +1,11 @@
 <?php $this->Breadcrumbs->add(__d('user','Users'), ['action' => 'index']); ?>
 <?php $this->Breadcrumbs->add(__d('user','Reset password')); ?>
+<?php $this->Toolbar->addLink(__('Back to user'), ['action' => 'view', $user->id], ['data-icon' => 'chevron-left']); ?>
 <div id="user-change-password-form">
-    <?= $this->Form->create($user, ['class' => 'ui form']); ?>
-    <h2 class="ui top attached header">
+    <?= $this->Form->create($user, ['class' => '']); ?>
+    <h2>
         <?= __d('user','Set a new password for user {0} (ID: {1})', $user->username, $user->id); ?>
     </h2>
-    <div class="ui attached segment">
     <?= $this->Form->input('password1', [
         'label' => __d('user','New password'),
         'type' => 'password',
@@ -18,9 +18,6 @@
         'required' => true,
         'default' => '',
     ]); ?>
-    </div>
-    <div class="ui bottom attached segment">
-        <?= $this->Form->submit(__d('user','Update password now')); ?>
-    </div>
+    <?= $this->Form->submit(__d('user','Update password now')); ?>
     <?= $this->Form->end(); ?>
 </div>

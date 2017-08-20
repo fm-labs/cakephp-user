@@ -1,26 +1,5 @@
 <?php $this->Breadcrumbs->add(__d('user','Users'), ['action' => 'index']); ?>
 <?php $this->Breadcrumbs->add(__d('user','Edit {0}', __d('user','User'))); ?>
-<?php $this->Toolbar->addLink(
-    __d('user','Delete'),
-    ['action' => 'delete', $user->id],
-    ['data-icon' => 'trash', 'confirm' => __d('user','Are you sure you want to delete # {0}?', $user->id)]
-);?>
-<?php $this->Toolbar->addLink(
-    __d('user','List {0}', __d('user','Users')),
-    ['action' => 'index'],
-    ['data-icon' => 'list']
-);?>
-<?php $this->Toolbar->addLink(
-    __d('user','List {0}', __d('user','User Groups')),
-    ['controller' => 'Groups', 'action' => 'index'],
-    ['data-icon' => 'list']
-) ?>
-
-<?php $this->Toolbar->addLink(
-    __d('user','New {0}', __d('user','User Group')),
-    ['controller' => 'Groups', 'action' => 'add'],
-    ['data-icon' => 'plus']
-); ?>
 <div class="backend user">
     <?= $this->Form->create($user, ['horizontal' => true]); ?>
         <?php

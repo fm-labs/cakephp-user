@@ -1,5 +1,6 @@
 <?php
 namespace User\Controller\Admin;
+use Cake\Event\Event;
 
 /**
  * Users Controller
@@ -18,7 +19,8 @@ class UsersController extends AppController
      */
     public $actions = [
         'index' => 'Backend.Index',
-        'view' => 'Backend.View'
+        'view' => 'Backend.View',
+        'edit' => 'Backend.Edit'
     ];
 
     /**
@@ -51,6 +53,12 @@ class UsersController extends AppController
         $this->set('fields.whitelist', ['id', 'superuser', 'username', 'primary_group.name', 'email', 'display_name', 'login_enabled']);
 
         $this->Action->execute();
+    }
+
+    public function buildEntityActions(Event $event)
+    {
+        $event->data['actions']['password_change'] = [__d('user', __('Change password')), ['action' => 'passwordChange', ':id'], ['data-icon' => 'key']];
+        $event->data['actions']['password_reset'] = [__d('user', __('Reset password')), ['action' => 'passwordReset', ':id'], ['data-icon' => 'key']];
     }
 
     /**
@@ -124,6 +132,8 @@ class UsersController extends AppController
         $userGroups = $this->Users->Groups->find('list', ['limit' => 200]);
         $this->set(compact('user', 'primaryGroup', 'userGroups'));
         $this->set('_serialize', ['user']);
+
+        $this->Action->execute();
     }
 
     /**
@@ -153,9 +163,10 @@ class UsersController extends AppController
      */
     public function passwordChange($userId = null)
     {
+        $authUserId = $this->Auth->user('id');
         if ($userId === null) {
-            $userId = $this->Auth->user('id');
-        } elseif ($userId !== $this->Auth->user('id')) {
+            $userId = $authUserId;
+        } elseif ((int)$userId !== (int)$authUserId) {
             $this->Flash->error(__d('user', 'You are not allowed to do this'));
 
             return $this->redirect($this->referer(['action' => 'index']));
