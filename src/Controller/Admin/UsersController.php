@@ -23,6 +23,11 @@ class UsersController extends AppController
         'edit' => 'Backend.Edit'
     ];
 
+    public function beforeFilter(Event $event)
+    {
+        //$this->Action->registerInline('passwordChange', []);
+    }
+
     /**
      * Index method
      *
