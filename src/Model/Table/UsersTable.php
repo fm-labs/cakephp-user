@@ -1,6 +1,7 @@
 <?php
 namespace User\Model\Table;
 
+use Banana\Model\TableInputSchema;
 use Cake\Chronos\Chronos;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
