@@ -6,6 +6,7 @@ use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
 use Cake\Routing\Router;
+use Settings\SettingsManager;
 use User\Event\UserEventListener;
 
 /**
@@ -26,7 +27,7 @@ class UserPlugin implements EventListenerInterface
     public function implementedEvents()
     {
         return [
-            'Settings.get' => 'getSettings',
+            'Settings.build' => 'buildSettings',
             'Backend.Menu.get' => ['callable' => 'getBackendMenu', 'priority' => 99],
             'Backend.Routes.build' => 'buildBackendRoutes'
         ];
@@ -35,29 +36,31 @@ class UserPlugin implements EventListenerInterface
     /**
      * @param Event $event
      */
-    public function getSettings(Event $event)
+    public function buildSettings(Event $event)
     {
-        $event->result['User'] = [
-            'layout' => [
-                'type' => 'string',
-            ],
-            'Login.disabled' => [
-                'type' => 'boolean',
-                'default' => false
-            ],
-            'Signup.disabled' => [
-                'type' => 'boolean',
-                'default' => false
-            ],
-            'Signup.groupAuth' => [
-                'type' => 'boolean',
-                'default' => false
-            ],
-            'Signup.verifyEmail' => [
-                'type' => 'boolean',
-                'default' => false
-            ],
-        ];
+        if ($event->subject() instanceof SettingsManager) {
+            $event->subject()->add('User', [
+                'layout' => [
+                    'type' => 'string',
+                ],
+                'Login.disabled' => [
+                    'type' => 'boolean',
+                    'default' => false
+                ],
+                'Signup.disabled' => [
+                    'type' => 'boolean',
+                    'default' => false
+                ],
+                'Signup.groupAuth' => [
+                    'type' => 'boolean',
+                    'default' => false
+                ],
+                'Signup.verifyEmail' => [
+                    'type' => 'boolean',
+                    'default' => false
+                ],
+            ]);
+        }
     }
 
     /**
