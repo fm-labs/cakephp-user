@@ -95,6 +95,7 @@ class UserPlugin implements EventListenerInterface
                     'url' => ['plugin' => 'User', 'controller' => 'UserGroups', 'action' => 'index'],
                     'data-icon' => 'users',
                 ],
+                /*
                 [
                     'title' => 'User Roles',
                     'url' => ['plugin' => 'User', 'controller' => 'UserRoles', 'action' => 'index'],
@@ -105,6 +106,7 @@ class UserPlugin implements EventListenerInterface
                     'url' => ['plugin' => 'User', 'controller' => 'UserPermissions', 'action' => 'index'],
                     'data-icon' => 'user',
                 ]
+                */
             ]
         ]);
     }

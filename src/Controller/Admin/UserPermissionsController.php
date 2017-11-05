@@ -6,8 +6,20 @@ namespace User\Controller\Admin;
  *
  * @property \User\Model\Table\PermissionsTable $Permissions
  */
-class PermissionsController extends AppController
+class UserPermissionsController extends AppController
 {
+    public $modelClass = "User.Permissions";
+
+    /**
+     * @var array
+     */
+    public $actions = [
+        'index' => 'Backend.Index',
+        'view' => 'Backend.View',
+        'edit' => 'Backend.Edit',
+        'delete' => 'Backend.Delete'
+    ];
+
     /**
      * Index method
      *
@@ -15,8 +27,7 @@ class PermissionsController extends AppController
      */
     public function index()
     {
-        $this->set('permissions', $this->paginate($this->Permissions));
-        $this->set('_serialize', ['permissions']);
+        $this->Action->execute();
     }
 
     /**

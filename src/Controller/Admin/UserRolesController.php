@@ -6,8 +6,20 @@ namespace User\Controller\Admin;
  *
  * @property \User\Model\Table\RolesTable $Roles
  */
-class RolesController extends AppController
+class UserRolesController extends AppController
 {
+    public $modelClass = "User.Roles";
+
+    /**
+     * @var array
+     */
+    public $actions = [
+        'index' => 'Backend.Index',
+        'view' => 'Backend.View',
+        'edit' => 'Backend.Edit',
+        'delete' => 'Backend.Delete'
+    ];
+
     /**
      * Index method
      *
@@ -15,8 +27,7 @@ class RolesController extends AppController
      */
     public function index()
     {
-        $this->set('roles', $this->paginate($this->Roles));
-        $this->set('_serialize', ['roles']);
+        $this->Action->execute();
     }
 
     /**
