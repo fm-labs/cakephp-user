@@ -43,6 +43,9 @@ class UserPlugin implements EventListenerInterface
                 'layout' => [
                     'type' => 'string',
                 ],
+                'Login.layout' => [
+                    'type' => 'string',
+                ],
                 'Login.disabled' => [
                     'type' => 'boolean',
                     'default' => false

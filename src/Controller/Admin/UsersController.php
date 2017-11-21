@@ -46,7 +46,9 @@ class UsersController extends AppController
                     ['action' => 'edit', $row->id]
                 );
             }],
-            'primary_group.name' => ['formatter' => function ($val, $row, $args, $view) {
+            'email',
+            'superuser',
+            'primary_group' => ['formatter' => function ($val, $row, $args, $view) {
                 if ($row->primary_group) {
                     return $view->Html->link(
                         $row->primary_group->name,
@@ -55,7 +57,7 @@ class UsersController extends AppController
                 }
             }]
         ]);
-        $this->set('fields.whitelist', ['id', 'superuser', 'username', 'primary_group.name', 'email', 'display_name', 'login_enabled']);
+        $this->set('fields.whitelist', ['id', 'superuser', 'username', 'primary_group', 'email', 'display_name', 'login_enabled']);
 
         $this->Action->execute();
     }
