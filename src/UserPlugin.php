@@ -83,35 +83,35 @@ class UserPlugin implements EventListenerInterface
      */
     public function getBackendMenu(Event $event)
     {
-        $event->subject()->addItem([
+        /*
+$event->subject()->addItem([
+    'title' => 'Users',
+    'url' => ['plugin' => 'User', 'controller' => 'Users', 'action' => 'index'],
+    'data-icon' => 'user',
+    'children' => [
+        [
             'title' => 'Users',
             'url' => ['plugin' => 'User', 'controller' => 'Users', 'action' => 'index'],
+            'data-icon' => 'users',
+        ],
+        [
+            'title' => 'User Groups',
+            'url' => ['plugin' => 'User', 'controller' => 'UserGroups', 'action' => 'index'],
+            'data-icon' => 'users',
+        ],
+        [
+            'title' => 'User Roles',
+            'url' => ['plugin' => 'User', 'controller' => 'UserRoles', 'action' => 'index'],
             'data-icon' => 'user',
-            'children' => [
-                [
-                    'title' => 'Users',
-                    'url' => ['plugin' => 'User', 'controller' => 'Users', 'action' => 'index'],
-                    'data-icon' => 'users',
-                ],
-                [
-                    'title' => 'User Groups',
-                    'url' => ['plugin' => 'User', 'controller' => 'UserGroups', 'action' => 'index'],
-                    'data-icon' => 'users',
-                ],
-                /*
-                [
-                    'title' => 'User Roles',
-                    'url' => ['plugin' => 'User', 'controller' => 'UserRoles', 'action' => 'index'],
-                    'data-icon' => 'user',
-                ],
-                [
-                    'title' => 'User Permissions',
-                    'url' => ['plugin' => 'User', 'controller' => 'UserPermissions', 'action' => 'index'],
-                    'data-icon' => 'user',
-                ]
-                */
-            ]
-        ]);
+        ],
+        [
+            'title' => 'User Permissions',
+            'url' => ['plugin' => 'User', 'controller' => 'UserPermissions', 'action' => 'index'],
+            'data-icon' => 'user',
+        ]
+    ]
+]);
+*/
     }
 
     /**
