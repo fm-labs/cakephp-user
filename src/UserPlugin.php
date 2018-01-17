@@ -2,6 +2,7 @@
 
 namespace User;
 
+use Backend\Event\RouteBuilderEvent;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
@@ -69,9 +70,9 @@ class UserPlugin implements EventListenerInterface
     /**
      * @param Event $event
      */
-    public function buildBackendRoutes(Event $event)
+    public function buildBackendRoutes(RouteBuilderEvent $event)
     {
-        Router::scope('/user/admin', ['plugin' => 'User', 'prefix' => 'admin', '_namePrefix' => 'user:admin:'],
+        $event->subject()->scope('/user', ['plugin' => 'User', 'prefix' => 'admin', '_namePrefix' => 'user:admin:'],
             function ($routes) {
                 //$routes->connect('/:controller');
                 $routes->fallbacks('DashedRoute');
@@ -84,6 +85,7 @@ class UserPlugin implements EventListenerInterface
     public function getBackendMenu(Event $event)
     {
         /*
+*/
 $event->subject()->addItem([
     'title' => 'Users',
     'url' => ['plugin' => 'User', 'controller' => 'Users', 'action' => 'index'],
@@ -111,7 +113,6 @@ $event->subject()->addItem([
         ]
     ]
 ]);
-*/
     }
 
     /**
