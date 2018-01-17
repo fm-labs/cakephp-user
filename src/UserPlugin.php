@@ -85,7 +85,6 @@ class UserPlugin implements EventListenerInterface
     public function getBackendMenu(Event $event)
     {
         /*
-*/
 $event->subject()->addItem([
     'title' => 'Users',
     'url' => ['plugin' => 'User', 'controller' => 'Users', 'action' => 'index'],
@@ -113,6 +112,7 @@ $event->subject()->addItem([
         ]
     ]
 ]);
+        */
     }
 
     /**
