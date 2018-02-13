@@ -29,7 +29,7 @@ class UserPlugin implements EventListenerInterface
     {
         return [
             'Settings.build' => 'buildSettings',
-            'Backend.Menu.get' => ['callable' => 'getBackendMenu', 'priority' => 99],
+            'Backend.Menu.build' => ['callable' => 'buildBackendMenu', 'priority' => 99],
             'Backend.Routes.build' => 'buildBackendRoutes'
         ];
     }
@@ -82,7 +82,7 @@ class UserPlugin implements EventListenerInterface
     /**
      * @param Event $event
      */
-    public function getBackendMenu(Event $event)
+    public function buildBackendMenu(Event $event)
     {
         /*
 $event->subject()->addItem([
