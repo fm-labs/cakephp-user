@@ -15,7 +15,7 @@ $this->assign('title', __d('user','Verify your email address'));
         <?= __d('user', 'An activation code has been sent to your email upon registration. Please check your inbox.'); ?>
         <br />
         <small>
-            <?= $this->Html->link('Resend activation email', ['action' => 'activateResend']); ?>
+            <?= $this->Html->link(__d('user', 'Resend activation email'), ['action' => 'activateResend']); ?>
         </small>
     </div>
 

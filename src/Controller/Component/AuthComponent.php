@@ -86,7 +86,7 @@ class AuthComponent extends CakeAuthComponent
                 'user' => $user,
                 'request' => $this->request
             ]);
-            $this->eventManager()->dispatch($event);
+            $event = $this->eventManager()->dispatch($event);
 
             // authenticate user
             $this->setUser($event->data['user']);

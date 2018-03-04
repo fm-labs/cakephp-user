@@ -1,6 +1,6 @@
 <?php $this->Breadcrumbs->add(__d('user','Users'), ['action' => 'index']); ?>
 <?php $this->Breadcrumbs->add(__d('user','Reset password')); ?>
-<?php $this->Toolbar->addLink(__('Back to user'), ['action' => 'view', $user->id], ['data-icon' => 'chevron-left']); ?>
+<?php $this->Toolbar->addLink(__d('user','Back to user'), ['action' => 'view', $user->id], ['data-icon' => 'chevron-left']); ?>
 <div id="user-change-password-form">
     <?= $this->Form->create($user, ['class' => '']); ?>
     <h2>

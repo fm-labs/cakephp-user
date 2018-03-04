@@ -6,9 +6,10 @@ use Backend\Event\RouteBuilderEvent;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
-use Cake\Routing\Router;
 use Settings\SettingsManager;
-use User\Event\UserEventListener;
+use User\Service\UserEventLoggerService;
+use User\Service\UserLoginLoggerService;
+use User\Service\UserMailerService;
 
 /**
  * Class UserPlugin
@@ -122,6 +123,8 @@ $event->subject()->addItem([
      */
     public function __invoke()
     {
-        EventManager::instance()->on(new UserEventListener());
+        EventManager::instance()->on(new UserEventLoggerService());
+        EventManager::instance()->on(new UserLoginLoggerService());
+        EventManager::instance()->on(new UserMailerService());
     }
 }

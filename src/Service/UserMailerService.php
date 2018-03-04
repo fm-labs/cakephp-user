@@ -1,37 +1,25 @@
 <?php
 
-namespace User\Event;
+namespace User\Service;
 
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
-use Cake\Log\Log;
 use User\Mailer\UserMailer;
 
 /**
- * Class UserEventListener
+ * Class UserMailerService
  *
  * @package User\Event
+ * @todo error handling: catch mailer exceptions.
  */
-class UserEventListener implements EventListenerInterface
+class UserMailerService implements EventListenerInterface
 {
-    /**
-     * @param Event $event
-     * @param array $context
-     * @return void
-     */
-    protected function _logEvent(Event $event, array $context = ['user'])
-    {
-        Log::info(sprintf("[User:%s] %s", $event->subject()->id, $event->name()), $context);
-    }
-
     /**
      * @param Event $event
      * @return void
      */
     public function onRegister(Event $event)
     {
-        $this->_logEvent($event);
-
         $mailer = new UserMailer();
         $mailer->send('userRegistration', [$event->subject()]);
     }
@@ -42,8 +30,6 @@ class UserEventListener implements EventListenerInterface
      */
     public function onPasswordForgotten(Event $event)
     {
-        $this->_logEvent($event);
-
         $mailer = new UserMailer();
         $mailer->send('passwordForgotten', [$event->subject()]);
     }
@@ -54,30 +40,9 @@ class UserEventListener implements EventListenerInterface
      */
     public function onPasswordReset(Event $event)
     {
-        $this->_logEvent($event);
-
         $mailer = new UserMailer();
         $mailer->send('passwordReset', [$event->subject()]);
     }
-
-    /**
-     * @param Event $event
-     * @return void
-     */
-    public function onLogin(Event $event)
-    {
-        $this->_logEvent($event);
-    }
-
-    /**
-     * @param Event $event
-     * @return void
-     */
-    public function onLogout(Event $event)
-    {
-        $this->_logEvent($event);
-    }
-
 
     /**
      * @return array
@@ -88,8 +53,6 @@ class UserEventListener implements EventListenerInterface
             'User.Model.User.passwordForgotten' => 'onPasswordForgotten',
             'User.Model.User.passwordReset'     => 'onPasswordReset',
             'User.Model.User.register'          => 'onRegister',
-            'User.login'                        => 'onLogin',
-            'User.logout'                       => 'onLogout',
         ];
     }
 }

@@ -36,7 +36,8 @@ class UsersController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['PrimaryGroup']
+            'contain' => ['PrimaryGroup'],
+            'order' => ['superuser' => 'DESC', 'username' => 'ASC']
         ];
 
         $this->set('fields', [
@@ -46,8 +47,6 @@ class UsersController extends AppController
                     ['action' => 'edit', $row->id]
                 );
             }],
-            'email',
-            'superuser',
             'primary_group' => ['formatter' => function ($val, $row, $args, $view) {
                 if ($row->primary_group) {
                     return $view->Html->link(
@@ -55,7 +54,10 @@ class UsersController extends AppController
                         ['plugin' => 'User', 'controller' => 'UserGroups', 'action' => 'edit', $row->primary_group->id]
                     );
                 }
-            }]
+            }],
+            //'email',
+            'superuser',
+            'login_enabled'
         ]);
         $this->set('fields.whitelist', ['id', 'superuser', 'username', 'primary_group', 'email', 'display_name', 'login_enabled']);
         $this->set('filter', true);
@@ -65,8 +67,8 @@ class UsersController extends AppController
 
     public function buildEntityActions(Event $event)
     {
-        $event->data['actions']['password_change'] = [__d('user', __('Change password')), ['action' => 'passwordChange', ':id'], ['data-icon' => 'key']];
-        $event->data['actions']['password_reset'] = [__d('user', __('Reset password')), ['action' => 'passwordReset', ':id'], ['data-icon' => 'key']];
+        $event->data['actions']['password_change'] = [__d('user', 'Change password'), ['action' => 'passwordChange', ':id'], ['data-icon' => 'key']];
+        $event->data['actions']['password_reset'] = [__d('user', 'Reset password'), ['action' => 'passwordReset', ':id'], ['data-icon' => 'key']];
     }
 
     /**
