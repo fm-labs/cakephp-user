@@ -101,7 +101,7 @@ class User extends Entity
         $username = base64_encode($this->username);
         $code = base64_encode($this->password_reset_code);
 
-        return Router::url(['prefix' => false, 'plugin' => 'User', 'controller' => 'User', 'action' => 'passwordreset', 'u' => $username, 'c' => $code], true);
+        return Router::url(['prefix' => false, 'plugin' => 'User', 'controller' => 'User', 'action' => 'passwordReset', 'u' => $username, 'c' => $code], true);
     }
 
     /**
