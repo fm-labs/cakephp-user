@@ -45,8 +45,10 @@ class UsersTable extends Table
      */
     public static $passwordResetCodeLength = 6;
 
+    public static $contains = ['UserGroups'];
+
     //public static $usersModel = 'Users.Users';
-    //public static $groupsModel = 'User.Groups';
+    //public static $groupsModel = 'User.UserGroups';
     //public static $rolesModel = 'User.Roles';
     //public static $permissionsModel = 'User.Permissions';
 
@@ -63,16 +65,16 @@ class UsersTable extends Table
         $this->displayField('username');
         $this->primaryKey('id');
         $this->addBehavior('Timestamp');
-        $this->belongsTo('PrimaryGroup', [
+        $this->belongsTo('UserGroups', [
             'foreignKey' => 'group_id',
-            'className' => 'User.Groups'
+            'className' => 'User.UserGroups'
         ]);
-        $this->belongsToMany('Groups', [
-            'foreignKey' => 'user_id',
-            'targetForeignKey' => 'group_id',
-            'joinTable' => 'user_groups_users',
-            'className' => 'User.Groups'
-        ]);
+//        $this->belongsToMany('Groups', [
+//            'foreignKey' => 'user_id',
+//            'targetForeignKey' => 'group_id',
+//            'joinTable' => 'user_groups_users',
+//            'className' => 'User.Groups'
+//        ]);
 
         if (Plugin::loaded('Search')) {
             $this->addBehavior('Search.Search');
@@ -130,7 +132,7 @@ class UsersTable extends Table
             ->requirePresence('password', 'create')
             ->notEmpty('password')
             ->add('email', 'valid', ['rule' => 'email'])
-            ->allowEmpty('email')
+            //->allowEmpty('email')
             ->add('email_verification_required', 'valid', ['rule' => 'boolean'])
             ->allowEmpty('email_verification_required')
             ->allowEmpty('email_verification_code')
@@ -179,7 +181,7 @@ class UsersTable extends Table
     {
         $rules->add($rules->isUnique(['username']));
         $rules->add($rules->isUnique(['email']));
-        $rules->add($rules->existsIn(['group_id'], 'Groups'));
+        $rules->add($rules->existsIn(['group_id'], 'UserGroups'));
 
         return $rules;
     }
@@ -196,7 +198,7 @@ class UsersTable extends Table
     {
         $query
             ->where(['Users.login_enabled' => true])
-            ->contain(['Groups']);
+            ->contain(static::$contains);
 
         return $query;
     }
@@ -390,7 +392,7 @@ class UsersTable extends Table
             ], true);
 
             $data['email_verification_required'] = (bool) Configure::read('User.Signup.verifyEmail');
-            $data['email_verification_code'] = substr(strtoupper(uniqid()), 0, 5);
+            $data['email_verification_code'] = substr(strtoupper(md5(uniqid('',true))), 0, 5);
             $data['email_verified'] = false;
 
             // patch and validate
@@ -731,6 +733,9 @@ class UsersTable extends Table
         $email = (isset($data['email'])) ? strtolower(trim($data['email'])) : null;
         $code = (isset($data['email_verification_code'])) ? trim($data['email_verification_code']) : null;
         $user = $this->find()->where(['email' => $email])->contain([])->first();
+
+        debug($data);
+        debug($user);
 
         if (!$user || strcmp(strtoupper($user->get('email_verification_code')),strtoupper($code)) !== 0) {
 

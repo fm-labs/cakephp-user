@@ -27,7 +27,7 @@ class AppController extends BaseAppController
             $this->loadComponent('User.Auth');
         }
 
-        if (!$this->Auth instanceof UserAuthComponent) {
+        if (!($this->components()->get('Auth') instanceof \User\Controller\Component\AuthComponent)) {
             throw new Exception('User: AuthComponent is not an instance of User.AuthComponent');
         }
 

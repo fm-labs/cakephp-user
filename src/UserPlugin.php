@@ -2,7 +2,6 @@
 
 namespace User;
 
-use Backend\Event\RouteBuilderEvent;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
@@ -29,9 +28,7 @@ class UserPlugin implements EventListenerInterface
     public function implementedEvents()
     {
         return [
-            'Settings.build' => 'buildSettings',
-            'Backend.Menu.build' => ['callable' => 'buildBackendMenu', 'priority' => 99],
-            'Backend.Routes.build' => 'buildBackendRoutes'
+            'Settings.build' => 'buildSettings'
         ];
     }
 
@@ -42,6 +39,10 @@ class UserPlugin implements EventListenerInterface
     {
         if ($event->subject() instanceof SettingsManager) {
             $event->subject()->add('User', [
+                'controller' => [
+                    'type' => 'string',
+                    'default' => 'User.User'
+                ],
                 'layout' => [
                     'type' => 'string',
                 ],
@@ -69,54 +70,6 @@ class UserPlugin implements EventListenerInterface
     }
 
     /**
-     * @param Event $event
-     */
-    public function buildBackendRoutes(RouteBuilderEvent $event)
-    {
-        $event->subject()->scope('/user', ['plugin' => 'User', 'prefix' => 'admin', '_namePrefix' => 'user:admin:'],
-            function ($routes) {
-                //$routes->connect('/:controller');
-                $routes->fallbacks('DashedRoute');
-            });
-    }
-
-    /**
-     * @param Event $event
-     */
-    public function buildBackendMenu(Event $event)
-    {
-        /*
-$event->subject()->addItem([
-    'title' => 'Users',
-    'url' => ['plugin' => 'User', 'controller' => 'Users', 'action' => 'index'],
-    'data-icon' => 'user',
-    'children' => [
-        [
-            'title' => 'Users',
-            'url' => ['plugin' => 'User', 'controller' => 'Users', 'action' => 'index'],
-            'data-icon' => 'users',
-        ],
-        [
-            'title' => 'User Groups',
-            'url' => ['plugin' => 'User', 'controller' => 'UserGroups', 'action' => 'index'],
-            'data-icon' => 'users',
-        ],
-        [
-            'title' => 'User Roles',
-            'url' => ['plugin' => 'User', 'controller' => 'UserRoles', 'action' => 'index'],
-            'data-icon' => 'user',
-        ],
-        [
-            'title' => 'User Permissions',
-            'url' => ['plugin' => 'User', 'controller' => 'UserPermissions', 'action' => 'index'],
-            'data-icon' => 'user',
-        ]
-    ]
-]);
-        */
-    }
-
-    /**
      * Run user plugin
      *
      * @return void
@@ -125,6 +78,6 @@ $event->subject()->addItem([
     {
         EventManager::instance()->on(new UserEventLoggerService());
         EventManager::instance()->on(new UserLoginLoggerService());
-        EventManager::instance()->on(new UserMailerService());
+        //EventManager::instance()->on(new UserMailerService());
     }
 }

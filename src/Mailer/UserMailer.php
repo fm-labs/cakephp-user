@@ -4,6 +4,7 @@ namespace User\Mailer;
 use Cake\Core\Configure;
 use Cake\Mailer\Email;
 use Cake\Mailer\Mailer;
+use Cake\ORM\Entity;
 use User\Model\Entity\User;
 
 /**
@@ -31,7 +32,7 @@ class UserMailer extends Mailer
      * @param User $user
      * @return void
      */
-    public function userRegistration(User $user)
+    public function userRegistration(Entity $user)
     {
         $this
             ->to($user->email)

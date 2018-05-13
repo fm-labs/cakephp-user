@@ -78,8 +78,8 @@ class UserController extends AppController
         $user = $this->Users->newEntity();
         $this->set('user', $user);
 
-        if (Configure::read('User.loginLayout')) {
-            $this->viewBuilder()->layout(Configure::read('User.loginLayout'));
+        if (Configure::read('User.Login.layout')) {
+            $this->viewBuilder()->layout(Configure::read('User.Login.layout'));
         }
     }
 
@@ -111,7 +111,6 @@ class UserController extends AppController
     public function register()
     {
         if ($this->Auth->user('id')) {
-
             return $this->redirect('/');
         }
 
@@ -132,7 +131,6 @@ class UserController extends AppController
                 }
 
                 $user = $this->Users->register($data);
-                debug($user->errors());
                 if ($user && $user->id) {
                     //$this->request->session()->delete('User.Signup');
                     $this->Flash->success(__d('user', 'An activation email has been sent to your email address!'), ['key' => 'auth']);
@@ -167,7 +165,7 @@ class UserController extends AppController
 
             // find user group with that password
             $this->loadModel('User.Groups');
-            $userGroup = $this->Groups->find()->where(['password' => $grpPass])->first();
+            $userGroup = $this->UserGroups->find()->where(['password' => $grpPass])->first();
 
             if (!$userGroup) {
                 $this->request->session()->delete('User.Signup.group_id');
@@ -262,7 +260,7 @@ class UserController extends AppController
      * Creates a new password reset code and sends email with password reset link
      * No authentication required
      */
-    public function passwordforgotten()
+    public function passwordForgotten()
     {
         if ($this->Auth->user()) {
             $this->redirect(['action' => 'index']);
