@@ -272,7 +272,8 @@ class UserController extends AppController
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Users->forgotPassword($user, $this->request->data) && !$user->errors()) {
                 $this->Flash->success(__d('user', 'A password reset link has been sent to you via email. Please check your inbox.'), ['key' => 'auth']);
-                $this->redirect(['action' => 'passwordreset', 'u' => base64_encode($user->username), ]);
+                //$this->redirect(['action' => 'passwordReset', 'u' => base64_encode($user->username), ]);
+                $this->redirect(['action' => 'login']);
             } else {
                 $this->Flash->error(__d('user', 'Something went wrong'), ['key' => 'auth']);
             }
@@ -285,7 +286,7 @@ class UserController extends AppController
      * User can assign new password with username and a password reset code
      * No authentication required
      */
-    public function passwordreset()
+    public function passwordReset()
     {
         if ($this->Auth->user()) {
 
@@ -314,7 +315,7 @@ class UserController extends AppController
     /**
      * Passsword change method
      */
-    public function passwordchange()
+    public function passwordChange()
     {
         $user = $this->Users->get($this->Auth->user('id'));
         if ($this->request->is('post') || $this->request->is('put')) {
