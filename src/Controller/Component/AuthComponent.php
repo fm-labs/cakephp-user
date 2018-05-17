@@ -8,6 +8,7 @@ use Cake\Controller\Component\FlashComponent;
 use Cake\ORM\TableRegistry;
 use Cake\Event\Event;
 use Cake\Log\Log;
+use Cake\Routing\Router;
 use User\Model\Table\UsersTable;
 
 /**
@@ -23,6 +24,16 @@ class AuthComponent extends CakeAuthComponent
      */
     public $Users;
 
+    static public function url($url)
+    {
+        if (is_array($url)) {
+            list($plugin,$controller) = Configure::read('User.controller');
+            $url = array_merge(compact('plugin','controller'), $url);
+        }
+
+        return Router::url($url, true);
+    }
+
     /**
      * @param ComponentRegistry $registry
      * @param array $config
@@ -31,6 +42,10 @@ class AuthComponent extends CakeAuthComponent
     {
         // Inject additional config values
         $this->_defaultConfig['userModel'] = 'User.Users';
+
+        if (Configure::check('User')) {
+            $this->_defaultConfig += Configure::read('User');
+        }
 
         parent::__construct($registry, $config);
     }
@@ -44,9 +59,9 @@ class AuthComponent extends CakeAuthComponent
         parent::initialize($config);
 
         // default login action
-        if (!$this->config('loginAction')) {
-            $this->config('loginAction', ['plugin' => 'User', 'controller' => 'User', 'action' => 'login']);
-        }
+        //if (!$this->config('loginAction')) {
+        //    $this->config('loginAction', ['plugin' => 'User', 'controller' => 'User', 'action' => 'login']);
+        //}
 
         // default authenticate
         if (!$this->config('authenticate')) {

@@ -58,7 +58,7 @@ Router::scope('/user', ['_namePrefix' => 'user:'], function ($routes) {
         ['_name' => 'passwordchange']
     );
     $routes->connect('/:action',
-        ['plugin' => 'User', 'controller' => 'User']
+        $base
     );
     $routes->connect('/',
         $base + ['action' => 'index'],

@@ -88,7 +88,7 @@ class UserController extends AppController
      */
     public function logout()
     {
-        //$this->Flash->success(__d('user', 'You are logged out now!'), ['key' => 'auth']);
+        $this->Flash->success(__d('user', 'You are logged out now!'), ['key' => 'auth']);
         $this->redirect($this->Auth->logout());
     }
 
@@ -98,6 +98,7 @@ class UserController extends AppController
      */
     public function index()
     {
+        debug($this->Auth->user);
         $user = $this->Users->get($this->Auth->user('id'));
         $this->set('user', $user);
     }

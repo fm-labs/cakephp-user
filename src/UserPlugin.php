@@ -39,10 +39,6 @@ class UserPlugin implements EventListenerInterface
     {
         if ($event->subject() instanceof SettingsManager) {
             $event->subject()->add('User', [
-                'controller' => [
-                    'type' => 'string',
-                    'default' => 'User.User'
-                ],
                 'layout' => [
                     'type' => 'string',
                 ],

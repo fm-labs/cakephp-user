@@ -5,6 +5,7 @@ use Cake\Core\Configure;
 use Cake\Mailer\Email;
 use Cake\Mailer\Mailer;
 use Cake\ORM\Entity;
+use User\Controller\Component\AuthComponent;
 use User\Model\Entity\User;
 
 /**
@@ -49,11 +50,14 @@ class UserMailer extends Mailer
      */
     public function passwordForgotten(User $user)
     {
+
+        $resetUrl = AuthComponent::url();
+
         $this
             ->to($user->email)
             ->subject(__d('user', 'Password forgotten'))
             ->template('User.password_forgotten')
-            ->set(compact('user'));
+            ->set(compact('user', 'resetUrl'));
     }
 
     /**

@@ -4,6 +4,7 @@ namespace User\Model\Entity;
 use Cake\ORM\Entity;
 use Cake\Auth\AbstractPasswordHasher;
 use Cake\Routing\Router;
+use User\Controller\Component\AuthComponent;
 
 /**
  * User Entity.
@@ -61,7 +62,7 @@ class User extends Entity
         'display_name',
         'is_root',
         'is_superuser',
-        'password_reset_url'
+        //'password_reset_url'
     ];
 
     /**
@@ -95,13 +96,16 @@ class User extends Entity
     /**
      * @return string
      * @todo Move url creation to controller (SOC)
+     * @deprecated
      */
     protected function _getPasswordResetUrl()
     {
         $username = base64_encode($this->username);
         $code = base64_encode($this->password_reset_code);
 
-        return Router::url(['prefix' => false, 'plugin' => 'User', 'controller' => 'User', 'action' => 'passwordReset', 'u' => $username, 'c' => $code], true);
+        //return Router::url(['prefix' => false, 'plugin' => 'User', 'controller' => 'User', 'action' => 'passwordReset', 'u' => $username, 'c' => $code], true);
+        //return AuthComponent::url(['action' => 'passwordReset', 'u' => $username, 'c' => $code]);
+        return '/user/passwort-reset';
     }
 
     /**
