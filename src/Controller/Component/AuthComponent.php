@@ -42,6 +42,7 @@ class AuthComponent extends CakeAuthComponent
     {
         // Inject additional config values
         $this->_defaultConfig['userModel'] = 'User.Users';
+        $this->_defaultConfig['registerRedirect'] = null;
 
         if (Configure::check('User')) {
             $this->_defaultConfig += Configure::read('User');

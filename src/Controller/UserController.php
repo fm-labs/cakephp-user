@@ -33,7 +33,7 @@ class UserController extends AppController
 
         $this->Auth->allow([
             'login', 'register', 'registerGroup', 'activate', 'activateResend',
-            'passwordForgotten', 'passwordReset'
+            'passwordForgotten', 'passwordSent', 'passwordReset'
         ]);
 
         if (Configure::read('User.layout')) {
@@ -89,7 +89,8 @@ class UserController extends AppController
     public function logout()
     {
         $this->Flash->success(__d('user', 'You are logged out now!'), ['key' => 'auth']);
-        $this->redirect($this->Auth->logout());
+        $redirectUrl = $this->Auth->logout();
+        $this->redirect($redirectUrl);
     }
 
     /**
@@ -135,7 +136,9 @@ class UserController extends AppController
                 if ($user && $user->id) {
                     //$this->request->session()->delete('User.Signup');
                     $this->Flash->success(__d('user', 'An activation email has been sent to your email address!'), ['key' => 'auth']);
-                    return $this->redirect(['_name' => 'user:login']);
+                    $redirect = $this->Auth->config('registerRedirect');
+                    $redirect = ($redirect) ?: ['_name' => 'user:login'];
+                    $this->redirect($redirect);
                 } else {
                     $this->Flash->error(__d('user', 'Please fill all required fields'), ['key' => 'auth']);
                 }
@@ -268,18 +271,26 @@ class UserController extends AppController
 
             return;
         }
+
         $user = $this->Users->newEntity();
         $user->username = ($this->request->query('u')) ? base64_decode($this->request->query('u')) : null;
         if ($this->request->is('post') || $this->request->is('put')) {
-            if ($this->Users->forgotPassword($user, $this->request->data) && !$user->errors()) {
-                $this->Flash->success(__d('user', 'A password reset link has been sent to you via email. Please check your inbox.'), ['key' => 'auth']);
-                //$this->redirect(['action' => 'passwordReset', 'u' => base64_encode($user->username), ]);
-                $this->redirect(['action' => 'login']);
+            if ($success = $this->Users->forgotPassword($user, $this->request->data) && !$user->errors()) {
+                $this->Flash->success(__d('user', 'Password recovery info has been sent to you via email. Please check your inbox.'), ['key' => 'auth']);
+                $this->redirect(['action' => 'passwordSent']);
             } else {
                 $this->Flash->error(__d('user', 'Something went wrong'), ['key' => 'auth']);
             }
         }
+
         $this->set('user', $user);
+    }
+
+    /**
+     * Password forgotten default success action
+     */
+    public function passwordSent()
+    {
     }
 
     /**
@@ -290,7 +301,6 @@ class UserController extends AppController
     public function passwordReset()
     {
         if ($this->Auth->user()) {
-
             return $this->redirect(['action' => 'index']);
         }
 
