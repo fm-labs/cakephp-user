@@ -143,7 +143,7 @@ class AuthComponent extends CakeAuthComponent
      */
     public function logout()
     {
-        // dispatch 'User.login' event
+        // dispatch 'User.logout' event
         $event = new Event('User.logout', $this, [
             'user' => false,
             'request' => $this->request

@@ -36,6 +36,10 @@ class UserController extends AppController
             'passwordForgotten', 'passwordSent', 'passwordReset'
         ]);
 
+        if (!Configure::read('User')) {
+            throw new \RuntimeException("UserPlugin: Configuration not loaded!");
+        }
+
         if (Configure::read('User.layout')) {
             $this->viewBuilder()->layout(Configure::read('User.layout'));
         }

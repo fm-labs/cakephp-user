@@ -22,13 +22,14 @@ if (Hash::get($userConfig, 'Router.rootScope') === true) {
 }
 */
 
+
 // User plugin routes
 Router::scope('/user', ['_namePrefix' => 'user:'], function ($routes) {
 
     $userController = (Configure::read('User.controller')) ?: 'User.User';
     list($plugin, $controller) = pluginSplit($userController);
     $base = compact('plugin', 'controller');
-    
+
     $routes->connect('/login',
         $base + ['action' => 'login'],
         ['_name' => 'login']
