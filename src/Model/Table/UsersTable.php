@@ -1,13 +1,18 @@
 <?php
 namespace User\Model\Table;
 
+use Banana\Model\TableInputSchema;
+use Cake\Chronos\Chronos;
+use Cake\Core\Configure;
+use Cake\Core\Plugin;
+use Cake\Event\Event;
+use Cake\Log\Log;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\Entity;
 use Cake\Validation\Validator;
 use User\Model\Entity\User;
-use Cake\Log\Log;
-use Cake\ORM\Entity;
 
 /**
  * Users Model
@@ -20,16 +25,34 @@ class UsersTable extends Table
      */
     public static $minPasswordLength = 8;
 
+    /**
+     * @var bool Use email as username
+     */
     public static $emailAsUsername = false;
 
+    /**
+     * @var string Allowed password pattern
+     */
     public static $passwordRegex = '/^(\w)+$/';
 
+    /**
+     * @var int Password reset expiration expiration in seconds
+     */
+    public static $passwordResetExpiry = 86400; // 24 h
+
+    /**
+     * @var int Password reset code length
+     */
+    public static $passwordResetCodeLength = 6;
+
+    public static $contains = ['UserGroups'];
+
     //public static $usersModel = 'Users.Users';
-    //public static $groupsModel = 'User.Groups';
+    //public static $groupsModel = 'User.UserGroups';
     //public static $rolesModel = 'User.Roles';
     //public static $permissionsModel = 'User.Permissions';
 
-    
+
     /**
      * Initialize method
      *
@@ -42,16 +65,51 @@ class UsersTable extends Table
         $this->displayField('username');
         $this->primaryKey('id');
         $this->addBehavior('Timestamp');
-        $this->belongsTo('PrimaryGroup', [
+        $this->belongsTo('UserGroups', [
             'foreignKey' => 'group_id',
-            'className' => 'User.Groups'
+            'className' => 'User.UserGroups'
         ]);
-        $this->belongsToMany('Groups', [
-            'foreignKey' => 'user_id',
-            'targetForeignKey' => 'group_id',
-            'joinTable' => 'user_groups_users',
-            'className' => 'User.Groups'
-        ]);
+//        $this->belongsToMany('Groups', [
+//            'foreignKey' => 'user_id',
+//            'targetForeignKey' => 'group_id',
+//            'joinTable' => 'user_groups_users',
+//            'className' => 'User.Groups'
+//        ]);
+
+        if (Plugin::loaded('Search')) {
+            $this->addBehavior('Search.Search');
+            $this->searchManager()
+                ->add('name', 'Search.Like', [
+                    'before' => true,
+                    'after' => true,
+                    'fieldMode' => 'OR',
+                    'comparison' => 'LIKE',
+                    'wildcardAny' => '*',
+                    'wildcardOne' => '?',
+                    'field' => ['title']
+                ])
+                ->add('username', 'Search.Like', [
+                    'before' => true,
+                    'after' => true,
+                    'fieldMode' => 'OR',
+                    'comparison' => 'LIKE',
+                    'wildcardAny' => '*',
+                    'wildcardOne' => '?',
+                    'field' => ['title']
+                ])
+                ->add('email', 'Search.Like', [
+                    'before' => true,
+                    'after' => true,
+                    'fieldMode' => 'OR',
+                    'comparison' => 'LIKE',
+                    'wildcardAny' => '*',
+                    'wildcardOne' => '?',
+                    'field' => ['title']
+                ])
+                ->value('login_enabled', [
+                    'filterEmpty' => true
+                ]);
+        }
     }
 
     /**
@@ -74,7 +132,7 @@ class UsersTable extends Table
             ->requirePresence('password', 'create')
             ->notEmpty('password')
             ->add('email', 'valid', ['rule' => 'email'])
-            ->allowEmpty('email')
+            //->allowEmpty('email')
             ->add('email_verification_required', 'valid', ['rule' => 'boolean'])
             ->allowEmpty('email_verification_required')
             ->allowEmpty('email_verification_code')
@@ -123,17 +181,71 @@ class UsersTable extends Table
     {
         $rules->add($rules->isUnique(['username']));
         $rules->add($rules->isUnique(['email']));
-        $rules->add($rules->existsIn(['group_id'], 'Groups'));
+        $rules->add($rules->existsIn(['group_id'], 'UserGroups'));
+
         return $rules;
     }
 
+    /**
+     * Finder method for user authentication
+     *
+     * @param Query $query
+     * @param array $options
+     * @return Query
+     * @todo Exclude superusers from frontend user authentication (or make it optional)
+     */
     public function findAuthUser(Query $query, array $options)
     {
         $query
             ->where(['Users.login_enabled' => true])
-            ->contain(['Groups']);
+            ->contain(static::$contains);
 
         return $query;
+    }
+
+    /**
+     * Validation rules for form login
+     *
+     * @param Validator $validator
+     * @return Validator
+     */
+    public function validationLogin(Validator $validator)
+    {
+        $validator
+            ->add('id', 'valid', ['rule' => 'numeric'])
+            ->requirePresence('username')
+            ->notEmpty('username')
+            ->requirePresence('password')
+            ->notEmpty('password');
+
+        return $validator;
+    }
+
+    /**
+     * Add new user
+     *
+     * @param array $data
+     * @return User
+     */
+    public function add(array $data)
+    {
+        $user = $this->newEntity(null);
+        $user->accessible('*', true);
+        $user->accessible(['password1', 'password2'], true);
+        $user->accessible('password', false);
+
+        $this->patchEntity($user, $data, ['validate' => 'add']);
+        if ($user->errors()) {
+            return $user;
+        }
+
+        $user->password = $user->password1;
+
+        if ($this->save($user)) {
+            Log::info('User added with ID ' . $user->id);
+        }
+
+        return $user;
     }
 
     /**
@@ -156,63 +268,35 @@ class UsersTable extends Table
             ->add('password1', 'password', [
                 'rule' => 'validateNewPassword1',
                 'provider' => 'table',
-                'message' => __('Invalid password')
+                'message' => __d('user', 'Invalid password')
             ])
             ->requirePresence('password2', 'create')
             ->notEmpty('password2')
             ->add('password2', 'password', [
                 'rule' => 'validateNewPassword2',
                 'provider' => 'table',
-                'message' => __('Passwords do not match')
+                'message' => __d('user', 'Passwords do not match')
             ])
-            ->add('is_login_allowed', 'valid', ['rule' => 'boolean'])
-            //->requirePresence('is_login_allowed', 'create')
-            ->notEmpty('is_login_allowed');
-
+            ->add('login_enabled', 'valid', ['rule' => 'boolean']);
 
         if (static::$emailAsUsername) {
             $validator->add('username', 'email', [
                 'rule' => ['email'],
-                'message' => __('The provided email address is invalid')
+                'message' => __d('user', 'The provided email address is invalid')
             ]);
         }
-
 
         return $validator;
     }
 
     /**
-     * Add new user
-     *
-     * @param array $data
-     * @return \Cake\Datasource\EntityInterface|Entity
-     */
-    public function add(array $data)
-    {
-        $user = $this->newEntity(null);
-        $user->accessible('*', true);
-        $user->accessible(['password1', 'password2'], true);
-        $user->accessible('password', false);
-
-        $this->patchEntity($user, $data, ['validate' => 'add']);
-        if ($user->errors()) {
-            return $user;
-        }
-
-        $user->password = $user->password1;
-
-        if ($this->save($user)) {
-            Log::info('User added with ID ' . $user->id);
-        }
-        return $user;
-    }
-
-    /**
      * Create root user with default credentials
      *
-     * @return bool|\Cake\Datasource\EntityInterface|Entity
+     * @param $email
+     * @param $password
+     * @return bool|User
      */
-    public function createRootUser($password = 'change_me')
+    public function createRootUser($email, $password)
     {
         // check if there is already a root user
         if ($this->find()->where(['id' => 1])->first()) {
@@ -224,8 +308,8 @@ class UsersTable extends Table
             'superuser' => true,
             'name' => 'root',
             'username' => 'root',
-            'email' => 'change_me@example.org',
-            'password' => 'change_me',
+            'email' => $email,
+            'password' => $password,
             'login_enabled' => true,
             'email_verification_required' => false,
         ];
@@ -236,8 +320,101 @@ class UsersTable extends Table
         ], true);
         $this->patchEntity($user, $data);
 
+        //@TODO Add validation
         if ($this->save($user)) {
-            Log::info('User \'root\' added with ID ' . $user->id);
+            Log::info('User \'root\' added with ID ' . $user->id, ['backend', 'user']);
+        }
+
+        return $user;
+    }
+
+    /**
+     * Register new user with form data array
+     *
+     * @param array $data
+     * @param bool $dispatchEvent
+     * @return User
+     */
+    public function register(array $data, $dispatchEvent = true)
+    {
+        $user = $this->newEntity(null, ['validate' => 'register']);
+        $user->accessible('id', false);
+        $user->accessible('login_enabled', true);
+        $user->accessible('block_enabled', true);
+        $user->accessible('username', true);
+        $user->accessible('name', true);
+        $user->accessible('password1', true);
+        $user->accessible('password2', true);
+        $user->accessible('password_force_change', true);
+        $user->accessible('group_id', true);
+        $user->accessible('email', true);
+        // @TODO first_name and last_name properties are deprecated
+        $user->accessible('first_name', true);
+        $user->accessible('last_name', true);
+
+        if (!empty($data)) {
+            // no login
+            $noLogin = (isset($data['_nologin'])) ? (bool)$data['_nologin'] : false;
+            if ($noLogin) {
+                $data['login_enabled'] = false;
+
+                $this->validator('register')
+                    ->allowEmpty('password1')
+                    ->requirePresence('password1', false)
+                    ->allowEmpty('password2')
+                    ->requirePresence('password2', false);
+
+                $user->accessible('password1', true);
+                $user->accessible('password2', true);
+            }
+
+            // email has been entered as username, so copy value to email field
+            if (self::$emailAsUsername && isset($data['email'])) {
+                $data['username'] = $data['email'];
+            }
+
+            // generate full name
+            // @TODO first_name and last_name properties are deprecated
+            if (isset($data['first_name']) && isset($data['last_name'])) {
+                $data['name'] = sprintf("%s %s", $data['first_name'], $data['last_name']);
+            }
+            if (!isset($data['name'])) {
+                $data['name'] = $data['username'];
+            }
+
+            $data['login_enabled'] = !$noLogin;
+            $data['block_enabled'] = false;
+            $data['password_force_change'] = false;
+
+            // email verification
+            $user->accessible([
+                'email_verification_required', 'email_verification_code', 'email_verified'
+            ], true);
+
+            $data['email_verification_required'] = (bool) Configure::read('User.Signup.verifyEmail');
+            $data['email_verification_code'] = substr(strtoupper(md5(uniqid('',true))), 0, 5);
+            $data['email_verified'] = false;
+
+            // patch and validate
+            $this->patchEntity($user, $data, ['validate' => 'register']);
+            if ($user->errors()) {
+                return $user;
+            }
+
+            // If validation passes, assign password.
+            // The entity should preferably use a PasswordHasher
+            $user->accessible('password', true);
+            $user->password = $user->password1;
+            unset($user->password1);
+            unset($user->password2);
+
+            if ($this->save($user)) {
+                Log::info(sprintf('New user \'%s\' (ID:%s)', $user->username, $user->id), ['user']);
+
+                if ($dispatchEvent === true) {
+                    $this->eventManager()->dispatch(new Event('User.Model.User.register', $user, $data));
+                }
+            }
         }
 
         return $user;
@@ -254,70 +431,102 @@ class UsersTable extends Table
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
             ->allowEmpty('id', 'create')
+            ->requirePresence('name', 'create')
+            ->notEmpty('name')
+            ->notEmpty('first_name')
+            ->notEmpty('last_name')
             ->requirePresence('username', 'create')
             ->notEmpty('username')
+            ->add('email', 'email', [
+                'rule' => ['email'],
+                'message' => __d('user', 'The provided email address is invalid')
+            ])
             ->requirePresence('password1', 'create')
             ->notEmpty('password1')
             ->add('password1', 'password', [
                 'rule' => 'validateNewPassword1',
                 'provider' => 'table',
-                'message' => __('Invalid password')
+                'message' => __d('user', 'Invalid password')
             ])
             ->requirePresence('password2', 'create')
             ->notEmpty('password2')
             ->add('password2', 'password', [
                 'rule' => 'validateNewPassword2',
                 'provider' => 'table',
-                'message' => __('Passwords do not match')
+                'message' => __d('user', 'Passwords do not match')
             ])
-            ->add('login_enabled', 'valid', ['rule' => 'boolean'])
-            ->requirePresence('login_enabled', 'create')
-            ->notEmpty('login_enabled');
+            ->add('login_enabled', 'valid', ['rule' => 'boolean']);
+            //->requirePresence('login_enabled', 'create')
+            //->notEmpty('login_enabled')
+
 
         if (static::$emailAsUsername) {
+            // email validation for 'username'
             $validator->add('username', 'email', [
                 'rule' => ['email'],
-                'message' => __('The provided email address is invalid')
+                'message' => __d('user', 'The provided email address is invalid')
             ]);
+            // require 'email'
+            $validator->requirePresence('email', 'create')
+                ->notEmpty('email');
         }
 
         return $validator;
     }
 
     /**
-     * Register new user with form data array
+     * Change user password
+     * - Requires the current user password
+     * - The new password MUST NOT match the current user password
      *
-     * @param $data
-     * @return \Cake\Datasource\EntityInterface|Entity
+     * @param Entity|User $user
+     * @param array $data
+     * @return bool
      */
-    public function register($data)
+    public function changePassword(User &$user, array $data)
     {
-        $user = $this->newEntity(null, ['validate' => 'register']);
-        $user->accessible('username', true);
+        $user->accessible('password0', true);
         $user->accessible('password1', true);
         $user->accessible('password2', true);
 
-        if ($data !== null) {
-            // permit new registered users to login
-            $data['login_enabled'] = true;
+        $user = $this->patchEntity($user, $data, ['validate' => 'changePassword']);
+        if ($user->errors()) {
+            return false;
+        }
 
-            $this->patchEntity($user, $data, ['validate' => 'register']);
-            if ($user->errors()) {
-                return $user;
-            }
-
-            // If validation passes, assign password.
-            // The entity should preferably use a PasswordHasher
-            $user->accessible('password', true);
-            $user->password = $user->password1;
+        // validate current password
+        if (!$user->getPasswordHasher()->check($data['password0'], $user->password)) {
+            $user->errors('password0', ['password' => __d('user', 'This is not your current password')]);
+            unset($user->password0);
             unset($user->password1);
             unset($user->password2);
 
-            if ($this->save($user)) {
-                Log::info('[plugin:user] New user registered with ID ' . $user->id);
-            }
+            return false;
         }
-        return $user;
+
+        // new password should not match current password
+        if (strcmp($user->password0, $user->password1) === 0) {
+            $user->errors('password1', [
+                'password' => __d('user', 'This is your current password. Please create a new one!')
+            ]);
+            unset($user->password1);
+            unset($user->password2);
+
+            return false;
+        }
+
+        // apply new password
+        $user->accessible('password', true);
+        $user->password = $data['password1'];
+        $saved = $this->save($user);
+
+        // cleanup
+        unset($user->password0);
+        unset($user->password1);
+        unset($user->password2);
+        #unset($user->password); // hide password
+
+        return ($saved) ? true : false;
     }
 
     /**
@@ -337,72 +546,84 @@ class UsersTable extends Table
             ->add('password1', 'password', [
                 'rule' => 'validateNewPassword1',
                 'provider' => 'table',
-                'message' => __('Invalid password')
+                'message' => __d('user', 'Invalid password')
             ])
             ->requirePresence('password2', 'create')
             ->notEmpty('password2')
             ->add('password2', 'password', [
                 'rule' => 'validateNewPassword2',
                 'provider' => 'table',
-                'message' => __('Passwords do not match')
+                'message' => __d('user', 'Passwords do not match')
             ]);
 
         return $validator;
     }
 
     /**
-     * Change user password
-     * - Requires the current user password
-     * - The new password MUST NOT match the current user password
+     * Reset user password
      *
-     * @param Entity $user
+     * @param Entity|User $user
      * @param array $data
      * @return bool
      */
-    public function changePassword(Entity &$user, array $data)
+    public function resetPassword(User &$user, array $data)
     {
-        $user->accessible('password0', true);
+        $username = (isset($data['username'])) ? $data['username'] : null;
+        $resetCode = (isset($data['password_reset_code'])) ? $data['password_reset_code'] : null;
+        if (!$username) {
+            $user->errors('username', ['This is a required field']);
+
+            return false;
+        }
+        if (!$resetCode) {
+            $user->errors('password_reset_code', ['This is a required field']);
+
+            return false;
+        }
+
+        $_user = $this->find()->where([
+            'username' => $username,
+            //'password_reset_code' => $resetCode
+        ])->first();
+        if (!$_user) {
+            $user->errors('username', ['User not found']);
+
+            return false;
+        }
+        if ($_user->password_reset_expiry_timestamp && Chronos::now()->gt($_user->password_reset_expiry_timestamp)) {
+            $user->errors('password_reset_code', ['Password reset code has expired']);
+            //throw new PasswordResetCodeExpiredException();
+            return false;
+        }
+        if ($_user->password_reset_code != $resetCode) {
+            $user->errors('password_reset_code', ['Password reset code is invalid']);
+            //throw new PasswordResetCodeInvalidException();
+            return false;
+        }
+
+        $user = $_user;
+        $user->accessible('*', false);
         $user->accessible('password1', true);
         $user->accessible('password2', true);
-
-        $user = $this->patchEntity($user, $data, ['validate' => 'changePassword']);
+        $user = $this->patchEntity($user, $data, ['validate' => 'resetPassword']);
         if ($user->errors()) {
-            return false;
-        }
-
-        // validate current password
-        if (!$user->getPasswordHasher()->check($data['password0'], $user->password)) {
-            $user->errors('password0', ['password' => __('This is not your current password')]);
-            unset($user->password0);
-            unset($user->password1);
-            unset($user->password2);
-            return false;
-        }
-
-        // new password should not match current password
-        if (strcmp($user->password0, $user->password1) === 0) {
-            $user->errors('password1', [
-                'password' => __('This is your current password. Please create a new one!')
-            ]);
-            unset($user->password1);
-            unset($user->password2);
             return false;
         }
 
         // apply new password
         $user->accessible('password', true);
         $user->password = $data['password1'];
-        $saved = $this->save($user);
+        if (!$this->save($user)) {
+            return false;
+        }
 
         // cleanup
-        unset($user->password0);
         unset($user->password1);
         unset($user->password2);
-        #unset($user->password); // hide password
+        unset($user->password); // hide password
 
-        return ($saved) ? true : false;
+        return $user;
     }
-
 
     /**
      * Validation rules to reset password
@@ -419,47 +640,17 @@ class UsersTable extends Table
             ->add('password1', 'password', [
                 'rule' => 'validateNewPassword1',
                 'provider' => 'table',
-                'message' => __('Invalid password')
+                'message' => __d('user', 'Invalid password')
             ])
             ->requirePresence('password2', 'create')
             ->notEmpty('password2')
             ->add('password2', 'password', [
                 'rule' => 'validateNewPassword2',
                 'provider' => 'table',
-                'message' => __('Passwords do not match')
+                'message' => __d('user', 'Passwords do not match')
             ]);
 
         return $validator;
-    }
-
-    /**
-     * Reset user password
-     *
-     * @param Entity $user
-     * @param array $data
-     * @return bool
-     */
-    public function resetPassword(Entity &$user, array $data)
-    {
-        $user->accessible('password1', true);
-        $user->accessible('password2', true);
-
-        $user = $this->patchEntity($user, $data, ['validate' => 'resetPassword']);
-        if ($user->errors()) {
-            return false;
-        }
-
-        // apply new password
-        $user->accessible('password', true);
-        $user->password = $data['password1'];
-        $saved = $this->save($user);
-
-        // cleanup
-        unset($user->password1);
-        unset($user->password2);
-        #unset($user->password); // hide password
-
-        return ($saved) ? true : false;
     }
 
     /**
@@ -475,17 +666,17 @@ class UsersTable extends Table
 
         // Check password length
         if (strlen($value) < static::$minPasswordLength) {
-            return __('Password too short. Minimum {0} characters', static::$minPasswordLength);
+            return __d('user', 'Password too short. Minimum {0} characters', static::$minPasswordLength);
         }
 
         // Check for illegal characters
         if (!preg_match(static::$passwordRegex, $value)) {
-            return __('Password contains illegal characters');
+            return __d('user', 'Password contains illegal characters');
         }
 
         // Check for weak password
         if (isset($context['data']['username']) && $value == $context['data']['username']) {
-            return __('Password can not be the same as your username');
+            return __d('user', 'Password can not be the same as your username');
         }
 
         return true;
@@ -512,4 +703,121 @@ class UsersTable extends Table
         return false;
     }
 
+    /**
+     * Validation rules to reset password
+     *
+     * @param Validator $validator
+     * @return Validator
+     */
+    public function validationActivate(Validator $validator)
+    {
+        $validator
+            ->add('id', 'valid', ['rule' => 'numeric'])
+            ->requirePresence('email')
+            ->notEmpty('email')
+            ->requirePresence('email_verification_code')
+            ->notEmpty('email_verification_code');
+
+        return $validator;
+    }
+
+    /**
+     * Activate user
+     *
+     * @param array $data
+     * @return bool
+     * @todo Refactor with Form
+     */
+    public function activate(array $data = [])
+    {
+        $email = (isset($data['email'])) ? strtolower(trim($data['email'])) : null;
+        $code = (isset($data['email_verification_code'])) ? trim($data['email_verification_code']) : null;
+        $user = $this->find()->where(['email' => $email])->contain([])->first();
+
+        debug($data);
+        debug($user);
+
+        if (!$user || strcmp(strtoupper($user->get('email_verification_code')),strtoupper($code)) !== 0) {
+
+            return false;
+        }
+
+        $user->email_verified = true;
+        return $this->save($user);
+    }
+
+    /**
+     * Forgot password
+     *
+     * @param User $user
+     * @param array $data
+     * @param bool|true $dispatchEvent
+     * @return bool|mixed|User
+     */
+    public function forgotPassword(User &$user, array $data = [], $dispatchEvent = true)
+    {
+        $username = ($data['username']) ? $data['username'] : null;
+        if (!$username) {
+            $user->errors('username', ['required' => __d('user', 'This is a required field')]);
+
+            return false;
+        }
+
+        $_user = $this->find()->where(['username' => $username])->first();
+        if (!$_user) {
+            $user->username = "";
+            $user->errors('username', ['notfound' => __d('user', 'User "{0}" not found', h($username))]);
+
+            return $user;
+        }
+
+        $user = $_user;
+        $user->password_reset_code = $this->_generatePasswordResetCode();
+        $user->password_reset_expiry_timestamp = time() + self::$passwordResetExpiry; // 24h
+        if (!$this->save($user)) {
+            return false;
+        }
+
+        if ($dispatchEvent === true) {
+            $event = $this->eventManager()->dispatch(new Event('User.Model.User.passwordForgotten', $user));
+        }
+
+        return $user;
+    }
+
+    /**
+     * Generate random password reset code
+     *
+     * @return string
+     */
+    protected function _generatePasswordResetCode()
+    {
+        //@TODO Make use of random_compat vendor lib
+        return strtoupper(self::random_str(self::$passwordResetCodeLength));
+    }
+
+    /**
+     * Generate a random string, using a cryptographically secure
+     * pseudorandom number generator (random_int)
+     *
+     * For PHP 7, random_int is a PHP core function
+     * For PHP 5.x, depends on https://github.com/paragonie/random_compat
+     *
+     * @see http://stackoverflow.com/questions/4356289/php-random-string-generator
+     *
+     * @param int $length      How many characters do we want?
+     * @param string $keyspace A string of all possible characters
+     *                         to select from
+     * @return string
+     */
+    public static function random_str($length, $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    {
+        $str = '';
+        $max = mb_strlen($keyspace, '8bit') - 1;
+        for ($i = 0; $i < $length; ++$i) {
+            $str .= $keyspace[random_int(0, $max)];
+        }
+
+        return $str;
+    }
 }

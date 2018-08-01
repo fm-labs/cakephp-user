@@ -1,13 +1,28 @@
-<div id="user-registration-form">
-    <h2><?= __('Registration'); ?></h2>
-    <?= $this->Form->create($user, ['novalidate']); ?>
-    <?= $this->Form->input('username'); ?>
-    <?= $this->Form->input('password1', ['type' => 'password', 'required' => true]); ?>
-    <?= $this->Form->input('password2', ['type' => 'password', 'required' => true]); ?>
-    <?= $this->Form->submit(__('Signup')); ?>
-    or
-    <?= $this->Html->link('Login', ['controller' => 'Auth', 'action' => 'login']); ?> here
-    <?= $this->Form->end(); ?>
+<?php
+$this->extend('base');
+// breadcrumbs
+$this->loadHelper('Breadcrumbs');
+$this->Breadcrumbs->add(__d('user','Account Registration'));
 
-    <?= $this->element('User.customize', ['template' => 'src/Template/Plugin/User/Registration/index.ctp']); ?>
+// no robots
+$this->Html->meta('robots', 'noindex,nofollow', ['block' => true]);
+
+$this->assign('title', __d('user','Registration'));
+?>
+<div id="user-registration-form">
+    <?= $this->Form->create($user, ['novalidate']); ?>
+    <?= $this->Form->input('first_name',
+        ['label' => __d('user','First name'), 'placeholder' => __d('user', 'Firstname')]); ?>
+    <?= $this->Form->input('last_name',
+        ['label' => __d('user','Last name'), 'placeholder' => __d('user', 'Lastname')]); ?>
+    <?= $this->Form->input('email',
+        ['label' => __d('user','Email'), 'placeholder' => 'email@example.com']); ?>
+    <?= $this->Form->input('password1',
+        ['type' => 'password', 'required' => true, 'label' => __d('user','Password'), 'placeholder' => __d('user', 'Min 8 characters')]); ?>
+    <?= $this->Form->input('password2',
+        ['type' => 'password', 'required' => true, 'label' => __d('user','Repat password')]); ?>
+    <?= $this->Form->button(__d('user','Signup'), ['class' => 'btn btn-primary']); ?>
+    <?= $this->Html->link(__d('user','I\'m already registered'), ['_name' => 'user:login'], ['class' => 'btn']); ?>
+    <?= $this->Form->end(); ?>
+    <hr />
 </div>

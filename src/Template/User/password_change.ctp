@@ -1,28 +1,33 @@
-<div id="user-change-password-form">
-    <h2><?= __('Create a new password'); ?></h2>
+<?php
+$this->extend('base');
+// breadcrumbs
+$this->loadHelper('Breadcrumbs');
+$this->Breadcrumbs->add(__d('user','My account'), ['_name' => 'user:profile']);
+$this->Breadcrumbs->add(__d('user','Change password'));
+
+// no robots
+$this->Html->meta('robots', 'noindex,nofollow', ['block' => true]);
+
+$this->assign('title', __d('user','Set a new password'));
+?>
+<div id="user-password-change-form" class="user-form">
     <?= $this->Form->create($user); ?>
     <?= $this->Form->input('password0', [
-        'label' => __('Current password'),
+        'label' => __d('user','Current password'),
         'type' => 'password',
         'required' => true
     ]); ?>
     <?= $this->Form->input('password1', [
-        'label' => __('New password'),
+        'label' => __d('user','New password'),
         'type' => 'password',
         'required' => true
     ]); ?>
     <?= $this->Form->input('password2', [
-        'label' => __('Repeat password'),
+        'label' => __d('user','Repeat password'),
         'type' => 'password',
         'required' => true
     ]); ?>
-    <?= $this->Form->submit(__('Change my password now')); ?>
+    <?= $this->Form->button(__d('user','Update my password'), ['class' => 'btn btn-primary']); ?>
+    <?= $this->Html->link(__d('user','Cancel'), ['_name' => 'user:profile'], ['class' => 'btn']); ?>
     <?= $this->Form->end(); ?>
-
-    <br />
-    <?= $this->Html->link(__('Back'), '/', [
-       'onclick' => "javascript:history.go(-1)"
-    ]); ?>
-
-    <?= $this->element('User.customize', ['template' => 'src/Template/Plugin/User/Auth/password_change.ctp']); ?>
 </div>

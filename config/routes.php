@@ -1,21 +1,73 @@
 <?php
 use Cake\Routing\Router;
+use Cake\Core\Configure;
+use Cake\Utility\Hash;
 
-// User auth routes
-Router::connect('/login', ['plugin' => 'User', 'controller' => 'Auth', 'action' => 'login']);
-Router::connect('/logout', ['plugin' => 'User', 'controller' => 'Auth', 'action' => 'logout']);
+$userConfig = (array) Configure::read('User');
 
-// User registration routes
-Router::connect('/register', ['plugin' => 'User', 'controller' => 'User', 'action' => 'register']);
+/*
+if (Hash::get($userConfig, 'Router.rootScope') === true) {
+    Router::connect('/login',
+        $base + ['action' => 'login'],
+        ['_name' => 'user:login']
+    );
+    Router::connect('/logout',
+        $base + ['action' => 'logout'],
+        ['_name' => 'user:logout']
+    );
+    Router::connect('/register',
+        $base + ['action' => 'register'],
+        ['_name' => 'user:register']
+    );
+}
+*/
 
-//Plugin routes
-Router::plugin('User', function ($routes) {
 
-    $routes->prefix('admin', function ($routes) {
-        $routes->connect('/:controller');
-        $routes->fallbacks('DashedRoute');
-    });
+// User plugin routes
+Router::scope('/user', ['_namePrefix' => 'user:'], function ($routes) {
 
-    $routes->connect('/:controller');
-    $routes->fallbacks('DashedRoute');
+    $userController = (Configure::read('User.controller')) ?: 'User.User';
+    list($plugin, $controller) = pluginSplit($userController);
+    $base = compact('plugin', 'controller');
+
+    $routes->connect('/login',
+        $base + ['action' => 'login'],
+        ['_name' => 'login']
+    );
+    $routes->connect('/logout',
+        $base + ['action' => 'logout'],
+        ['_name' => 'logout']
+    );
+    $routes->connect('/register',
+        $base + ['action' => 'register'],
+        ['_name' => 'register']
+    );
+    $routes->connect('/activate',
+        $base + ['action' => 'activate'],
+        ['_name' => 'activate']
+    );
+    $routes->connect('/password-forgotten',
+        $base + ['action' => 'passwordForgotten'],
+        ['_name' => 'passwordforgotten']
+    );
+    $routes->connect('/password-reset',
+        $base + ['action' => 'passwordReset'],
+        ['_name' => 'passwordreset']
+    );
+    $routes->connect('/password-change',
+        $base + ['action' => 'passwordChange'],
+        ['_name' => 'passwordchange']
+    );
+    $routes->connect('/:action',
+        $base
+    );
+    $routes->connect('/',
+        $base + ['action' => 'index'],
+        ['_name' => 'profile']
+    );
+
+    //$routes->connect('/:controller');
+    //$routes->fallbacks('DashedRoute');
 });
+
+unset($userConfig);

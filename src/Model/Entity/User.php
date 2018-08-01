@@ -3,13 +3,17 @@ namespace User\Model\Entity;
 
 use Cake\ORM\Entity;
 use Cake\Auth\AbstractPasswordHasher;
+use Cake\Routing\Router;
+use User\Controller\Component\AuthComponent;
 
 /**
  * User Entity.
  */
 class User extends Entity
 {
-
+    /**
+     * @var string
+     */
     public static $passwordHasherClass = 'Cake\\Auth\\DefaultPasswordHasher';
 
     /**
@@ -18,11 +22,14 @@ class User extends Entity
      * @var array
      */
     protected $_accessible = [
+        'id' => false,
         'superuser' => false,
         'name' => false,
         'group_id' => false,
         'username' => false,
         'password' => false,
+        'password1' => false,
+        'password2' => false,
         'email' => false,
         'email_verification_required' => false,
         'email_verification_code' => false,
@@ -48,23 +55,69 @@ class User extends Entity
         'groups' => false,
     ];
 
+    /**
+     * @var array
+     */
     protected $_virtual = [
+        'display_name',
         'is_root',
-        'is_superuser'
+        'is_superuser',
+        //'password_reset_url'
     ];
 
+    /**
+     * @return bool
+     */
     protected function _getIsRoot()
     {
         return ($this->username === 'root');
     }
 
+    /**
+     * @return bool
+     */
     protected function _getIsSuperuser()
     {
         return ($this->superuser || $this->username === 'root');
     }
 
+    /**
+     * @return null|string
+     */
+    protected function _getDisplayName()
+    {
+        if ($this->name) {
+            return $this->name;
+        }
+
+        return $this->username;
+    }
+
+    /**
+     * @return string
+     * @todo Move url creation to controller (SOC)
+     * @deprecated
+     */
+    protected function _getPasswordResetUrl()
+    {
+        $username = base64_encode($this->username);
+        $code = base64_encode($this->password_reset_code);
+
+        //return Router::url(['prefix' => false, 'plugin' => 'User', 'controller' => 'User', 'action' => 'passwordReset', 'u' => $username, 'c' => $code], true);
+        //return AuthComponent::url(['action' => 'passwordReset', 'u' => $username, 'c' => $code]);
+        return '/user/passwort-reset';
+    }
+
+    /**
+     * @param $password
+     * @return string
+     */
     protected function _setPassword($password)
     {
+        if (self::$passwordHasherClass === false) {
+            return $password;
+        }
+
         return $this->getPasswordHasher()->hash($password);
     }
 
