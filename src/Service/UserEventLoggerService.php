@@ -20,7 +20,12 @@ class UserEventLoggerService implements EventListenerInterface
      */
     public function logEvent(Event $event)
     {
-        Log::info(sprintf("[User:%s] %s", get_class($event->subject()), $event->name()), ['user']);
+        $user = null;
+        if (isset($event->data['user'])) {
+            Log::info(sprintf("[User:%s] %s", $event->name(), $event->data['user']['username']), ['user']);
+        } else {
+            Log::info(sprintf("[User:%s]", $event->name()), ['user']);
+        }
     }
 
     /**
@@ -32,7 +37,9 @@ class UserEventLoggerService implements EventListenerInterface
             'User.Model.User.passwordForgotten' => 'logEvent',
             'User.Model.User.passwordReset'     => 'logEvent',
             'User.Model.User.register'          => 'logEvent',
+            'User.Model.User.activate'          => 'logEvent',
             'User.login'                        => 'logEvent',
+            'User.loginError'                   => 'logEvent',
             'User.logout'                       => 'logEvent',
         ];
     }

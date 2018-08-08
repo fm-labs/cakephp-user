@@ -208,7 +208,7 @@ class UserController extends AppController
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Users->activate($this->request->data)) {
                 $this->Flash->success(__d('user', 'Your account has been activated. You can login now.'), ['key' => 'auth']);
-                $this->redirect(['action' => 'login', 'm' => base64_encode($user->email), ]);
+                $this->redirect(['action' => 'login', 'm' => base64_encode($user->email) ]);
             } else {
                 $this->Flash->error(__d('user', 'Account activation failed'), ['key' => 'auth']);
             }

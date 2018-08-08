@@ -67,7 +67,7 @@ Router::scope('/user', ['_namePrefix' => 'user:'], function ($routes) {
     );
 
     //$routes->connect('/:controller');
-    //$routes->fallbacks('DashedRoute');
+    $routes->fallbacks('DashedRoute');
 });
 
 unset($userConfig);

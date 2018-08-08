@@ -11,6 +11,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\ORM\Entity;
+use Cake\Routing\Router;
 use Cake\Validation\Validator;
 use User\Model\Entity\User;
 
@@ -42,9 +43,18 @@ class UsersTable extends Table
 
     /**
      * @var int Password reset code length
+     * @deprecated Use $verificationCodeLength instead
      */
-    public static $passwordResetCodeLength = 6;
+    public static $passwordResetCodeLength = 8;
 
+    /**
+     * @var int Length of generated verification codes
+     */
+    public static $verificationCodeLength = 8;
+
+    /**
+     * @var array List of related models passed to the auth finder method
+     */
     public static $contains = ['UserGroups'];
 
     //public static $usersModel = 'Users.Users';
@@ -391,8 +401,8 @@ class UsersTable extends Table
                 'email_verification_required', 'email_verification_code', 'email_verified'
             ], true);
 
-            $data['email_verification_required'] = (bool) Configure::read('User.Signup.verifyEmail');
-            $data['email_verification_code'] = substr(strtoupper(md5(uniqid('',true))), 0, 5);
+            $data['email_verification_required'] = !(bool) Configure::read('User.Signup.disableEmailVerification');
+            $data['email_verification_code'] = substr(strtoupper(md5(uniqid('',true))), 0, self::$verificationCodeLength);
             $data['email_verified'] = false;
 
             // patch and validate
@@ -409,8 +419,7 @@ class UsersTable extends Table
             unset($user->password2);
 
             if ($this->save($user)) {
-                Log::info(sprintf('New user \'%s\' (ID:%s)', $user->username, $user->id), ['user']);
-
+                //Log::info(sprintf('New user \'%s\' (ID:%s)', $user->username, $user->id), ['user']);
                 if ($dispatchEvent === true) {
                     $this->eventManager()->dispatch(new Event('User.Model.User.register', $user, $data));
                 }
@@ -571,12 +580,12 @@ class UsersTable extends Table
         $username = (isset($data['username'])) ? $data['username'] : null;
         $resetCode = (isset($data['password_reset_code'])) ? $data['password_reset_code'] : null;
         if (!$username) {
-            $user->errors('username', ['This is a required field']);
+            $user->errors('username', [__('This is a required field')]);
 
             return false;
         }
         if (!$resetCode) {
-            $user->errors('password_reset_code', ['This is a required field']);
+            $user->errors('password_reset_code', [__('This is a required field')]);
 
             return false;
         }
@@ -591,12 +600,12 @@ class UsersTable extends Table
             return false;
         }
         if ($_user->password_reset_expiry_timestamp && Chronos::now()->gt($_user->password_reset_expiry_timestamp)) {
-            $user->errors('password_reset_code', ['Password reset code has expired']);
+            $user->errors('password_reset_code', [__('Password reset code has expired')]);
             //throw new PasswordResetCodeExpiredException();
             return false;
         }
         if ($_user->password_reset_code != $resetCode) {
-            $user->errors('password_reset_code', ['Password reset code is invalid']);
+            $user->errors('password_reset_code', [__('Password reset code is invalid')]);
             //throw new PasswordResetCodeInvalidException();
             return false;
         }
@@ -725,25 +734,29 @@ class UsersTable extends Table
      * Activate user
      *
      * @param array $data
+     * @param bool $dispatchEvent
      * @return bool
      * @todo Refactor with Form
      */
-    public function activate(array $data = [])
+    public function activate(array $data = [], $dispatchEvent = true)
     {
         $email = (isset($data['email'])) ? strtolower(trim($data['email'])) : null;
         $code = (isset($data['email_verification_code'])) ? trim($data['email_verification_code']) : null;
         $user = $this->find()->where(['email' => $email])->contain([])->first();
 
-        debug($data);
-        debug($user);
-
         if (!$user || strcmp(strtoupper($user->get('email_verification_code')),strtoupper($code)) !== 0) {
-
             return false;
         }
 
         $user->email_verified = true;
-        return $this->save($user);
+        if ($this->save($user)) {
+            if ($dispatchEvent === true) {
+                $this->eventManager()->dispatch(new Event('User.Model.User.activate', $user));
+            }
+            return $user;
+        }
+
+        return false;
     }
 
     /**
@@ -774,15 +787,14 @@ class UsersTable extends Table
         $user = $_user;
         $user->password_reset_code = $this->_generatePasswordResetCode();
         $user->password_reset_expiry_timestamp = time() + self::$passwordResetExpiry; // 24h
-        if (!$this->save($user)) {
-            return false;
+        if ($this->save($user)) {
+            if ($dispatchEvent === true) {
+                $this->eventManager()->dispatch(new Event('User.Model.User.passwordForgotten', $user));
+            }
+            return $user;
         }
 
-        if ($dispatchEvent === true) {
-            $event = $this->eventManager()->dispatch(new Event('User.Model.User.passwordForgotten', $user));
-        }
-
-        return $user;
+        return false;
     }
 
     /**
@@ -792,8 +804,40 @@ class UsersTable extends Table
      */
     protected function _generatePasswordResetCode()
     {
+        return self::generateRandomVerificationCode(self::$verificationCodeLength);
+    }
+
+
+    public static function generateRandomVerificationCode($length = 8)
+    {
         //@TODO Make use of random_compat vendor lib
-        return strtoupper(self::random_str(self::$passwordResetCodeLength));
+        return strtoupper(self::random_str($length));
+    }
+
+    /**
+     * Generate email verification url from User entity
+     * @return string Full URL
+     */
+    public static function buildEmailVerificationUrl(User $user)
+    {
+        return Router::url([
+            'prefix' => false, 'plugin' => 'User', 'controller' => 'User', 'action'=>'activate',
+            'c' => base64_encode($user->email_verification_code),
+            'm' => base64_encode($user->email)
+        ], true);
+    }
+
+    /**
+     * Generate password reset url from User entity
+     * @return string Full URL
+     */
+    public static function buildPasswordResetUrl(User $user)
+    {
+        return Router::url([
+            'prefix' => false, 'plugin' => 'User', 'controller' => 'User', 'action' => 'passwordReset',
+            'c' => base64_encode($user->password_reset_code),
+            'u' => base64_encode($user->username)
+        ], true);
     }
 
     /**
@@ -820,4 +864,5 @@ class UsersTable extends Table
 
         return $str;
     }
+
 }

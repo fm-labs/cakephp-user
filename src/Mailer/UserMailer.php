@@ -2,11 +2,13 @@
 namespace User\Mailer;
 
 use Cake\Core\Configure;
+use Cake\I18n\I18n;
 use Cake\Mailer\Email;
 use Cake\Mailer\Mailer;
 use Cake\ORM\Entity;
 use User\Controller\Component\AuthComponent;
 use User\Model\Entity\User;
+use User\Model\Table\UsersTable;
 
 /**
  * Class UserMailer
@@ -15,6 +17,9 @@ use User\Model\Entity\User;
  */
 class UserMailer extends Mailer
 {
+    protected $_user;
+    protected $_locale;
+
     /**
      * @param Email|null $email
      */
@@ -22,9 +27,48 @@ class UserMailer extends Mailer
     {
         parent::__construct($email);
 
-        if (Configure::check('User.Email.profile')) {
-            $this->_email->profile(Configure::read('User.Email.profile'));
+        $this->_locale = I18n::defaultLocale();
+
+        if (Configure::check('User.Mailer.profile')) {
+            $this->_email->profile(Configure::read('User.Mailer.profile'));
         }
+    }
+
+    protected function _setUser(User $user)
+    {
+        $this->to($user->email);
+        $this->set('user', $user);
+
+        $this->_user = $user;
+        $this->_locale = ($user['locale']) ?: I18n::defaultLocale();
+    }
+
+    protected function _setProfile($profile)
+    {
+        // if profile is a string, check the static configuration in following order:
+        // - if locale is set (TODO: and translation is enabled), email translation profile config: User.EmailTranslation.[LOCALE].[PROFILE]
+        // - email translation profile config: User.Email.[PROFILE]
+        if (is_string($profile)) {
+            $check = [];
+            // add User email profile translation config check
+            if ($this->_locale /*&& $this->_locale != I18n::defaultLocale()*/) {
+                $check[] = 'User.EmailTranslation.' . $this->_locale . '.' . $profile;
+            }
+
+            // add User email profile config check
+            $check[] = 'User.Email.' . $profile;
+
+            // use first match
+            foreach ($check as $_check) {
+                if (Configure::check($_check)) {
+                    $this->_email->profile(Configure::read($_check));
+                    return;
+                }
+            }
+
+            throw new \Exception('User email profile not found: ' . $profile);
+        }
+
     }
 
     /**
@@ -33,13 +77,40 @@ class UserMailer extends Mailer
      * @param User $user
      * @return void
      */
-    public function userRegistration(Entity $user)
+    public function userRegistration(User $user)
     {
-        $this
-            ->to($user->email)
-            ->subject(__d('user', 'Your registration'))
-            ->template('User.user_registration')
-            ->set(compact('user'));
+        $this->_setUser($user);
+        $this->_setProfile(__FUNCTION__);
+
+        $verificationUrl = UsersTable::buildEmailVerificationUrl($user);
+        if (!$verificationUrl) {
+            throw new \InvalidArgumentException('UserMailer::userRegistration: Verification url missing');
+        }
+        $this->set(compact('verificationUrl'));
+    }
+
+    /**
+     * User activation email
+     *
+     * @param User $user
+     * @return void
+     */
+    public function userActivation(User $user)
+    {
+        $this->_setUser($user);
+        $this->_setProfile(__FUNCTION__);
+    }
+
+    /**
+     * User login email
+     *
+     * @param User $user
+     * @return void
+     */
+    public function newLogin(User $user)
+    {
+        $this->_setUser($user);
+        $this->_setProfile(__FUNCTION__);
     }
 
     /**
@@ -50,14 +121,14 @@ class UserMailer extends Mailer
      */
     public function passwordForgotten(User $user)
     {
+        $this->_setUser($user);
+        $this->_setProfile(__FUNCTION__);
 
-        $resetUrl = AuthComponent::url();
-
-        $this
-            ->to($user->email)
-            ->subject(__d('user', 'Password forgotten'))
-            ->template('User.password_forgotten')
-            ->set(compact('user', 'resetUrl'));
+        $resetUrl = UsersTable::buildPasswordResetUrl($user);
+        if (!$resetUrl) {
+            throw new \InvalidArgumentException('UserMailer::passwordForgotten: Reset url missing');
+        }
+        $this->set(compact('resetUrl'));
     }
 
     /**
@@ -68,10 +139,7 @@ class UserMailer extends Mailer
      */
     public function passwordReset(User $user)
     {
-        $this
-            ->to($user->email)
-            ->subject(__d('user', 'Password change notification'))
-            ->template('User.password_reset')
-            ->set(compact('user'));
+        $this->_setUser($user);
+        $this->_setProfile(__FUNCTION__);
     }
 }

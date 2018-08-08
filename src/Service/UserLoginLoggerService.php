@@ -4,6 +4,7 @@ namespace User\Service;
 
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
+use Cake\Event\EventManager;
 use Cake\I18n\Time;
 use Cake\Log\Log;
 use Cake\Network\Request;
@@ -34,17 +35,43 @@ class UserLoginLoggerService implements EventListenerInterface
         $loginData = [
             'login_last_login_ip' => $clientIp,
             'login_last_login_host' => $clientHostname,
-            'login_last_login_datetime' => new Time()
+            'login_last_login_datetime' => new Time(),
+            'login_failure_count' => 0, // reset login failure counter
         ];
         //$event->data['user'] = array_merge($user, $loginData);
 
         // update user table
         if ($user && isset($user['id'])) {
-            $entity = $event->subject()->Users->get($user['id']);
-            $entity->accessible(array_keys($loginData), true);
-            $entity = $event->subject()->Users->patchEntity($entity, $loginData);
-            if (!$event->subject()->Users->save($entity)) {
+            $user = $event->subject()->Users->get($user['id']);
+            $user->accessible(array_keys($loginData), true);
+            $user = $event->subject()->Users->patchEntity($user, $loginData);
+            if (!$event->subject()->Users->save($user)) {
                 Log::error("Failed to update user with login info", ['user']);
+            }
+        }
+
+        EventManager::instance()->dispatch(new Event('User.Model.User.newLogin', $user, $loginData));
+    }
+
+    public function onLoginError(Event $event)
+    {
+        //debug($event->data);
+
+        $request = $event->data['request'];
+        $data = $request->data;
+
+        if (isset($data['username'])) {
+
+            $user = $event->subject()->Users->findByUsername($data['username'])->first();
+            if ($user) {
+                $user->login_failure_count++;
+                $user->login_failure_datetime = new Time();
+
+                if (!$event->subject()->Users->save($user)) {
+                    Log::error("Failed to update user with login info", ['user']);
+                }
+            } else {
+                //$event->subject()->flash('FUCK IT');
             }
         }
     }
@@ -56,6 +83,11 @@ class UserLoginLoggerService implements EventListenerInterface
     {
         return [
             'User.login'                        => 'onLogin',
+            'User.loginError'                   => 'onLoginError',
+
+            //'User.Model.User.passwordForgotten' => 'logEvent',
+            //'User.Model.User.passwordReset'     => 'logEvent',
+            //'User.Model.User.register'          => 'logEvent',
         ];
     }
 }

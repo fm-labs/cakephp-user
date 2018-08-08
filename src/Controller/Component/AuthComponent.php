@@ -124,7 +124,7 @@ class AuthComponent extends CakeAuthComponent
             $this->flash(__d('user', 'Login failed'));
 
             // dispatch 'User.loginFailed' event
-            $event = new Event('User.loginFailed', $this, [
+            $event = new Event('User.loginError', $this, [
                 'request' => $this->request
             ]);
             $this->eventManager()->dispatch($event);
