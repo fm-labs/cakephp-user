@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cakephp3-user\n"
-"POT-Creation-Date: 2018-03-04 20:06+0100\n"
-"PO-Revision-Date: 2018-03-04 20:07+0100\n"
+"POT-Creation-Date: 2018-08-13 15:18+0200\n"
+"PO-Revision-Date: 2018-08-13 15:23+0200\n"
 "Last-Translator: fm-labs <flowmotionlabs@gmail.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -15,504 +15,170 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Poedit 1.8.7.1\n"
 
-#: Controller/UserController.php:67
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:71
 msgid "Your account has not been activated yet"
 msgstr "Ihr Konto wurde noch nicht aktiviert."
 
-#: Controller/UserController.php:75
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:79
 msgid "Sorry, but login is currently disabled."
 msgstr ""
 "Die Anmeldung ist zur Zeit nicht möglich. Bitte versuchen Sie es später "
 "nocheinmal."
 
-#: Controller/UserController.php:138
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:95
+msgid "You are logged out now!"
+msgstr "Sie sind nun abgemeldet!"
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:141
 msgid "An activation email has been sent to your email address!"
 msgstr "Ein Aktivierungslink wurde an Ihre Emailaddresse versendet!"
 
-#: Controller/UserController.php:141
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:146
 msgid "Please fill all required fields"
 msgstr "Bitte alle Pflichtfelder ausfüllen"
 
-#: Controller/UserController.php:147
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:152
 msgid "Sorry, but user registration is currently disabled."
 msgstr ""
 "Die Registrierung ist zur Zeit nicht möglich. Bitte versuchen Sie es später "
 "nocheinmal."
 
-#: Controller/UserController.php:163
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:168
 msgid "No password entered"
 msgstr "Kein Passwort eingegeben."
 
-#: Controller/UserController.php:174 Model/Table/UsersTable.php:269;447;547;641
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:179
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:311;679
 msgid "Invalid password"
 msgstr "Ungültiges Passwort"
 
-#: Controller/UserController.php:204
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:209
 msgid "Your account has been activated. You can login now."
 msgstr "Ihr Konto wurde aktiviert. Sie können sich nun einloggen."
 
-#: Controller/UserController.php:207
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:212
 msgid "Account activation failed"
 msgstr "Kontoaktivierung fehlgeschlagen"
 
-#: Controller/UserController.php:234
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:239
 msgid "Please enter an email address"
 msgstr "Bitte geben Sie eine gültige Email-Adresse ein"
 
-#: Controller/UserController.php:241
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:246
 msgid "No user with such email address"
 msgstr "Kein Benutzer mit dieser Emailadresse gefunden"
 
-#: Controller/UserController.php:248
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:253
 msgid "An activation email has been sent to {0}"
 msgstr "Ein Aktivierungsmail wurde an %s gesendet"
 
-#: Controller/UserController.php:251;279
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:256;285
 msgid "Something went wrong"
 msgstr "Etwas ist schief gegangen"
 
-#: Controller/UserController.php:276
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:282
 msgid ""
-"A password reset link has been sent to you via email. Please check your "
+"Password recovery info has been sent to you via email. Please check your "
 "inbox."
 msgstr ""
-"Ein Link zum Zurücksetzen Ihres Passworts wurde Ihnen per Email zugesandt. "
-"Bitte überprüfen Sie Ihr Emailpostfach."
+"Eine Anleitung zum Zurücksetzen Ihres Passwortes wurde Ihnen per Email "
+"zugesandt. Bitte überprüfen Sie Ihr Postfach."
 
-#: Controller/UserController.php:305
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:318
 msgid "You can now login with your new password"
 msgstr "Sie können sich jetzt mit Ihrem neuen Passwort einloggen"
 
-#: Controller/UserController.php:310
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:323
 msgid "Failed to reset password"
 msgstr "Password konnte nicht zurückgesetzt werden"
 
-#: Controller/UserController.php:324
-#: Controller/Admin/UsersController.php:188;216
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:337
 msgid "Your password has been changed."
 msgstr "Ihr Passwort wurde geändert"
 
-#: Controller/UserController.php:327
-#: Controller/Admin/UsersController.php:191;219
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:340
 msgid "Ups, something went wrong"
 msgstr "Etwas ist schief gegangen"
 
-#: Controller/Admin/UserGroupsController.php:37;63
-#: Controller/Admin/UserPermissionsController.php:60;86
-#: Controller/Admin/UserRolesController.php:60;86
-#: Controller/Admin/UsersController.php:105;134
-msgid "The {0} has been saved."
-msgstr ""
-
-#: Controller/Admin/UserGroupsController.php:37;41;63;67;86;88
-msgid "user group"
-msgstr ""
-
-#: Controller/Admin/UserGroupsController.php:41;67
-#: Controller/Admin/UserPermissionsController.php:64;90
-#: Controller/Admin/UserRolesController.php:64;90
-#: Controller/Admin/UsersController.php:109;138
-msgid "The {0} could not be saved. Please, try again."
-msgstr ""
-
-#: Controller/Admin/UserGroupsController.php:86
-#: Controller/Admin/UserPermissionsController.php:109
-#: Controller/Admin/UserRolesController.php:109
-#: Controller/Admin/UsersController.php:161
-msgid "The {0} has been deleted."
-msgstr ""
-
-#: Controller/Admin/UserGroupsController.php:88
-#: Controller/Admin/UserPermissionsController.php:111
-#: Controller/Admin/UserRolesController.php:111
-#: Controller/Admin/UsersController.php:163
-msgid "The {0} could not be deleted. Please, try again."
-msgstr ""
-
-#: Controller/Admin/UserPermissionsController.php:60;64;86;90;109;111
-msgid "permission"
-msgstr ""
-
-#: Controller/Admin/UserRolesController.php:60;64;86;90;109;111
-msgid "role"
-msgstr ""
-
-#: Controller/Admin/UsersController.php:70 Template/Admin/Users/_view.ctp:66
-#: Template/Admin/Users/password_change.ctp:3;8 Template/User/index.ctp:20
-#: Template/User/passwordchange.ctp:6
-msgid "Change password"
-msgstr "Passwort ändern"
-
-#: Controller/Admin/UsersController.php:71
-#: Template/Admin/Users/password_reset.ctp:2 Template/User/passwordreset.ctp:38
-msgid "Reset password"
-msgstr "Passwort zurücksetzen"
-
-#: Controller/Admin/UsersController.php:105;109;134;138;161;163
-msgid "user"
-msgstr ""
-
-#: Controller/Admin/UsersController.php:180
-msgid "You are not allowed to do this"
-msgstr "Keine Berechtigung"
-
-#: Controller/Admin/UsersController.php:208
-msgid "Only root can do this"
-msgstr ""
-
-#: Controller/Component/AuthComponent.php:108
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/Component/AuthComponent.php:124
 msgid "Login failed"
 msgstr "Login fehlgeschlagen"
 
-#: Mailer/UserMailer.php:38
-msgid "Your registration"
-msgstr "Ihre Anmeldung"
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:316
+msgid "Weak password"
+msgstr "Schwaches Passwort"
 
-#: Mailer/UserMailer.php:53
-msgid "Password forgotten"
-msgstr "Passwort vergessen"
-
-#: Mailer/UserMailer.php:68
-msgid "Password change notification"
-msgstr "Passwort wurde geändert"
-
-#: Model/Table/UsersTable.php:276;454;554;648
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:324;686
 msgid "Passwords do not match"
 msgstr "Die Passwörter stimmen nicht überein"
 
-#: Model/Table/UsersTable.php:283;440;465
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:347;507;516
 msgid "The provided email address is invalid"
 msgstr "Das ist keine gülte Emailadresse"
 
-#: Model/Table/UsersTable.php:497
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:548
 msgid "This is not your current password"
 msgstr "Das Passwort ist falsch"
 
-#: Model/Table/UsersTable.php:508
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:559
 msgid "This is your current password. Please create a new one!"
 msgstr "Das ist ihr aktuelles Passwort. Bitte wähhlen Sie ein neues Passwort."
 
-#: Model/Table/UsersTable.php:667
-msgid "Password too short. Minimum {0} characters"
-msgstr "Passwort zu kurz. Mindestens {0} Zeichen"
-
-#: Model/Table/UsersTable.php:672
-msgid "Password contains illegal characters"
-msgstr "Das Passwort enthält ungültige Zeichen"
-
-#: Model/Table/UsersTable.php:677
-msgid "Password can not be the same as your username"
-msgstr "Passwort kann nicht das selbe wie der Benutzername sein"
-
-#: Model/Table/UsersTable.php:756
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:610;615;849
 msgid "This is a required field"
 msgstr "Das ist ein Pflichtfeld"
 
-#: Model/Table/UsersTable.php:764
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:630
+msgid "Password reset code has expired"
+msgstr "Der Code zum Zurücksetzen Ihres Passwortes ist abgelaufen"
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:635
+msgid "Password reset code is invalid"
+msgstr "Der Code zum Zurücksetzen Ihres Passwortes ist ungültig"
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:715
+msgid "Password can not be the same as your username"
+msgstr "Passwort kann nicht das selbe wie der Benutzername sein"
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:742
+msgid "Password too short. Minimum {0} characters"
+msgstr "Passwort zu kurz. Mindestens {0} Zeichen"
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:747
+msgid "Password contains illegal characters"
+msgstr "Das Passwort enthält ungültige Zeichen"
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:751
+msgid "Password must include at least one number!"
+msgstr "Passwort muss mindestens eine Zahl beinhalten!"
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:755
+msgid "Password must include at least one lowercase letter!"
+msgstr "Passwort muss mindestens einen Kleinbuchstaben enhalten!"
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:759
+msgid "Password must include at least one UPPERCASE letter!"
+msgstr "Passwort muss mindestens einen Großbuchstaben enthalten!"
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:763
+msgid "Password must include at least one special character!"
+msgstr "Passwort muss mindestens ein Sonderzeichen enthalten!"
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:857
 msgid "User \"{0}\" not found"
-msgstr ""
+msgstr "Benutzer \"{0}\" nicht gefunden"
 
-#: Template/Admin/UserGroups/_index.ctp:1 Template/Admin/UserGroups/add.ctp:1
-#: Template/Admin/UserGroups/edit.ctp:1;15
-#: Template/Admin/UserGroups/view.ctp:1;18 Template/Admin/Users/_index.ctp:8
-#: Template/Admin/Users/_view.ctp:26 Template/Admin/Users/add.ctp:9
-msgid "User Groups"
-msgstr ""
-
-#: Template/Admin/UserGroups/_index.ctp:3 Template/Admin/UserGroups/add.ctp:2
-#: Template/Admin/UserGroups/edit.ctp:31
-#: Template/Admin/UserGroups/view.ctp:23;35
-#: Template/Admin/Users/_index.ctp:3;13 Template/Admin/Users/_view.ctp:20;31
-#: Template/Admin/Users/add.ctp:2;14
-msgid "New {0}"
-msgstr ""
-
-#: Template/Admin/UserGroups/_index.ctp:3 Template/Admin/UserGroups/add.ctp:2;6
-#: Template/Admin/UserGroups/edit.ctp:2;44
-#: Template/Admin/UserGroups/view.ctp:8;13;23
-#: Template/Admin/Users/_index.ctp:13 Template/Admin/Users/_view.ctp:31
-#: Template/Admin/Users/add.ctp:14
-msgid "User Group"
-msgstr ""
-
-#: Template/Admin/UserGroups/_index.ctp:8
-#: Template/Admin/UserGroups/edit.ctp:15;25
-#: Template/Admin/UserGroups/view.ctp:18;30 Template/Admin/Users/_index.ctp:8
-#: Template/Admin/Users/_view.ctp:15;26 Template/Admin/Users/add.ctp:4;9
-msgid "List {0}"
-msgstr ""
-
-#: Template/Admin/UserGroups/_index.ctp:8 Template/Admin/UserGroups/edit.ctp:25
-#: Template/Admin/UserGroups/view.ctp:30;108 Template/Admin/Users/_index.ctp:1
-#: Template/Admin/Users/_view.ctp:1;15 Template/Admin/Users/add.ctp:1;4
-#: Template/Admin/Users/edit.ctp:1 Template/Admin/Users/password_change.ctp:1
-#: Template/Admin/Users/password_reset.ctp:1
-msgid "Users"
-msgstr ""
-
-#: Template/Admin/UserGroups/_index.ctp:19
-#: Template/Admin/UserGroups/view.ctp:87;116 Template/Admin/Users/_view.ctp:183
-msgid "Actions"
-msgstr ""
-
-#: Template/Admin/UserGroups/_index.ctp:31
-#: Template/Admin/UserGroups/view.ctp:96;125 Template/Admin/Users/_index.ctp:47
-#: Template/Admin/Users/_view.ctp:191
-msgid "View"
-msgstr ""
-
-#: Template/Admin/UserGroups/_index.ctp:37
-#: Template/Admin/UserGroups/view.ctp:97;126 Template/Admin/Users/_index.ctp:48
-#: Template/Admin/Users/_view.ctp:193
-msgid "Edit"
-msgstr ""
-
-#: Template/Admin/UserGroups/_index.ctp:42 Template/Admin/UserGroups/edit.ctp:9
-#: Template/Admin/Users/_index.ctp:49
-msgid "Delete"
-msgstr ""
-
-#: Template/Admin/UserGroups/_index.ctp:44
-#: Template/Admin/UserGroups/edit.ctp:11 Template/Admin/UserGroups/view.ctp:15
-#: Template/Admin/Users/_index.ctp:49 Template/Admin/Users/_view.ctp:12
-msgid "Are you sure you want to delete # {0}?"
-msgstr ""
-
-#: Template/Admin/UserGroups/_index.ctp:57
-msgid "previous"
-msgstr ""
-
-#: Template/Admin/UserGroups/_index.ctp:59
-msgid "next"
-msgstr ""
-
-#: Template/Admin/UserGroups/add.ctp:6 Template/Admin/Users/add.ctp:21
-msgid "Add {0}"
-msgstr ""
-
-#: Template/Admin/UserGroups/add.ctp:18 Template/Admin/UserGroups/edit.ctp:56
-#: Template/Admin/Users/add.ctp:60 Template/Admin/Users/edit.ctp:35
-msgid "Submit"
-msgstr ""
-
-#: Template/Admin/UserGroups/edit.ctp:2;44 Template/Admin/UserGroups/view.ctp:8
-#: Template/Admin/Users/_view.ctp:5 Template/Admin/Users/edit.ctp:2
-msgid "Edit {0}"
-msgstr ""
-
-#: Template/Admin/UserGroups/edit.ctp:31 Template/Admin/UserGroups/view.ctp:35
-#: Template/Admin/Users/_index.ctp:3 Template/Admin/Users/_view.ctp:5;10;20
-#: Template/Admin/Users/add.ctp:2;21 Template/Admin/Users/edit.ctp:2
-msgid "User"
-msgstr ""
-
-#: Template/Admin/UserGroups/view.ctp:13 Template/Admin/Users/_view.ctp:10
-msgid "Delete {0}"
-msgstr ""
-
-#: Template/Admin/UserGroups/view.ctp:54 Template/Admin/Users/_view.ctp:46
-msgid "Label"
-msgstr ""
-
-#: Template/Admin/UserGroups/view.ctp:55 Template/Admin/Users/_view.ctp:47
-msgid "Value"
-msgstr ""
-
-#: Template/Admin/UserGroups/view.ctp:61 Template/Admin/Users/_view.ctp:53;182
-msgid "Name"
-msgstr ""
-
-#: Template/Admin/UserGroups/view.ctp:65 Template/Admin/Users/_view.ctp:65
-#: Template/User/login.ctp:15 Template/User/register.ctp:21
-msgid "Password"
-msgstr "Passwort"
-
-#: Template/Admin/UserGroups/view.ctp:71;84;113
-#: Template/Admin/Users/_view.ctp:95;181
-msgid "Id"
-msgstr ""
-
-#: Template/Admin/UserGroups/view.ctp:79;108 Template/Admin/Users/_view.ctp:177
-msgid "Related {0}"
-msgstr ""
-
-#: Template/Admin/UserGroups/view.ctp:79
-msgid "Primary Users"
-msgstr ""
-
-#: Template/Admin/UserGroups/view.ctp:85;114 Template/Admin/Users/_view.ctp:61
-#: Template/User/passwordreset.ctp:16
-msgid "Username"
-msgstr "Benutzername"
-
-#: Template/Admin/UserGroups/view.ctp:86;115 Template/Admin/Users/_view.ctp:69
-#: Template/User/login.ctp:14 Template/User/register.ctp:19
-msgid "Email"
-msgstr "Email"
-
-#: Template/Admin/Users/_view.ctp:24
-msgid "More"
-msgstr "Mehr"
-
-#: Template/Admin/Users/_view.ctp:57
-msgid "Primary Group"
-msgstr ""
-
-#: Template/Admin/Users/_view.ctp:73
-msgid "Email Verification Code"
-msgstr "Aktivierungscode"
-
-#: Template/Admin/Users/_view.ctp:77
-msgid "Password Reset Code"
-msgstr ""
-
-#: Template/Admin/Users/_view.ctp:81
-msgid "Login Last Login Ip"
-msgstr ""
-
-#: Template/Admin/Users/_view.ctp:85
-msgid "Login Last Login Host"
-msgstr ""
-
-#: Template/Admin/Users/_view.ctp:89
-msgid "Block Reason"
-msgstr ""
-
-#: Template/Admin/Users/_view.ctp:99
-msgid "Email Verification Expiry Timestamp"
-msgstr ""
-
-#: Template/Admin/Users/_view.ctp:103
-msgid "Password Change Min Days"
-msgstr ""
-
-#: Template/Admin/Users/_view.ctp:107
-msgid "Password Change Max Days"
-msgstr ""
-
-#: Template/Admin/Users/_view.ctp:111
-msgid "Password Change Warning Days"
-msgstr ""
-
-#: Template/Admin/Users/_view.ctp:115
-msgid "Password Change Timestamp"
-msgstr ""
-
-#: Template/Admin/Users/_view.ctp:119
-msgid "Password Expiry Timestamp"
-msgstr ""
-
-#: Template/Admin/Users/_view.ctp:123
-msgid "Password Reset Expiry Timestamp"
-msgstr ""
-
-#: Template/Admin/Users/_view.ctp:127
-msgid "Login Failure Count"
-msgstr ""
-
-#: Template/Admin/Users/_view.ctp:133
-msgid "Login Last Login Datetime"
-msgstr ""
-
-#: Template/Admin/Users/_view.ctp:137
-msgid "Login Failure Datetime"
-msgstr ""
-
-#: Template/Admin/Users/_view.ctp:141
-msgid "Block Datetime"
-msgstr ""
-
-#: Template/Admin/Users/_view.ctp:145
-msgid "Created"
-msgstr ""
-
-#: Template/Admin/Users/_view.ctp:149
-msgid "Modified"
-msgstr ""
-
-#: Template/Admin/Users/_view.ctp:154
-msgid "Email Verification Required"
-msgstr ""
-
-#: Template/Admin/Users/_view.ctp:155;159;163;167;171
-msgid "Yes"
-msgstr "Ja"
-
-#: Template/Admin/Users/_view.ctp:155;159;163;167;171
-msgid "No"
-msgstr "Nein"
-
-#: Template/Admin/Users/_view.ctp:158
-msgid "Email Verified"
-msgstr ""
-
-#: Template/Admin/Users/_view.ctp:162
-msgid "Password Force Change"
-msgstr ""
-
-#: Template/Admin/Users/_view.ctp:166
-msgid "Login Enabled"
-msgstr ""
-
-#: Template/Admin/Users/_view.ctp:170
-msgid "Block Enabled"
-msgstr ""
-
-#: Template/Admin/Users/_view.ctp:177
-msgid "Groups"
-msgstr ""
-
-#: Template/Admin/Users/add.ctp:30
-msgid "Real name"
-msgstr "Name"
-
-#: Template/Admin/Users/password_change.ctp:2
-msgid "Change my password"
-msgstr "Mein Ṕasswort ändern"
-
-#: Template/Admin/Users/password_change.ctp:4
-#: Template/Admin/Users/password_reset.ctp:3
-msgid "Back to user"
-msgstr "Zurück zum Benutzer"
-
-#: Template/Admin/Users/password_change.ctp:12
-#: Template/User/passwordchange.ctp:16
-msgid "Current password"
-msgstr "Aktuelles Passwort"
-
-#: Template/Admin/Users/password_change.ctp:17
-#: Template/Admin/Users/password_reset.ctp:10
-#: Template/User/passwordchange.ctp:21 Template/User/passwordreset.ctp:27
-msgid "New password"
-msgstr "Neues Passwort"
-
-#: Template/Admin/Users/password_change.ctp:22
-#: Template/Admin/Users/password_reset.ctp:16
-#: Template/User/passwordchange.ctp:26 Template/User/passwordreset.ctp:33
-msgid "Repeat password"
-msgstr "Passwort wiederholen"
-
-#: Template/Admin/Users/password_change.ctp:28
-msgid "Change password now"
-msgstr "Passwort jetzt ändern"
-
-#: Template/Admin/Users/password_reset.ctp:7
-msgid "Set a new password for user {0} (ID: {1})"
-msgstr "Neues Passwort für Benutzer {0} (ID: {1})"
-
-#: Template/Admin/Users/password_reset.ctp:21
-msgid "Update password now"
-msgstr "Passwort jetzt ändern"
-
-#: Template/User/activate.ctp:5 Template/User/activate_resend.ctp:5
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/activate.ctp:5
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/activate_resend.ctp:5
 msgid "Account Verification"
 msgstr "Kontoverifizierung"
 
-#: Template/User/activate.ctp:10 Template/User/activate_resend.ctp:10
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/activate.ctp:10
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/activate_resend.ctp:10
 msgid "Verify your email address"
 msgstr "Emailadresse verifizieren"
 
-#: Template/User/activate.ctp:15
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/activate.ctp:15
 msgid ""
 "An activation code has been sent to your email upon registration. Please "
 "check your inbox."
@@ -520,136 +186,228 @@ msgstr ""
 "Ein Aktivierungslink wurde bei der Registrierung an Ihre Emailaddresse "
 "gesendet! Bitte überprüfen Sie Ihr Emailpostfach."
 
-#: Template/User/activate.ctp:18
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/activate.ctp:18
 msgid "Resend activation email"
 msgstr "Aktivierungsemail erneut senden"
 
-#: Template/User/activate.ctp:26 Template/User/activate_resend.ctp:17
-#: Template/User/register_group.ctp:17
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/activate.ctp:26
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/activate_resend.ctp:17
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/register_group.ctp:17
 msgid "Continue"
 msgstr "Weiter"
 
-#: Template/User/index.ctp:5;10
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/index.ctp:5;10
 msgid "My Account"
 msgstr "Mein Konto"
 
-#: Template/User/index.ctp:21
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/index.ctp:20
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_change.ctp:6
+msgid "Change password"
+msgstr "Passwort ändern"
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/index.ctp:21
 msgid "Logout"
 msgstr "Abmelden"
 
-#: Template/User/login.ctp:5;10;16 Template/User/passwordforgotten.ctp:5
-#: Template/User/passwordreset.ctp:5
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:5;10;16
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_forgotten.ctp:5
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_reset.ctp:5
 msgid "Login"
 msgstr "Anmelden"
 
-#: Template/User/login.ctp:14
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:14
 msgid "Type your email here"
 msgstr "Email"
 
-#: Template/User/login.ctp:15
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:14
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:19
+msgid "Email"
+msgstr "Email"
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:15
 msgid "Type your password here"
 msgstr "Passwort"
 
-#: Template/User/login.ctp:17 Template/User/register.ctp:24
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:15
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:21
+msgid "Password"
+msgstr "Passwort"
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:17
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:24
 msgid "Signup"
 msgstr "Registrieren"
 
-#: Template/User/login.ctp:23
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:23
 msgid "Activate account"
 msgstr "Konto aktivieren"
 
-#: Template/User/login.ctp:26
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:26
 msgid "Forgot password?"
 msgstr "Passwort vergessen?"
 
-#: Template/User/passwordchange.ctp:5
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_change.ctp:5
 msgid "My account"
 msgstr "Mein Konto"
 
-#: Template/User/passwordchange.ctp:11
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_change.ctp:11
 msgid "Set a new password"
 msgstr "Ein neues Passwort setzen"
 
-#: Template/User/passwordchange.ctp:30
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_change.ctp:16
+msgid "Current password"
+msgstr "Aktuelles Passwort"
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_change.ctp:21
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_reset.ctp:27
+msgid "New password"
+msgstr "Neues Passwort"
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_change.ctp:26
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_reset.ctp:33
+msgid "Repeat password"
+msgstr "Passwort wiederholen"
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_change.ctp:30
 msgid "Update my password"
 msgstr "Mein Passwort ändern"
 
-#: Template/User/passwordchange.ctp:31 Template/User/passwordforgotten.ctp:21
-#: Template/User/passwordreset.ctp:39
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_change.ctp:31
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_forgotten.ctp:21
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_reset.ctp:39
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: Template/User/passwordforgotten.ctp:6
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_forgotten.ctp:6
 msgid "Password recovery"
 msgstr "Passwort wiederherstellen"
 
-#: Template/User/passwordforgotten.ctp:11
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_forgotten.ctp:11
 msgid "Password forgotten?"
 msgstr "Passwort vergessen?"
 
-#: Template/User/passwordforgotten.ctp:16
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_forgotten.ctp:16
 msgid "Your username"
 msgstr "Ihr Benutzername"
 
-#: Template/User/passwordforgotten.ctp:17
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_forgotten.ctp:17
 msgid "Enter username or email address"
 msgstr "Email oder Benutzername eingeben"
 
-#: Template/User/passwordforgotten.ctp:20
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_forgotten.ctp:20
 msgid "Send password recovery instructions"
 msgstr "Passwortinformationen zusenden"
 
-#: Template/User/passwordreset.ctp:6
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_reset.ctp:6
 msgid "Reset account password"
 msgstr "Passwort zurücksetzten"
 
-#: Template/User/passwordreset.ctp:11
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_reset.ctp:11
 msgid "Reset your password"
 msgstr "Passwort zurücksetzen"
 
-#: Template/User/passwordreset.ctp:17
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_reset.ctp:16
+msgid "Username"
+msgstr "Benutzername"
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_reset.ctp:17
 msgid "Enter username or email"
 msgstr "Email oder Benutzername eingeben"
 
-#: Template/User/passwordreset.ctp:21
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_reset.ctp:21
 msgid "Password reset code received via email"
 msgstr "Passwort-Wiederherstellungs Code wurde per Email zugesandt."
 
-#: Template/User/register.ctp:5 Template/User/register_group.ctp:5
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_reset.ctp:38
+msgid "Reset password"
+msgstr "Passwort zurücksetzen"
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:5
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/register_group.ctp:5
 msgid "Account Registration"
 msgstr "Registrierung"
 
-#: Template/User/register.ctp:10 Template/User/register_group.ctp:10
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:10
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/register_group.ctp:10
 msgid "Registration"
 msgstr "Registrierung"
 
-#: Template/User/register.ctp:15
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:15
 msgid "First name"
 msgstr "Vorname"
 
-#: Template/User/register.ctp:15
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:15
 msgid "Firstname"
 msgstr "Vorname"
 
-#: Template/User/register.ctp:17
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:17
 msgid "Last name"
 msgstr "Nachname"
 
-#: Template/User/register.ctp:17
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:17
 msgid "Lastname"
 msgstr "Nachname"
 
-#: Template/User/register.ctp:21
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:21
 msgid "Min 8 characters"
 msgstr "Mind. 8 Zeichen"
 
-#: Template/User/register.ctp:23
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:23
 msgid "Repat password"
 msgstr "Passwort wiederholen"
 
-#: Template/User/register.ctp:25
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:25
 msgid "I'm already registered"
 msgstr "Ich bin bereits registriert"
+
+#~ msgid ""
+#~ "A password reset link has been sent to you via email. Please check your "
+#~ "inbox."
+#~ msgstr ""
+#~ "Ein Link zum Zurücksetzen Ihres Passworts wurde Ihnen per Email "
+#~ "zugesandt. Bitte überprüfen Sie Ihr Emailpostfach."
+
+#~ msgid "You are not allowed to do this"
+#~ msgstr "Keine Berechtigung"
+
+#~ msgid "Your registration"
+#~ msgstr "Ihre Anmeldung"
+
+#~ msgid "Password forgotten"
+#~ msgstr "Passwort vergessen"
+
+#~ msgid "Password change notification"
+#~ msgstr "Passwort wurde geändert"
+
+#~ msgid "More"
+#~ msgstr "Mehr"
+
+#~ msgid "Email Verification Code"
+#~ msgstr "Aktivierungscode"
+
+#~ msgid "Yes"
+#~ msgstr "Ja"
+
+#~ msgid "No"
+#~ msgstr "Nein"
+
+#~ msgid "Real name"
+#~ msgstr "Name"
+
+#~ msgid "Change my password"
+#~ msgstr "Mein Ṕasswort ändern"
+
+#~ msgid "Back to user"
+#~ msgstr "Zurück zum Benutzer"
+
+#~ msgid "Change password now"
+#~ msgstr "Passwort jetzt ändern"
+
+#~ msgid "Set a new password for user {0} (ID: {1})"
+#~ msgstr "Neues Passwort für Benutzer {0} (ID: {1})"
+
+#~ msgid "Update password now"
+#~ msgstr "Passwort jetzt ändern"
 
 #~ msgid "Your registration was successful!"
 #~ msgstr "Die Registrierung war erfolgreich!"

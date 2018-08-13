@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2018-08-13 13:15+0000\n"
+"POT-Creation-Date: 2018-08-13 13:17+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -115,6 +115,18 @@ msgstr ""
 msgid "This is your current password. Please create a new one!"
 msgstr ""
 
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:610;615;849
+msgid "This is a required field"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:630
+msgid "Password reset code has expired"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:635
+msgid "Password reset code is invalid"
+msgstr ""
+
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:715
 msgid "Password can not be the same as your username"
 msgstr ""
@@ -127,8 +139,20 @@ msgstr ""
 msgid "Password contains illegal characters"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:849
-msgid "This is a required field"
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:751
+msgid "Password must include at least one number!"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:755
+msgid "Password must include at least one lowercase letter!"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:759
+msgid "Password must include at least one UPPERCASE letter!"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:763
+msgid "Password must include at least one special character!"
 msgstr ""
 
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:857

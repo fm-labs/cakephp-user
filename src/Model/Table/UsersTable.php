@@ -607,12 +607,12 @@ class UsersTable extends Table
         $username = (isset($data['username'])) ? $data['username'] : null;
         $resetCode = (isset($data['password_reset_code'])) ? $data['password_reset_code'] : null;
         if (!$username) {
-            $user->errors('username', [__d('shop', 'This is a required field')]);
+            $user->errors('username', [__d('user', 'This is a required field')]);
 
             return false;
         }
         if (!$resetCode) {
-            $user->errors('password_reset_code', [__d('shop', 'This is a required field')]);
+            $user->errors('password_reset_code', [__d('user', 'This is a required field')]);
 
             return false;
         }
@@ -627,12 +627,12 @@ class UsersTable extends Table
             return false;
         }
         if ($_user->password_reset_expiry_timestamp && Chronos::now()->gt($_user->password_reset_expiry_timestamp)) {
-            $user->errors('password_reset_code', [__d('shop', 'Password reset code has expired')]);
+            $user->errors('password_reset_code', [__d('user', 'Password reset code has expired')]);
             //throw new PasswordResetCodeExpiredException();
             return false;
         }
         if ($_user->password_reset_code != $resetCode) {
-            $user->errors('password_reset_code', [__d('shop', 'Password reset code is invalid')]);
+            $user->errors('password_reset_code', [__d('user', 'Password reset code is invalid')]);
             //throw new PasswordResetCodeInvalidException();
             return false;
         }
@@ -748,19 +748,19 @@ class UsersTable extends Table
         }
 
         if ($options['numbers'] > 0 && !preg_match("#[0-9]+#", $value)) {
-            return __d('shop', "Password must include at least one number!");
+            return __d('user', "Password must include at least one number!");
         }
 
         if ($options['lowercase'] > 0 && !preg_match("#[a-z]+#", $value)) {
-            return __d('shop', "Password must include at least one lowercase letter!");
+            return __d('user', "Password must include at least one lowercase letter!");
         }
 
         if ($options['uppercase'] > 0 && !preg_match("#[A-Z]+#", $value)) {
-            return __d('shop', "Password must include at least one UPPERCASE letter!");
+            return __d('user', "Password must include at least one UPPERCASE letter!");
         }
 
         if ($options['special'] > 0 && !preg_match("#[".preg_quote($options['allowedSpecialChars'], "#") . "]+#", $value)) {
-            return __d('shop', "Password must include at least one special character!");
+            return __d('user', "Password must include at least one special character!");
         }
         
         return true;
