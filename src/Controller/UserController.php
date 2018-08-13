@@ -103,7 +103,6 @@ class UserController extends AppController
      */
     public function index()
     {
-        debug($this->Auth->user);
         $user = $this->Users->get($this->Auth->user('id'));
         $this->set('user', $user);
     }
