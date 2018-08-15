@@ -53,6 +53,9 @@ class User extends Entity
         'block_reason' => false,
         'block_datetime' => false,
         'groups' => false,
+        'locale' => false,
+        'timezone' => false,
+        'is_deleted' => false
     ];
 
     /**

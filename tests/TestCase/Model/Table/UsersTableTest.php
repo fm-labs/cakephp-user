@@ -43,6 +43,11 @@ class UsersTableTest extends TestCase
         ]);
 
         UsersTable::$emailAsUsername = false;
+        UsersTable::$passwordMinLowercase = -1;
+        UsersTable::$passwordMinUppercase = -1;
+        UsersTable::$passwordMinSpecialChars = -1;
+        UsersTable::$passwordMinNumbers = -1;
+
         $config = TableRegistry::exists('Users') ? [] : [
             'className' => 'User\Model\Table\UsersTable'
         ];
@@ -81,7 +86,7 @@ class UsersTableTest extends TestCase
         $fakeContext = ['newEntity' => true, 'data' => ['username' => 'asdfasdf']];
 
         // test short password (min 8)
-        $this->assertTrue($this->Users->validateNewPassword1('asdf', $fakeContext) !== true);
+        //$this->assertTrue($this->Users->validateNewPassword1('asdf', $fakeContext) !== true);
 
         // test illegal characters
         //$this->assertTrue($this->Users->validateNewPassword1('asdfasdf$', $fakeContext) !== true);
@@ -110,27 +115,47 @@ class UsersTableTest extends TestCase
     public function testValidatePasswordComplexity()
     {
         $fakeContext = ['newEntity' => true, 'data' => []];
+    }
 
+
+    public function testValidatePasswordComplexityMinLength()
+    {
+        $fakeContext = ['newEntity' => true, 'data' => []];
         // test minLength
         $this->assertTrue($this->Users->validatePasswordComplexity('1234', ['minLength' => 8], $fakeContext) !== true);
         $this->assertTrue($this->Users->validatePasswordComplexity('12345678', ['minLength' => 8], $fakeContext));
+    }
 
+    public function testValidatePasswordComplexityMinNumbers()
+    {
+        $fakeContext = ['newEntity' => true, 'data' => []];
         // test numbers
         $this->assertTrue($this->Users->validatePasswordComplexity('asdfasdf', ['numbers' => 1], $fakeContext) !== true);
         $this->assertTrue($this->Users->validatePasswordComplexity('asdfasdf1', ['numbers' => 1], $fakeContext));
+    }
 
+    public function testValidatePasswordComplexityMinUppercase()
+    {
+        $fakeContext = ['newEntity' => true, 'data' => []];
         // test uppercase
         $this->assertTrue($this->Users->validatePasswordComplexity('asdfasdf', ['uppercase' => 1], $fakeContext) !== true);
         $this->assertTrue($this->Users->validatePasswordComplexity('Asdfasdf', ['uppercase' => 1], $fakeContext));
+    }
 
+    public function testValidatePasswordComplexityMinLowercase()
+    {
+        $fakeContext = ['newEntity' => true, 'data' => []];
         // test lowercase
         $this->assertTrue($this->Users->validatePasswordComplexity('ASDFASDF', ['lowercase' => 1], $fakeContext) !== true);
         $this->assertTrue($this->Users->validatePasswordComplexity('aSDFASDF', ['lowercase' => 1], $fakeContext));
+    }
 
+    public function testValidatePasswordComplexityMinSpecial()
+    {
+        $fakeContext = ['newEntity' => true, 'data' => []];
         // test special
         $this->assertTrue($this->Users->validatePasswordComplexity('asdfasdf', ['special' => 1], $fakeContext) !== true);
         $this->assertTrue($this->Users->validatePasswordComplexity('asdfasdf!', ['special' => 1], $fakeContext));
-
     }
 
     public function testRegister()
@@ -187,11 +212,12 @@ class UsersTableTest extends TestCase
         $this->assertEquals('test1@example.org', $user->email);
 
         // test with email, password AND username (ignore additional username field)
-        $user = $this->Users->register(['email' => 'test2@example.org', 'password1' => self::TEST_PASS1, 'password2' => self::TEST_PASS1, 'username' => 'admin']);
+        $user = $this->Users->register(['email' => 'test2@example.org', 'password1' => self::TEST_PASS1, 'password2' => self::TEST_PASS1, 'username' => 'admin' , 'locale' => 'en']);
         $this->assertEmpty($user->errors());
         $this->assertNotEmpty($user->id);
         $this->assertEquals('test2@example.org', $user->username);
         $this->assertEquals('test2@example.org', $user->email);
+        $this->assertEquals('en', $user->locale);
 
         TableRegistry::remove('Users');
     }

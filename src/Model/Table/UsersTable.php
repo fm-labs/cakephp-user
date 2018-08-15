@@ -413,6 +413,7 @@ class UsersTable extends Table
         // @TODO first_name and last_name properties are deprecated
         $user->accessible('first_name', true);
         $user->accessible('last_name', true);
+        $user->accessible(['locale', 'timezone'], true);
 
         if (!empty($data)) {
             // no login
