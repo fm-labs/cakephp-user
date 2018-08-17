@@ -79,7 +79,9 @@ class UserPlugin implements PluginInterface, EventListenerInterface
             EventManager::instance()->on(new UserLoginLoggerService());
         }
         if (Configure::read('User.Mailer.enabled') == true) {
-            EventManager::instance()->on(new UserMailerService(['mailerClass' => Configure::read('User.Mailer.className')]));
+            EventManager::instance()->on(new UserMailerService([
+                'mailerClass' => Configure::read('User.Mailer.className')
+            ]));
         }
     }
 
