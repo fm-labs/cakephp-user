@@ -6,6 +6,7 @@ use Cake\Chronos\Chronos;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\Event\Event;
+use Cake\I18n\I18n;
 use Cake\Log\Log;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -147,8 +148,8 @@ class UsersTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['username']));
-        $rules->add($rules->isUnique(['email']));
+        $rules->add($rules->isUnique(['username'], __d('user','This username is already in use')));
+        $rules->add($rules->isUnique(['email'], __d('user','This email address is already in use')));
         $rules->add($rules->existsIn(['group_id'], 'UserGroups'));
 
         return $rules;
@@ -186,8 +187,8 @@ class UsersTable extends Table
             ->add('superuser', 'valid', ['rule' => 'boolean'])
             ->allowEmpty('superuser')
 
-            ->requirePresence('name', 'create')
-            ->notEmpty('name')
+            //->requirePresence('name', 'create')
+            //->notEmpty('name')
 
             ->requirePresence('username', 'create')
             ->notEmpty('username')
@@ -377,9 +378,7 @@ class UsersTable extends Table
         ];
 
         $user = $this->newEntity();
-        $user->accessible([
-            'id', 'name', 'username', 'email', 'password', 'login_enabled', 'email_verification_required'
-        ], true);
+        $user->accessible(array_keys($data), true);
         $this->patchEntity($user, $data);
 
         //@TODO Add validation
@@ -399,83 +398,88 @@ class UsersTable extends Table
      */
     public function register(array $data, $dispatchEvent = true)
     {
-        $user = $this->newEntity(null, ['validate' => 'register']);
-        $user->accessible('id', false);
-        $user->accessible('login_enabled', true);
-        $user->accessible('block_enabled', true);
-        $user->accessible('username', true);
-        $user->accessible('name', true);
-        $user->accessible('password1', true);
-        $user->accessible('password2', true);
-        $user->accessible('password_force_change', true);
-        $user->accessible('group_id', true);
-        $user->accessible('email', true);
+        $user = $this->newEntity();
+        $user->accessible('*', false);
+        $user->accessible(['username', 'name', 'first_name', 'last_name', 'email', 'locale', 'timezone', 'currency'], true);
+        $user->accessible(['password1', 'password2'], true);
+        $user->accessible(['group_id'], true);
+
+        // Login
+        // By default registered users are allowed to log in
+        $user->login_enabled = true; //@TODO Read from config
+        $user->block_enabled = false;
+        $user->password_force_change = false; //@TODO Read from config
+
+        // No-Login
+        // Creates a user with no password and login disabled
+        $noLogin = (isset($data['_nologin'])) ? (bool)$data['_nologin'] : false; //@TODO Read from config
+        if ($noLogin) {
+            $user->login_enabled = false;
+
+            $this->validator('register')
+                ->allowEmpty('password1')
+                ->requirePresence('password1', false)
+                ->allowEmpty('password2')
+                ->requirePresence('password2', false);
+
+            $user->accessible(['password1', 'password2'], false);
+        }
+
+        // Email-As-Username
+        // email has been entered as username, so copy value to email field
+        if (self::$emailAsUsername && isset($data['email'])) {
+            $data['username'] = $data['email'];
+        }
+
+        // Name
         // @TODO first_name and last_name properties are deprecated
-        $user->accessible('first_name', true);
-        $user->accessible('last_name', true);
-        $user->accessible(['locale', 'timezone'], true);
+        if (isset($data['first_name']) && isset($data['last_name'])) {
+            $data['name'] = sprintf("%s %s", $data['first_name'], $data['last_name']);
+        }
+        if (!isset($data['name']) && isset($data['username'])) {
+            $data['name'] = $data['username'];
+        }
 
-        if (!empty($data)) {
-            // no login
-            $noLogin = (isset($data['_nologin'])) ? (bool)$data['_nologin'] : false;
-            if ($noLogin) {
-                $data['login_enabled'] = false;
+        // Email verification
+        $user->email_verified = false;
+        $user->email_verification_required = !(bool) Configure::read('User.Signup.disableEmailVerification');
+        $user->email_verification_code = self::generateRandomVerificationCode(self::$verificationCodeLength);
+        $user->email_verification_expiry_timestamp = time() + DAY; // @TODO Read expiry offset from config
 
-                $this->validator('register')
-                    ->allowEmpty('password1')
-                    ->requirePresence('password1', false)
-                    ->allowEmpty('password2')
-                    ->requirePresence('password2', false);
+        // Locale
+        if (!isset($data['locale'])) {
+            $data['locale'] = I18n::locale();
+        }
+        if (!isset($data['timezone'])) {
+            $data['timezone'] = date_default_timezone_get();
+        }
+        if (!isset($data['currency'])) {
+            $data['currency'] = 'EUR';
+        }
 
-                $user->accessible('password1', true);
-                $user->accessible('password2', true);
-            }
+        // Event 'User.Model.User.beforeRegister'
+        if ($dispatchEvent === true) {
+            $this->eventManager()->dispatch(new Event('User.Model.User.beforeRegister', $user, $data));
+        }
 
-            // email has been entered as username, so copy value to email field
-            if (self::$emailAsUsername && isset($data['email'])) {
-                $data['username'] = $data['email'];
-            }
+        // User data validation
+        $this->patchEntity($user, $data, ['validate' => 'register']);
+        if ($user->errors()) {
+            return $user;
+        }
 
-            // generate full name
-            // @TODO first_name and last_name properties are deprecated
-            if (isset($data['first_name']) && isset($data['last_name'])) {
-                $data['name'] = sprintf("%s %s", $data['first_name'], $data['last_name']);
-            }
-            if (!isset($data['name'])) {
-                $data['name'] = $data['username'];
-            }
+        // Password
+        // If validation passes, assign password.
+        // The entity should preferably use a PasswordHasher
+        $user->password = $user->password1;
+        unset($user->password1);
+        unset($user->password2);
 
-            $data['login_enabled'] = !$noLogin;
-            $data['block_enabled'] = false;
-            $data['password_force_change'] = false;
-
-            // email verification
-            $user->accessible([
-                'email_verification_required', 'email_verification_code', 'email_verified'
-            ], true);
-
-            $data['email_verification_required'] = !(bool) Configure::read('User.Signup.disableEmailVerification');
-            $data['email_verification_code'] = substr(strtoupper(md5(uniqid('',true))), 0, self::$verificationCodeLength);
-            $data['email_verified'] = false;
-
-            // patch and validate
-            $this->patchEntity($user, $data, ['validate' => 'register']);
-            if ($user->errors()) {
-                return $user;
-            }
-
-            // If validation passes, assign password.
-            // The entity should preferably use a PasswordHasher
-            $user->accessible('password', true);
-            $user->password = $user->password1;
-            unset($user->password1);
-            unset($user->password2);
-
-            if ($this->save($user)) {
-                //Log::info(sprintf('New user \'%s\' (ID:%s)', $user->username, $user->id), ['user']);
-                if ($dispatchEvent === true) {
-                    $this->eventManager()->dispatch(new Event('User.Model.User.register', $user, $data));
-                }
+        // Save
+        if ($this->save($user)) {
+            // Event 'User.Model.User.register'
+            if ($dispatchEvent === true) {
+                $this->eventManager()->dispatch(new Event('User.Model.User.register', $user, $data));
             }
         }
 
@@ -493,12 +497,10 @@ class UsersTable extends Table
         $validator = $this->validationDefault($validator);
         $validator = $this->validationNewPassword($validator);
         $validator
-            ->requirePresence('name', 'create')
-            ->notEmpty('name')
-
-            ->notEmpty('first_name')
-
-            ->notEmpty('last_name')
+            //->requirePresence('name', 'create')
+            //->notEmpty('name')
+            //->notEmpty('first_name')
+            //->notEmpty('last_name')
 
             ->requirePresence('username', 'create')
             ->notEmpty('username')
@@ -861,7 +863,7 @@ class UsersTable extends Table
         }
 
         $user = $_user;
-        $user->password_reset_code = $this->_generatePasswordResetCode();
+        $user->password_reset_code = self::generateRandomVerificationCode(self::$verificationCodeLength);
         $user->password_reset_expiry_timestamp = time() + self::$passwordResetExpiry; // 24h
         if ($this->save($user)) {
             if ($dispatchEvent === true) {
@@ -872,17 +874,6 @@ class UsersTable extends Table
 
         return false;
     }
-
-    /**
-     * Generate random password reset code
-     *
-     * @return string
-     */
-    protected function _generatePasswordResetCode()
-    {
-        return self::generateRandomVerificationCode(self::$verificationCodeLength);
-    }
-
 
     public static function generateRandomVerificationCode($length = 8)
     {

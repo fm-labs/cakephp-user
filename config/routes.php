@@ -1,27 +1,8 @@
 <?php
 use Cake\Routing\Router;
 use Cake\Core\Configure;
-use Cake\Utility\Hash;
 
 $userConfig = (array) Configure::read('User');
-
-/*
-if (Hash::get($userConfig, 'Router.rootScope') === true) {
-    Router::connect('/login',
-        $base + ['action' => 'login'],
-        ['_name' => 'user:login']
-    );
-    Router::connect('/logout',
-        $base + ['action' => 'logout'],
-        ['_name' => 'user:logout']
-    );
-    Router::connect('/register',
-        $base + ['action' => 'register'],
-        ['_name' => 'user:register']
-    );
-}
-*/
-
 
 // User plugin routes
 Router::scope('/user', ['_namePrefix' => 'user:'], function ($routes) {

@@ -3,8 +3,10 @@ namespace User\Controller;
 
 use Cake\Event\Event;
 use Cake\Core\Configure;
+use Cake\Network\Exception\InternalErrorException;
 use Cake\Network\Response;
 use Cake\Routing\Router;
+use User\Form\UserRegisterForm;
 use User\Mailer\UserMailer;
 use User\Model\Table\GroupsTable;
 use User\Model\Table\UsersTable;
@@ -127,7 +129,15 @@ class UserController extends AppController
             }
         }
 
-        $user = null;
+        $formClass = '\\User\\Form\\UserRegisterForm';
+        if (Configure::read('User.Form.register')) {
+            $formClass = Configure::read('User.Form.register');
+        }
+        if (!class_exists($formClass)) {
+            throw new InternalErrorException("User registration form class not found");
+        }
+        $form = new $formClass();
+
         if (Configure::read('User.Signup.disabled') != true) {
             if ($this->request->is('post')) {
                 $data = $this->request->data;
@@ -135,7 +145,8 @@ class UserController extends AppController
                     $data['group_id'] = $this->request->session()->read('User.Signup.group_id');
                 }
 
-                $user = $this->Users->register($data);
+                //$user = $this->Users->register($data);
+                $user = $form->execute($data);
                 if ($user && $user->id) {
                     //$this->request->session()->delete('User.Signup');
                     $this->Flash->success(__d('user', 'An activation email has been sent to your email address!'), ['key' => 'auth']);
@@ -145,14 +156,12 @@ class UserController extends AppController
                 } else {
                     $this->Flash->error(__d('user', 'Please fill all required fields'), ['key' => 'auth']);
                 }
-            } else {
-                $user = $this->Users->register([]);
             }
         } else {
             $this->Flash->error(__d('user', 'Sorry, but user registration is currently disabled.'), ['key' => 'auth']);
         }
 
-        $this->set(compact('user'));
+        $this->set(compact('user', 'form'));
         $this->set('_serialize', ['user']);
     }
 

@@ -2,7 +2,10 @@
 namespace User\Test\TestCase\Model\Table;
 
 use Cake\Auth\DefaultPasswordHasher;
+use Cake\Chronos\Date;
 use Cake\Core\Configure;
+use Cake\I18n\I18n;
+use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use User\Model\Table\UsersTable;
@@ -172,23 +175,56 @@ class UsersTableTest extends TestCase
         $this->assertEmpty($user->errors('username'));
         $this->assertNotEmpty($user->errors('password1'));
         $this->assertNotEmpty($user->errors('password2'));
+        $this->Users->delete($user);
+
+        // test with no login
+        $user = $this->Users->register(['username' => 'test1', '_nologin' => true]);
+        $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
+        $this->assertNotEmpty($user->id);
+        $this->assertEmpty($user->errors('username'));
+        $this->assertEmpty($user->errors('password1'));
+        $this->assertEmpty($user->errors('password2'));
+        $this->Users->delete($user);
 
         // test with valid username and password
         $user = $this->Users->register(['username' => 'test2', 'password1' => self::TEST_PASS1, 'password2' => self::TEST_PASS1]);
         $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
         $this->assertEmpty($user->errors());
         $this->assertNotEmpty($user->id);
+
+        $user = $this->Users->get($user->id);
         $this->assertEmpty($user->email);
         $this->assertTrue((new DefaultPasswordHasher())->check(self::TEST_PASS1, $user->password));
         $this->assertTrue($user->login_enabled);
+        $this->Users->delete($user);
 
         // test with valid username and password + extra data
+        $data = ['username' => 'test3', 'password1' => self::TEST_PASS1, 'password2' => self::TEST_PASS1, 'locale' => 'de', 'first_name' => 'First', 'last_name' => 'Last'];
+        $user = $this->Users->register($data);
+        $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
+        $this->assertEmpty($user->errors());
+        $this->assertNotEmpty($user->id);
+
+        $user = $this->Users->get($user->id);
+        $this->assertTrue((new DefaultPasswordHasher())->check(self::TEST_PASS1, $user->password));
+        $this->assertArraySubset(['locale' => 'de', 'first_name' => 'First', 'last_name' => 'Last'], $user->toArray());
+        $this->Users->delete($user);
+
+        // test with valid username and password + default data (+i18n)
+        $_tmpLocale = I18n::locale();
+        $_tmpTz = date_default_timezone_get();
+        $_tmpCur = 'EUR';
+        I18n::locale('en');
         $data = ['username' => 'test3', 'password1' => self::TEST_PASS1, 'password2' => self::TEST_PASS1];
         $user = $this->Users->register($data);
         $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
         $this->assertEmpty($user->errors());
         $this->assertNotEmpty($user->id);
-        $this->assertTrue((new DefaultPasswordHasher())->check(self::TEST_PASS1, $user->password));
+
+        $user = $this->Users->get($user->id);
+        $this->assertArraySubset(['locale' => 'en', 'timezone' => $_tmpTz, 'currency' => $_tmpCur], $user->toArray());
+        $this->Users->delete($user);
+        I18n::locale($_tmpLocale); // restore locale
     }
 
     public function testRegisterWithEmailAsUsername()

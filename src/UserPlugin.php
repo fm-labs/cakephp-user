@@ -87,7 +87,6 @@ class UserPlugin implements PluginInterface, EventListenerInterface
 
     public function routes(RouteBuilder $routes)
     {
-
     }
 
     public function middleware(MiddlewareQueue $middleware)
