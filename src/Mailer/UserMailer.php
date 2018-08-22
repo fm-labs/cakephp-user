@@ -62,13 +62,20 @@ class UserMailer extends Mailer
             foreach ($check as $_check) {
                 if (Configure::check($_check)) {
                     $this->_email->profile(Configure::read($_check));
-                    return;
+                    break;
                 }
             }
 
-            throw new \Exception('User email profile not found: ' . $profile);
+        }
+        elseif (is_array($profile)) {
+            $this->_email->profile($profile);
+        }
+        else {
+            //throw new \Exception('User email profile not found: ' . $profile);
         }
 
+        $subject = $this->_email->getOriginalSubject();
+        $this->_email->set('_subject', $subject);
     }
 
     /**
@@ -142,4 +149,5 @@ class UserMailer extends Mailer
         $this->_setUser($user);
         $this->_setProfile(__FUNCTION__);
     }
+
 }
