@@ -6,7 +6,6 @@ use Cake\Core\InstanceConfigTrait;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Log\Log;
-use Cake\Mailer\Email;
 use User\Mailer\UserMailer;
 use User\Mailer\UserMailerTrait;
 
@@ -97,6 +96,7 @@ class UserMailerService implements EventListenerInterface
     {
         return [
             'User.Model.User.register'          => 'onRegister',
+            'User.Model.User.activationResend'  => 'onRegister',
             'User.Model.User.activate'          => 'onActivate',
             'User.Model.User.passwordForgotten' => 'onPasswordForgotten',
             'User.Model.User.passwordReset'     => 'onPasswordReset',

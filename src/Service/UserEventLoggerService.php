@@ -38,6 +38,7 @@ class UserEventLoggerService implements EventListenerInterface
             'User.Model.User.passwordReset'     => 'logEvent',
             'User.Model.User.register'          => 'logEvent',
             'User.Model.User.activate'          => 'logEvent',
+            'User.Model.User.activationResend'  => 'logEvent',
             'User.login'                        => 'logEvent',
             'User.loginError'                   => 'logEvent',
             'User.logout'                       => 'logEvent',

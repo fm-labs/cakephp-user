@@ -3,11 +3,10 @@ namespace User\Controller;
 
 use Cake\Event\Event;
 use Cake\Core\Configure;
+use Cake\Form\Form;
 use Cake\Network\Exception\InternalErrorException;
 use Cake\Network\Response;
 use Cake\Routing\Router;
-use User\Form\UserRegisterForm;
-use User\Mailer\UserMailer;
 use User\Model\Table\GroupsTable;
 use User\Model\Table\UsersTable;
 
@@ -139,9 +138,12 @@ class UserController extends AppController
             $formClass = Configure::read('User.Form.register');
         }
         if (!class_exists($formClass)) {
-            throw new InternalErrorException("User registration form class not found");
+            throw new InternalErrorException("Class not found: $formClass");
         }
         $form = new $formClass();
+        if ($form instanceof Form) {
+            throw new InternalErrorException("Object is not an instance of \\Cake\\Form\\Form");
+        }
 
         if (Configure::read('User.Signup.disabled') != true) {
             if ($this->request->is('post')) {
@@ -262,8 +264,8 @@ class UserController extends AppController
                 return;
             }
 
-            $mailer = new UserMailer();
-            if ($mailer->send('userRegistration', [$user])) {
+            $user = $this->Users->resendVerificationCode($user);
+            if ($user && !$user->errors()) {
                 $this->Flash->success(__d('user', 'An activation email has been sent to {0}', $user->email), ['key' => 'auth']);
                 $this->redirect(['action' => 'activate', 'm' => base64_encode($user->email)]);
             } else {

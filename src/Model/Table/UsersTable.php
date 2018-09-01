@@ -875,6 +875,20 @@ class UsersTable extends Table
         return false;
     }
 
+    public function resendVerificationCode(User $user)
+    {
+        //@TODO Check if the verification code has expired. If so, create new verification code.
+        $event = $this->eventManager()->dispatch(new Event('User.Model.User.activationResend', $user));
+
+        if ($event->result == false) {
+            debug("failed");
+            return false;
+        }
+
+        return $user;
+    }
+
+
     public static function generateRandomVerificationCode($length = 8)
     {
         //@TODO Make use of random_compat vendor lib
