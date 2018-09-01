@@ -141,7 +141,7 @@ class UserController extends AppController
             throw new InternalErrorException("Class not found: $formClass");
         }
         $form = new $formClass();
-        if ($form instanceof Form) {
+        if (!($form instanceof Form)) {
             throw new InternalErrorException("Object is not an instance of \\Cake\\Form\\Form");
         }
 
