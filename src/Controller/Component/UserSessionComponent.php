@@ -89,8 +89,6 @@ class UserSessionComponent extends Component
             $session = $this->request->session()->read('Auth.UserSession');
             if (!$this->validateUserSession($session)) {
                 //debug("Session validation failed");
-                $this->destroyUserSession();
-                $this->Auth->logout();
                 $event->stopPropagation();
                 return $this->_expired($event->subject());
             }
@@ -167,10 +165,8 @@ class UserSessionComponent extends Component
      */
     public function destroyUserSession()
     {
-        if ($this->request->session()->check('Auth.UserSession')) {
-            //debug("destroy");
-            $this->request->session()->delete('Auth.UserSession');
-        }
+        $this->request->session()->delete('Auth.UserSession');
+        $this->request->session()->delete('Auth.User');
     }
 
     /**
@@ -181,13 +177,18 @@ class UserSessionComponent extends Component
      */
     protected function _expired(Controller $controller)
     {
+
+        $this->destroyUserSession();
+        //$this->Auth->logout();
+
         if (!$controller->request->is('ajax')) {
             $this->Auth->flash(__('Session timed out'));
-            $this->Auth->storage()->redirectUrl($controller->request->here(false));
+            $this->Auth->storage()->redirectUrl(false);
 
             return $controller->redirect($this->Auth->config('loginAction'));
         }
 
+        $this->Auth->storage()->redirectUrl(false);
         $this->response->statusCode(401);
         return $this->response;
     }
