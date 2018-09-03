@@ -4,8 +4,12 @@ use Cake\Core\Configure;
 
 $userConfig = (array) Configure::read('User');
 
+
+
+
 // User plugin routes
-Router::scope('/user', ['_namePrefix' => 'user:'], function ($routes) {
+//Router::scope('/user', ['_namePrefix' => 'user:'], function ($routes) {
+Router::plugin('User', ['_namePrefix' => 'user:'], function ($routes) {
 
     $userController = (Configure::read('User.controller')) ?: 'User.User';
     list($plugin, $controller) = pluginSplit($userController);
@@ -38,6 +42,10 @@ Router::scope('/user', ['_namePrefix' => 'user:'], function ($routes) {
     $routes->connect('/password-change',
         $base + ['action' => 'passwordChange'],
         ['_name' => 'passwordchange']
+    );
+    $routes->connect('/check-auth',
+        $base + ['action' => 'checkAuth'],
+        ['_name' => 'checkauth']
     );
     $routes->connect('/:action',
         $base
