@@ -2,6 +2,7 @@
 namespace User\Controller\Component;
 
 use Cake\Controller\Component\AuthComponent as CakeAuthComponent;
+use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Component\FlashComponent;
@@ -160,5 +161,22 @@ class AuthComponent extends CakeAuthComponent
     public function userModel()
     {
         return TableRegistry::get($this->config('userModel'));
+    }
+
+
+    protected function _unauthenticated(Controller $controller)
+    {
+        $response = parent::_unauthenticated($controller);
+
+        // do not store redirectUrl for json/xml/flash/requested/ajax requests
+        // this extends the core behaviour, where this applies only to ajax requests
+        if ($this->request->is(['ajax', 'json', 'xml', 'flash', 'requested'])) {
+            if ($response->location() == null) {
+                //$response->statusCode(403);
+                $this->storage()->redirectUrl(false);
+            }
+        }
+
+        return $response;
     }
 }
