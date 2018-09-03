@@ -6,6 +6,7 @@ use Cake\Controller\Component;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
+use Cake\Log\Log;
 
 /**
  * User Session Component class
@@ -15,8 +16,14 @@ use Cake\Event\Event;
  */
 class UserSessionComponent extends Component
 {
+    /**
+     * @var array
+     */
     public $components = ['Auth', 'Flash'];
 
+    /**
+     * @var array
+     */
     protected $_defaultConfig = [
         // max user session lifetime in seconds. should be lower then global session timeout
         'maxLifetime' => 0,
@@ -60,9 +67,13 @@ class UserSessionComponent extends Component
      */
     public function beforeRender(Event $event)
     {
-        //debug($this->request->session()->read('Auth.UserSession'));
     }
 
+    /**
+     * Set the ignoreActions.
+     * If the current request action is an ignored action,
+     * the user session will not be extended.
+     */
     public function ignoreActions(array $actions, $merge = true)
     {
         $this->config('ignoreActions', $actions, $merge);
@@ -88,7 +99,6 @@ class UserSessionComponent extends Component
         if ($this->request->session()->check('Auth.UserSession')) {
             $session = $this->request->session()->read('Auth.UserSession');
             if (!$this->validateUserSession($session)) {
-                //debug("Session validation failed");
                 $event->stopPropagation();
                 return $this->_expired($event->subject());
             }
@@ -137,7 +147,9 @@ class UserSessionComponent extends Component
         }
 
         if ($userSession['session_id'] != $this->request->session()->id()) {
-            debug("SessionID mismatch! Possible Hijacking attempt.");
+            Log::alert("SessionID mismatch! Possible Hijacking attempt.");
+            //@TODO Handle SessionID mismatch
+            return false;
         }
 
         return true;
@@ -177,7 +189,6 @@ class UserSessionComponent extends Component
      */
     protected function _expired(Controller $controller)
     {
-
         $this->destroyUserSession();
         //$this->Auth->logout();
 
@@ -189,7 +200,7 @@ class UserSessionComponent extends Component
         }
 
         $this->Auth->storage()->redirectUrl(false);
-        $this->response->statusCode(401);
+        $this->response->statusCode(403);
         return $this->response;
     }
 

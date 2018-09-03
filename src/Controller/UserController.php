@@ -379,7 +379,9 @@ class UserController extends AppController
         $data = [
             'l' => ($this->Auth->user('id')) ? 1 : 0,
             'e' => ($this->request->session()->read('Auth.UserSession.expires')) ?: 0,
-            'efmt' => ($this->request->session()->read('Auth.UserSession.expires')) ? date(DATE_ATOM, $this->request->session()->read('Auth.UserSession.expires')): 0
+            'efmt' => ($this->request->session()->read('Auth.UserSession.expires'))
+                ? date(DATE_ATOM, $this->request->session()->read('Auth.UserSession.expires'))
+                : 0
         ];
 
         $this->set('data', $data);
