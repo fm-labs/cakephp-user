@@ -11,8 +11,8 @@ class UserRegisterForm extends UserForm
     protected function _buildSchema(Schema $schema)
     {
         $schema->addField('email', $this->Users->schema()->column('email'));
-        $schema->addField('password1', $this->Users->schema()->column('password1'));
-        $schema->addField('password2', $this->Users->schema()->column('password2'));
+        $schema->addField('password1', [] /*$this->Users->schema()->column('password1')*/);
+        $schema->addField('password2', [] /*$this->Users->schema()->column('password2')*/);
         return $schema;
     }
 

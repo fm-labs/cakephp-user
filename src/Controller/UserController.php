@@ -24,6 +24,15 @@ class UserController extends AppController
      */
     public $modelClass = "User.Users";
 
+    public function initialize()
+    {
+        parent::initialize();
+
+        if (!Configure::read('User')) {
+            throw new \RuntimeException("UserPlugin: Configuration not loaded!");
+        }
+    }
+    
     /**
      * @param Event $event
      * @return \Cake\Network\Response|null|void
@@ -36,10 +45,6 @@ class UserController extends AppController
             'login', 'register', 'registerGroup', 'activate', 'activateResend',
             'passwordForgotten', 'passwordSent', 'passwordReset'
         ]);
-
-        if (!Configure::read('User')) {
-            throw new \RuntimeException("UserPlugin: Configuration not loaded!");
-        }
 
         if (Configure::read('User.layout')) {
             $this->viewBuilder()->layout(Configure::read('User.layout'));
@@ -357,5 +362,20 @@ class UserController extends AppController
             }
         }
         $this->set('user', $user);
+    }
+
+    /**
+     * Return login status info in JSON format
+     */
+    public function checkAuth()
+    {
+        $this->viewBuilder()->className('Json');
+
+        $data = [
+            'l' => ($this->Auth->user('id')) ? 1 : 0,
+        ];
+
+        $this->set('data', $data);
+        $this->set('_serialize', 'data');
     }
 }
