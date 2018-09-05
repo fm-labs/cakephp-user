@@ -7,6 +7,7 @@ use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\Event\Event;
 use Cake\I18n\I18n;
+use Cake\I18n\Time;
 use Cake\Log\Log;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -873,6 +874,28 @@ class UsersTable extends Table
         }
 
         return false;
+    }
+
+    public function markDeleted(User $user)
+    {
+        $user->is_deleted = true;
+        $user->login_enabled = false;
+        $user->block_enabled = true;
+        $user->block_reason = 'DELETED';
+        $user->block_datetime = new Time();
+
+        return $this->save($user);
+    }
+
+    public function resetDeleted(User $user)
+    {
+        $user->is_deleted = false;
+        $user->login_enabled = true;
+        $user->block_enabled = false;
+        $user->block_reason = null;
+        $user->block_datetime = null;
+
+        return $this->save($user);
     }
 
     public function resendVerificationCode(User $user)
