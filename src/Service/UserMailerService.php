@@ -6,8 +6,9 @@ use Cake\Core\InstanceConfigTrait;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Log\Log;
+use Cake\Mailer\MailerAwareTrait;
 use User\Mailer\UserMailer;
-use User\Mailer\UserMailerTrait;
+use User\Mailer\UserMailerAwareTrait;
 
 /**
  * Class UserMailerService
@@ -18,11 +19,10 @@ use User\Mailer\UserMailerTrait;
 class UserMailerService implements EventListenerInterface
 {
     use InstanceConfigTrait;
-    use UserMailerTrait;
+    use UserMailerAwareTrait;
 
     protected $_defaultConfig = [
-        'mailerClass' => '\\User\\Mailer\\UserMailer',
-        /*'emailProfile' => 'default'*/
+        'mailerClass' => 'User.User',
     ];
 
     /**
@@ -31,13 +31,13 @@ class UserMailerService implements EventListenerInterface
     public function __construct(array $config = [])
     {
         $this->config($config);
-        $this->_mailerClass = $this->_config['mailerClass'];
+        $this->setUserMailer($this->_config['mailerClass']);
     }
 
     public function sendEmail($action, $args = [])
     {
         try {
-            $mailer = $this->getMailer();
+            $mailer = $this->getUserMailer();
             $mailer->send($action, $args);
         } catch (\Exception $ex) {
             Log::error('UserMailerService::sendEmail: ' . $ex->getMessage());
