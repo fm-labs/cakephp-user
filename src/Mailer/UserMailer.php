@@ -2,11 +2,8 @@
 namespace User\Mailer;
 
 use Cake\Core\Configure;
-use Cake\I18n\I18n;
 use Cake\Mailer\Email;
 use Cake\Mailer\Mailer;
-use Cake\ORM\Entity;
-use User\Controller\Component\AuthComponent;
 use User\Model\Entity\User;
 use User\Model\Table\UsersTable;
 
@@ -24,116 +21,59 @@ class UserMailer extends Mailer
     protected $_user;
 
     /**
-     * Locale used for email & translations
-     * @var string
-     */
-    protected $_locale;
-
-    /**
-     * The original locale used by the application.
-     * @var string
-     */
-    protected $_originalLocale;
-
-    /**
      * @param Email|null $email
      */
     public function __construct(Email $email = null)
     {
+        $localizedEmailClass = '\\Banana\\Mailer\\LocalizedEmail';
+        if ($email === null && class_exists($localizedEmailClass)) {
+            $email = new $localizedEmailClass();
+        }
+
         parent::__construct($email);
 
-        // set the default email locale
-        $this->_locale = I18n::defaultLocale();
-
-        // backup the application locale
-        $this->_originalLocale = I18n::locale();
-
         if (Configure::check('User.Mailer.profile')) {
-            $this->_email->profile(Configure::read('User.Mailer.profile'));
+            $this->profile(Configure::read('User.Mailer.profile'));
         }
-    }
-
-    /**
-     * Overloaded send method
-     */
-    public function send($action, $args = [], $headers = [])
-    {
-        parent::send($action, $args, $headers);
-    }
-
-    /**
-     * Overloaded reset method.
-     * Resets temp locale switch.
-     */
-    public function reset()
-    {
-        parent::reset();
-        $this->_locale = I18n::defaultLocale();
-        //$this->_user = null;
-
-        // restore original locale
-        I18n::locale($this->_originalLocale);
     }
 
     /**
      * Sets the active user for emailing
+     *
+     * @return void
      */
     protected function _setUser(User $user)
     {
+        $this->_user = $user;
+
         $this->to($user->email);
         $this->set('user', $user);
 
-        $this->_user = $user;
-        $this->_originalLocale = I18n::locale();
-        $this->_locale = ($user['locale']) ?: I18n::defaultLocale();
-
-        // temporarily switch to email locale
-        I18n::locale($this->_locale);
+        if (method_exists($this->_email, 'locale')) {
+            //$this->locale($user->locale);
+            $this->_email->locale($user->locale);
+        }
     }
 
     /**
      * Sets the email profile.
-     * Checks configurations in following order:
+     * Reads configurations from config key `User.Email.[PROFILE]`
      *
-     * User.EmailTranslation.[LOCALE].[PROFILE]
-     * User.Email.[PROFILE]
-     *
-     * @param string|array $profile
-     * @return void
+     * @param null|string|array $profile
+     * @return $this|Email
      */
-    protected function _setProfile($profile)
+    public function profile($profile = null)
     {
-        // if profile is a string, check the static configuration in following order:
-        // - if locale is set (TODO: and translation is enabled), email translation profile config: User.EmailTranslation.[LOCALE].[PROFILE]
-        // - email translation profile config: User.Email.[PROFILE]
-        if (is_string($profile)) {
-            $check = [];
-            // add User email profile translation config check
-            if ($this->_locale /*&& $this->_locale != I18n::defaultLocale()*/) {
-                $check[] = 'User.EmailTranslation.' . $this->_locale . '.' . $profile;
-            }
-
-            // add User email profile config check
-            $check[] = 'User.Email.' . $profile;
-
-            // use first match
-            foreach ($check as $_check) {
-                if (Configure::check($_check)) {
-                    $this->_email->profile(Configure::read($_check));
-                    break;
-                }
-            }
-
-        }
-        elseif (is_array($profile)) {
-            $this->_email->profile($profile);
-        }
-        else {
-            //throw new \Exception('User email profile not found: ' . $profile);
+        if ($profile === null) {
+            return $this->_email->profile();
         }
 
-        $subject = $this->_email->getOriginalSubject();
-        $this->_email->set('_subject', $subject);
+        if (is_string($profile) && Configure::check('User.Email.' . $profile)) {
+            $profile = Configure::read('User.Email.' . $profile);
+        }
+
+        $this->_email->profile($profile);
+        return $this;
     }
 
     /**
@@ -144,8 +84,8 @@ class UserMailer extends Mailer
      */
     public function userRegistration(User $user)
     {
+        $this->profile(__FUNCTION__);
         $this->_setUser($user);
-        $this->_setProfile(__FUNCTION__);
 
         $verificationUrl = UsersTable::buildEmailVerificationUrl($user);
         if (!$verificationUrl) {
@@ -162,8 +102,8 @@ class UserMailer extends Mailer
      */
     public function userActivation(User $user)
     {
+        $this->profile(__FUNCTION__);
         $this->_setUser($user);
-        $this->_setProfile(__FUNCTION__);
     }
 
     /**
@@ -174,8 +114,8 @@ class UserMailer extends Mailer
      */
     public function newLogin(User $user)
     {
+        $this->profile(__FUNCTION__);
         $this->_setUser($user);
-        $this->_setProfile(__FUNCTION__);
     }
 
     /**
@@ -186,8 +126,8 @@ class UserMailer extends Mailer
      */
     public function passwordForgotten(User $user)
     {
+        $this->profile(__FUNCTION__);
         $this->_setUser($user);
-        $this->_setProfile(__FUNCTION__);
 
         $resetUrl = UsersTable::buildPasswordResetUrl($user);
         if (!$resetUrl) {
@@ -204,8 +144,7 @@ class UserMailer extends Mailer
      */
     public function passwordReset(User $user)
     {
+        $this->profile(__FUNCTION__);
         $this->_setUser($user);
-        $this->_setProfile(__FUNCTION__);
     }
-
 }
