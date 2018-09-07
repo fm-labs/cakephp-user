@@ -193,7 +193,7 @@ class UserSessionComponent extends Component
         //$this->Auth->logout();
 
         if (!$controller->request->is('ajax')) {
-            $this->Auth->flash(__('Session timed out'));
+            $this->Auth->flash(__d('user', 'Session timed out'));
             $this->Auth->storage()->redirectUrl(false);
 
             return $controller->redirect($this->Auth->config('loginAction'));
