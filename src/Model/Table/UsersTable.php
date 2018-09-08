@@ -858,7 +858,7 @@ class UsersTable extends Table
         $_user = $this->find()->where(['username' => $username])->first();
         if (!$_user) {
             $user->username = "";
-            $user->errors('username', ['notfound' => __d('user', 'User "{0}" not found', h($username))]);
+            $user->errors('username', ['notfound' => __d('user', 'User not found', h($username))]);
 
             return $user;
         }

@@ -279,7 +279,7 @@ class UserController extends AppController
                 $this->Flash->success(__d('user', 'An activation email has been sent to {0}', $user->email), ['key' => 'auth']);
                 $this->redirect(['action' => 'activate', 'm' => base64_encode($user->email)]);
             } else {
-                $this->Flash->error(__d('user', 'Something went wrong'), ['key' => 'auth']);
+                $this->Flash->error(__d('user', 'Please fill all required fields'), ['key' => 'auth']);
             }
         } else {
             $user->email = ($this->request->query('m'))
@@ -308,7 +308,7 @@ class UserController extends AppController
                 $this->Flash->success(__d('user', 'Password recovery info has been sent to you via email. Please check your inbox.'), ['key' => 'auth']);
                 $this->redirect(['action' => 'passwordSent']);
             } else {
-                $this->Flash->error(__d('user', 'Something went wrong'), ['key' => 'auth']);
+                $this->Flash->error(__d('user', 'Please fill all required fields'), ['key' => 'auth']);
             }
         }
 
@@ -363,7 +363,7 @@ class UserController extends AppController
                 $this->Flash->success(__d('user', 'Your password has been changed.'), ['key' => 'auth']);
                 $this->redirect(['_name' => 'user:profile']);
             } else {
-                $this->Flash->error(__d('user', 'Ups, something went wrong'), ['key' => 'auth']);
+                $this->Flash->error(__d('user', 'Please fill all required fields'), ['key' => 'auth']);
             }
         }
         $this->set('user', $user);
