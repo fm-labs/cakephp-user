@@ -25,11 +25,6 @@ class UserMailer extends Mailer
      */
     public function __construct(Email $email = null)
     {
-        $localizedEmailClass = '\\Banana\\Mailer\\LocalizedEmail';
-        if ($email === null && class_exists($localizedEmailClass)) {
-            $email = new $localizedEmailClass();
-        }
-
         parent::__construct($email);
 
         if (Configure::check('User.Mailer.profile')) {

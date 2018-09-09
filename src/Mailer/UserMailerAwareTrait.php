@@ -31,6 +31,11 @@ trait UserMailerAwareTrait
      */
     public function getUserMailer(Email $email = null)
     {
+        $localizedEmailClass = '\\Banana\\Mailer\\LocalizedEmail';
+        if ($email === null && class_exists($localizedEmailClass)) {
+            $email = new $localizedEmailClass();
+        }
+
         return $this->getMailer($this->_mailerClass, $email);
     }
 }
