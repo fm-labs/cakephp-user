@@ -9,12 +9,14 @@ use Cake\Event\Event;
 use Cake\I18n\I18n;
 use Cake\I18n\Time;
 use Cake\Log\Log;
+use Cake\Network\Exception\InternalErrorException;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\ORM\Entity;
 use Cake\Routing\Router;
 use Cake\Validation\Validator;
+use User\Exception\PasswordResetException;
 use User\Model\Entity\User;
 
 /**
@@ -171,6 +173,11 @@ class UsersTable extends Table
             ->contain(static::$contains);
 
         return $query;
+    }
+
+    public function findByUsername($username, array $options = [])
+    {
+        return $this->find('all', $options)->where(['username' => $username]);
     }
 
     /**
@@ -606,48 +613,27 @@ class UsersTable extends Table
      * @param array $data
      * @return bool
      */
-    public function resetPassword(User &$user, array $data)
+    public function resetPassword(User $user, array $data)
     {
-        $username = (isset($data['username'])) ? $data['username'] : null;
         $resetCode = (isset($data['password_reset_code'])) ? $data['password_reset_code'] : null;
-        if (!$username) {
-            $user->errors('username', [__d('user', 'This is a required field')]);
-
-            return false;
-        }
         if (!$resetCode) {
-            $user->errors('password_reset_code', [__d('user', 'This is a required field')]);
-
-            return false;
+            throw new PasswordResetException(__d('user', 'Password reset code missing'));
         }
 
-        $_user = $this->find()->where([
-            'username' => $username,
-            //'password_reset_code' => $resetCode
-        ])->first();
-        if (!$_user) {
-            $user->errors('username', ['User not found']);
-
-            return false;
-        }
-        if ($_user->password_reset_expiry_timestamp && Chronos::now()->gt($_user->password_reset_expiry_timestamp)) {
-            $user->errors('password_reset_code', [__d('user', 'Password reset code has expired')]);
-            //throw new PasswordResetCodeExpiredException();
-            return false;
-        }
-        if ($_user->password_reset_code != $resetCode) {
-            $user->errors('password_reset_code', [__d('user', 'Password reset code is invalid')]);
-            //throw new PasswordResetCodeInvalidException();
-            return false;
+        if ($user->password_reset_expiry_timestamp && Chronos::now()->gt($user->password_reset_expiry_timestamp)) {
+            throw new PasswordResetException(__d('user', 'Password reset code has expired'));
         }
 
-        $user = $_user;
+        if ($user->password_reset_code != $resetCode) {
+            throw new PasswordResetException(__d('user', 'Password reset code is invalid'));
+        }
+
         $user->accessible('*', false);
         $user->accessible('password1', true);
         $user->accessible('password2', true);
         $user = $this->patchEntity($user, $data, ['validate' => 'resetPassword']);
         if ($user->errors()) {
-            return false;
+            return $user;
         }
 
         // apply new password
@@ -659,7 +645,7 @@ class UsersTable extends Table
         $user->password_reset_expiry_timestamp = null;
 
         if (!$this->save($user)) {
-            return false;
+            throw new \RuntimeException("Record UPDATE failed: User:" . $user->id);
         }
 
         // cleanup
@@ -667,6 +653,7 @@ class UsersTable extends Table
         unset($user->password2);
         unset($user->password); // hide password
 
+        // dispatch event
         $event = $this->eventManager()->dispatch(new Event('User.Model.User.passwordReset', $user));
 
         return $user;
@@ -681,23 +668,6 @@ class UsersTable extends Table
     public function validationResetPassword(Validator $validator)
     {
         $validator = $this->validationNewPassword($validator);
-        $validator
-            ->add('id', 'valid', ['rule' => 'numeric'])
-            ->requirePresence('password1', 'create')
-            ->notEmpty('password1')
-            ->add('password1', 'password1', [
-                'rule' => 'validateNewPassword1',
-                'provider' => 'table',
-                'message' => __d('user', 'Invalid password')
-            ])
-            ->requirePresence('password2', 'create')
-            ->notEmpty('password2')
-            ->add('password2', 'password2', [
-                'rule' => 'validateNewPassword2',
-                'provider' => 'table',
-                'message' => __d('user', 'Passwords do not match')
-            ]);
-
         return $validator;
     }
 
@@ -854,34 +824,20 @@ class UsersTable extends Table
      * @param bool|true $dispatchEvent
      * @return bool|mixed|User
      */
-    public function forgotPassword(User &$user, array $data = [], $dispatchEvent = true)
+    public function forgotPassword(User $user, array $data = [], $dispatchEvent = true)
     {
-        $username = ($data['username']) ? $data['username'] : null;
-        if (!$username) {
-            $user->errors('username', ['required' => __d('user', 'This is a required field')]);
-
-            return false;
-        }
-
-        $_user = $this->find()->where(['username' => $username])->first();
-        if (!$_user) {
-            $user->username = "";
-            $user->errors('username', ['notfound' => __d('user', 'User not found', h($username))]);
-
-            return $user;
-        }
-
-        $user = $_user;
+        // generate new reset codes
         $user->password_reset_code = self::generateRandomVerificationCode(self::$verificationCodeLength);
         $user->password_reset_expiry_timestamp = time() + self::$passwordResetExpiry; // 24h
-        if ($this->save($user)) {
-            if ($dispatchEvent === true) {
-                $this->eventManager()->dispatch(new Event('User.Model.User.passwordForgotten', $user));
-            }
-            return $user;
+
+        if (!$this->save($user)) {
+            throw new \RuntimeException("Record UPDATE failed: User:" . $user->id);
         }
 
-        return false;
+        if ($dispatchEvent === true) {
+            $this->eventManager()->dispatch(new Event('User.Model.User.passwordForgotten', $user));
+        }
+        return $user;
     }
 
     public function markDeleted(User $user)

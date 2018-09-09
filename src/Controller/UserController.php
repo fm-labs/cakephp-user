@@ -4,9 +4,12 @@ namespace User\Controller;
 use Cake\Event\Event;
 use Cake\Core\Configure;
 use Cake\Form\Form;
+use Cake\Log\Log;
 use Cake\Network\Exception\InternalErrorException;
 use Cake\Network\Response;
 use Cake\Routing\Router;
+use User\Exception\PasswordResetException;
+use User\Form\PasswordForgottenForm;
 use User\Model\Table\GroupsTable;
 use User\Model\Table\UsersTable;
 
@@ -301,18 +304,24 @@ class UserController extends AppController
             return;
         }
 
-        $user = $this->Users->newEntity();
-        $user->username = ($this->request->query('u')) ? base64_decode($this->request->query('u')) : null;
+        $form = new PasswordForgottenForm();
+
         if ($this->request->is('post') || $this->request->is('put')) {
-            if ($success = $this->Users->forgotPassword($user, $this->request->data) && !$user->errors()) {
+            $user = $form->execute($this->request->data);
+            if ($user) {
                 $this->Flash->success(__d('user', 'Password recovery info has been sent to you via email. Please check your inbox.'), ['key' => 'auth']);
+
+                if (Configure::read('debug')) {
+                    $this->Flash->set(UsersTable::buildPasswordResetUrl($user), ['key' => 'auth']);
+                }
+
                 $this->redirect(['action' => 'passwordSent']);
             } else {
                 $this->Flash->error(__d('user', 'Please fill all required fields'), ['key' => 'auth']);
             }
         }
 
-        $this->set('user', $user);
+        $this->set('form', $form);
     }
 
     /**
@@ -333,20 +342,48 @@ class UserController extends AppController
             return $this->redirect(['action' => 'index']);
         }
 
-        $user = $this->Users->newEntity();
-        $user->username = ($this->request->query('u')) ? base64_decode($this->request->query('u')) : null;
-        $user->password_reset_code = ($this->request->query('c')) ? base64_decode($this->request->query('c')) : null;
+        $user = null;
+        try {
 
-        if ($this->request->is('post') || $this->request->is('put')) {
-            if ($this->Users->resetPassword($user, $this->request->data)) {
-                $this->Flash->success(__d('user', 'You can now login with your new password'), ['key' => 'auth']);
-                $this->redirect(['_name' => 'user:login', 'u' => base64_encode($user->username)]);
-            } else {
-                //@todo check if link has expired -> Document expired
-                //debug($user->errors());
-                $this->Flash->error(__d('user', 'Failed to reset password'), ['key' => 'auth']);
+            $query = [];
+            if ($this->request->query('u')) {
+                $query['username'] = base64_decode($this->request->query('u'));
             }
+            if ($this->request->query('c')) {
+                $query['password_reset_code'] = base64_decode($this->request->query('c'));
+            }
+
+            if (!isset($query['password_reset_code'])) {
+                throw new PasswordResetException(__d('user', "Password reset code missing"));
+            }
+
+            $user = $this->Users->find()
+                ->where($query)
+                ->first();
+            if (!$user) {
+                throw new PasswordResetException("Invalid request");
+            }
+
+            if ($this->request->is('post') || $this->request->is('put')) {
+                $user = $this->Users->resetPassword($user, $this->request->data);
+                if ($user && !$user->errors()) {
+                    $this->Flash->success(__d('user', 'You can now login with your new password'), ['key' => 'auth']);
+                    $this->redirect(['_name' => 'user:login', 'u' => base64_encode($user->username)]);
+                } else {
+                    $this->Flash->error(__d('user', 'Please fill all required fields'), ['key' => 'auth']);
+                }
+            }
+
+        } catch (PasswordResetException $ex) {
+            $this->Flash->error($ex->getMessage(), ['key' => 'auth']);
+            $this->redirect(['_name' => 'user:login']);
+
+        } catch (\Exception $ex) {
+            Log::error("UsersController::resetPassword: " . $ex->getMessage(), ['user']);
+            $this->Flash->error(__d('user', 'Something went wrong. Please try again.'), ['key' => 'auth']);
+            $this->redirect(['_name' => 'user:login']);
         }
+
         $this->set('user', $user);
     }
 
