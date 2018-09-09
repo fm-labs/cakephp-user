@@ -653,6 +653,11 @@ class UsersTable extends Table
         // apply new password
         $user->accessible('password', true);
         $user->password = $data['password1'];
+
+        // clean the reset codes
+        $user->password_reset_code = null;
+        $user->password_reset_expiry_timestamp = null;
+
         if (!$this->save($user)) {
             return false;
         }
@@ -661,6 +666,8 @@ class UsersTable extends Table
         unset($user->password1);
         unset($user->password2);
         unset($user->password); // hide password
+
+        $event = $this->eventManager()->dispatch(new Event('User.Model.User.passwordReset', $user));
 
         return $user;
     }
@@ -673,6 +680,7 @@ class UsersTable extends Table
      */
     public function validationResetPassword(Validator $validator)
     {
+        $validator = $this->validationNewPassword($validator);
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
             ->requirePresence('password1', 'create')

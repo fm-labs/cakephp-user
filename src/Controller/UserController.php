@@ -339,13 +339,11 @@ class UserController extends AppController
 
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Users->resetPassword($user, $this->request->data)) {
-                $event = $this->eventManager()->dispatch(new Event('User.Model.User.passwordReset', $user));
-
                 $this->Flash->success(__d('user', 'You can now login with your new password'), ['key' => 'auth']);
                 $this->redirect(['_name' => 'user:login', 'u' => base64_encode($user->username)]);
             } else {
                 //@todo check if link has expired -> Document expired
-                debug($user->errors());
+                //debug($user->errors());
                 $this->Flash->error(__d('user', 'Failed to reset password'), ['key' => 'auth']);
             }
         }
