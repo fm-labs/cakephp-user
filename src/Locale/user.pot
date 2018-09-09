@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2018-09-07 20:45+0000\n"
+"POT-Creation-Date: 2018-09-09 06:49+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -34,7 +34,7 @@ msgstr ""
 msgid "An activation email has been sent to your email address!"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:174
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:174;282;311;366
 msgid "Please fill all required fields"
 msgstr ""
 
@@ -71,10 +71,6 @@ msgstr ""
 msgid "An activation email has been sent to {0}"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:282;311
-msgid "Something went wrong"
-msgstr ""
-
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:308
 msgid "Password recovery info has been sent to you via email. Please check your inbox."
 msgstr ""
@@ -89,10 +85,6 @@ msgstr ""
 
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:363
 msgid "Your password has been changed."
-msgstr ""
-
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:366
-msgid "Ups, something went wrong"
 msgstr ""
 
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/Component/AuthComponent.php:125
@@ -172,7 +164,7 @@ msgid "Password must include at least one special character!"
 msgstr ""
 
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:861
-msgid "User \"{0}\" not found"
+msgid "User not found"
 msgstr ""
 
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/activate.ctp:5

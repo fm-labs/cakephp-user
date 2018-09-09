@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cakephp3-user\n"
-"POT-Creation-Date: 2018-09-07 22:45+0200\n"
-"PO-Revision-Date: 2018-09-07 22:45+0200\n"
+"POT-Creation-Date: 2018-09-09 08:50+0200\n"
+"PO-Revision-Date: 2018-09-09 08:50+0200\n"
 "Last-Translator: fm-labs <flowmotionlabs@gmail.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -37,7 +37,7 @@ msgstr "Sie sind nun abgemeldet!"
 msgid "An activation email has been sent to your email address!"
 msgstr "Ein Aktivierungslink wurde an Ihre Emailaddresse versendet!"
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:174
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:174;282;311;366
 msgid "Please fill all required fields"
 msgstr "Bitte alle Pflichtfelder ausfüllen"
 
@@ -76,10 +76,6 @@ msgstr "Kein Benutzer mit dieser Emailadresse gefunden"
 msgid "An activation email has been sent to {0}"
 msgstr "Ein Aktivierungsmail wurde an %s gesendet"
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:282;311
-msgid "Something went wrong"
-msgstr "Etwas ist schief gegangen"
-
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:308
 msgid ""
 "Password recovery info has been sent to you via email. Please check your "
@@ -99,10 +95,6 @@ msgstr "Password konnte nicht zurückgesetzt werden"
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:363
 msgid "Your password has been changed."
 msgstr "Ihr Passwort wurde geändert"
-
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:366
-msgid "Ups, something went wrong"
-msgstr "Etwas ist schief gegangen"
 
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/Component/AuthComponent.php:125
 msgid "Login failed"
@@ -181,8 +173,8 @@ msgid "Password must include at least one special character!"
 msgstr "Passwort muss mindestens ein Sonderzeichen enthalten!"
 
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:861
-msgid "User \"{0}\" not found"
-msgstr "Benutzer \"{0}\" nicht gefunden"
+msgid "User not found"
+msgstr "Benutzer nicht gefunden"
 
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/activate.ctp:5
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/activate_resend.ctp:5
@@ -375,6 +367,15 @@ msgstr "Passwort wiederholen"
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:25
 msgid "I'm already registered"
 msgstr "Ich bin bereits registriert"
+
+#~ msgid "Something went wrong"
+#~ msgstr "Etwas ist schief gegangen"
+
+#~ msgid "Ups, something went wrong"
+#~ msgstr "Etwas ist schief gegangen"
+
+#~ msgid "User \"{0}\" not found"
+#~ msgstr "Benutzer \"{0}\" nicht gefunden"
 
 #~ msgid ""
 #~ "A password reset link has been sent to you via email. Please check your "
