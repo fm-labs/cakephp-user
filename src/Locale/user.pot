@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2018-09-09 06:49+0000\n"
+"POT-Creation-Date: 2018-09-10 23:28+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,157 +14,166 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:82
-msgid "This account has been deleted"
-msgstr ""
-
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:87
-msgid "Your account has not been activated yet"
-msgstr ""
-
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:95
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:85
 msgid "Sorry, but login is currently disabled."
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:111
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:101
 msgid "You are logged out now!"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:169
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:159
 msgid "An activation email has been sent to your email address!"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:174;282;311;366
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:164;272;307;360;388
 msgid "Please fill all required fields"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:178
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:168
 msgid "Sorry, but user registration is currently disabled."
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:194
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:184
 msgid "No password entered"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:205
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:313;683
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:195
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:321
 msgid "Invalid password"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:235
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:225
 msgid "Your account has been activated. You can login now."
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:238
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:228
 msgid "Account activation failed"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:265
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:255
 msgid "Please enter an email address"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:272
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:262
 msgid "No user with such email address"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:279
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:269
 msgid "An activation email has been sent to {0}"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:308
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:299
 msgid "Password recovery info has been sent to you via email. Please check your inbox."
 msgstr ""
 
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:344
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:630
+msgid "Password reset code missing"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:357
 msgid "You can now login with your new password"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:349
-msgid "Failed to reset password"
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:370
+msgid "Something went wrong. Please try again."
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:363
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:385
 msgid "Your password has been changed."
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/Component/AuthComponent.php:125
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/Component/AuthComponent.php:139
 msgid "Login failed"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/Component/UserSessionComponent.php:196
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/Component/UserSessionComponent.php:197
 msgid "Session timed out"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:152
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Form/PasswordForgottenForm.php:21
+msgid "This is not a valid email address"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Form/PasswordForgottenForm.php:45
+msgid "User not found"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:155
 msgid "This username is already in use"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:153
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:156
 msgid "This email address is already in use"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:318
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:326
 msgid "Weak password"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:326;690
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:334
 msgid "Passwords do not match"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:349;511;520
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:347;369
 msgid "The provided email address is invalid"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:552
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:569
 msgid "This is not your current password"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:563
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:580
 msgid "This is your current password. Please create a new one!"
-msgstr ""
-
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:614;619;853
-msgid "This is a required field"
 msgstr ""
 
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:634
 msgid "Password reset code has expired"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:639
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:638
 msgid "Password reset code is invalid"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:719
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:707
 msgid "Password can not be the same as your username"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:746
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:734
 msgid "Password too short. Minimum {0} characters"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:751
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:739
 msgid "Password contains illegal characters"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:755
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:743
 msgid "Password must include at least one number!"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:759
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:747
 msgid "Password must include at least one lowercase letter!"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:763
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:751
 msgid "Password must include at least one UPPERCASE letter!"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:767
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:755
 msgid "Password must include at least one special character!"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:861
-msgid "User not found"
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:811
+msgid "Email or Domain not allowed"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Service/UserLoginService.php:46
+msgid "This account has been deleted"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Service/UserLoginService.php:55
+msgid "Your account has not been activated yet"
 msgstr ""
 
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/activate.ctp:5
