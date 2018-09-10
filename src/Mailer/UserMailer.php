@@ -51,6 +51,14 @@ class UserMailer extends Mailer
     }
 
     /**
+     * @deprecated Use profile() instead
+     */
+    protected function _setProfile($profile)
+    {
+        $this->profile($profile);
+    }
+
+    /**
      * Sets the email profile.
      * Reads configurations from config key `User.Email.[PROFILE]`
      *
