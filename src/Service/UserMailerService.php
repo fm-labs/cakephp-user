@@ -40,7 +40,7 @@ class UserMailerService implements EventListenerInterface
             $mailer = $this->getUserMailer();
             $mailer->send($action, $args);
         } catch (\Exception $ex) {
-            Log::error('UserMailerService::sendEmail: ' . $ex->getMessage());
+            Log::error('UserMailerService::sendEmail: ' . $ex->getMessage(), ['user']);
         }
     }
 
