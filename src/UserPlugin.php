@@ -12,7 +12,7 @@ use Cake\Http\MiddlewareQueue;
 use Cake\Routing\RouteBuilder;
 use Settings\SettingsManager;
 use User\Service\UserEventLoggerService;
-use User\Service\UserLoginLoggerService;
+use User\Service\UserLoginService;
 use User\Service\UserMailerService;
 
 /**
@@ -72,12 +72,12 @@ class UserPlugin implements PluginInterface, EventListenerInterface
 
     public function bootstrap(Application $app)
     {
+        EventManager::instance()->on(new UserLoginService());
+
         if (Configure::read('User.EventLogger.enabled') == true) {
             EventManager::instance()->on(new UserEventLoggerService());
         }
-        if (Configure::read('User.LoginLogger.enabled') == true) {
-            EventManager::instance()->on(new UserLoginLoggerService());
-        }
+
         if (Configure::read('User.Mailer.enabled') == true) {
             EventManager::instance()->on(new UserMailerService([
                 'mailerClass' => Configure::read('User.Mailer.className')

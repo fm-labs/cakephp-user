@@ -27,7 +27,8 @@ class UserSessionComponent extends Component
     protected $_defaultConfig = [
         // max user session lifetime in seconds. should be lower then global session timeout
         'maxLifetime' => 0,
-        'ignoreActions' => []
+        'ignoreActions' => [],
+        'sessionKey' => 'Auth.UserSession',
     ];
 
     /**
@@ -96,8 +97,8 @@ class UserSessionComponent extends Component
             return null;
         }
 
-        if ($this->request->session()->check('Auth.UserSession')) {
-            $session = $this->request->session()->read('Auth.UserSession');
+        if ($this->request->session()->check($this->_config['sessionKey'])) {
+            $session = $this->request->session()->read($this->_config['sessionKey']);
             if (!$this->validateUserSession($session)) {
                 $event->stopPropagation();
                 return $this->_expired($event->subject());
@@ -132,7 +133,7 @@ class UserSessionComponent extends Component
                 ? time() + $this->_config['maxLifetime']
                 : null
         ];
-        $this->request->session()->write('Auth.UserSession', $userSession);
+        $this->request->session()->write($this->_config['sessionKey'], $userSession);
     }
 
     /**
@@ -167,7 +168,7 @@ class UserSessionComponent extends Component
         }
 
         $userSession['expires'] = time() + $this->_config['maxLifetime'];
-        $this->request->session()->write('Auth.UserSession', $userSession);
+        $this->request->session()->write($this->_config['sessionKey'], $userSession);
     }
 
     /**
@@ -177,8 +178,7 @@ class UserSessionComponent extends Component
      */
     public function destroyUserSession()
     {
-        $this->request->session()->delete('Auth.UserSession');
-        $this->request->session()->delete('Auth.User');
+        $this->request->session()->delete($this->_config['sessionKey']);
     }
 
     /**
@@ -190,16 +190,14 @@ class UserSessionComponent extends Component
     protected function _expired(Controller $controller)
     {
         $this->destroyUserSession();
-        //$this->Auth->logout();
+        $this->Auth->logout();
+        $this->Auth->storage()->redirectUrl(false);
 
         if (!$controller->request->is('ajax')) {
             $this->Auth->flash(__d('user', 'Session timed out'));
-            $this->Auth->storage()->redirectUrl(false);
-
             return $controller->redirect($this->Auth->config('loginAction'));
         }
 
-        $this->Auth->storage()->redirectUrl(false);
         $this->response->statusCode(403);
         return $this->response;
     }
@@ -212,9 +210,10 @@ class UserSessionComponent extends Component
     public function implementedEvents()
     {
         return [
-            'Controller.initialize' => 'beforeFilter',
-            'Controller.startup' => 'startup',
-            'Controller.beforeRender' => 'beforeRender'
+            'Controller.initialize'     => 'beforeFilter',
+            'Controller.startup'        => 'startup',
+            'Controller.beforeRender'   => 'beforeRender',
+            'User.Auth.logout'               => 'destroyUserSession'
         ];
     }
 }

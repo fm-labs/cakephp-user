@@ -42,7 +42,10 @@ class UsersTableTest extends TestCase
         Configure::write([
             'User.Signup.disabled' => false,
             'User.Signup.verifyEmail' => false,
-            'User.Signup.groupAuth' => false
+            'User.Signup.groupAuth' => false,
+
+            //'User.Blacklist.enabled' => true,
+            //'User.Blacklist.domainList' => ['example.net']
         ]);
 
         UsersTable::$emailAsUsername = false;
@@ -84,81 +87,94 @@ class UsersTableTest extends TestCase
         $this->markTestIncomplete('Not implemented yet.');
     }
 
-    public function testValidateNewPassword1()
+    public function testCheckNewPassword1()
     {
         $fakeContext = ['newEntity' => true, 'data' => ['username' => 'asdfasdf']];
 
         // test short password (min 8)
-        //$this->assertTrue($this->Users->validateNewPassword1('asdf', $fakeContext) !== true);
+        //$this->assertTrue($this->Users->checkNewPassword1('asdf', $fakeContext) !== true);
 
         // test illegal characters
-        //$this->assertTrue($this->Users->validateNewPassword1('asdfasdf$', $fakeContext) !== true);
+        //$this->assertTrue($this->Users->checkNewPassword1('asdfasdf$', $fakeContext) !== true);
 
         // test weak password - same as username
-        $this->assertTrue($this->Users->validateNewPassword1('asdfasdf', $fakeContext) !== true);
+        $this->assertTrue($this->Users->checkNewPassword1('asdfasdf', $fakeContext) !== true);
 
         // test good password
-        $this->assertTrue($this->Users->validateNewPassword1('testtest', $fakeContext) === true);
+        $this->assertTrue($this->Users->checkNewPassword1('testtest', $fakeContext) === true);
     }
 
-    public function testValidateNewPassword2()
+    public function testCheckNewPassword2()
     {
         $fakeContext = ['newEntity' => true, 'data' => ['password1' => 'testtest']];
 
         // test no password
-        $this->assertTrue($this->Users->validateNewPassword2('', $fakeContext) !== true);
+        $this->assertTrue($this->Users->checkNewPassword2('', $fakeContext) !== true);
 
         // test wrong password
-        $this->assertTrue($this->Users->validateNewPassword2('wrongpass', $fakeContext) !== true);
+        $this->assertTrue($this->Users->checkNewPassword2('wrongpass', $fakeContext) !== true);
 
         // test correct password
-        $this->assertTrue($this->Users->validateNewPassword2('testtest', $fakeContext) === true);
+        $this->assertTrue($this->Users->checkNewPassword2('testtest', $fakeContext) === true);
     }
 
-    public function testValidatePasswordComplexity()
+    public function testCheckEmailBlacklist()
+    {
+        $fakeContext = ['newEntity' => true, 'data' => []];
+        $options = [
+            'enabled' => true,
+            'domainList' => ['example.net']
+        ];
+
+        // test minLength
+        $this->assertTrue($this->Users->checkEmailBlacklist('asdf@example.org', $options, $fakeContext));
+        $this->assertInternalType('string', $this->Users->checkEmailBlacklist('asdf@example.net', $options, $fakeContext));
+    }
+
+    public function testCheckPasswordComplexity()
     {
         $fakeContext = ['newEntity' => true, 'data' => []];
     }
 
 
-    public function testValidatePasswordComplexityMinLength()
+    public function testCheckPasswordComplexityMinLength()
     {
         $fakeContext = ['newEntity' => true, 'data' => []];
         // test minLength
-        $this->assertTrue($this->Users->validatePasswordComplexity('1234', ['minLength' => 8], $fakeContext) !== true);
-        $this->assertTrue($this->Users->validatePasswordComplexity('12345678', ['minLength' => 8], $fakeContext));
+        $this->assertTrue($this->Users->checkPasswordComplexity('1234', ['minLength' => 8], $fakeContext) !== true);
+        $this->assertTrue($this->Users->checkPasswordComplexity('12345678', ['minLength' => 8], $fakeContext));
     }
 
-    public function testValidatePasswordComplexityMinNumbers()
+    public function testCheckPasswordComplexityMinNumbers()
     {
         $fakeContext = ['newEntity' => true, 'data' => []];
         // test numbers
-        $this->assertTrue($this->Users->validatePasswordComplexity('asdfasdf', ['numbers' => 1], $fakeContext) !== true);
-        $this->assertTrue($this->Users->validatePasswordComplexity('asdfasdf1', ['numbers' => 1], $fakeContext));
+        $this->assertTrue($this->Users->checkPasswordComplexity('asdfasdf', ['numbers' => 1], $fakeContext) !== true);
+        $this->assertTrue($this->Users->checkPasswordComplexity('asdfasdf1', ['numbers' => 1], $fakeContext));
     }
 
-    public function testValidatePasswordComplexityMinUppercase()
+    public function testCheckPasswordComplexityMinUppercase()
     {
         $fakeContext = ['newEntity' => true, 'data' => []];
         // test uppercase
-        $this->assertTrue($this->Users->validatePasswordComplexity('asdfasdf', ['uppercase' => 1], $fakeContext) !== true);
-        $this->assertTrue($this->Users->validatePasswordComplexity('Asdfasdf', ['uppercase' => 1], $fakeContext));
+        $this->assertTrue($this->Users->checkPasswordComplexity('asdfasdf', ['uppercase' => 1], $fakeContext) !== true);
+        $this->assertTrue($this->Users->checkPasswordComplexity('Asdfasdf', ['uppercase' => 1], $fakeContext));
     }
 
-    public function testValidatePasswordComplexityMinLowercase()
+    public function testCheckPasswordComplexityMinLowercase()
     {
         $fakeContext = ['newEntity' => true, 'data' => []];
         // test lowercase
-        $this->assertTrue($this->Users->validatePasswordComplexity('ASDFASDF', ['lowercase' => 1], $fakeContext) !== true);
-        $this->assertTrue($this->Users->validatePasswordComplexity('aSDFASDF', ['lowercase' => 1], $fakeContext));
+        $this->assertTrue($this->Users->checkPasswordComplexity('ASDFASDF', ['lowercase' => 1], $fakeContext) !== true);
+        $this->assertTrue($this->Users->checkPasswordComplexity('aSDFASDF', ['lowercase' => 1], $fakeContext));
     }
 
-    public function testValidatePasswordComplexityMinSpecial()
+    public function testCheckPasswordComplexityMinSpecial()
     {
         $fakeContext = ['newEntity' => true, 'data' => []];
         // test special
-        $this->assertTrue($this->Users->validatePasswordComplexity('asdfasdf', ['special' => 1], $fakeContext) !== true);
-        $this->assertTrue($this->Users->validatePasswordComplexity('asdfasdf!', ['special' => 1], $fakeContext));
+        $this->assertTrue($this->Users->checkPasswordComplexity('asdfasdf', ['special' => 1], $fakeContext) !== true);
+        $this->assertTrue($this->Users->checkPasswordComplexity('asdfasdf!', ['special' => 1], $fakeContext));
     }
 
     public function testRegister()
@@ -169,37 +185,46 @@ class UsersTableTest extends TestCase
         $this->assertEmpty($user->id);
 
         // test with incomplete data - missing password
-        $user = $this->Users->register(['username' => 'test1']);
+        $user = $this->Users->register(['username' => 'test1', 'email' => 'test1@example.org']);
         $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
         $this->assertEmpty($user->id);
         $this->assertEmpty($user->errors('username'));
+        $this->assertEmpty($user->errors('email'));
         $this->assertNotEmpty($user->errors('password1'));
         $this->assertNotEmpty($user->errors('password2'));
         $this->Users->delete($user);
 
         // test with no login
-        $user = $this->Users->register(['username' => 'test1', '_nologin' => true]);
+        $user = $this->Users->register(['username' => 'test1', 'email' => 'test1@example.org', '_nologin' => true]);
         $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
-        $this->assertNotEmpty($user->id);
         $this->assertEmpty($user->errors('username'));
+        $this->assertEmpty($user->errors('email'));
         $this->assertEmpty($user->errors('password1'));
         $this->assertEmpty($user->errors('password2'));
+        $this->assertNotEmpty($user->id);
         $this->Users->delete($user);
 
         // test with valid username and password
-        $user = $this->Users->register(['username' => 'test2', 'password1' => self::TEST_PASS1, 'password2' => self::TEST_PASS1]);
+        $user = $this->Users->register(['username' => 'test2', 'email' => 'test2@example.org', 'password1' => self::TEST_PASS1, 'password2' => self::TEST_PASS1]);
         $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
         $this->assertEmpty($user->errors());
         $this->assertNotEmpty($user->id);
 
         $user = $this->Users->get($user->id);
-        $this->assertEmpty($user->email);
         $this->assertTrue((new DefaultPasswordHasher())->check(self::TEST_PASS1, $user->password));
         $this->assertTrue($user->login_enabled);
         $this->Users->delete($user);
 
         // test with valid username and password + extra data
-        $data = ['username' => 'test3', 'password1' => self::TEST_PASS1, 'password2' => self::TEST_PASS1, 'locale' => 'de', 'first_name' => 'First', 'last_name' => 'Last'];
+        $data = [
+            'username' => 'test3',
+            'email' => 'test3@example.org',
+            'password1' => self::TEST_PASS1,
+            'password2' => self::TEST_PASS1,
+            'locale' => 'de',
+            'first_name' => 'First',
+            'last_name' => 'Last'
+        ];
         $user = $this->Users->register($data);
         $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
         $this->assertEmpty($user->errors());
@@ -215,7 +240,12 @@ class UsersTableTest extends TestCase
         $_tmpTz = date_default_timezone_get();
         $_tmpCur = 'EUR';
         I18n::locale('en');
-        $data = ['username' => 'test3', 'password1' => self::TEST_PASS1, 'password2' => self::TEST_PASS1];
+        $data = [
+            'username' => 'test3',
+            'email' => 'test3@example.org',
+            'password1' => self::TEST_PASS1,
+            'password2' => self::TEST_PASS1
+        ];
         $user = $this->Users->register($data);
         $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
         $this->assertEmpty($user->errors());
@@ -231,6 +261,7 @@ class UsersTableTest extends TestCase
     {
         TableRegistry::remove('Users');
         UsersTable::$emailAsUsername = true;
+
         $this->Users = TableRegistry::get('Users', [
             'className' => 'User\Model\Table\UsersTable'
         ]);
@@ -248,7 +279,13 @@ class UsersTableTest extends TestCase
         $this->assertEquals('test1@example.org', $user->email);
 
         // test with email, password AND username (ignore additional username field)
-        $user = $this->Users->register(['email' => 'test2@example.org', 'password1' => self::TEST_PASS1, 'password2' => self::TEST_PASS1, 'username' => 'admin' , 'locale' => 'en']);
+        $user = $this->Users->register([
+            'email' => 'test2@example.org',
+            'password1' => self::TEST_PASS1,
+            'password2' => self::TEST_PASS1,
+            'username' => 'admin', // <-- this should get overridden
+            'locale' => 'en'
+        ]);
         $this->assertEmpty($user->errors());
         $this->assertNotEmpty($user->id);
         $this->assertEquals('test2@example.org', $user->username);
@@ -256,17 +293,62 @@ class UsersTableTest extends TestCase
         $this->assertEquals('en', $user->locale);
 
         TableRegistry::remove('Users');
+        UsersTable::$emailAsUsername = false;
     }
+
+    public function testRegisterWithBlacklistedEmail()
+    {
+        Configure::write('User.Blacklist', ['enabled' => true,  'domainList' => ['example.net']]);
+
+        $user = $this->Users->register([
+            'username' => 'test1',
+            'email' => 'test1@example.net', // @example.net is blacklisted in test config
+            'password1' => self::TEST_PASS1,
+            'password2' => self::TEST_PASS1
+        ]);
+
+        $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
+        $this->assertEmpty($user->id);
+        $this->assertArrayHasKey('email_blacklist', $user->errors('email'));
+    }
+
+    public function testRegisterWithBlacklistedEmailAsUsername()
+    {
+        TableRegistry::remove('Users');
+        UsersTable::$emailAsUsername = true;
+
+        Configure::write('User.Blacklist', ['enabled' => true,  'domainList' => ['example.net']]);
+
+        $user = $this->Users->register([
+            'email' => 'test1@example.net', // @example.net is blacklisted in test config
+            'password1' => self::TEST_PASS1,
+            'password2' => self::TEST_PASS1
+        ]);
+
+        $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
+        $this->assertEmpty($user->id);
+        $this->assertArrayHasKey('email_blacklist', $user->errors('email'));
+
+        TableRegistry::remove('Users');
+        UsersTable::$emailAsUsername = true;
+    }
+
 
     public function testRegisterWithEmailVerification()
     {
         Configure::write('User.Signup.verifyEmail', true);
 
-        $user = $this->Users->register(['username' => 'test1', 'password1' => self::TEST_PASS1, 'password2' => self::TEST_PASS1]);
+        $user = $this->Users->register([
+            'username' => 'test1',
+            'email' => 'test1@example.org',
+            'password1' => self::TEST_PASS1,
+            'password2' => self::TEST_PASS1
+        ]);
 
         $this->assertFalse($user->email_verified);
         $this->assertNotEmpty($user->email_verification_code);
         $this->assertTrue($user->login_enabled);
+        $this->assertNotEmpty($user->id);
     }
 
     public function testRegisterWithGroupAuth()
@@ -278,7 +360,7 @@ class UsersTableTest extends TestCase
 
     public function testChangePassword()
     {
-        $user = $this->Users->register(['username' => 'test1', 'password1' => self::TEST_PASS1, 'password2' => self::TEST_PASS1]);
+        $user = $this->Users->register(['username' => 'test1', 'email' => 'test1@example.org', 'password1' => self::TEST_PASS1, 'password2' => self::TEST_PASS1]);
         $this->assertNotEmpty($user->id);
 
         // test with new password same as current password

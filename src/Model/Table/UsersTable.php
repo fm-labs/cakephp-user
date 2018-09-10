@@ -6,6 +6,7 @@ use Cake\Chronos\Chronos;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\Event\Event;
+use Cake\Filesystem\File;
 use Cake\I18n\I18n;
 use Cake\I18n\Time;
 use Cake\Log\Log;
@@ -315,12 +316,12 @@ class UsersTable extends Table
             ->requirePresence('password1', 'create')
             ->notEmpty('password1')
             ->add('password1', 'password', [
-                'rule' => 'validateNewPassword1',
+                'rule' => 'checkNewPassword1',
                 'provider' => 'table',
                 'message' => __d('user', 'Invalid password')
             ])
             ->add('password1', 'password_strength', [
-                'rule' => ['validatePasswordComplexity'],
+                'rule' => ['checkPasswordComplexity'],
                 'provider' => 'table',
                 'message' => __d('user', 'Weak password')
             ])
@@ -328,10 +329,51 @@ class UsersTable extends Table
             ->requirePresence('password2', 'create')
             ->notEmpty('password2')
             ->add('password2', 'password', [
-                'rule' => 'validateNewPassword2',
+                'rule' => 'checkNewPassword2',
                 'provider' => 'table',
                 'message' => __d('user', 'Passwords do not match')
             ]);
+
+        return $validator;
+    }
+
+    protected function validationEmail(Validator $validator)
+    {
+        $validator
+            ->requirePresence('email', 'create')
+            ->notEmpty('email')
+            ->add('email', 'email', [
+                'rule' => ['email', true],
+                'message' => __d('user', 'The provided email address is invalid')
+            ])
+            ->add('email', 'email_blacklist', [
+                'rule' => 'checkEmailBlacklist',
+                'provider' => 'table',
+                'last' => true
+            ]);
+
+        return $validator;
+    }
+
+    protected function validationUsername(Validator $validator)
+    {
+        $validator
+            ->requirePresence('username', 'create')
+            ->notEmpty('username');
+
+        if (static::$emailAsUsername) {
+            // email validation for 'username'
+            $validator
+                ->add('username', 'email', [
+                    'rule' => ['email', true],
+                    'message' => __d('user', 'The provided email address is invalid')
+                ])
+                ->add('email', 'email_blacklist', [
+                    'rule' => 'checkEmailBlacklist',
+                    'provider' => 'table',
+                    'last' => true
+                ]);
+        }
 
         return $validator;
     }
@@ -346,16 +388,8 @@ class UsersTable extends Table
     {
         $validator = $this->validationDefault($validator);
         $validator = $this->validationNewPassword($validator);
-        $validator
-            ->requirePresence('username', 'create')
-            ->notEmpty('username');
-
-        if (static::$emailAsUsername) {
-            $validator->add('username', 'email', [
-                'rule' => ['email'],
-                'message' => __d('user', 'The provided email address is invalid')
-            ]);
-        }
+        $validator = $this->validationEmail($validator);
+        $validator = $this->validationUsername($validator);
 
         return $validator;
     }
@@ -434,9 +468,10 @@ class UsersTable extends Table
         }
 
         // Email-As-Username
-        // email has been entered as username, so copy value to email field
-        if (self::$emailAsUsername && isset($data['email'])) {
+        if (self::$emailAsUsername && isset($data['email']) /*&& !isset($data['username'])*/) {
             $data['username'] = $data['email'];
+        } elseif (self::$emailAsUsername && isset($data['username']) && !isset($data['email'])) {
+            $data['email'] = $data['username'];
         }
 
         // Name
@@ -502,34 +537,9 @@ class UsersTable extends Table
      */
     public function validationRegister(Validator $validator)
     {
-        $validator = $this->validationDefault($validator);
-        $validator = $this->validationNewPassword($validator);
+        $this->validationAdd($validator);
         $validator
-            //->requirePresence('name', 'create')
-            //->notEmpty('name')
-            //->notEmpty('first_name')
-            //->notEmpty('last_name')
-
-            ->requirePresence('username', 'create')
-            ->notEmpty('username')
-
-            ->add('email', 'email', [
-                'rule' => ['email'],
-                'message' => __d('user', 'The provided email address is invalid')
-            ])
-            ->add('login_enabled', 'valid', ['rule' => 'boolean'])
-        ;
-
-        if (static::$emailAsUsername) {
-            // email validation for 'username'
-            $validator->add('username', 'email', [
-                'rule' => ['email'],
-                'message' => __d('user', 'The provided email address is invalid')
-            ]);
-            // require 'email'
-            $validator->requirePresence('email', 'create')
-                ->notEmpty('email');
-        }
+            ->add('login_enabled', 'valid', ['rule' => 'boolean']);
 
         return $validator;
     }
@@ -678,7 +688,7 @@ class UsersTable extends Table
      * @param $context
      * @return bool|string
      */
-    public function validateNewPassword1($value, $context)
+    public function checkNewPassword1($value, $context)
     {
         $value = trim($value);
 
@@ -700,7 +710,7 @@ class UsersTable extends Table
         return true;
     }
 
-    public function validatePasswordComplexity($value, $options = [], $context = null)
+    public function checkPasswordComplexity($value, $options = [], $context = null)
     {
         if (func_num_args() == 2) {
             $context = $options;
@@ -748,13 +758,70 @@ class UsersTable extends Table
         return true;
     }
 
+    public function checkEmailBlacklist($value, $options = [], $context = null)
+    {
+        if (func_num_args() == 2) {
+            $context = $options;
+            $options = [];
+        }
+
+        $defaults = [
+            'enabled' => false,
+            'domainList' => false,
+        ];
+        $config = (array) Configure::read('User.Blacklist');
+        $options = array_merge($defaults, $config, $options);
+
+        if ($options['enabled'] === false) {
+            return true;
+        }
+
+        if ($options['domainList'] === true) {
+            $options['domainList'] = CONFIG . 'user/domain.blacklist.txt';
+        }
+
+        if (is_string($options['domainList'])) {
+
+            $File = new File($options['domainList'], false);
+            if (!$File->exists()) {
+                return true;
+            }
+
+            $content = $File->read();
+
+            $options['domainList'] = array_filter(explode("\n", $content), function($row) {
+                if (preg_match('/^\#/', $row) || strlen(trim($row)) == 0) {
+                    return false;
+                }
+                return true;
+            });
+        }
+
+        $check = [];
+        if (is_array($options['domainList'])) {
+            $check = array_filter(array_unique($options['domainList']), function($row) use ($value) {
+                if (preg_match('/\@' . $row . '$/', $value)) {
+                    return true;
+                }
+                return false;
+            });
+        }
+
+        if (!empty($check)) {
+            return __d('user', 'Email or Domain not allowed');
+        }
+
+        return true;
+    }
+
+
     /**
      * Password Verification Validation Rule
      * @param $value
      * @param $context
      * @return bool
      */
-    public function validateNewPassword2($value, $context)
+    public function checkNewPassword2($value, $context)
     {
         $value = trim($value);
 

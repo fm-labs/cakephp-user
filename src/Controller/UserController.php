@@ -79,19 +79,6 @@ class UserController extends AppController
         if (Configure::read('User.Login.disabled') != true) {
             $redirectUrl = $this->Auth->login();
             if ($redirectUrl) {
-
-                if ($this->Auth->user('is_deleted')) {
-                    $this->Auth->logout();
-                    $this->Flash->error(__d('user', 'This account has been deleted'), ['key' => 'auth']);
-                    $redirectUrl = ['action' => 'login'];
-                }
-                elseif ($this->Auth->user('email_verification_required') && !$this->Auth->user('email_verified')) {
-                    $this->Auth->logout();
-                    $this->Flash->error(__d('user', 'Your account has not been activated yet'), ['key' => 'auth']);
-                    $redirectUrl = ['action' => 'activate'];
-                }
-
-                //$this->Flash->success('Login. Redirect to '. $redirectUrl);
                 $this->redirect($redirectUrl);
             }
         } elseif ($this->request->is(['post'])) {

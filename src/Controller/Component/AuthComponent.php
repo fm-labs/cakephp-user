@@ -98,8 +98,8 @@ class AuthComponent extends CakeAuthComponent
         // attempt to identify user (any request method)
         $user = $this->identify();
         if ($user) {
-            // dispatch 'User.login' event
-            $event = new Event('User.login', $this, [
+            // dispatch 'User.Auth.login' event
+            $event = new Event('User.Auth.login', $this, [
                 'user' => $user,
                 'request' => $this->request
             ]);
@@ -107,6 +107,20 @@ class AuthComponent extends CakeAuthComponent
 
             // authenticate user
             $this->setUser($event->data['user']);
+
+            if ($event->result !== null) {
+                if (isset($event->result['redirect'])) {
+                    $this->storage()->redirectUrl($event->result['redirect']);
+                }
+
+                if (isset($event->result['error'])) {
+                    $this->flash($event->result['error']);
+                }
+            }
+
+            if ($event->isStopped() || !$this->user()) {
+                return $this->redirectUrl();
+            }
 
             // rehash, if required
             if ($this->authenticationProvider()->needsPasswordRehash()) {
@@ -124,8 +138,8 @@ class AuthComponent extends CakeAuthComponent
         } elseif ($this->request->is('post')) {
             $this->flash(__d('user', 'Login failed'));
 
-            // dispatch 'User.loginFailed' event
-            $event = new Event('User.loginError', $this, [
+            // dispatch 'User.Auth.loginFailed' event
+            $event = new Event('User.Auth.loginError', $this, [
                 'request' => $this->request
             ]);
             $this->eventManager()->dispatch($event);
@@ -144,8 +158,8 @@ class AuthComponent extends CakeAuthComponent
      */
     public function logout()
     {
-        // dispatch 'User.logout' event
-        $event = new Event('User.logout', $this, [
+        // dispatch 'User.Auth.logout' event
+        $event = new Event('User.Auth.logout', $this, [
             'user' => false,
             'request' => $this->request
         ]);

@@ -15,8 +15,6 @@ class UserEventLoggerService implements EventListenerInterface
 {
     /**
      * @param Event $event
-     * @param array $context
-     * @return void
      */
     public function logEvent(Event $event)
     {
@@ -39,9 +37,9 @@ class UserEventLoggerService implements EventListenerInterface
             'User.Model.User.register'          => 'logEvent',
             'User.Model.User.activate'          => 'logEvent',
             'User.Model.User.activationResend'  => 'logEvent',
-            'User.login'                        => 'logEvent',
-            'User.loginError'                   => 'logEvent',
-            'User.logout'                       => 'logEvent',
+            'User.Auth.login'                        => 'logEvent',
+            'User.Auth.loginError'                   => 'logEvent',
+            'User.Auth.logout'                       => 'logEvent',
         ];
     }
 }
