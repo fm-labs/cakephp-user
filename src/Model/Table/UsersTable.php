@@ -898,7 +898,7 @@ class UsersTable extends Table
         $user->password_reset_expiry_timestamp = time() + self::$passwordResetExpiry; // 24h
 
         if (!$this->save($user)) {
-            throw new \RuntimeException("Record UPDATE failed: User:" . $user->id);
+            throw new \RuntimeException("UsersTable::forgotPassword: Record UPDATE failed: User:" . $user->id);
         }
 
         if ($dispatchEvent === true) {
@@ -907,7 +907,7 @@ class UsersTable extends Table
         return $user;
     }
 
-    public function markDeleted(User $user)
+    public function markDeleted(User $user, $dispatchEvent = true)
     {
         $user->is_deleted = true;
         $user->login_enabled = false;
@@ -915,10 +915,17 @@ class UsersTable extends Table
         $user->block_reason = 'DELETED';
         $user->block_datetime = new Time();
 
-        return $this->save($user);
+        if (!$this->save($user)) {
+            throw new \RuntimeException("UsersTable::markDeleted: Record UPDATE failed: User:" . $user->id);
+        }
+
+        if ($dispatchEvent === true) {
+            $this->eventManager()->dispatch(new Event('User.Model.User.markedDeleted', $user));
+        }
+        return $user;
     }
 
-    public function resetDeleted(User $user)
+    public function resetDeleted(User $user, $dispatchEvent = true)
     {
         $user->is_deleted = false;
         $user->login_enabled = true;
@@ -926,7 +933,14 @@ class UsersTable extends Table
         $user->block_reason = null;
         $user->block_datetime = null;
 
-        return $this->save($user);
+        if (!$this->save($user)) {
+            throw new \RuntimeException("UsersTable::resetDeleted: Record UPDATE failed: User:" . $user->id);
+        }
+
+        if ($dispatchEvent === true) {
+            $this->eventManager()->dispatch(new Event('User.Model.User.resetDeleted', $user));
+        }
+        return $user;
     }
 
     public function resendVerificationCode(User $user)
