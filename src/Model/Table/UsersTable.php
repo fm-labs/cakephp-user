@@ -170,7 +170,7 @@ class UsersTable extends Table
     public function findAuthUser(Query $query, array $options)
     {
         $query
-            ->where(['Users.login_enabled' => true])
+            //->where(['Users.login_enabled' => true])
             ->contain(static::$contains);
 
         return $query;
