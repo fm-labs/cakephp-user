@@ -46,6 +46,11 @@ class PasswordForgottenForm extends UserForm
             return false;
         }
 
+        if ($user->is_deleted) {
+            $this->_errors = ['username' => [__d('user', 'Deleted user')]];
+            return false;
+        }
+
         $user = $this->Users->forgotPassword($user);
         if (!$user) {
             return false;
@@ -53,6 +58,7 @@ class PasswordForgottenForm extends UserForm
 
         if ($user->errors()) {
             $this->_errors = $user->errors();
+            return false;
         }
 
         return $user;
