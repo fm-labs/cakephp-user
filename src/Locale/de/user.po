@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cakephp3-user\n"
-"POT-Creation-Date: 2018-09-11 01:29+0200\n"
-"PO-Revision-Date: 2018-09-11 01:30+0200\n"
+"POT-Creation-Date: 2018-09-13 09:32+0200\n"
+"PO-Revision-Date: 2018-09-13 09:33+0200\n"
 "Last-Translator: fm-labs <flowmotionlabs@gmail.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -109,6 +109,10 @@ msgstr "Das ist keine gültige E-mail Adresse"
 msgid "User not found"
 msgstr "Benutzer nicht gefunden"
 
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Form/PasswordForgottenForm.php:50
+msgid "Deleted user"
+msgstr "Benutzer gelöscht"
+
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:155
 msgid "This username is already in use"
 msgstr "Diese Benutzername ist bereits in Verwendung"
@@ -177,13 +181,21 @@ msgstr "Passwort muss mindestens ein Sonderzeichen enthalten!"
 msgid "Email or Domain not allowed"
 msgstr "Email oder Domain nicht erlaubt"
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Service/UserLoginService.php:46
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Service/UserLoginService.php:40
 msgid "This account has been deleted"
 msgstr "Dieses Konto wurde gelöscht"
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Service/UserLoginService.php:55
-msgid "Your account has not been activated yet"
-msgstr "Ihr Konto wurde noch nicht aktiviert."
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Service/UserLoginService.php:49
+msgid "This account has been blocked"
+msgstr "Dieses Konto ist gesperrt"
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Service/UserLoginService.php:58
+msgid "Login to this account is not enabled"
+msgstr "Anmeldung nicht möglich"
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Service/UserLoginService.php:67
+msgid "Your account has not been verified yet"
+msgstr "Ihr Konto wurde noch nicht verifiziert"
 
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/activate.ctp:5
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/activate_resend.ctp:5
@@ -376,6 +388,9 @@ msgstr "Passwort wiederholen"
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:25
 msgid "I'm already registered"
 msgstr "Ich bin bereits registriert"
+
+#~ msgid "Your account has not been activated yet"
+#~ msgstr "Ihr Konto wurde noch nicht aktiviert."
 
 #~ msgid "Failed to reset password"
 #~ msgstr "Password konnte nicht zurückgesetzt werden"
