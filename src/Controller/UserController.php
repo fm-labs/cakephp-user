@@ -46,7 +46,7 @@ class UserController extends AppController
 
         $this->Auth->allow([
             'login', 'register', 'registerGroup', 'activate', 'activateResend',
-            'passwordForgotten', 'passwordSent', 'passwordReset'
+            'passwordForgotten', 'passwordSent', 'passwordReset', 'passwordChanged'
         ]);
 
         if ($this->components()->has('UserSession')) {
@@ -383,12 +383,19 @@ class UserController extends AppController
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Users->changePassword($user, $this->request->data)) {
                 $this->Flash->success(__d('user', 'Your password has been changed.'), ['key' => 'auth']);
-                $this->redirect(['_name' => 'user:profile']);
+                $this->redirect(['action' => 'passwordChanged']);
             } else {
                 $this->Flash->error(__d('user', 'Please fill all required fields'), ['key' => 'auth']);
             }
         }
         $this->set('user', $user);
+    }
+
+    /**
+     * Password forgotten default success action
+     */
+    public function passwordChanged()
+    {
     }
 
     /**
