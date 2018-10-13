@@ -1,4 +1,4 @@
-Für Ihr Benutzerkonto bei lederleitner.at wurde soeben ein neues Passwort wurde gesetzt.
+Für Ihr Benutzerkonto wurde soeben ein neues Passwort wurde gesetzt.
 
 --
 
