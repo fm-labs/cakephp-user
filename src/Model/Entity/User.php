@@ -68,6 +68,13 @@ class User extends Entity
     ];
 
     /**
+     * @var array
+     */
+    protected $_hidden = [
+        'password',
+    ];
+
+    /**
      * @return bool
      */
     protected function _getIsRoot()
