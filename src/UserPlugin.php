@@ -5,12 +5,14 @@ namespace User;
 use Banana\Application;
 use Banana\Plugin\PluginInterface;
 use Cake\Core\Configure;
+use Cake\Core\Plugin;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
 use Cake\Http\MiddlewareQueue;
 use Cake\Routing\RouteBuilder;
 use Settings\SettingsManager;
+use User\Service\GoogleAuthenticatorService;
 use User\Service\UserEventLoggerService;
 use User\Service\UserLoginService;
 use User\Service\UserMailerService;
@@ -82,6 +84,10 @@ class UserPlugin implements PluginInterface, EventListenerInterface
             EventManager::instance()->on(new UserMailerService([
                 'mailerClass' => Configure::read('User.Mailer.className')
             ]));
+        }
+
+        if (Plugin::loaded('GoogleAuthenticator')) {
+            EventManager::instance()->on(new GoogleAuthenticatorService());
         }
     }
 

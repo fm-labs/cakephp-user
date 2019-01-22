@@ -69,7 +69,7 @@ class AuthComponent extends CakeAuthComponent
         if (!$this->config('authenticate')) {
             $this->config('authenticate', [
                 self::ALL => ['userModel' => $this->config('userModel'), 'finder' => 'authUser'],
-                'Form' => ['userModel' => $this->config('userModel')]
+                'Form' => [/*'className' => 'User.Form'*/]
             ]);
         }
 
@@ -161,7 +161,7 @@ class AuthComponent extends CakeAuthComponent
         // dispatch 'User.Auth.logout' event
         $event = new Event('User.Auth.logout', $this, [
             'user' => false,
-            'request' => $this->request
+            'request' => $this->request // @TODO This is redundant, as the request object can be accessed from the event subject
         ]);
         $this->eventManager()->dispatch($event);
 

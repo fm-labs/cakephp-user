@@ -10,7 +10,7 @@ use Cake\Network\Response;
 use Cake\Routing\Router;
 use User\Exception\PasswordResetException;
 use User\Form\PasswordForgottenForm;
-use User\Model\Table\GroupsTable;
+//use User\Model\Table\GroupsTable;
 use User\Model\Table\UsersTable;
 
 /**
@@ -26,6 +26,8 @@ class UserController extends AppController
      * @var string
      */
     public $modelClass = "User.Users";
+
+    public $captchaActions = ['login', 'register'];
 
     public function initialize()
     {

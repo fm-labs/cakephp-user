@@ -17,6 +17,7 @@ use Cake\ORM\Table;
 use Cake\ORM\Entity;
 use Cake\Routing\Router;
 use Cake\Validation\Validator;
+use GoogleRecaptcha\Lib\Recaptcha2;
 use User\Exception\PasswordResetException;
 use User\Model\Entity\User;
 
@@ -280,6 +281,10 @@ class UsersTable extends Table
             ->requirePresence('password')
             ->notEmpty('password');
 
+        if (Configure::read('User.Recaptcha.enabled')) {
+            $this->validationRecaptcha($validator);
+        }
+
         return $validator;
     }
 
@@ -308,6 +313,20 @@ class UsersTable extends Table
         }
 
         return $user;
+    }
+
+    protected function validationRecaptcha(Validator $validator)
+    {
+        $validator
+            ->requirePresence('g-recaptcha-response')
+            ->notEmpty('g-recaptcha-response', __d('user', 'Are you human?'))
+            ->add('g-recaptcha-response', 'recaptcha', [
+                'rule' => 'checkRecaptcha',
+                'provider' => 'table',
+                'message' => __d('user', 'Invalid captcha')
+            ]);
+
+        return $validator;
     }
 
     protected function validationNewPassword(Validator $validator)
@@ -392,6 +411,57 @@ class UsersTable extends Table
         $validator = $this->validationUsername($validator);
 
         return $validator;
+    }
+
+    public function setGoogleAuthSecret(User $user, $secretKey = null)
+    {
+        if ($secretKey === null) {
+            $secretFactory = new \Dolondro\GoogleAuthenticator\SecretFactory();
+            $secret = $secretFactory->create(Configure::read('GoogleAuthenticator.issuer'), $user->username);
+            $secretKey = $secret->getSecretKey();
+        }
+
+        $user->gauth_secret = $secretKey;
+
+        return $this->save($user);
+    }
+
+    public function getGoogleAuthSecret(User $user)
+    {
+        if (!$user->gauth_secret) {
+            return null;
+        }
+
+        $secret = new \Dolondro\GoogleAuthenticator\Secret(
+            Configure::read('GoogleAuthenticator.issuer'),
+            $user->username,
+            $user->gauth_secret
+        );
+
+        return $secret;
+    }
+
+    public function enableGoogleAuth(User $user)
+    {
+        /*
+        $secret = $this->getGoogleAuthSecret($user);
+        if (!$secret) {
+            return false;
+        }
+        $secretKey = $secret->getSecretKey();
+        $user->gauth_secret = $secretKey;
+        */
+        $user->gauth_enabled = true;
+
+        return $this->save($user);
+    }
+
+    public function disableGoogleAuth(User $user)
+    {
+        $user->gauth_enabled = false;
+        //$user->gauth_secret = "";
+
+        return $this->save($user);
     }
 
     /**
@@ -541,6 +611,10 @@ class UsersTable extends Table
         $validator
             ->add('login_enabled', 'valid', ['rule' => 'boolean']);
 
+        if (Configure::read('User.Recaptcha.enabled')) {
+            $this->validationRecaptcha($validator);
+        }
+
         return $validator;
     }
 
@@ -679,6 +753,28 @@ class UsersTable extends Table
     {
         $validator = $this->validationNewPassword($validator);
         return $validator;
+    }
+
+    /**
+     * Google Recaptcha Validation Rule
+     *
+     * @param $value
+     * @param $context
+     * @return bool|string
+     */
+    public function checkRecaptcha($value, $context)
+    {
+        try {
+            if (!Recaptcha2::verify(Configure::read('GoogleRecaptcha.secretKey'), $value)) {
+                return __d('user', 'Captcha verification failed');
+            }
+
+        } catch (\Exception $ex) {
+            debug($ex->getMessage());
+            return __d('user', 'Unable to verify reCAPTCHA. Please try again later');
+        }
+
+        return true;
     }
 
     /**
