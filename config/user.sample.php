@@ -16,5 +16,7 @@ return [
     //'User.Signup.disableEmailVerification' => false,
     //'User.PasswordReset.disable' => false,
     //'User.PasswordReset.redirectUrl' => null,
-    //'User.Blacklist.enabled' => false
+    //'User.Blacklist.enabled' => false,
+
+    'User.Recaptcha.enabled' => false,
 ];
