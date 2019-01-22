@@ -1,15 +1,13 @@
 <?php
+use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Cake\Core\Configure;
 
 $userConfig = (array) Configure::read('User');
 
-
-
-
 // User plugin routes
 //Router::scope('/user', ['_namePrefix' => 'user:'], function ($routes) {
-Router::plugin('User', ['_namePrefix' => 'user:'], function ($routes) {
+Router::plugin('User', ['_namePrefix' => 'user:'], function (RouteBuilder $routes) {
 
     $userController = (Configure::read('User.controller')) ?: 'User.User';
     list($plugin, $controller) = pluginSplit($userController);
@@ -47,9 +45,9 @@ Router::plugin('User', ['_namePrefix' => 'user:'], function ($routes) {
         $base + ['action' => 'checkAuth'],
         ['_name' => 'checkauth']
     );
-    $routes->connect('/:action',
-        $base
-    );
+    //$routes->connect('/:action',
+    //    $base
+    //);
     $routes->connect('/',
         $base + ['action' => 'index'],
         ['_name' => 'profile']
