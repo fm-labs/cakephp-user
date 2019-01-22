@@ -213,7 +213,7 @@ class UserSessionComponent extends Component
             'Controller.initialize'     => 'beforeFilter',
             'Controller.startup'        => 'startup',
             'Controller.beforeRender'   => 'beforeRender',
-            'User.Auth.logout'               => 'destroyUserSession'
+            'User.Auth.logout'          => 'destroyUserSession'
         ];
     }
 }
