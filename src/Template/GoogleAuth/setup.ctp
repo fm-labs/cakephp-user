@@ -22,7 +22,7 @@ $this->assign('title', __d('user', 'Setup 2-Factor Auth'));
         if ($imgUri) {
             echo $this->Html->image($imgUri);
         } else {
-            echo __("Failed to render QR image");
+            echo __d('user', "Failed to render QR image");
         }
         ?>
     </div>
@@ -34,7 +34,7 @@ $this->assign('title', __d('user', 'Setup 2-Factor Auth'));
     <?= $this->Form->create(); ?>
     <?= $this->Form->hidden('user_id', ['value' => $user->id]); ?>
     <?= $this->Form->input('code', ['placeholder' => 'Enter code here', 'autocomplete' => 'off']); ?>
-    <?= $this->Form->submit(__('Submit'), ['class' => 'btn btn-primary btn-block']); ?>
+    <?= $this->Form->submit(__d('user', 'Submit'), ['class' => 'btn btn-primary btn-block']); ?>
     <?= $this->Form->end(); ?>
 
 </div>

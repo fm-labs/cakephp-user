@@ -18,7 +18,7 @@ $this->assign('title', __d('user', 'Disable 2-Factor Auth'));
     <?= $this->Form->create(); ?>
     <?= $this->Form->hidden('user_id', ['value' => $user->id]); ?>
     <?= $this->Form->input('code', ['placeholder' => 'Enter code here', 'autocomplete' => 'off']); ?>
-    <?= $this->Form->submit(__('Yes, I want to disable 2-Factor-Auth'), ['class' => 'btn btn-danger btn-block']); ?>
+    <?= $this->Form->submit(__d('user', 'Yes, I want to disable 2-Factor-Auth'), ['class' => 'btn btn-danger btn-block']); ?>
     <?= $this->Form->end(); ?>
 
 </div>

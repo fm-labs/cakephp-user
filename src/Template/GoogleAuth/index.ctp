@@ -13,7 +13,7 @@ $this->assign('title', __d('user', '2-Factor-Auth'));
 
     <?php if ($user->gauth_enabled): ?>
         <p class="text-success">
-            <?= __('You have 2-Factor-Authentication enabled!'); ?>
+            <?= __d('user', 'You have 2-Factor-Authentication enabled!'); ?>
         </p>
 
         <p style="margin-top: 1em;">
@@ -22,7 +22,7 @@ $this->assign('title', __d('user', '2-Factor-Auth'));
 
     <?php else: ?>
         <p class="text-success">
-            <?= __('2-Factor-Authentication is currently DISABLED'); ?>
+            <?= __d('user', '2-Factor-Authentication is currently DISABLED'); ?>
         </p>
         <p style="margin-top: 1em;">
             <?= $this->Html->link("Setup 2-Factor-Auth", ['action' => 'setup'], ['class' => 'btn btn-primary btn-block']); ?>

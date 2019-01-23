@@ -14,7 +14,7 @@ $this->assign('userActions', '&nbsp;');
     <?= $this->Form->create(); ?>
     <?= $this->Form->hidden('user_id', ['value' => $user->id]); ?>
     <?= $this->Form->input('code', ['placeholder' => 'Enter code here', 'autocomplete' => 'off']); ?>
-    <?= $this->Form->submit(__('Verify')); ?>
+    <?= $this->Form->submit(__d('user', 'Verify')); ?>
     <?= $this->Form->end(); ?>
 </div>
 
