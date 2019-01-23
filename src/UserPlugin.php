@@ -46,12 +46,6 @@ class UserPlugin implements PluginInterface, EventListenerInterface
     {
         if ($event->subject() instanceof SettingsManager) {
             $event->subject()->add('User', [
-                'layout' => [
-                    'type' => 'string',
-                ],
-                'Login.layout' => [
-                    'type' => 'string',
-                ],
                 'Login.disabled' => [
                     'type' => 'boolean',
                     'default' => false
@@ -60,6 +54,15 @@ class UserPlugin implements PluginInterface, EventListenerInterface
                     'type' => 'boolean',
                     'default' => false
                 ],
+                'Recaptcha.enabled' => [
+                    'type' => 'boolean',
+                    'default' => false
+                ],
+                'EventLogger.enabled' => [
+                    'type' => 'boolean',
+                    'default' => false
+                ],
+                /*
                 'Signup.groupAuth' => [
                     'type' => 'boolean',
                     'default' => false
@@ -68,12 +71,14 @@ class UserPlugin implements PluginInterface, EventListenerInterface
                     'type' => 'boolean',
                     'default' => false
                 ],
+                */
             ]);
         }
     }
 
     public function bootstrap(Application $app)
     {
+        EventManager::instance()->on($this);
         EventManager::instance()->on(new UserLoginService());
 
         if (Configure::read('User.EventLogger.enabled') == true) {
