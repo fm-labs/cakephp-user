@@ -19,4 +19,7 @@ return [
     //'User.Blacklist.enabled' => false,
 
     'User.Recaptcha.enabled' => false,
+
+    // Auth component config
+    'User.Auth' => []
 ];
