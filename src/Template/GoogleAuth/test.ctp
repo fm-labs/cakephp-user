@@ -2,12 +2,12 @@
 $this->extend('base');
 // breadcrumbs
 $this->loadHelper('Breadcrumbs');
-$this->Breadcrumbs->add(__d('user','Login'), ['_name' => 'user:login']);
+$this->Breadcrumbs->add(__d('user','2-Factor Authentication'));
 
 // no robots
 $this->Html->meta('robots', 'noindex,nofollow', ['block' => true]);
 
-$this->assign('title', __d('user','Two-Factor Authentication'));
+$this->assign('title', __d('user', 'Google Authentication'));
 ?>
 <?= $this->Flash->render(); ?>
 <div id="user-login-form" class="user-form">

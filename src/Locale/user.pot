@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2018-09-23 14:31+0000\n"
+"POT-Creation-Date: 2019-01-24 18:26+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,77 +14,77 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:85
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:87
 msgid "Sorry, but login is currently disabled."
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:101
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:103
 msgid "You are logged out now!"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:159
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:161
 msgid "An activation email has been sent to your email address!"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:164;272;307;360;388
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:166;274;309;362;390
 msgid "Please fill all required fields"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:168
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:170
 msgid "Sorry, but user registration is currently disabled."
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:184
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:186
 msgid "No password entered"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:195
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:321
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:197
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:340
 msgid "Invalid password"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:225
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:227
 msgid "Your account has been activated. You can login now."
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:228
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:230
 msgid "Account activation failed"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:255
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:257
 msgid "Please enter an email address"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:262
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:264
 msgid "No user with such email address"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:269
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:271
 msgid "An activation email has been sent to {0}"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:299
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:301
 msgid "Password recovery info has been sent to you via email. Please check your inbox."
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:344
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:630
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:346
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:704
 msgid "Password reset code missing"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:357
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:359
 msgid "You can now login with your new password"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:370
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:372
 msgid "Something went wrong. Please try again."
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:385
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:387
 msgid "Your password has been changed."
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/Component/AuthComponent.php:139
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/Component/AuthComponent.php:138
 msgid "Login failed"
 msgstr ""
 
@@ -104,71 +104,87 @@ msgstr ""
 msgid "Deleted user"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:155
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:156
 msgid "This username is already in use"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:156
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:157
 msgid "This email address is already in use"
 msgstr ""
 
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:322
+msgid "Are you human?"
+msgstr ""
+
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:326
+msgid "Invalid captcha"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:345
 msgid "Weak password"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:334
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:353
 msgid "Passwords do not match"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:347;369
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:366;388
 msgid "The provided email address is invalid"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:569
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:643
 msgid "This is not your current password"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:580
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:654
 msgid "This is your current password. Please create a new one!"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:634
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:708
 msgid "Password reset code has expired"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:638
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:712
 msgid "Password reset code is invalid"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:707
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:769
+msgid "Captcha verification failed"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:774
+msgid "Unable to verify reCAPTCHA. Please try again later"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:803
 msgid "Password can not be the same as your username"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:734
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:830
 msgid "Password too short. Minimum {0} characters"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:739
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:835
 msgid "Password contains illegal characters"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:743
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:839
 msgid "Password must include at least one number!"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:747
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:843
 msgid "Password must include at least one lowercase letter!"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:751
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:847
 msgid "Password must include at least one UPPERCASE letter!"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:755
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:851
 msgid "Password must include at least one special character!"
 msgstr ""
 
-#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:811
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:907
 msgid "Email or Domain not allowed"
 msgstr ""
 
@@ -186,6 +202,95 @@ msgstr ""
 
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Service/UserLoginService.php:67
 msgid "Your account has not been verified yet"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/disable.ctp:5
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/index.ctp:5
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/setup.ctp:5
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/test.ctp:5
+msgid "2-Factor Authentication"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/disable.ctp:10
+msgid "Disable 2-Factor Auth"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/disable.ctp:15
+msgid "Please confirm that you want to DISABLE the 2-Factor-Authentication."
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/disable.ctp:21
+msgid "Yes, I want to disable 2-Factor-Auth"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/index.ctp:10
+msgid "2-Factor-Auth"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/index.ctp:16
+msgid "You have 2-Factor-Authentication enabled!"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/index.ctp:20
+msgid "Disable"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/index.ctp:25
+msgid "2-Factor-Authentication is currently DISABLED"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/index.ctp:28
+msgid "Setup"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/setup.ctp:10
+msgid "Setup 2-Factor Authentication"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/setup.ctp:15
+msgid "Download Google Authenticator app for your smartphone"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/setup.ctp:18
+msgid "Open Google Authenticator app and scan QR code"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/setup.ctp:25
+msgid "Failed to render QR image"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/setup.ctp:30
+msgid "Enter the code shown in the Google Authenticator app"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/setup.ctp:35
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/verify.ctp:16
+msgid "Enter code here"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/setup.ctp:36
+msgid "Enable"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/test.ctp:10
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/verify.ctp:10
+msgid "Google Authentication"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/test.ctp:16
+msgid "Authentication Code"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/test.ctp:17
+msgid "Authenticate"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/verify.ctp:5
+msgid "Security Check"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/verify.ctp:17
+msgid "Verify"
 msgstr ""
 
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/activate.ctp:5

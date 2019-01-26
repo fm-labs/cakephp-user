@@ -2,7 +2,7 @@
 $this->extend('base');
 // breadcrumbs
 $this->loadHelper('Breadcrumbs');
-$this->Breadcrumbs->add(__d('user','Account Verification'));
+$this->Breadcrumbs->add(__d('user','2-Factor Authentication'));
 
 // no robots
 $this->Html->meta('robots', 'noindex,nofollow', ['block' => true]);
@@ -12,7 +12,7 @@ $this->assign('title', __d('user', 'Disable 2-Factor Auth'));
 <div class="user-gauth-form user-form form">
 
     <p>
-        Please confirm that you want to DISABLE the 2-Factor-Authentication.
+        <?= __d('user','Please confirm that you want to DISABLE the 2-Factor-Authentication.'); ?>
     </p>
 
     <?= $this->Form->create(); ?>
