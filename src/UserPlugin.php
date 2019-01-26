@@ -2,6 +2,8 @@
 
 namespace User;
 
+use Backend\Backend;
+use Backend\BackendPluginInterface;
 use Banana\Application;
 use Banana\Plugin\PluginInterface;
 use Cake\Core\Configure;
@@ -22,7 +24,7 @@ use User\Service\UserMailerService;
  *
  * @package User
  */
-class UserPlugin implements PluginInterface, EventListenerInterface
+class UserPlugin implements PluginInterface, BackendPluginInterface, EventListenerInterface
 {
     /**
      * Returns a list of events this object is implementing. When the class is registered
@@ -35,7 +37,8 @@ class UserPlugin implements PluginInterface, EventListenerInterface
     public function implementedEvents()
     {
         return [
-            'Settings.build' => 'buildSettings'
+            'Settings.build' => 'buildSettings',
+            'Backend.Sidebar.build' => ['callable' => 'buildBackendSidebarMenu', 'priority' => 99 ],
         ];
     }
 
@@ -76,6 +79,30 @@ class UserPlugin implements PluginInterface, EventListenerInterface
         }
     }
 
+    /**
+     * @param Event $event The event object
+     * @return void
+     */
+    public function buildBackendSidebarMenu(Event $event)
+    {
+        if ($event->subject() instanceof \Banana\Menu\Menu) {
+            //$settingsMenu = new Menu();
+            //$this->eventManager()->dispatch(new Event('Backend.SysMenu.build', $settingsMenu));
+            $event->subject()->addItem([
+                'title' => __d('user', 'Users'),
+                'url' => ['plugin' => 'User', 'controller' => 'Users', 'action' => 'index'],
+                'data-icon' => 'users',
+                'children' => [
+                    'user_groups' => [
+                        'title' => __d('user', 'User Groups'),
+                        'url' => ['plugin' => 'User', 'controller' => 'UserGroups', 'action' => 'index'],
+                        'data-icon' => 'users',
+                    ]
+                ],
+            ]);
+        }
+    }
+
     public function bootstrap(Application $app)
     {
         EventManager::instance()->on($this);
@@ -103,5 +130,17 @@ class UserPlugin implements PluginInterface, EventListenerInterface
     public function middleware(MiddlewareQueue $middleware)
     {
 
+    }
+
+    public function backendBootstrap(Backend $backend)
+    {
+
+    }
+
+    public function backendRoutes(RouteBuilder $routes)
+    {
+        $routes->fallbacks('DashedRoute');
+
+        return $routes;
     }
 }
