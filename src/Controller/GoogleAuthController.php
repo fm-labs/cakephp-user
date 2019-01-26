@@ -3,7 +3,9 @@
 namespace User\Controller;
 
 use Cake\Core\Configure;
+use Cake\Core\Plugin;
 use Cake\Event\Event;
+use Cake\Network\Exception\NotFoundException;
 use User\Model\Entity\User;
 
 class GoogleAuthController extends AppController
@@ -12,7 +14,11 @@ class GoogleAuthController extends AppController
     {
         parent::beforeFilter($event);
 
-        $this->Auth->allow(['test']);
+        if (!Plugin::loaded('GoogleAuthenticator')) {
+            throw new NotFoundException();
+        }
+
+        //$this->Auth->allow(['test']);
 
         if (Configure::read('User.layout')) {
             $this->viewBuilder()->layout(Configure::read('User.layout'));
