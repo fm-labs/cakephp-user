@@ -33,11 +33,12 @@ class GoogleAuthenticatorAuthorize extends BaseAuthorize
      */
     public function authorize($user, Request $request)
     {
-
         if ($user['gauth_enabled'] == false) {
             return true;
         }
-
+        if($request->session()->read('Auth.GoogleAuth.verified') == true) {
+            return true;
+        }
         if ($request->param('plugin') == 'User' && $request->param('controller') == 'GoogleAuth') {
             return true;
         }
@@ -45,27 +46,6 @@ class GoogleAuthenticatorAuthorize extends BaseAuthorize
             return true;
         }
 
-        if($request->session()->read('Auth.GoogleAuth.verified') == true) {
-            return true;
-        }
-
-        //debug($user);
-        //@TODO Implemented RolesAuthorize::authorize() method
-        /*
-        $modelName = 'Users';
-        $modelId = $user['id'];
-
-        $controllerPermissions = [];
-        $controller = $this->_registry->getController();
-        if ($controller && isset($controller->permissions)) {
-            $controllerPermissions = $controller->permissions;
-        }
-
-        $Rbac = $this->_registry->get('Rbac');
-        $_user = $Rbac->getUser($modelName, $modelId);
-        $_roles = $Rbac->getUserRoles($modelName, $modelId);
-        $_permissions = $Rbac->getUserPermissions($modelName, $modelId);
-        */
         return false;
     }
 }
