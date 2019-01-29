@@ -103,11 +103,7 @@ class AuthComponent extends CakeAuthComponent
                 'request' => $this->request
             ]);
             $event = $this->eventManager()->dispatch($event);
-
-            // authenticate user
-            $this->setUser($event->data['user']);
-
-            if ($event->result !== null) {
+            if ($event->result) {
                 if (isset($event->result['redirect'])) {
                     $this->storage()->redirectUrl($event->result['redirect']);
                 }
@@ -117,12 +113,11 @@ class AuthComponent extends CakeAuthComponent
                 }
             }
 
-            if ($event->isStopped() || !$this->user()) {
-                return $this->redirectUrl();
-            }
+            // authenticate user
+            $this->setUser($event->data['user']);
 
-            // rehash, if required
-            if ($this->authenticationProvider()->needsPasswordRehash()) {
+            // rehash password, if needed
+            if ($this->user() && $this->authenticationProvider()->needsPasswordRehash()) {
                 $user = $this->Users->get($this->user('id'));
                 $user->password = $this->request->data('password');
                 $this->Users->save($user);
