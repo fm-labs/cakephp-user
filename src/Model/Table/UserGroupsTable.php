@@ -10,7 +10,7 @@ use User\Model\Entity\Group;
 /**
  * UserGroups Model
  */
-class UserGroupsTable extends Table
+class UserGroupsTable extends UserBaseTable
 {
 
     /**

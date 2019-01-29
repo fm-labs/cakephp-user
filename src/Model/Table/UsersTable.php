@@ -24,7 +24,7 @@ use User\Model\Entity\User;
 /**
  * Users Model
  */
-class UsersTable extends Table
+class UsersTable extends UserBaseTable
 {
 
     /**
