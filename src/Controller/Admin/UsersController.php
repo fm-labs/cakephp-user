@@ -47,6 +47,7 @@ class UsersController extends AppController
         ];
 
         $this->set('fields', [
+            'superuser',
             'username' => ['formatter' => function ($val, $row, $args, $view) {
                 return $view->Html->link(
                     $val,
@@ -54,18 +55,17 @@ class UsersController extends AppController
                 );
             }],
             'user_group' => ['formatter' => function ($val, $row, $args, $view) {
-                if ($row->primary_group) {
+                if ($val) {
                     return $view->Html->link(
-                        $row->primary_group->name,
-                        ['plugin' => 'User', 'controller' => 'UserGroups', 'action' => 'edit', $row->primary_group->id]
+                        $val->name,
+                        ['plugin' => 'User', 'controller' => 'UserGroups', 'action' => 'edit', $val->id]
                     );
                 }
             }],
             //'email',
-            'superuser',
-            'login_enabled'
+            'login_enabled',
+            'created'
         ]);
-        $this->set('fields.whitelist', ['id', 'superuser', 'username', 'user_group', 'email', 'login_enabled', 'created']);
         $this->set('filter', false);
 
         $this->Action->execute();
@@ -106,6 +106,7 @@ class UsersController extends AppController
      */
     public function view($id = null)
     {
+        $this->set('entityOptions', ['contain' => ['UserGroups']]);
         $this->set('fields', [
             'email' => ['formatter' => 'email'],
             'password_reset_url' => ['formatter' => 'link']

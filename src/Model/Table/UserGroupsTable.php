@@ -24,7 +24,7 @@ class UserGroupsTable extends UserBaseTable
         $this->table('user_groups');
         $this->displayField('name');
         $this->primaryKey('id');
-        $this->hasMany('PrimaryUsers', [
+        $this->hasMany('Users', [
             'foreignKey' => 'group_id',
             'className' => 'User.Users'
         ]);
