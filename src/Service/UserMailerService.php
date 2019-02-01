@@ -6,8 +6,6 @@ use Cake\Core\InstanceConfigTrait;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Log\Log;
-use Cake\Mailer\MailerAwareTrait;
-use User\Mailer\UserMailer;
 use User\Mailer\UserMailerAwareTrait;
 
 /**

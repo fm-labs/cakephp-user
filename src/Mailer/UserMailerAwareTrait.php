@@ -26,8 +26,8 @@ trait UserMailerAwareTrait
 
     /**
      * Get mailer instance
+     * @param Email $email The email object
      * @return \Cake\Mailer\Mailer|UserMailer
-     * @throws \Exception
      */
     public function getUserMailer(Email $email = null)
     {
