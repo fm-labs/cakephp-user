@@ -7,7 +7,7 @@ return [
             '_localized' => [
                 'de' => [
                     'subject' => 'Ihre Registrierung',
-                    'template' => 'User.user_registration'
+                    'template' => 'User.user_registration_de'
                 ]
             ]
         ],
@@ -17,7 +17,7 @@ return [
             '_localized' => [
                 'de' => [
                     'subject' => 'Password vergessen',
-                    'template' => 'User.password_forgotten'
+                    'template' => 'User.password_forgotten_de'
                 ]
             ]
         ],
@@ -27,7 +27,7 @@ return [
             '_localized' => [
                 'de' => [
                     'subject' => 'Ihr Passwort wurde geaendert!',
-                    'template' => 'User.password_reset'
+                    'template' => 'User.password_reset_de'
                 ]
             ]
         ]

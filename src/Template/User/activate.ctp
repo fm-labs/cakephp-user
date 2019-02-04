@@ -2,6 +2,7 @@
 $this->extend('base');
 // breadcrumbs
 $this->loadHelper('Breadcrumbs');
+$this->Breadcrumbs->add(__d('user','Login'), ['_name' => 'user:login']);
 $this->Breadcrumbs->add(__d('user','Account Verification'));
 
 // no robots

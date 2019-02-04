@@ -1,6 +1,11 @@
 <?php
 namespace User\Controller\Admin;
+use Cake\Core\Configure;
+use Cake\Core\Plugin;
 use Cake\Event\Event;
+use Cake\I18n\I18n;
+use Cake\Mailer\Transport\DebugTransport;
+use User\Mailer\UserMailerAwareTrait;
 
 /**
  * Users Controller
@@ -9,6 +14,7 @@ use Cake\Event\Event;
  */
 class UsersController extends AppController
 {
+    use UserMailerAwareTrait;
 
     /**
      * @var array
@@ -24,14 +30,23 @@ class UsersController extends AppController
     public function initialize()
     {
         parent::initialize();
-        $this->Action->registerInline('password_change', ['label' => __d('user', 'Change password'), 'data-icon' => 'key']);
-        $this->Action->registerInline('password_reset', ['label' => __d('user', 'Reset password'), 'data-icon' => 'key']);
+        //$this->Action->registerInline('password_change', [
+        //    'label' => __d('user', 'Change password'),
+        //    'attrs' => ['data-icon' => 'key'],
+        //    'scope' => ['form', 'table']]);
+        $this->Action->registerInline('password_reset', [
+            'label' => __d('user', 'Set password'),
+            'attrs' => ['data-icon' => 'key'],
+            'scope' => ['form', 'table']]);
+        $this->Action->registerInline('emails', [
+            'label' => __d('user', 'Emails'),
+            'attrs' => ['data-icon' => 'envelope-o'],
+            'scope' => ['form', 'table']]);
     }
 
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
-
     }
 
     /**
@@ -169,5 +184,55 @@ class UsersController extends AppController
             }
         }
         $this->set('user', $user);
+    }
+
+
+    public function emails($id = null)
+    {
+        /*
+        $emailTypes = [
+            'userRegistration' => 'After User Registration',
+            'userActivation' => 'After User Activation',
+            'newLogin' => 'New User Login',
+            'passwordForgotten' => 'Password forgotten',
+            'passwordReset' => 'Password reset',
+            'userKicked' => 'User deleted by BitTrail',
+            'userDeleted' => 'User deleted',
+            'accountIncomplete' => 'Account incomplete',
+            'accountBalanceWarning' => 'Account balance warning'
+        ];
+        */
+        $emailTypes = array_keys((array)Configure::read('User.Email'));
+        $emailTypes = array_combine($emailTypes, $emailTypes);
+
+        $defaultLang = I18n::defaultLocale();
+        $availableLangs = array_keys((array) Configure::read('Multilang.Locales'));
+
+        $user = $this->Users->get($id);
+        if ($this->request->is('post')) {
+            $emailType = $this->request->data('email_type');
+            if (array_key_exists($emailType, $emailTypes)) {
+                $mailer = $this->getUserMailer();
+
+                if ($this->request->data('debug_only')) {
+                    $this->Flash->info('Debug Only');
+
+                    if (Plugin::loaded('Mailman')) {
+                        $mailer->transport(new \Mailman\Mailer\Transport\MailmanTransport(['originalClassName' => 'Debug']));
+                    } else {
+                        $mailer->transport(new DebugTransport());
+                    }
+                }
+                $result = $mailer->send($emailType, [$user]);
+                $this->set('result', $result);
+
+                $this->Flash->success("Sent email of type $emailType to $user->email");
+            } else {
+                $this->Flash->error("Invalid email type");
+            }
+        }
+
+        $this->set('user', $user);
+        $this->set('emailTypes', $emailTypes);
     }
 }

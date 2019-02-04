@@ -2,6 +2,7 @@
 namespace User\Mailer;
 
 use Cake\Core\Configure;
+use Cake\I18n\I18n;
 use Cake\Mailer\Email;
 use Cake\Mailer\Mailer;
 use User\Model\Entity\User;
@@ -46,7 +47,8 @@ class UserMailer extends Mailer
 
         if (method_exists($this->_email, 'locale')) {
             //$this->locale($user->locale);
-            $this->_email->locale($user->locale);
+            $locale = ($user->locale) ?: I18n::locale();
+            $this->_email->locale($locale);
         }
     }
 

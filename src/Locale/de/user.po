@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cakephp3-user\n"
 "POT-Creation-Date: 2019-01-24 18:26+0000\n"
-"PO-Revision-Date: 2019-01-24 19:36+0100\n"
+"PO-Revision-Date: 2019-02-04 15:11+0100\n"
 "Last-Translator: fm-labs <flowmotionlabs@gmail.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -41,7 +41,7 @@ msgstr ""
 
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:186
 msgid "No password entered"
-msgstr "Kein Passwort eingegeben."
+msgstr "Kein Passwort eingegeben"
 
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:197
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:340
@@ -66,7 +66,7 @@ msgstr "Kein Benutzer mit dieser Emailadresse gefunden"
 
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:271
 msgid "An activation email has been sent to {0}"
-msgstr "Ein Aktivierungsmail wurde an %s gesendet"
+msgstr "Ein Aktivierungsmail wurde an {0} gesendet"
 
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:301
 msgid ""
@@ -91,7 +91,7 @@ msgstr "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
 
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/UserController.php:387
 msgid "Your password has been changed."
-msgstr "Ihr Passwort wurde geändert"
+msgstr "Ihr Passwort wurde geändert."
 
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Controller/Component/AuthComponent.php:138
 msgid "Login failed"
@@ -147,7 +147,7 @@ msgstr "Das Passwort ist falsch"
 
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:654
 msgid "This is your current password. Please create a new one!"
-msgstr "Das ist ihr aktuelles Passwort. Bitte wähhlen Sie ein neues Passwort."
+msgstr "Das ist ihr aktuelles Passwort. Bitte wähhlen Sie ein neues Passwort!"
 
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Model/Table/UsersTable.php:708
 msgid "Password reset code has expired"
@@ -455,7 +455,7 @@ msgstr "Email oder Benutzername eingeben"
 
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_reset.ctp:21
 msgid "Password reset code received via email"
-msgstr "Passwort-Wiederherstellungs Code wurde per Email zugesandt."
+msgstr "Passwort-Wiederherstellungs Code wurde per Email zugesandt"
 
 #: /home/low/workspaces/cakesites/cakephp3-user/src/Template/User/password_reset.ctp:38
 msgid "Reset password"

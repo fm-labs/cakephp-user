@@ -65,7 +65,6 @@ class UserPlugin implements PluginInterface, BackendPluginInterface, EventListen
                     'type' => 'boolean',
                     'default' => false
                 ],
-                /*
                 'Signup.groupAuth' => [
                     'type' => 'boolean',
                     'default' => false
@@ -74,7 +73,6 @@ class UserPlugin implements PluginInterface, BackendPluginInterface, EventListen
                     'type' => 'boolean',
                     'default' => false
                 ],
-                */
             ]);
         }
     }

@@ -1044,7 +1044,7 @@ class UsersTable extends UserBaseTable
         //@TODO Check if the verification code has expired. If so, create new verification code.
         $event = $this->eventManager()->dispatch(new Event('User.Model.User.activationResend', $user));
 
-        if ($event->result == false) {
+        if ($event->result === false) {
             debug("failed");
             return false;
         }

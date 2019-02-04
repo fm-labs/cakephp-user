@@ -7,7 +7,7 @@ $this->Breadcrumbs->add(__d('user','Account Verification'));
 // no robots
 $this->Html->meta('robots', 'noindex,nofollow', ['block' => true]);
 
-$this->assign('title', __d('user','Verify your email address'));
+$this->assign('title', __d('user','Resend verification email'));
 ?>
 <div id="user-registration-form" class="form">
 

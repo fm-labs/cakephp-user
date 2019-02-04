@@ -1,7 +1,7 @@
-Für Ihr Benutzerkonto wurde soeben ein neues Passwort wurde gesetzt.
+A new password has been set.
 
 --
 
-Hiermit handelt es sich um eine Sicherheits-Benachrichtigung.
+This is a security notification, that a new password has been set for your account.
 
-Sollten Sie Ihr Passwort nicht selbst geändert haben, kontaktieren Sie uns.
+If you did not change your password yourself, please contact us.

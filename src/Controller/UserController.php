@@ -171,7 +171,6 @@ class UserController extends AppController
         }
 
         $this->set(compact('user', 'form'));
-        $this->set('_serialize', ['user']);
     }
 
     /**
@@ -189,8 +188,8 @@ class UserController extends AppController
             }
 
             // find user group with that password
-            $this->loadModel('User.Groups');
-            $userGroup = $this->UserGroups->find()->where(['password' => $grpPass])->first();
+            //$this->loadModel('User.Groups');
+            $userGroup = $this->Users->UserGroups->find()->where(['password' => $grpPass])->first();
 
             if (!$userGroup) {
                 $this->request->session()->delete('User.Signup.group_id');
@@ -234,6 +233,19 @@ class UserController extends AppController
                 ? base64_decode($this->request->query('m')) : null;
             $user->email_verification_code = ($this->request->query('c'))
                 ? base64_decode($this->request->query('c')) : null;
+
+            // auto-activation
+            if ($user->email && $user->email_verification_code) {
+                if ($this->Users->activate([
+                    'email' => $user->email,
+                    'email_verification_code' => $user->email_verification_code
+                ])) {
+                    $this->Flash->success(__d('user', 'Your account has been activated. You can login now.'), ['key' => 'auth']);
+                    $this->redirect(['action' => 'login', 'm' => base64_encode($user->email) ]);
+                } else {
+                    $this->Flash->error(__d('user', 'Account activation failed'), ['key' => 'auth']);
+                }
+            }
         }
         $this->set('user', $user);
     }

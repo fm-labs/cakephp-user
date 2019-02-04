@@ -11,10 +11,10 @@ $this->Html->meta('robots', 'noindex,nofollow', ['block' => true]);
 $this->assign('title', __d('user','Password forgotten?'));
 ?>
 <div id="user-password-forgotten-form" class="user-form">
-    <?= $this->Form->create($user); ?>
+    <?= $this->Form->create($form); ?>
     <?= $this->Form->input('username', [
-        'label' => __d('user','Your username'),
-        'placeholder' => __d('user','Enter username or email address'),
+        'label' => __d('user', 'Email'),
+        //'placeholder' => __d('user','Enter username or email address'),
         'required' => true
     ]); ?>
     <?= $this->Form->button(__d('user','Send password recovery instructions'), ['class' => 'btn btn-primary']); ?>
