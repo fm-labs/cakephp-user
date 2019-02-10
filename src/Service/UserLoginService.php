@@ -28,6 +28,7 @@ class UserLoginService implements EventListenerInterface
 
         if (empty($user)) {
             $event->stopPropagation();
+
             return [
                 'redirect' => ['_name' => 'user:login']
             ];
@@ -36,6 +37,7 @@ class UserLoginService implements EventListenerInterface
         if (isset($user['is_deleted']) && $user['is_deleted'] == true) {
             $event->data['user'] = null;
             $event->stopPropagation();
+
             return [
                 'error' => __d('user', 'This account has been deleted'),
                 'redirect' => ['_name' => 'user:login']
@@ -45,6 +47,7 @@ class UserLoginService implements EventListenerInterface
         if (isset($user['block_enabled']) && $user['block_enabled'] == true) {
             $event->data['user'] = null;
             $event->stopPropagation();
+
             return [
                 'error' => __d('user', 'This account has been blocked'),
                 'redirect' => ['_name' => 'user:login']
@@ -54,6 +57,7 @@ class UserLoginService implements EventListenerInterface
         if (isset($user['login_enabled']) && $user['login_enabled'] != true) {
             $event->data['user'] = null;
             $event->stopPropagation();
+
             return [
                 'error' => __d('user', 'Login to this account is not enabled'),
                 'redirect' => ['_name' => 'user:login']
@@ -63,6 +67,7 @@ class UserLoginService implements EventListenerInterface
         if ($user['email_verification_required'] && !$user['email_verified']) {
             $event->data['user'] = null;
             $event->stopPropagation();
+
             return [
                 'error' => __d('user', 'Your account has not been verified yet'),
                 'redirect' => ['_name' => 'user:activate']
@@ -76,7 +81,7 @@ class UserLoginService implements EventListenerInterface
             //$clientHostname = null;
         }
 
-        $loginData = [
+        $data = [
             'login_last_login_ip' => $clientIp,
             'login_last_login_host' => $clientHostname,
             'login_last_login_datetime' => new Time(),
@@ -85,14 +90,14 @@ class UserLoginService implements EventListenerInterface
         //$event->data['user'] = array_merge($user, $loginData);
         if ($user && isset($user['id'])) {
             $user = $event->subject()->Users->get($user['id']);
-            $user->accessible(array_keys($loginData), true);
-            $user = $event->subject()->Users->patchEntity($user, $loginData);
+            $user->accessible(array_keys($data), true);
+            $user = $event->subject()->Users->patchEntity($user, $data);
             if (!$event->subject()->Users->save($user)) {
                 Log::error("Failed to update user login info", ['user']);
             }
         }
 
-        EventManager::instance()->dispatch(new Event('User.Model.User.newLogin', $user, $loginData));
+        EventManager::instance()->dispatch(new Event('User.Model.User.newLogin', $this, compact('user', 'data')));
     }
 
     /**
@@ -124,8 +129,8 @@ class UserLoginService implements EventListenerInterface
     public function implementedEvents()
     {
         return [
-            'User.Auth.login'                        => 'onLogin',
-            'User.Auth.loginError'                   => 'onLoginError',
+            'User.Auth.login' => 'onLogin',
+            'User.Auth.loginError' => 'onLoginError',
         ];
     }
 }

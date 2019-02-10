@@ -33,13 +33,13 @@ class UserEventLoggerService implements EventListenerInterface
     {
         return [
             'User.Model.User.passwordForgotten' => 'logEvent',
-            'User.Model.User.passwordReset'     => 'logEvent',
-            'User.Model.User.register'          => 'logEvent',
-            'User.Model.User.activate'          => 'logEvent',
-            'User.Model.User.activationResend'  => 'logEvent',
-            'User.Auth.login'                        => 'logEvent',
-            'User.Auth.loginError'                   => 'logEvent',
-            'User.Auth.logout'                       => 'logEvent',
+            'User.Model.User.passwordReset' => 'logEvent',
+            'User.Model.User.register' => 'logEvent',
+            'User.Model.User.activate' => 'logEvent',
+            'User.Model.User.activationResend' => 'logEvent',
+            'User.Auth.login' => 'logEvent',
+            'User.Auth.loginError' => 'logEvent',
+            'User.Auth.logout' => 'logEvent',
         ];
     }
 }

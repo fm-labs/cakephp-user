@@ -78,6 +78,7 @@ class UserMailer extends Mailer
         }
 
         $this->_email->profile($profile);
+
         return $this;
     }
 
@@ -85,7 +86,7 @@ class UserMailer extends Mailer
      * User registration email
      *
      * @param User $user
-     * @return void
+     * @return $this
      */
     public function userRegistration(User $user)
     {
@@ -97,37 +98,43 @@ class UserMailer extends Mailer
             throw new \InvalidArgumentException('UserMailer::userRegistration: Verification url missing');
         }
         $this->set(compact('verificationUrl'));
+
+        return $this;
     }
 
     /**
      * User activation email
      *
      * @param User $user
-     * @return void
+     * @return $this
      */
     public function userActivation(User $user)
     {
         $this->profile(__FUNCTION__);
         $this->_setUser($user);
+
+        return $this;
     }
 
     /**
      * User login email
      *
      * @param User $user
-     * @return void
+     * @return $this
      */
     public function newLogin(User $user)
     {
         $this->profile(__FUNCTION__);
         $this->_setUser($user);
+
+        return $this;
     }
 
     /**
      * Password forgotten email with password reset link
      *
      * @param User $user
-     * @return void
+     * @return $this
      */
     public function passwordForgotten(User $user)
     {
@@ -139,17 +146,21 @@ class UserMailer extends Mailer
             throw new \InvalidArgumentException('UserMailer::passwordForgotten: Reset url missing');
         }
         $this->set(compact('resetUrl'));
+
+        return $this;
     }
 
     /**
      * Password reset notification email
      *
      * @param User $user
-     * @return void
+     * @return $this
      */
     public function passwordReset(User $user)
     {
         $this->profile(__FUNCTION__);
         $this->_setUser($user);
+
+        return $this;
     }
 }
