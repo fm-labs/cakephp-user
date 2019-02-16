@@ -41,6 +41,10 @@ use GoogleRecaptcha\Lib\Recaptcha2;
  */
 class FormAuthenticate extends \Cake\Auth\FormAuthenticate
 {
+    /**
+     * @param \Cake\Network\Request $request The request that contains recaptcha information.
+     * @return bool The recaptcha verfifcation result
+     */
     protected function _checkRecaptcha(Request $request)
     {
         $gResponse = $request->data('g-recaptcha-response');

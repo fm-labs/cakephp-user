@@ -1,8 +1,8 @@
 <?php
 namespace User\Controller\Admin;
+
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
-use Cake\Event\Event;
 use Cake\I18n\I18n;
 use Cake\Mailer\Transport\DebugTransport;
 use User\Mailer\UserMailerAwareTrait;
@@ -27,6 +27,9 @@ class UsersController extends AppController
         'delete' => 'Backend.Delete'
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     public function initialize()
     {
         parent::initialize();
@@ -42,11 +45,6 @@ class UsersController extends AppController
             'label' => __d('user', 'Emails'),
             'attrs' => ['data-icon' => 'envelope-o'],
             'scope' => ['form', 'table']]);
-    }
-
-    public function beforeFilter(Event $event)
-    {
-        parent::beforeFilter($event);
     }
 
     /**
@@ -86,6 +84,11 @@ class UsersController extends AppController
         $this->Action->execute();
     }
 
+    /**
+     * Add method
+     *
+     * @return void
+     */
     public function add()
     {
         $this->set('fields.access', '*');
@@ -99,6 +102,11 @@ class UsersController extends AppController
         $this->Action->execute();
     }
 
+    /**
+     * Edit method
+     *
+     * @return void
+     */
     public function edit()
     {
         $this->set('fields.access', '*');
@@ -132,7 +140,7 @@ class UsersController extends AppController
 
     /**
      * Change password of current user
-     * @param null $userId
+     * @param null $userId User ID
      * @return \Cake\Network\Response|void
      */
     public function passwordChange($userId = null)
@@ -160,7 +168,7 @@ class UsersController extends AppController
 
     /**
      * Change password of current user
-     * @param null $userId
+     * @param null $userId User ID
      * @return \Cake\Network\Response|void
      */
     public function passwordReset($userId = null)
@@ -186,27 +194,19 @@ class UsersController extends AppController
         $this->set('user', $user);
     }
 
-
+    /**
+     * User emails
+     *
+     * @param null $id User ID
+     * @return \Cake\Network\Response|void
+     */
     public function emails($id = null)
     {
-        /*
-        $emailTypes = [
-            'userRegistration' => 'After User Registration',
-            'userActivation' => 'After User Activation',
-            'newLogin' => 'New User Login',
-            'passwordForgotten' => 'Password forgotten',
-            'passwordReset' => 'Password reset',
-            'userKicked' => 'User deleted by BitTrail',
-            'userDeleted' => 'User deleted',
-            'accountIncomplete' => 'Account incomplete',
-            'accountBalanceWarning' => 'Account balance warning'
-        ];
-        */
         $emailTypes = array_keys((array)Configure::read('User.Email'));
         $emailTypes = array_combine($emailTypes, $emailTypes);
 
         $defaultLang = I18n::defaultLocale();
-        $availableLangs = array_keys((array) Configure::read('Multilang.Locales'));
+        $availableLangs = array_keys((array)Configure::read('Multilang.Locales'));
 
         $user = $this->Users->get($id);
         if ($this->request->is('post')) {

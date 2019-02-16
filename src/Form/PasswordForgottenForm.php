@@ -8,12 +8,19 @@ use User\Model\Table\UsersTable;
 
 class PasswordForgottenForm extends UserForm
 {
+    /**
+     * {@inheritDoc}
+     */
     protected function _buildSchema(Schema $schema)
     {
         $schema->addField('username', []);
+
         return $schema;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function _buildValidator(Validator $validator)
     {
         if (UsersTable::$emailAsUsername) {
@@ -24,9 +31,13 @@ class PasswordForgottenForm extends UserForm
         }
 
         $validator->notEmpty('username');
+
         return $validator;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function execute(array $data)
     {
         if (!$this->validate($data)) {
@@ -36,6 +47,9 @@ class PasswordForgottenForm extends UserForm
         return $this->_execute($data);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function _execute(array $data)
     {
         $user = $this->Users->findByUsername($data['username'])->first();
@@ -44,11 +58,13 @@ class PasswordForgottenForm extends UserForm
             //return true;
 
             $this->_errors = ['username' => [__d('user', 'User not found')]];
+
             return false;
         }
 
         if ($user->is_deleted) {
             $this->_errors = ['username' => [__d('user', 'Deleted user')]];
+
             return false;
         }
 
@@ -59,6 +75,7 @@ class PasswordForgottenForm extends UserForm
 
         if ($user->errors()) {
             $this->_errors = $user->errors();
+
             return false;
         }
 

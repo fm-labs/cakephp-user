@@ -19,6 +19,9 @@ abstract class UserForm extends Form
      */
     public $user;
 
+    /**
+     * @param null|User $user The user entity
+     */
     public function __construct(User $user = null)
     {
         $this->Users = TableRegistry::get('User.Users');
@@ -30,6 +33,8 @@ abstract class UserForm extends Form
 
     /**
      * Get user entity object
+     *
+     * @return User
      */
     public function getUser()
     {

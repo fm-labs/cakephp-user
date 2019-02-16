@@ -43,7 +43,8 @@ class UserPlugin implements PluginInterface, BackendPluginInterface, EventListen
     }
 
     /**
-     * @param Event $event
+     * @param Event $event The event object
+     * @return void
      */
     public function buildSettings(Event $event)
     {
@@ -101,6 +102,9 @@ class UserPlugin implements PluginInterface, BackendPluginInterface, EventListen
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function bootstrap(Application $app)
     {
         EventManager::instance()->on($this);
@@ -121,20 +125,30 @@ class UserPlugin implements PluginInterface, BackendPluginInterface, EventListen
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function routes(RouteBuilder $routes)
     {
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function middleware(MiddlewareQueue $middleware)
     {
-
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function backendBootstrap(Backend $backend)
     {
-
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function backendRoutes(RouteBuilder $routes)
     {
         $routes->fallbacks('DashedRoute');

@@ -17,10 +17,14 @@ trait UserMailerAwareTrait
 
     /**
      * Set user mailer class
+     *
+     * @param string $className Name of mailer class
+     * @return $this
      */
     public function setUserMailer($className)
     {
         $this->_mailerClass = $className;
+
         return $this;
     }
 

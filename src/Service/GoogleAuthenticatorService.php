@@ -18,8 +18,8 @@ class GoogleAuthenticatorService implements EventListenerInterface
 {
 
     /**
-     * @param Event $event
-     * @return null|array
+     * @param Event $event The event object
+     * @return void
      */
     public function onLogout(Event $event)
     {

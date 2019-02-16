@@ -1,8 +1,8 @@
 <?php
 namespace User\Controller;
 
-use Cake\Event\Event;
 use Cake\Core\Configure;
+use Cake\Event\Event;
 use Cake\Form\Form;
 use Cake\Log\Log;
 use Cake\Network\Exception\InternalErrorException;
@@ -10,7 +10,6 @@ use Cake\Network\Response;
 use Cake\Routing\Router;
 use User\Exception\PasswordResetException;
 use User\Form\PasswordForgottenForm;
-//use User\Model\Table\GroupsTable;
 use User\Model\Table\UsersTable;
 
 /**
@@ -18,7 +17,6 @@ use User\Model\Table\UsersTable;
  *
  * @package User\Controller
  * @property UsersTable $Users
- * @property GroupsTable $Groups
  */
 class UserController extends AppController
 {
@@ -29,6 +27,9 @@ class UserController extends AppController
 
     public $captchaActions = ['login', 'register'];
 
+    /**
+     * {@inheritDoc}
+     */
     public function initialize()
     {
         parent::initialize();
@@ -37,10 +38,9 @@ class UserController extends AppController
             throw new \RuntimeException("UserPlugin: Configuration not loaded!");
         }
     }
-    
+
     /**
-     * @param Event $event
-     * @return \Cake\Network\Response|null|void
+     * {@inheritDoc}
      */
     public function beforeFilter(Event $event)
     {
@@ -55,7 +55,6 @@ class UserController extends AppController
             $this->UserSession->ignoreActions(['checkAuth']);
         }
 
-
         if (Configure::read('User.layout')) {
             $this->viewBuilder()->layout(Configure::read('User.layout'));
         }
@@ -64,6 +63,8 @@ class UserController extends AppController
     /**
      * Login method
      * No authentication required
+     *
+     * @return void
      */
     public function login()
     {
@@ -97,6 +98,8 @@ class UserController extends AppController
 
     /**
      * Logout method
+     *
+     * @return void
      */
     public function logout()
     {
@@ -108,6 +111,8 @@ class UserController extends AppController
     /**
      * Index method
      * Show user profile
+     *
+     * @return void
      */
     public function index()
     {
@@ -130,7 +135,6 @@ class UserController extends AppController
         // force group auth
         if (Configure::read('User.Signup.groupAuth') == true) {
             if (!$this->request->session()->read('User.Signup.group_id')) {
-
                 return $this->redirect(['action' => 'registerGroup']);
             }
         }
@@ -175,6 +179,8 @@ class UserController extends AppController
 
     /**
      * Group registration
+     *
+     * @return void
      */
     public function registerGroup()
     {
@@ -212,6 +218,8 @@ class UserController extends AppController
 
     /**
      * Activate
+     *
+     * @return void
      */
     public function activate()
     {
@@ -252,6 +260,8 @@ class UserController extends AppController
 
     /**
      * Resend email verification email
+     *
+     * @return void
      */
     public function activateResend()
     {
@@ -263,7 +273,6 @@ class UserController extends AppController
 
         $user = $this->Users->newEntity();
         if ($this->request->is('post') || $this->request->is('put')) {
-
             $email = trim($this->request->data('email'));
             if (!$email) {
                 $this->Flash->error(__d('user', 'Please enter an email address'), ['key' => 'auth']);
@@ -296,6 +305,8 @@ class UserController extends AppController
      * Password forgotten method
      * Creates a new password reset code and sends email with password reset link
      * No authentication required
+     *
+     * @return void
      */
     public function passwordForgotten()
     {
@@ -327,6 +338,8 @@ class UserController extends AppController
 
     /**
      * Password forgotten default success action
+     *
+     * @return void
      */
     public function passwordSent()
     {
@@ -336,6 +349,8 @@ class UserController extends AppController
      * Password reset method
      * User can assign new password with username and a password reset code
      * No authentication required
+     *
+     * @return void
      */
     public function passwordReset()
     {
@@ -345,7 +360,6 @@ class UserController extends AppController
 
         $user = null;
         try {
-
             $query = [];
             if ($this->request->query('u')) {
                 $query['username'] = base64_decode($this->request->query('u'));
@@ -390,6 +404,8 @@ class UserController extends AppController
 
     /**
      * Passsword change method
+     *
+     * @return void
      */
     public function passwordChange()
     {
@@ -407,6 +423,8 @@ class UserController extends AppController
 
     /**
      * Password forgotten default success action
+     *
+     * @return void
      */
     public function passwordChanged()
     {
@@ -414,6 +432,8 @@ class UserController extends AppController
 
     /**
      * Return login status info in JSON format
+     *
+     * @return void
      */
     public function checkAuth()
     {

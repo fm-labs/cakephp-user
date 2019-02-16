@@ -14,7 +14,8 @@ use Cake\Log\Log;
 class UserEventLoggerService implements EventListenerInterface
 {
     /**
-     * @param Event $event
+     * @param Event $event The event object
+     * @return void
      */
     public function logEvent(Event $event)
     {

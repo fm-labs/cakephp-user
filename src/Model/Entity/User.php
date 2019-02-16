@@ -1,10 +1,8 @@
 <?php
 namespace User\Model\Entity;
 
-use Cake\ORM\Entity;
 use Cake\Auth\AbstractPasswordHasher;
-use Cake\Routing\Router;
-use User\Controller\Component\AuthComponent;
+use Cake\ORM\Entity;
 
 /**
  * User Entity.
@@ -103,7 +101,7 @@ class User extends Entity
     }
 
     /**
-     * @param $password
+     * @param string $password Password value
      * @return string
      */
     protected function _setPassword($password)

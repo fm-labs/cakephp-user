@@ -22,7 +22,7 @@ class UserMailer extends Mailer
     protected $_user;
 
     /**
-     * @param Email|null $email
+     * @param Email|null $email Email object
      */
     public function __construct(Email $email = null)
     {
@@ -36,6 +36,7 @@ class UserMailer extends Mailer
     /**
      * Sets the active user for emailing
      *
+     * @param User $user The user entity
      * @return void
      */
     protected function _setUser(User $user)
@@ -53,6 +54,8 @@ class UserMailer extends Mailer
     }
 
     /**
+     * @param null|string|array $profile Email profile
+     * @return void
      * @deprecated Use profile() instead
      */
     protected function _setProfile($profile)
@@ -64,7 +67,7 @@ class UserMailer extends Mailer
      * Sets the email profile.
      * Reads configurations from config key `User.Email.[PROFILE]`
      *
-     * @param null|string|array $profile
+     * @param null|string|array $profile Email profile
      * @return $this|Email
      */
     public function profile($profile = null)
@@ -85,7 +88,7 @@ class UserMailer extends Mailer
     /**
      * User registration email
      *
-     * @param User $user
+     * @param User $user The user entity
      * @return $this
      */
     public function userRegistration(User $user)
@@ -105,7 +108,7 @@ class UserMailer extends Mailer
     /**
      * User activation email
      *
-     * @param User $user
+     * @param User $user The user entity
      * @return $this
      */
     public function userActivation(User $user)
@@ -119,7 +122,7 @@ class UserMailer extends Mailer
     /**
      * User login email
      *
-     * @param User $user
+     * @param User $user The user entity
      * @return $this
      */
     public function newLogin(User $user)
@@ -133,7 +136,7 @@ class UserMailer extends Mailer
     /**
      * Password forgotten email with password reset link
      *
-     * @param User $user
+     * @param User $user The user entity
      * @return $this
      */
     public function passwordForgotten(User $user)
@@ -153,7 +156,7 @@ class UserMailer extends Mailer
     /**
      * Password reset notification email
      *
-     * @param User $user
+     * @param User $user The user entity
      * @return $this
      */
     public function passwordReset(User $user)

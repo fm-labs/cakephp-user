@@ -13,6 +13,11 @@ class UserGroupsController extends AppController
      */
     public $modelClass = 'User.UserGroups';
 
+    /**
+     * View method
+     *
+     * @return void
+     */
     public function view()
     {
         $this->set('entityOptions', ['contain' => ['Users']]);

@@ -16,8 +16,8 @@ class GoogleAuthenticatorAuthorize extends BaseAuthorize
     /**
      * Constructor
      *
-     * @param ComponentRegistry $registry
-     * @param array $config
+     * @param ComponentRegistry $registry Component registry
+     * @param array $config Adapter configuration
      */
     public function __construct(ComponentRegistry $registry, array $config = [])
     {
@@ -36,7 +36,7 @@ class GoogleAuthenticatorAuthorize extends BaseAuthorize
         if ($user['gauth_enabled'] == false) {
             return true;
         }
-        if($request->session()->read('Auth.GoogleAuth.verified') == true) {
+        if ($request->session()->read('Auth.GoogleAuth.verified') == true) {
             return true;
         }
         if ($request->param('plugin') == 'User' && $request->param('controller') == 'GoogleAuth') {

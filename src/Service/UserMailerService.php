@@ -12,7 +12,6 @@ use User\Mailer\UserMailerAwareTrait;
  * Class UserMailerService
  *
  * @package User\Event
- * @todo error handling: catch mailer exceptions.
  */
 class UserMailerService implements EventListenerInterface
 {
@@ -24,7 +23,7 @@ class UserMailerService implements EventListenerInterface
     ];
 
     /**
-     * @param array $config
+     * @param array $config Instance config
      */
     public function __construct(array $config = [])
     {
@@ -32,6 +31,11 @@ class UserMailerService implements EventListenerInterface
         $this->setUserMailer($this->_config['mailerClass']);
     }
 
+    /**
+     * @param string $action Mailer action to invoke
+     * @param array $args Mailer action args
+     * @return void
+     */
     public function sendEmail($action, $args = [])
     {
         try {

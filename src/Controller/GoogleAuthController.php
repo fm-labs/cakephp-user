@@ -10,6 +10,9 @@ use User\Model\Entity\User;
 
 class GoogleAuthController extends AppController
 {
+    /**
+     * {@inheritDoc}
+     */
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
@@ -25,6 +28,11 @@ class GoogleAuthController extends AppController
         }
     }
 
+    /**
+     * Index method
+     *
+     * @return void
+     */
     public function index()
     {
         $user = $this->Auth->userModel()->get($this->Auth->user('id'));
@@ -44,14 +52,11 @@ class GoogleAuthController extends AppController
         $this->set(compact('user'));
     }
 
-    protected function _checkGoogleAuth(User $user, $code)
-    {
-        $googleAuthenticator = new \Dolondro\GoogleAuthenticator\GoogleAuthenticator();
-        $secretKey = $user->gauth_secret;
-        $code = $this->request->data('code');
-        return $googleAuthenticator->authenticate($secretKey, $code);
-    }
-
+    /**
+     * Setup method
+     *
+     * @return void
+     */
     public function setup()
     {
         $user = $this->Auth->userModel()->get($this->Auth->user('id'));
@@ -73,7 +78,6 @@ class GoogleAuthController extends AppController
                 $this->Flash->error("Code missing");
             } elseif ($this->_checkGoogleAuth($user, $code)) {
                 if ($this->Auth->userModel()->enableGoogleAuth($user)) {
-
                     // update user in session
                     //$authUser = $this->Auth->user();
                     //$authUser['gauth_enabled'] = true;
@@ -97,6 +101,11 @@ class GoogleAuthController extends AppController
         $this->set(compact('user'));
     }
 
+    /**
+     * Disable method
+     *
+     * @return void
+     */
     public function disable()
     {
         $user = $this->Auth->userModel()->get($this->Auth->user('id'));
@@ -106,12 +115,10 @@ class GoogleAuthController extends AppController
         }
 
         if ($this->request->is(['put', 'post'])) {
-
             $code = $this->request->data('code');
             if (!$code) {
                 $this->Flash->error("Code missing");
             } elseif ($this->_checkGoogleAuth($user, $code)) {
-
                 if ($this->Auth->userModel()->disableGoogleAuth($user)) {
                     $this->Flash->success("2-Factor-Auth has been disabled");
 
@@ -125,7 +132,6 @@ class GoogleAuthController extends AppController
                 } else {
                     $this->Flash->error("Operation failed");
                 }
-
             } else {
                 $this->Flash->error("Verification failed");
             }
@@ -136,6 +142,11 @@ class GoogleAuthController extends AppController
         $this->set(compact('user'));
     }
 
+    /**
+     * Verify method
+     *
+     * @return void
+     */
     public function verify()
     {
         $user = $this->Auth->userModel()->get($this->Auth->user('id'));
@@ -163,6 +174,21 @@ class GoogleAuthController extends AppController
         }
 
         $this->set(compact('user'));
+    }
+
+    /**
+     * Autheticate user with google authenticator code
+     * @param User $user The user entity
+     * @param string $code Google authenticator code
+     * @return bool|User
+     */
+    protected function _checkGoogleAuth(User $user, $code)
+    {
+        $googleAuthenticator = new \Dolondro\GoogleAuthenticator\GoogleAuthenticator();
+        $secretKey = $user->gauth_secret;
+        $code = $this->request->data('code');
+
+        return $googleAuthenticator->authenticate($secretKey, $code);
     }
 
     /*

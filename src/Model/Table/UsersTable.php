@@ -1,7 +1,6 @@
 <?php
 namespace User\Model\Table;
 
-use Banana\Model\TableInputSchema;
 use Cake\Chronos\Chronos;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
@@ -10,11 +9,9 @@ use Cake\Filesystem\File;
 use Cake\I18n\I18n;
 use Cake\I18n\Time;
 use Cake\Log\Log;
-use Cake\Network\Exception\InternalErrorException;
+use Cake\ORM\Entity;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
-use Cake\ORM\Table;
-use Cake\ORM\Entity;
 use Cake\Routing\Router;
 use Cake\Validation\Validator;
 use GoogleRecaptcha\Lib\Recaptcha2;
@@ -89,8 +86,7 @@ class UsersTable extends UserBaseTable
      * @var array List of related models passed to the auth finder method
      */
     public static $contains = ['UserGroups'];
-
-
+    
     /**
      * Initialize method
      *
@@ -153,8 +149,8 @@ class UsersTable extends UserBaseTable
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['username'], __d('user','This username is already in use')));
-        $rules->add($rules->isUnique(['email'], __d('user','This email address is already in use')));
+        $rules->add($rules->isUnique(['username'], __d('user', 'This username is already in use')));
+        $rules->add($rules->isUnique(['email'], __d('user', 'This email address is already in use')));
         $rules->add($rules->existsIn(['group_id'], 'UserGroups'));
 
         return $rules;
@@ -163,8 +159,8 @@ class UsersTable extends UserBaseTable
     /**
      * Finder method for user authentication
      *
-     * @param Query $query
-     * @param array $options
+     * @param Query $query The query object
+     * @param array $options Finder options
      * @return Query
      * @todo Exclude superusers from frontend user authentication (or make it optional)
      */
@@ -177,6 +173,11 @@ class UsersTable extends UserBaseTable
         return $query;
     }
 
+    /**
+     * @param string $username Username to search for
+     * @param array $options Finder options
+     * @return Query
+     */
     public function findByUsername($username, array $options = [])
     {
         return $this->find('all', $options)->where(['username' => $username]);
@@ -269,7 +270,7 @@ class UsersTable extends UserBaseTable
     /**
      * Validation rules for form login
      *
-     * @param Validator $validator
+     * @param Validator $validator The validator instance
      * @return Validator
      */
     public function validationLogin(Validator $validator)
@@ -291,7 +292,7 @@ class UsersTable extends UserBaseTable
     /**
      * Add new user
      *
-     * @param array $data
+     * @param array $data User data
      * @return User
      */
     public function add(array $data)
@@ -315,6 +316,10 @@ class UsersTable extends UserBaseTable
         return $user;
     }
 
+    /**
+     * @param Validator $validator The validator instance
+     * @return Validator
+     */
     protected function validationRecaptcha(Validator $validator)
     {
         $validator
@@ -329,6 +334,10 @@ class UsersTable extends UserBaseTable
         return $validator;
     }
 
+    /**
+     * @param Validator $validator The validator instance
+     * @return Validator
+     */
     protected function validationNewPassword(Validator $validator)
     {
         $validator
@@ -356,6 +365,10 @@ class UsersTable extends UserBaseTable
         return $validator;
     }
 
+    /**
+     * @param Validator $validator The validator instance
+     * @return Validator
+     */
     protected function validationEmail(Validator $validator)
     {
         $validator
@@ -374,6 +387,10 @@ class UsersTable extends UserBaseTable
         return $validator;
     }
 
+    /**
+     * @param Validator $validator The validator instance
+     * @return Validator
+     */
     protected function validationUsername(Validator $validator)
     {
         $validator
@@ -398,9 +415,7 @@ class UsersTable extends UserBaseTable
     }
 
     /**
-     * Validation rules for adding new users
-     *
-     * @param Validator $validator
+     * @param Validator $validator The validator instance
      * @return Validator
      */
     public function validationAdd(Validator $validator)
@@ -413,6 +428,11 @@ class UsersTable extends UserBaseTable
         return $validator;
     }
 
+    /**
+     * @param User $user The user entity
+     * @param null|string $secretKey Secret key for Google authenticator
+     * @return User
+     */
     public function setGoogleAuthSecret(User $user, $secretKey = null)
     {
         if ($secretKey === null) {
@@ -426,6 +446,10 @@ class UsersTable extends UserBaseTable
         return $this->save($user);
     }
 
+    /**
+     * @param User $user The user entity
+     * @return \Dolondro\GoogleAuthenticator\Secret
+     */
     public function getGoogleAuthSecret(User $user)
     {
         if (!$user->gauth_secret) {
@@ -441,6 +465,10 @@ class UsersTable extends UserBaseTable
         return $secret;
     }
 
+    /**
+     * @param User $user The user entity
+     * @return User
+     */
     public function enableGoogleAuth(User $user)
     {
         /*
@@ -456,6 +484,10 @@ class UsersTable extends UserBaseTable
         return $this->save($user);
     }
 
+    /**
+     * @param User $user The user entity
+     * @return User
+     */
     public function disableGoogleAuth(User $user)
     {
         $user->gauth_enabled = false;
@@ -467,8 +499,8 @@ class UsersTable extends UserBaseTable
     /**
      * Create root user with default credentials
      *
-     * @param $email
-     * @param $password
+     * @param string $email User email address
+     * @param string $password User password
      * @return bool|User
      */
     public function createRootUser($email, $password)
@@ -504,8 +536,8 @@ class UsersTable extends UserBaseTable
     /**
      * Register new user with form data array
      *
-     * @param array $data
-     * @param bool $dispatchEvent
+     * @param array $data User data
+     * @param bool $dispatchEvent If True, trigger custom events (Default: True)
      * @return User
      */
     public function register(array $data, $dispatchEvent = true)
@@ -555,7 +587,7 @@ class UsersTable extends UserBaseTable
 
         // Email verification
         $user->email_verified = false;
-        $user->email_verification_required = !(bool) Configure::read('User.Signup.disableEmailVerification');
+        $user->email_verification_required = !(bool)Configure::read('User.Signup.disableEmailVerification');
         $user->email_verification_code = self::generateRandomVerificationCode(self::$verificationCodeLength);
         $user->email_verification_expiry_timestamp = time() + DAY; // @TODO Read expiry offset from config
 
@@ -602,7 +634,7 @@ class UsersTable extends UserBaseTable
     /**
      * Validation rules for the register method
      *
-     * @param Validator $validator
+     * @param Validator $validator The validator instance
      * @return Validator
      */
     public function validationRegister(Validator $validator)
@@ -623,8 +655,8 @@ class UsersTable extends UserBaseTable
      * - Requires the current user password
      * - The new password MUST NOT match the current user password
      *
-     * @param Entity|User $user
-     * @param array $data
+     * @param Entity|User $user The user entity
+     * @param array $data User data
      * @return bool
      */
     public function changePassword(User &$user, array $data)
@@ -676,7 +708,7 @@ class UsersTable extends UserBaseTable
     /**
      * Validation rules to change password
      *
-     * @param Validator $validator
+     * @param Validator $validator The validator instance
      * @return Validator
      */
     public function validationChangePassword(Validator $validator)
@@ -684,8 +716,7 @@ class UsersTable extends UserBaseTable
         $validator = $this->validationNewPassword($validator);
         $validator
             ->requirePresence('password0')
-            ->notEmpty('password0')
-        ;
+            ->notEmpty('password0');
 
         return $validator;
     }
@@ -693,8 +724,8 @@ class UsersTable extends UserBaseTable
     /**
      * Reset user password
      *
-     * @param Entity|User $user
-     * @param array $data
+     * @param Entity|User $user The user entity
+     * @param array $data User data
      * @return bool
      */
     public function resetPassword(User $user, array $data)
@@ -746,20 +777,21 @@ class UsersTable extends UserBaseTable
     /**
      * Validation rules to reset password
      *
-     * @param Validator $validator
+     * @param Validator $validator The validator instance
      * @return Validator
      */
     public function validationResetPassword(Validator $validator)
     {
         $validator = $this->validationNewPassword($validator);
+
         return $validator;
     }
 
     /**
      * Google Recaptcha Validation Rule
      *
-     * @param $value
-     * @param $context
+     * @param mixed $value Check value
+     * @param mixed $context Check context
      * @return bool|string
      */
     public function checkRecaptcha($value, $context)
@@ -770,7 +802,6 @@ class UsersTable extends UserBaseTable
             }
 
         } catch (\Exception $ex) {
-            debug($ex->getMessage());
             return __d('user', 'Unable to verify reCAPTCHA. Please try again later');
         }
 
@@ -780,8 +811,8 @@ class UsersTable extends UserBaseTable
     /**
      * Password Validation Rule
      *
-     * @param $value
-     * @param $context
+     * @param mixed $value Check value
+     * @param mixed $context Check context
      * @return bool|string
      */
     public function checkNewPassword1($value, $context)
@@ -806,6 +837,14 @@ class UsersTable extends UserBaseTable
         return true;
     }
 
+    /**
+     * Password Complexity validation Rule
+     *
+     * @param mixed $value Check value
+     * @param array $options Check options
+     * @param mixed $context Check context
+     * @return bool|string
+     */
     public function checkPasswordComplexity($value, $options = [], $context = null)
     {
         if (func_num_args() == 2) {
@@ -814,14 +853,14 @@ class UsersTable extends UserBaseTable
         }
 
         $defaults = [
-            'allowedPattern'        => self::$passwordRegex,
+            'allowedPattern' => self::$passwordRegex,
 
-            'allowedSpecialChars'   => self::$passwordSpecialChars,
-            'minLength'             => self::$passwordMinLength,
-            'lowercase'             => self::$passwordMinLowercase,
-            'uppercase'             => self::$passwordMinUppercase,
-            'special'               => self::$passwordMinSpecialChars,
-            'numbers'               => self::$passwordMinNumbers,
+            'allowedSpecialChars' => self::$passwordSpecialChars,
+            'minLength' => self::$passwordMinLength,
+            'lowercase' => self::$passwordMinLowercase,
+            'uppercase' => self::$passwordMinUppercase,
+            'special' => self::$passwordMinSpecialChars,
+            'numbers' => self::$passwordMinNumbers,
         ];
         $options = array_merge($defaults, $options);
 
@@ -847,13 +886,21 @@ class UsersTable extends UserBaseTable
             return __d('user', "Password must include at least one UPPERCASE letter!");
         }
 
-        if ($options['special'] > 0 && !preg_match("#[".preg_quote($options['allowedSpecialChars'], "#") . "]+#", $value)) {
+        if ($options['special'] > 0 && !preg_match("#[" . preg_quote($options['allowedSpecialChars'], "#") . "]+#", $value)) {
             return __d('user', "Password must include at least one special character!");
         }
         
         return true;
     }
 
+    /**
+     * Email blacklist validation Rule
+     *
+     * @param mixed $value Check value
+     * @param array $options Check options
+     * @param mixed $context Check context
+     * @return bool|string
+     */
     public function checkEmailBlacklist($value, $options = [], $context = null)
     {
         if (func_num_args() == 2) {
@@ -865,7 +912,7 @@ class UsersTable extends UserBaseTable
             'enabled' => false,
             'domainList' => false,
         ];
-        $config = (array) Configure::read('User.Blacklist');
+        $config = (array)Configure::read('User.Blacklist');
         $options = array_merge($defaults, $config, $options);
 
         if ($options['enabled'] === false) {
@@ -877,7 +924,6 @@ class UsersTable extends UserBaseTable
         }
 
         if (is_string($options['domainList'])) {
-
             $File = new File($options['domainList'], false);
             if (!$File->exists()) {
                 return true;
@@ -885,20 +931,22 @@ class UsersTable extends UserBaseTable
 
             $content = $File->read();
 
-            $options['domainList'] = array_filter(explode("\n", $content), function($row) {
+            $options['domainList'] = array_filter(explode("\n", $content), function ($row) {
                 if (preg_match('/^\#/', $row) || strlen(trim($row)) == 0) {
                     return false;
                 }
+
                 return true;
             });
         }
 
         $check = [];
         if (is_array($options['domainList'])) {
-            $check = array_filter(array_unique($options['domainList']), function($row) use ($value) {
+            $check = array_filter(array_unique($options['domainList']), function ($row) use ($value) {
                 if (preg_match('/\@' . $row . '$/', $value)) {
                     return true;
                 }
+
                 return false;
             });
         }
@@ -910,11 +958,10 @@ class UsersTable extends UserBaseTable
         return true;
     }
 
-
     /**
      * Password Verification Validation Rule
-     * @param $value
-     * @param $context
+     * @param mixed $value Check value
+     * @param mixed $context Check context
      * @return bool
      */
     public function checkNewPassword2($value, $context)
@@ -935,7 +982,7 @@ class UsersTable extends UserBaseTable
     /**
      * Validation rules to reset password
      *
-     * @param Validator $validator
+     * @param Validator $validator The validator instance
      * @return Validator
      */
     public function validationActivate(Validator $validator)
@@ -953,8 +1000,8 @@ class UsersTable extends UserBaseTable
     /**
      * Activate user
      *
-     * @param array $data
-     * @param bool $dispatchEvent
+     * @param array $data User data
+     * @param bool $dispatchEvent If True, trigger custom events (Default: True)
      * @return bool
      * @todo Refactor with Form
      */
@@ -964,7 +1011,7 @@ class UsersTable extends UserBaseTable
         $code = (isset($data['email_verification_code'])) ? trim($data['email_verification_code']) : null;
         $user = $this->find()->where(['email' => $email])->contain([])->first();
 
-        if (!$user || strcmp(strtoupper($user->get('email_verification_code')),strtoupper($code)) !== 0) {
+        if (!$user || strcmp(strtoupper($user->get('email_verification_code')), strtoupper($code)) !== 0) {
             return false;
         }
 
@@ -973,6 +1020,7 @@ class UsersTable extends UserBaseTable
             if ($dispatchEvent === true) {
                 $this->eventManager()->dispatch(new Event('User.Model.User.activate', $this, compact('user')));
             }
+
             return $user;
         }
 
@@ -982,9 +1030,9 @@ class UsersTable extends UserBaseTable
     /**
      * Forgot password
      *
-     * @param User $user
-     * @param array $data
-     * @param bool|true $dispatchEvent
+     * @param User $user The user entity
+     * @param array $data User data
+     * @param bool $dispatchEvent If True, trigger custom events (Default: True)
      * @return bool|mixed|User
      */
     public function forgotPassword(User $user, array $data = [], $dispatchEvent = true)
@@ -1000,9 +1048,17 @@ class UsersTable extends UserBaseTable
         if ($dispatchEvent === true) {
             $this->eventManager()->dispatch(new Event('User.Model.User.passwordForgotten', $this, compact('user')));
         }
+
         return $user;
     }
 
+    /**
+     * Mark user deleted
+     *
+     * @param User $user The user entity
+     * @param bool $dispatchEvent If True, trigger custom events (Default: True)
+     * @return bool|mixed|User
+     */
     public function markDeleted(User $user, $dispatchEvent = true)
     {
         $user->is_deleted = true;
@@ -1018,9 +1074,17 @@ class UsersTable extends UserBaseTable
         if ($dispatchEvent === true) {
             $this->eventManager()->dispatch(new Event('User.Model.User.markedDeleted', $this, compact('user')));
         }
+
         return $user;
     }
 
+    /**
+     * Reset user marked as deleted
+     *
+     * @param User $user The user entity
+     * @param bool $dispatchEvent If True, trigger custom events (Default: True)
+     * @return bool|mixed|User
+     */
     public function resetDeleted(User $user, $dispatchEvent = true)
     {
         $user->is_deleted = false;
@@ -1036,23 +1100,34 @@ class UsersTable extends UserBaseTable
         if ($dispatchEvent === true) {
             $this->eventManager()->dispatch(new Event('User.Model.User.resetDeleted', $this, compact('user')));
         }
+
         return $user;
     }
 
+    /**
+     * Resend email verification code
+     *
+     * @param User $user The user entity
+     * @return bool|mixed|User
+     */
     public function resendVerificationCode(User $user)
     {
         //@TODO Check if the verification code has expired. If so, create new verification code.
         $event = $this->eventManager()->dispatch(new Event('User.Model.User.activationResend', $this, compact('user')));
 
         if ($event->result === false) {
-            debug("failed");
             return false;
         }
 
         return $user;
     }
 
-
+    /**
+     * Generate random string
+     *
+     * @param int $length Lenth of generated string
+     * @return string
+     */
     public static function generateRandomVerificationCode($length = 8)
     {
         //@TODO Make use of random_compat vendor lib
@@ -1061,12 +1136,14 @@ class UsersTable extends UserBaseTable
 
     /**
      * Generate email verification url from User entity
+     *
+     * @param User $user The user entity
      * @return string Full URL
      */
     public static function buildEmailVerificationUrl(User $user)
     {
         return Router::url([
-            'prefix' => false, 'plugin' => 'User', 'controller' => 'User', 'action'=>'activate',
+            'prefix' => false, 'plugin' => 'User', 'controller' => 'User', 'action' => 'activate',
             'c' => base64_encode($user->email_verification_code),
             'm' => base64_encode($user->email)
         ], true);
@@ -1074,6 +1151,8 @@ class UsersTable extends UserBaseTable
 
     /**
      * Generate password reset url from User entity
+     *
+     * @param User $user The user entity
      * @return string Full URL
      */
     public static function buildPasswordResetUrl(User $user)
@@ -1098,7 +1177,9 @@ class UsersTable extends UserBaseTable
      * @param string $keyspace A string of all possible characters
      *                         to select from
      * @return string
+     *
      */
+    // @codingStandardsIgnoreStart
     public static function random_str($length, $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
     {
         $str = '';
@@ -1109,5 +1190,5 @@ class UsersTable extends UserBaseTable
 
         return $str;
     }
-
+    // @codingStandardsIgnoreEnd
 }

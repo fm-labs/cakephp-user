@@ -13,6 +13,10 @@ class AutologoutHelper extends Helper
 {
     public $helpers = ['Html'];
 
+    /**
+     * @param Event $event The event object
+     * @return void
+     */
     public function beforeLayout(Event $event)
     {
         if ($this->request->session()->check('Auth.UserSession')) {
@@ -44,16 +48,16 @@ class AutologoutHelper extends Helper
     }, 10000);
 })();
 SCRIPT;
+            $script = str_replace(
+                ['{{LOGIN_URL}}', '{{CHECK_URL}}'],
+                [
+                    Router::url(['_name' => 'user:login']),
+                    Router::url(['_name' => 'user:checkauth']),
+                ],
+                $script
+            );
 
-        $script = str_replace(
-            ['{{LOGIN_URL}}', '{{CHECK_URL}}'],
-            [
-                Router::url(['_name' => 'user:login']),
-                Router::url(['_name' => 'user:checkauth']),
-            ], $script);
-
-        $this->Html->scriptBlock($script, ['safe' => false, 'block' => true]);
-
+            $this->Html->scriptBlock($script, ['safe' => false, 'block' => true]);
         }
     }
 }

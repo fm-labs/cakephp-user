@@ -18,8 +18,8 @@ class UserLoginService implements EventListenerInterface
 {
 
     /**
-     * @param Event $event
-     * @return null|array
+     * @param Event $event The event object
+     * @return array|void
      */
     public function onLogin(Event $event)
     {
@@ -101,7 +101,8 @@ class UserLoginService implements EventListenerInterface
     }
 
     /**
-     * @param Event $event
+     * @param Event $event The event object
+     * @return void
      */
     public function onLoginError(Event $event)
     {

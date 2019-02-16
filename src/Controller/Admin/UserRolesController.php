@@ -49,7 +49,7 @@ class UserRolesController extends AppController
     /**
      * Add method
      *
-     * @return void Redirects on successful add, renders view otherwise.
+     * @return void|\Cake\Network\Response Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
@@ -72,7 +72,7 @@ class UserRolesController extends AppController
      * Edit method
      *
      * @param string|null $id Role id.
-     * @return void Redirects on successful edit, renders view otherwise.
+     * @return void|\Cake\Network\Response Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
@@ -98,7 +98,7 @@ class UserRolesController extends AppController
      * Delete method
      *
      * @param string|null $id Role id.
-     * @return void Redirects to index.
+     * @return void|\Cake\Network\Response Redirects to index.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function delete($id = null)
