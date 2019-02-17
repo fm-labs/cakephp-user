@@ -1,7 +1,6 @@
 <?php
 namespace User\Test\TestCase\Model\Entity;
 
-use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use User\Model\Entity\User;
 
@@ -54,6 +53,8 @@ class UserTest extends TestCase
 
     /**
      * Test virtual property 'is_root'.
+     *
+     * @return void
      */
     public function testGetVirtualPropertyIsRoot()
     {
@@ -66,6 +67,8 @@ class UserTest extends TestCase
 
     /**
      * Test virtual property 'is_superuser'.
+     *
+     * @return void
      */
     public function testGetVirtualPropertyIsSuperuser()
     {
@@ -82,6 +85,8 @@ class UserTest extends TestCase
 
     /**
      * Test virtual property 'display_name'.
+     *
+     * @return void
      */
     public function testGetVirtualPropertyDisplayName()
     {
@@ -91,5 +96,4 @@ class UserTest extends TestCase
         $user = new User(['username' => 'test', 'name' => 'Test User']);
         $this->assertEquals('Test User', $user->display_name);
     }
-
 }

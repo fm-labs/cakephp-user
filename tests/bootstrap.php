@@ -5,6 +5,10 @@
  * This function is used to find the location of CakePHP whether CakePHP
  * has been installed as a dependency of the plugin, or the plugin is itself
  * installed as a dependency of an application.
+ *
+ * @param string $root Path to root directory
+ * @throws \Exception
+ * @return string
  */
 $findRoot = function ($root) {
     do {
