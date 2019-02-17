@@ -86,7 +86,7 @@ class UsersTable extends UserBaseTable
      * @var array List of related models passed to the auth finder method
      */
     public static $contains = ['UserGroups'];
-    
+
     /**
      * Initialize method
      *
@@ -724,7 +724,7 @@ class UsersTable extends UserBaseTable
     /**
      * Reset user password
      *
-     * @param Entity|User $user The user entity
+     * @param User $user The user entity
      * @param array $data User data
      * @return bool
      */
@@ -889,7 +889,7 @@ class UsersTable extends UserBaseTable
         if ($options['special'] > 0 && !preg_match("#[" . preg_quote($options['allowedSpecialChars'], "#") . "]+#", $value)) {
             return __d('user', "Password must include at least one special character!");
         }
-        
+
         return true;
     }
 

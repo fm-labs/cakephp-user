@@ -1,14 +1,14 @@
 <?php
 namespace User\Controller\Component;
 
+use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Component\AuthComponent as CakeAuthComponent;
+use Cake\Controller\Component\FlashComponent;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
-use Cake\Controller\ComponentRegistry;
-use Cake\Controller\Component\FlashComponent;
-use Cake\ORM\TableRegistry;
 use Cake\Event\Event;
 use Cake\Log\Log;
+use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use User\Model\Table\UsersTable;
 
@@ -25,19 +25,24 @@ class AuthComponent extends CakeAuthComponent
      */
     public $Users;
 
+    /**
+     * Build full URL for User controller actions
+     *
+     * @param array|string $url URL
+     * @return string Full URL
+     */
     static public function url($url)
     {
         if (is_array($url)) {
-            list($plugin,$controller) = Configure::read('User.controller');
-            $url = array_merge(compact('plugin','controller'), $url);
+            list($plugin, $controller) = Configure::read('User.controller');
+            $url = array_merge(compact('plugin', 'controller'), $url);
         }
 
         return Router::url($url, true);
     }
 
     /**
-     * @param ComponentRegistry $registry
-     * @param array $config
+     * {@inheritDoc}
      */
     public function __construct(ComponentRegistry $registry, array $config = [])
     {
@@ -52,8 +57,7 @@ class AuthComponent extends CakeAuthComponent
     }
 
     /**
-     * @param array $config
-     * @return void
+     * {@inheritDoc}
      */
     public function initialize(array $config)
     {
@@ -85,7 +89,7 @@ class AuthComponent extends CakeAuthComponent
     /**
      * Login method
      *
-     * @return string|array Redirect url
+     * @return string|array|void Redirect url
      */
     public function login()
     {
@@ -155,7 +159,7 @@ class AuthComponent extends CakeAuthComponent
         // dispatch 'User.Auth.logout' event
         $event = new Event('User.Auth.logout', $this, [
             'user' => false,
-            'request' => $this->request // @TODO This is redundant, as the request object can be accessed from the event subject
+            'request' => $this->request // @deprecated This is redundant, as the request object can be accessed from the event subject
         ]);
         $this->eventManager()->dispatch($event);
 
@@ -171,7 +175,9 @@ class AuthComponent extends CakeAuthComponent
         return TableRegistry::get($this->config('userModel'));
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     protected function _unauthenticated(Controller $controller)
     {
         $response = parent::_unauthenticated($controller);

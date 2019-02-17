@@ -32,20 +32,19 @@ class UserSessionComponent extends Component
     ];
 
     /**
-     * @param array $config
-     * @return void
+     * {@inheritDoc}
      */
     public function initialize(array $config)
     {
         $sessionTimeout = Configure::read('Session.timeout');
-        if ($sessionTimeout && $sessionTimeout > 0 && $this->_config['maxLifetime'] >= $sessionTimeout*MINUTE) {
+        if ($sessionTimeout && $sessionTimeout > 0 && $this->_config['maxLifetime'] >= $sessionTimeout * MINUTE) {
             //\Cake\Log\Log::warning("Configured user session maxLifetime is higher than global session timeout. Auto-adjusting maxLifetime to " . ($sessionTimeout * MINUTE - 1), ['user']);
             $this->_config['maxLifetime'] = $sessionTimeout * MINUTE - 1;
         }
     }
 
     /**
-     * @param Event $event
+     * @param Event $event The event object
      * @return \Cake\Network\Response|null
      */
     public function beforeFilter(Event $event)
@@ -54,7 +53,7 @@ class UserSessionComponent extends Component
     }
 
     /**
-     * @param Event $event
+     * @param Event $event The event object
      * @return \Cake\Network\Response|null
      */
     public function startup(Event $event)
@@ -63,17 +62,13 @@ class UserSessionComponent extends Component
     }
 
     /**
-     * @param Event $event
-     * @return \Cake\Network\Response|null
-     */
-    public function beforeRender(Event $event)
-    {
-    }
-
-    /**
      * Set the ignoreActions.
      * If the current request action is an ignored action,
      * the user session will not be extended.
+     *
+     * @param array $actions List of actions
+     * @param bool $merge Merge flag
+     * @return void
      */
     public function ignoreActions(array $actions, $merge = true)
     {
@@ -83,8 +78,8 @@ class UserSessionComponent extends Component
     /**
      * Check user session
      *
-     * @param Event $event
-     * @return \Cake\Network\Response|null
+     * @param Event $event The event object
+     * @return \Cake\Network\Response|void|null
      */
     public function checkSession(Event $event)
     {
@@ -94,6 +89,7 @@ class UserSessionComponent extends Component
 
         if (!$this->Auth->user()) {
             $this->destroyUserSession();
+
             return null;
         }
 
@@ -101,12 +97,14 @@ class UserSessionComponent extends Component
             $session = $this->request->session()->read($this->_config['sessionKey']);
             if (!$this->validateUserSession($session)) {
                 $event->stopPropagation();
+
                 return $this->_expired($event->subject());
             }
 
             if (!$this->request->is('ajax') && !in_array($this->request->param('action'), $this->_config['ignoreActions'])) {
                 $this->extendUserSession($session);
             }
+
             return null;
         }
 
@@ -122,7 +120,7 @@ class UserSessionComponent extends Component
     {
         $user = $this->Auth->user();
         if (!$user || empty($user) || !isset($user['id'])) {
-            return null;
+            return;
         }
 
         $userSession = [
@@ -139,6 +137,7 @@ class UserSessionComponent extends Component
     /**
      * Validate user session
      *
+     * @param array $userSession User session data
      * @return bool
      */
     public function validateUserSession(array $userSession)
@@ -159,12 +158,13 @@ class UserSessionComponent extends Component
     /**
      * Extend user session
      *
+     * @param array $userSession User session data
      * @return void
      */
     public function extendUserSession(array $userSession)
     {
         if (empty($userSession) || !isset($userSession['expires'])) {
-            return null;
+            return;
         }
 
         $userSession['expires'] = time() + $this->_config['maxLifetime'];
@@ -184,7 +184,7 @@ class UserSessionComponent extends Component
     /**
      * Send 'expired' response
      *
-     * @param \Cake\Controller\Controller $controller
+     * @param \Cake\Controller\Controller $controller Current controller instance
      * @return \Cake\Network\Response|null
      */
     protected function _expired(Controller $controller)
@@ -195,10 +195,12 @@ class UserSessionComponent extends Component
 
         if (!$controller->request->is('ajax')) {
             $this->Auth->flash(__d('user', 'Session timed out'));
+
             return $controller->redirect($this->Auth->config('loginAction'));
         }
 
         $this->response->statusCode(403);
+
         return $this->response;
     }
 
@@ -210,10 +212,9 @@ class UserSessionComponent extends Component
     public function implementedEvents()
     {
         return [
-            'Controller.initialize'     => 'beforeFilter',
-            'Controller.startup'        => 'startup',
-            'Controller.beforeRender'   => 'beforeRender',
-            'User.Auth.logout'          => 'destroyUserSession'
+            'Controller.initialize' => 'beforeFilter',
+            'Controller.startup' => 'startup',
+            'User.Auth.logout' => 'destroyUserSession'
         ];
     }
 }

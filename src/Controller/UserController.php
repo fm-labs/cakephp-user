@@ -10,6 +10,7 @@ use Cake\Network\Response;
 use Cake\Routing\Router;
 use User\Exception\PasswordResetException;
 use User\Form\PasswordForgottenForm;
+use User\Model\Entity\User;
 use User\Model\Table\UsersTable;
 
 /**
@@ -228,6 +229,8 @@ class UserController extends AppController
 
             return;
         }
+
+        /* @var User $user */
         $user = $this->Users->newEntity();
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Users->activate($this->request->data)) {
@@ -271,6 +274,7 @@ class UserController extends AppController
             return;
         }
 
+        /* @var User $user */
         $user = $this->Users->newEntity();
         if ($this->request->is('post') || $this->request->is('put')) {
             $email = trim($this->request->data('email'));
@@ -350,7 +354,7 @@ class UserController extends AppController
      * User can assign new password with username and a password reset code
      * No authentication required
      *
-     * @return void
+     * @return void|\Cake\Network\Response
      */
     public function passwordReset()
     {
@@ -372,6 +376,7 @@ class UserController extends AppController
                 throw new PasswordResetException(__d('user', "Password reset code missing"));
             }
 
+            /* @var User $user */
             $user = $this->Users->find()
                 ->where($query)
                 ->first();

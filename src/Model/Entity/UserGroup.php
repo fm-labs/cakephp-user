@@ -4,9 +4,9 @@ namespace User\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Group Entity.
+ * UserGroup Entity.
  */
-class Group extends Entity
+class UserGroup extends Entity
 {
 
     /**
