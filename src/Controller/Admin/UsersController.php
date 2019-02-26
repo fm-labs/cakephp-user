@@ -129,6 +129,7 @@ class UsersController extends AppController
      */
     public function view($id = null)
     {
+        $this->set('related', ['UserGroups']);
         $this->set('entityOptions', ['contain' => ['UserGroups']]);
         $this->set('fields', [
             'email' => ['formatter' => 'email'],
