@@ -31,7 +31,7 @@ class AuthComponent extends CakeAuthComponent
      * @param array|string $url URL
      * @return string Full URL
      */
-    static public function url($url)
+    public static function url($url)
     {
         if (is_array($url)) {
             list($plugin, $controller) = Configure::read('User.controller');
@@ -89,7 +89,7 @@ class AuthComponent extends CakeAuthComponent
     /**
      * Login method
      *
-     * @return string|array|void Redirect url
+     * @return void|string
      */
     public function login()
     {
@@ -101,24 +101,31 @@ class AuthComponent extends CakeAuthComponent
         // attempt to identify user (any request method)
         $user = $this->identify();
         if ($user) {
-            // dispatch 'User.Auth.login' event
-            $event = new Event('User.Auth.login', $this, [
+            $event = new Event('User.Auth.beforeLogin', $this, [
                 'user' => $user,
                 'request' => $this->request
             ]);
             $event = $this->eventManager()->dispatch($event);
-            if ($event->result) {
-                if (isset($event->result['redirect'])) {
-                    $this->storage()->redirectUrl($event->result['redirect']);
-                }
-
-                if (isset($event->result['error'])) {
-                    $this->flash($event->result['error']);
-                }
+            if (isset($event->data['redirect'])) {
+                $this->storage()->redirectUrl($event->data['redirect']);
+            }
+            if (isset($event->data['error'])) {
+                $this->flash($event->data['error']);
             }
 
-            // authenticate user
-            $this->setUser($event->data['user']);
+            $user = $event->data['user'];
+            if ($event->result === false) {
+                $user = null;
+            }
+
+            // set user in session
+            $this->setUser($user);
+
+            $event = new Event('User.Auth.afterLogin', $this, [
+                'user' => $user,
+                'request' => $this->request
+            ]);
+            $this->eventManager()->dispatch($event);
 
             // rehash password, if needed
             if ($this->user() && $this->authenticationProvider()->needsPasswordRehash()) {
@@ -137,7 +144,7 @@ class AuthComponent extends CakeAuthComponent
             $this->flash(__d('user', 'Login failed'));
 
             // dispatch 'User.Auth.loginFailed' event
-            $event = new Event('User.Auth.loginError', $this, [
+            $event = new Event('User.Auth.failedLogin', $this, [
                 'request' => $this->request
             ]);
             $this->eventManager()->dispatch($event);
@@ -147,6 +154,8 @@ class AuthComponent extends CakeAuthComponent
         } else {
             // show login form
         }
+
+        return null;
     }
 
     /**

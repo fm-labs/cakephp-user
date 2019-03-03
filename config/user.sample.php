@@ -7,7 +7,8 @@ return [
 
     'User.Mailer.enabled' => false,
     'User.Mailer.profile' => 'default',
-    'User.Mailer.className' => 'User.User',
+    'User.Mailer.mailerClass' => 'User.User',
+
     //'User.layout' => 'User.auth',
     //'User.Login.disabled' => false,
     //'User.Login.layout' => null,

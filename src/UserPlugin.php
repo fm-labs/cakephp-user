@@ -111,13 +111,11 @@ class UserPlugin implements PluginInterface, BackendPluginInterface, EventListen
         EventManager::instance()->on(new UserLoginService());
 
         if (Configure::read('User.EventLogger.enabled') == true) {
-            EventManager::instance()->on(new UserEventLoggerService());
+            EventManager::instance()->on(new UserEventLoggerService(Configure::read('User.EventLogger')));
         }
 
         if (Configure::read('User.Mailer.enabled') == true) {
-            EventManager::instance()->on(new UserMailerService([
-                'mailerClass' => Configure::read('User.Mailer.className')
-            ]));
+            EventManager::instance()->on(new UserMailerService(Configure::read('User.Mailer')));
         }
 
         if (Plugin::loaded('GoogleAuthenticator')) {

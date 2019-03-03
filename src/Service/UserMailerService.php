@@ -19,6 +19,8 @@ class UserMailerService implements EventListenerInterface
     use UserMailerAwareTrait;
 
     protected $_defaultConfig = [
+        //'enabled' => true,
+        //'profile' => 'default',
         'mailerClass' => 'User.User',
     ];
 
@@ -68,7 +70,7 @@ class UserMailerService implements EventListenerInterface
      * @param Event $event The event object
      * @return void
      */
-    public function onNewLogin(Event $event)
+    public function onLogin(Event $event)
     {
         $this->sendEmail('newLogin', [$event->data['user']]);
     }
@@ -102,7 +104,7 @@ class UserMailerService implements EventListenerInterface
             'User.Model.User.activate' => 'onActivate',
             'User.Model.User.passwordForgotten' => 'onPasswordForgotten',
             'User.Model.User.passwordReset' => 'onPasswordReset',
-            'User.Model.User.newLogin' => 'onNewLogin'
+            'User.Model.User.newLogin' => 'onLogin'
         ];
     }
 }
