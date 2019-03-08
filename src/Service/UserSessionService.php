@@ -41,8 +41,12 @@ class UserSessionService implements EventListenerInterface
         if ($this->GeoIp) {
             try {
                 $location = $this->GeoIp->lookup($data['client_ip'], ['precision' => 'city']);
-                $data['geo_location'] = $location;
-                $data['geo_country_code'] = $location['country_iso2'];
+                if (!empty($location)) {
+                    $data['geo_location'] = $location;
+                }
+                if (isset($location['country_iso2'])) {
+                    $data['geo_country_code'] = $location['country_iso2'];
+                }
             } catch (\Exception $ex) {
                 Log::error('UserSessionService: ' . $ex->getMessage(), ['user']);
             }
