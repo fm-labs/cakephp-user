@@ -30,12 +30,12 @@ class AuthComponent extends CakeAuthComponent
      *
      * @param array|string $url URL
      * @return string Full URL
+     * @deprecated
      */
     public static function url($url)
     {
         if (is_array($url)) {
-            list($plugin, $controller) = Configure::read('User.controller');
-            $url = array_merge(compact('plugin', 'controller'), $url);
+            $url += compact('plugin', 'controller');
         }
 
         return Router::url($url, true);
@@ -197,6 +197,7 @@ class AuthComponent extends CakeAuthComponent
     /**
      * @return UsersTable
      * @deprecated Use table() method instead
+     * @codeCoverageIgnore
      */
     public function userModel()
     {
