@@ -19,5 +19,8 @@
             "User\\Test\\": "tests",
             "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
         }
+    },
+    "suggest": {
+        "matomo-org/device-detector": "Enabled User Agents parsing to detect devices, clients, operating systems, brands and models."
     }
 }

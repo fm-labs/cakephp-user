@@ -15,9 +15,12 @@ use Cake\Http\MiddlewareQueue;
 use Cake\Routing\RouteBuilder;
 use Settings\SettingsManager;
 use User\Service\GoogleAuthenticatorService;
-use User\Service\UserEventLoggerService;
-use User\Service\UserLoginService;
+use User\Service\UserActivityService;
+use User\Service\UserAuthService;
+use User\Service\UserLoggingService;
 use User\Service\UserMailerService;
+use User\Service\UserPasswordService;
+use User\Service\UserSessionService;
 
 /**
  * Class UserPlugin
@@ -62,7 +65,7 @@ class UserPlugin implements PluginInterface, BackendPluginInterface, EventListen
                     'type' => 'boolean',
                     'default' => false
                 ],
-                'EventLogger.enabled' => [
+                'Logging.enabled' => [
                     'type' => 'boolean',
                     'default' => false
                 ],
@@ -108,14 +111,20 @@ class UserPlugin implements PluginInterface, BackendPluginInterface, EventListen
     public function bootstrap(Application $app)
     {
         EventManager::instance()->on($this);
-        EventManager::instance()->on(new UserLoginService());
+        EventManager::instance()->on(new UserAuthService());
+        EventManager::instance()->on(new UserSessionService());
+        EventManager::instance()->on(new UserPasswordService());
 
-        if (Configure::read('User.EventLogger.enabled') == true) {
-            EventManager::instance()->on(new UserEventLoggerService(Configure::read('User.EventLogger')));
+        if (Configure::read('User.Logging.enabled') == true) {
+            EventManager::instance()->on(new UserLoggingService(Configure::read('User.Logging')));
         }
 
         if (Configure::read('User.Mailer.enabled') == true) {
             EventManager::instance()->on(new UserMailerService(Configure::read('User.Mailer')));
+        }
+
+        if (Plugin::loaded('Activity')) {
+            EventManager::instance()->on(new UserActivityService());
         }
 
         if (Plugin::loaded('GoogleAuthenticator')) {

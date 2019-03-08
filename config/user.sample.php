@@ -3,7 +3,7 @@ return [
     'User.model' => 'User.Users',
     'User.controller' => 'User.User',
 
-    'User.EventLogger.enabled' => false,
+    'User.Logging.enabled' => false,
 
     'User.Mailer.enabled' => false,
     'User.Mailer.profile' => 'default',

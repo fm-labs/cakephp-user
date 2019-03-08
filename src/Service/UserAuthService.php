@@ -10,11 +10,11 @@ use Cake\Log\Log;
 use Cake\Network\Request;
 
 /**
- * Class UserLoginService
+ * Class UserAuthService
  *
  * @package User\Event
  */
-class UserLoginService implements EventListenerInterface
+class UserAuthService implements EventListenerInterface
 {
 
     /**
@@ -136,8 +136,8 @@ class UserLoginService implements EventListenerInterface
     {
         return [
             'User.Auth.beforeLogin' => 'beforeLogin',
-            'User.Auth.afterLogin' => 'afterLogin',
-            'User.Auth.failedLogin' => 'onLoginError',
+            'User.Auth.login' => 'afterLogin',
+            'User.Auth.error' => 'onLoginError',
         ];
     }
 }

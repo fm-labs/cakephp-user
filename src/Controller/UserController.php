@@ -436,22 +436,14 @@ class UserController extends AppController
     }
 
     /**
-     * Return login status info in JSON format
+     * Return client session info in JSON format
      *
      * @return void
      */
-    public function checkAuth()
+    public function session()
     {
         $this->viewBuilder()->className('Json');
-
-        $data = [
-            'l' => ($this->Auth->user('id')) ? 1 : 0,
-            'e' => ($this->request->session()->read('Auth.UserSession.expires')) ?: 0,
-            'efmt' => ($this->request->session()->read('Auth.UserSession.expires'))
-                ? date(DATE_ATOM, $this->request->session()->read('Auth.UserSession.expires'))
-                : 0
-        ];
-
+        $data = $this->UserSession->extractSessionInfo();
         $this->set('data', $data);
         $this->set('_serialize', 'data');
     }

@@ -2,7 +2,7 @@
 
 namespace User\Exception;
 
-class PasswordResetException extends \RuntimeException
+class PasswordResetException extends UserException
 {
 
 }

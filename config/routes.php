@@ -1,9 +1,9 @@
 <?php
+use Cake\Core\Configure;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
-use Cake\Core\Configure;
 
-$userConfig = (array) Configure::read('User');
+$userConfig = (array)Configure::read('User');
 
 // User plugin routes
 //Router::scope('/user', ['_namePrefix' => 'user:'], function ($routes) {
@@ -13,42 +13,51 @@ Router::plugin('User', ['_namePrefix' => 'user:'], function (RouteBuilder $route
     list($plugin, $controller) = pluginSplit($userController);
     $base = compact('plugin', 'controller');
 
-    $routes->connect('/login',
+    $routes->connect(
+        '/login',
         $base + ['action' => 'login'],
         ['_name' => 'login']
     );
-    $routes->connect('/logout',
+    $routes->connect(
+        '/logout',
         $base + ['action' => 'logout'],
         ['_name' => 'logout']
     );
-    $routes->connect('/register',
+    $routes->connect(
+        '/register',
         $base + ['action' => 'register'],
         ['_name' => 'register']
     );
-    $routes->connect('/activate',
+    $routes->connect(
+        '/activate',
         $base + ['action' => 'activate'],
         ['_name' => 'activate']
     );
-    $routes->connect('/password-forgotten',
+    $routes->connect(
+        '/password-forgotten',
         $base + ['action' => 'passwordForgotten'],
         ['_name' => 'passwordforgotten']
     );
-    $routes->connect('/password-reset',
+    $routes->connect(
+        '/password-reset',
         $base + ['action' => 'passwordReset'],
         ['_name' => 'passwordreset']
     );
-    $routes->connect('/password-change',
+    $routes->connect(
+        '/password-change',
         $base + ['action' => 'passwordChange'],
         ['_name' => 'passwordchange']
     );
-    $routes->connect('/check-auth',
-        $base + ['action' => 'checkAuth'],
+    $routes->connect(
+        '/session',
+        $base + ['action' => 'session'],
         ['_name' => 'checkauth']
     );
     //$routes->connect('/:action',
     //    $base
     //);
-    $routes->connect('/',
+    $routes->connect(
+        '/',
         $base + ['action' => 'index'],
         ['_name' => 'profile']
     );

@@ -25,10 +25,9 @@ class UserSessionComponent extends Component
      * @var array
      */
     protected $_defaultConfig = [
-        // max user session lifetime in seconds. should be lower then global session timeout
-        'maxLifetime' => 0,
-        'ignoreActions' => [],
-        'sessionKey' => 'Auth.UserSession',
+        'sessionKey' => 'Auth.UserSession', // Session storage key
+        'maxLifetimeSec' => 3600, // max user session lifetime in seconds. should be lower then global session timeout
+        'ignoreActions' => [], // skip user session validation for these controller actions
     ];
 
     /**
@@ -37,9 +36,9 @@ class UserSessionComponent extends Component
     public function initialize(array $config)
     {
         $sessionTimeout = Configure::read('Session.timeout');
-        if ($sessionTimeout && $sessionTimeout > 0 && $this->_config['maxLifetime'] >= $sessionTimeout * MINUTE) {
-            //\Cake\Log\Log::warning("Configured user session maxLifetime is higher than global session timeout. Auto-adjusting maxLifetime to " . ($sessionTimeout * MINUTE - 1), ['user']);
-            $this->_config['maxLifetime'] = $sessionTimeout * MINUTE - 1;
+        if ($sessionTimeout && $sessionTimeout > 0 && $this->_config['maxLifetimeSec'] > $sessionTimeout * MINUTE) {
+            $this->_config['maxLifetimeSec'] = $sessionTimeout * MINUTE;
+            //\Cake\Log\Log::warning("Configured user session maxLifetimeSec is higher than global session timeout. Auto-adjusting maxLifetimeSec to " . ($sessionTimeout * MINUTE - 1), ['user']);
         }
     }
 
@@ -79,7 +78,7 @@ class UserSessionComponent extends Component
      * Check user session
      *
      * @param Event $event The event object
-     * @return \Cake\Network\Response|void|null
+     * @return \Cake\Network\Response|null|void
      */
     public function checkSession(Event $event)
     {
@@ -88,27 +87,83 @@ class UserSessionComponent extends Component
         }
 
         if (!$this->Auth->user()) {
-            $this->destroyUserSession();
+            $this->destroy();
 
             return null;
         }
 
-        if ($this->request->session()->check($this->_config['sessionKey'])) {
-            $session = $this->request->session()->read($this->_config['sessionKey']);
-            if (!$this->validateUserSession($session)) {
+        if (in_array($this->request->param('action'), $this->_config['ignoreActions'])) {
+            return null;
+        }
+
+        /* @var \Cake\Controller\Controller $controller */
+        $controller = $event->subject();
+        $userSession = $this->userSession();
+
+        if ($userSession !== null) {
+            if (!$this->validateUserSession()) {
                 $event->stopPropagation();
 
-                return $this->_expired($event->subject());
+                return $this->_expired($controller);
             }
 
-            if (!$this->request->is('ajax') && !in_array($this->request->param('action'), $this->_config['ignoreActions'])) {
-                $this->extendUserSession($session);
+            if (!$this->request->is(['ajax', 'requested']) && !$this->extend()) {
+                $event->stopPropagation();
+
+                return $this->_expired($controller);
             }
 
             return null;
         }
 
         $this->createUserSession();
+    }
+
+    /**
+     * Automatically extend user session
+     *
+     * @return bool|null Returns NULL if operation has been ignored. A boolean value represents the success status
+     *  of the user session extension
+     */
+    public function autoExtend()
+    {
+        if ($this->userSession() === null || $this->request->is(['ajax', 'requested'])) {
+            return null;
+        }
+
+        $expiresIn = $this->expiresIn();
+        // auto-extend when 80% of the lifetime has been exeeded
+        if ($expiresIn < 0 || $expiresIn > $this->config('maxLifetimeSec') * 0.2) {
+            return null;
+        }
+
+        return true;
+    }
+
+    /**
+     * Get active user session data.
+     * Returns NULL if no user session is active.
+     *
+     * @return array|null
+     */
+    public function userSession()
+    {
+        if ($this->request->session()->check($this->_config['sessionKey'])) {
+            return $this->request->session()->read($this->_config['sessionKey']);
+        }
+
+        return null;
+    }
+
+    /**
+     * Set the user session data
+     *
+     * @param array $userSession User session data
+     * @return void
+     */
+    public function setUserSession(array $userSession)
+    {
+        $this->request->session()->write($this->_config['sessionKey'], $userSession);
     }
 
     /**
@@ -123,32 +178,62 @@ class UserSessionComponent extends Component
             return;
         }
 
+        $sessionId = $this->request->session()->id();
         $userSession = [
             'user_id' => $user['id'],
-            'session_id' => $this->request->session()->id(),
-            'started' => time(),
-            'expires' => ($this->_config['maxLifetime'] > 0)
-                ? time() + $this->_config['maxLifetime']
-                : null
+            'sessionid' => $sessionId,
+            'sessiontoken' => $this->_createToken($sessionId),
+            'timestamp' => time(),
+            'expires' => ($this->_config['maxLifetimeSec'] > 0) ? time() + $this->_config['maxLifetimeSec'] : null,
+            'client_ip' => $this->request->clientIp(),
+            'user_agent' => $this->request->header('User-Agent')
         ];
-        $this->request->session()->write($this->_config['sessionKey'], $userSession);
+
+        $event = $this->_registry->getController()->dispatchEvent('User.Session.create', $userSession, $this);
+        $this->setUserSession($event->data);
     }
 
     /**
      * Validate user session
      *
-     * @param array $userSession User session data
      * @return bool
+     * @TODO Trigger security events
      */
-    public function validateUserSession(array $userSession)
+    public function validateUserSession()
     {
-        if (empty($userSession) || (isset($userSession['expires']) && $userSession['expires'] < time())) {
+        $userSession = $this->userSession();
+        if (!$userSession) {
             return false;
         }
 
-        if ($userSession['session_id'] != $this->request->session()->id()) {
-            Log::alert("SessionID mismatch! Possible Hijacking attempt.");
-            //@TODO Handle SessionID mismatch
+        if ($this->expiresIn() < 1) {
+            return false;
+        }
+
+        if ($userSession['sessionid'] != $this->request->session()->id()) {
+            Log::alert(
+                "SessionID mismatch! Possible Hijacking attempt. IP: " . $this->request->clientIp(),
+                ['auth', 'user']
+            );
+
+            return false;
+        }
+
+        if ($userSession['client_ip'] != $this->request->clientIp()) {
+            Log::alert(
+                "ClientIP mismatch! Possible Hijacking attempt. IP: " . $this->request->clientIp(),
+                ['auth', 'user']
+            );
+
+            return false;
+        }
+
+        if ($userSession['user_agent'] != $this->request->header('User-Agent')) {
+            Log::alert(
+                "User agent mismatch! Possible Hijacking attempt. IP: " . $this->request->clientIp(),
+                ['auth', 'user']
+            );
+
             return false;
         }
 
@@ -158,17 +243,44 @@ class UserSessionComponent extends Component
     /**
      * Extend user session
      *
-     * @param array $userSession User session data
-     * @return void
+     * @return bool
      */
-    public function extendUserSession(array $userSession)
+    public function extend()
     {
-        if (empty($userSession) || !isset($userSession['expires'])) {
-            return;
+        $userSession = $this->userSession();
+        if (!$userSession || empty($userSession)) {
+            return false;
         }
 
-        $userSession['expires'] = time() + $this->_config['maxLifetime'];
-        $this->request->session()->write($this->_config['sessionKey'], $userSession);
+        //if (!isset($userSession['expires'])) {
+        //    return true;
+        //}
+
+        $userSession['expires'] = time() + $this->_config['maxLifetimeSec'];
+
+        $event = $this->_registry->getController()->dispatchEvent('User.Session.extend', $userSession, $this);
+        $this->setUserSession($event->data);
+
+        return true;
+    }
+
+    /**
+     * Returns time from now to session expiration timestamp in seconds.
+     *
+     * @return int
+     */
+    public function expiresIn()
+    {
+        $userSession = $this->userSession();
+        if (!$userSession || empty($userSession)) {
+            return -1;
+        }
+
+        if (!isset($userSession['expires'])) {
+            return 0;
+        }
+
+        return $userSession['expires'] - time();
     }
 
     /**
@@ -176,9 +288,44 @@ class UserSessionComponent extends Component
      *
      * @return void
      */
-    public function destroyUserSession()
+    public function destroy()
     {
+        $userSession = $this->userSession();
+        $this->_registry->getController()->dispatchEvent('User.Session.destroy', $userSession, $this);
         $this->request->session()->delete($this->_config['sessionKey']);
+    }
+
+    /**
+     * Returns session info that can be exposed to the client
+     *
+     * @return array
+     */
+    public function extractSessionInfo()
+    {
+        $userSession = $this->userSession();
+        if (empty($userSession)) {
+            return [];
+        }
+
+        $data = [
+            't' => time(),
+            'l' => ($this->Auth->user('id')) ? 1 : 0,
+            'e' => $userSession['expires'],
+            'efmt' => ($userSession['expires']) ? date(DATE_ATOM, $userSession['expires']) : 0
+        ];
+
+        return $data;
+    }
+
+    /**
+     * Create user session token
+     *
+     * @param string $sessionId Session ID
+     * @return string
+     */
+    protected function _createToken($sessionId)
+    {
+        return md5($sessionId . Configure::read('Security.salt'));
     }
 
     /**
@@ -189,7 +336,7 @@ class UserSessionComponent extends Component
      */
     protected function _expired(Controller $controller)
     {
-        $this->destroyUserSession();
+        $this->destroy();
         $this->Auth->logout();
         $this->Auth->storage()->redirectUrl(false);
 
@@ -214,7 +361,7 @@ class UserSessionComponent extends Component
         return [
             'Controller.initialize' => 'beforeFilter',
             'Controller.startup' => 'startup',
-            'User.Auth.logout' => 'destroyUserSession'
+            'User.Auth.logout' => 'destroy'
         ];
     }
 }

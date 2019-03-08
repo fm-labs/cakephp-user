@@ -7,11 +7,11 @@ use Cake\Event\EventListenerInterface;
 use Cake\Log\Log;
 
 /**
- * Class UserEventLoggerService
+ * Class UserLoggingService
  *
  * @package User\Event
  */
-class UserEventLoggerService implements EventListenerInterface
+class UserLoggingService implements EventListenerInterface
 {
     /**
      * @param Event $event The event object
@@ -38,8 +38,8 @@ class UserEventLoggerService implements EventListenerInterface
             'User.Model.User.register' => 'logEvent',
             'User.Model.User.activate' => 'logEvent',
             'User.Model.User.activationResend' => 'logEvent',
-            'User.Auth.beforeLogin' => 'logEvent',
-            'User.Auth.failedLogin' => 'logEvent',
+            'User.Auth.login' => 'logEvent',
+            'User.Auth.error' => 'logEvent',
             'User.Auth.logout' => 'logEvent',
         ];
     }
