@@ -33,7 +33,7 @@ composer require fm-labs/cakephp3-user
 
 Key                                     | Default       | Overrideable by Settings
 ---                                     | ---           | --- 
-User.controller                         | 'User.User'   | no
+User.model                              | 'User.Users'  | no
 User.layout                             | null          | no
 User.EventLogger.enabled                | false         | yes
 User.Mailer.enabled                     | false         | no
