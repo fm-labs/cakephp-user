@@ -8,7 +8,7 @@ use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Log\Log;
-use Cake\Routing\Router;
+//use Cake\Routing\Router;
 use User\Exception\AuthException;
 use User\Model\Table\UsersTable;
 
@@ -25,21 +25,21 @@ class AuthComponent extends CakeAuthComponent
      */
     public $Users;
 
-    /**
-     * Build full URL for User controller actions
-     *
-     * @param array|string $url URL
-     * @return string Full URL
-     * @deprecated
-     */
-    public static function url($url)
-    {
-        if (is_array($url)) {
-            $url += compact('plugin', 'controller');
-        }
-
-        return Router::url($url, true);
-    }
+//    /**
+//     * Build full URL for User controller actions
+//     *
+//     * @param array|string $url URL
+//     * @return string Full URL
+//     * @deprecated
+//     */
+//    public static function url($url)
+//    {
+//        if (is_array($url)) {
+//            $url += compact('plugin', 'controller');
+//        }
+//
+//        return Router::url($url, true);
+//    }
 
     /**
      * {@inheritDoc}

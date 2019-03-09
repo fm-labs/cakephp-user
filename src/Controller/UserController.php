@@ -141,8 +141,8 @@ class UserController extends AppController
         }
 
         $formClass = '\\User\\Form\\UserRegisterForm';
-        if (Configure::read('User.Form.register')) {
-            $formClass = Configure::read('User.Form.register');
+        if (Configure::read('User.Signup.formClass')) {
+            $formClass = Configure::read('User.Signup.formClass');
         }
         if (!class_exists($formClass)) {
             throw new InternalErrorException("Class not found: $formClass");

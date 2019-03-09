@@ -44,7 +44,7 @@ User.Signup.groupAuth                   | false         | no
 User.Signup.disabled                    | false         | yes
 User.Signup.verifyEmail                 | false         | no
 User.Signup.disableEmailVerification    | false         | no
-User.Form.register                      | null          | no
+User.Signup.formClass                      | null          | no
 User.Mailer.profile                     | ''            | no
 User.Blacklist                          | []            | no
 User.Recaptcha.enabled                  | false         | yes
