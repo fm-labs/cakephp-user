@@ -38,9 +38,13 @@ class UsersTableTest extends TestCase
         parent::setUp();
 
         Configure::write([
+            'User.Mailer.enabled' => false,
+            'User.Logging.enabled' => false,
             'User.Signup.disabled' => false,
             'User.Signup.verifyEmail' => false,
             'User.Signup.groupAuth' => false,
+            'User.Signup.formClass' => '\User\Form\UserRegisterForm',
+            'User.Recaptcha.enabled' => false,
 
             //'User.Blacklist.enabled' => true,
             //'User.Blacklist.domainList' => ['example.net']
@@ -170,6 +174,8 @@ class UsersTableTest extends TestCase
         // test numbers
         $this->assertTrue($this->Users->checkPasswordComplexity('asdfasdf', ['numbers' => 1], $fakeContext) !== true);
         $this->assertTrue($this->Users->checkPasswordComplexity('asdfasdf1', ['numbers' => 1], $fakeContext));
+        $this->assertTrue($this->Users->checkPasswordComplexity('asdfasdf1', ['numbers' => 2], $fakeContext) !== true);
+        $this->assertTrue($this->Users->checkPasswordComplexity('1asdfasdf1', ['numbers' => 2], $fakeContext));
     }
 
     /**
@@ -181,6 +187,8 @@ class UsersTableTest extends TestCase
         // test uppercase
         $this->assertTrue($this->Users->checkPasswordComplexity('asdfasdf', ['uppercase' => 1], $fakeContext) !== true);
         $this->assertTrue($this->Users->checkPasswordComplexity('Asdfasdf', ['uppercase' => 1], $fakeContext));
+        $this->assertTrue($this->Users->checkPasswordComplexity('Asdfasdf', ['uppercase' => 2], $fakeContext) !== true);
+        $this->assertTrue($this->Users->checkPasswordComplexity('AsdfasdA', ['uppercase' => 2], $fakeContext));
     }
 
     /**
@@ -192,6 +200,9 @@ class UsersTableTest extends TestCase
         // test lowercase
         $this->assertTrue($this->Users->checkPasswordComplexity('ASDFASDF', ['lowercase' => 1], $fakeContext) !== true);
         $this->assertTrue($this->Users->checkPasswordComplexity('aSDFASDF', ['lowercase' => 1], $fakeContext));
+        $this->assertTrue($this->Users->checkPasswordComplexity('aSDFASDF', ['lowercase' => 2], $fakeContext) !== true);
+        $this->assertTrue($this->Users->checkPasswordComplexity('aSDFASDb', ['lowercase' => 2], $fakeContext));
+        $this->assertTrue($this->Users->checkPasswordComplexity('aSDFASbc', ['lowercase' => 2], $fakeContext));
     }
 
     /**
@@ -203,6 +214,8 @@ class UsersTableTest extends TestCase
         // test special
         $this->assertTrue($this->Users->checkPasswordComplexity('asdfasdf', ['special' => 1], $fakeContext) !== true);
         $this->assertTrue($this->Users->checkPasswordComplexity('asdfasdf!', ['special' => 1], $fakeContext));
+        $this->assertTrue($this->Users->checkPasswordComplexity('asdfasdf!', ['special' => 2], $fakeContext) !== true);
+        $this->assertTrue($this->Users->checkPasswordComplexity('!asdfasdf!', ['special' => 2], $fakeContext));
     }
 
     /**

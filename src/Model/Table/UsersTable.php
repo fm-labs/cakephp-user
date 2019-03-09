@@ -874,20 +874,28 @@ class UsersTable extends UserBaseTable
             return __d('user', 'Password contains illegal characters');
         }
 
-        if ($options['numbers'] > 0 && !preg_match("#[0-9]+#", $value)) {
-            return __d('user', "Password must include at least one number!");
+        if ($options['numbers'] > 0) {
+            if (preg_match_all("#([0-9])#", $value) < $options['numbers']) {
+                return __d('user', "Password must include at least {0} numbers!", $options['numbers']);
+            }
         }
 
-        if ($options['lowercase'] > 0 && !preg_match("#[a-z]+#", $value)) {
-            return __d('user', "Password must include at least one lowercase letter!");
+        if ($options['lowercase'] > 0) {
+            if (preg_match_all("#([a-z])#", $value) < $options['lowercase']) {
+                return __d('user', "Password must include at least {0} lowercase letters!", $options['lowercase']);
+            }
         }
 
-        if ($options['uppercase'] > 0 && !preg_match("#[A-Z]+#", $value)) {
-            return __d('user', "Password must include at least one UPPERCASE letter!");
+        if ($options['uppercase'] > 0) {
+            if (preg_match_all("#([A-Z])#", $value) < $options['uppercase']) {
+                return __d('user', "Password must include at least {0} UPPERCASE letters!", $options['uppercase']);
+            }
         }
 
-        if ($options['special'] > 0 && !preg_match("#[" . preg_quote($options['allowedSpecialChars'], "#") . "]+#", $value)) {
-            return __d('user', "Password must include at least one special character!");
+        if ($options['special'] > 0) {
+            if (preg_match_all("#([" . preg_quote($options['allowedSpecialChars'], "#") . "])#", $value) < $options['special']) {
+                return __d('user', "Password must include at least {0} special characters!", $options['special']);
+            }
         }
 
         return true;
