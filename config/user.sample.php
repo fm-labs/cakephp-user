@@ -1,7 +1,5 @@
 <?php
 return [
-    'User.model' => 'User.Users',
-
     'User.Logging.enabled' => false,
 
     'User.Mailer.enabled' => false,

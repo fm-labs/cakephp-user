@@ -33,7 +33,6 @@ composer require fm-labs/cakephp3-user
 
 Key                                     | Default       | Overrideable by Settings
 ---                                     | ---           | --- 
-User.model                              | 'User.Users'  | no
 User.layout                             | null          | no
 User.EventLogger.enabled                | false         | yes
 User.Mailer.enabled                     | false         | no
@@ -44,7 +43,7 @@ User.Signup.groupAuth                   | false         | no
 User.Signup.disabled                    | false         | yes
 User.Signup.verifyEmail                 | false         | no
 User.Signup.disableEmailVerification    | false         | no
-User.Signup.formClass                      | null          | no
+User.Signup.formClass                   | null          | no
 User.Mailer.profile                     | ''            | no
 User.Blacklist                          | []            | no
 User.Recaptcha.enabled                  | false         | yes

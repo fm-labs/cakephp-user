@@ -13,7 +13,6 @@ use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
 use Cake\Http\MiddlewareQueue;
 use Cake\Routing\RouteBuilder;
-use Settings\SettingsManager;
 use User\Service\GoogleAuthenticatorService;
 use User\Service\UserActivityService;
 use User\Service\UserAuthService;
@@ -27,7 +26,7 @@ use User\Service\UserSessionService;
  *
  * @package User
  */
-class UserPlugin implements PluginInterface, BackendPluginInterface, EventListenerInterface
+class UserPlugin implements PluginInterface, /*BackendPluginInterface,*/ EventListenerInterface
 {
     /**
      * Returns a list of events this object is implementing. When the class is registered
@@ -51,7 +50,7 @@ class UserPlugin implements PluginInterface, BackendPluginInterface, EventListen
      */
     public function buildSettings(Event $event)
     {
-        if ($event->subject() instanceof SettingsManager) {
+        if ($event->subject() instanceof \Settings\SettingsManager) {
             $event->subject()->add('User', [
                 'Login.disabled' => [
                     'type' => 'boolean',
