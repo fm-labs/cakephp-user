@@ -34,10 +34,6 @@ class UserController extends AppController
     public function initialize()
     {
         parent::initialize();
-
-        if (!Configure::read('User')) {
-            throw new \RuntimeException("UserPlugin: Configuration not loaded!");
-        }
     }
 
     /**
