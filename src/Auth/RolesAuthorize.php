@@ -16,8 +16,8 @@ class RolesAuthorize extends BaseAuthorize
     /**
      * Constructor
      *
-     * @param ComponentRegistry $registry
-     * @param array $config
+     * @param ComponentRegistry $registry The component registry
+     * @param array $config Adapter configuration
      */
     public function __construct(ComponentRegistry $registry, array $config = [])
     {
@@ -29,7 +29,7 @@ class RolesAuthorize extends BaseAuthorize
      *
      * @param array $user Current authenticated user
      * @param \Cake\Network\Request $request Request instance.
-     * @return bool
+     * @return bool|null|void
      */
     public function authorize($user, Request $request)
     {

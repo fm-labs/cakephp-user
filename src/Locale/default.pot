@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2017-04-23 22:52+0000\n"
+"POT-Creation-Date: 2019-01-24 18:25+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,20 +14,32 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:14
-msgid "Type your email here"
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/disable.ctp:15
+msgid "Please confirm that you want to DISABLE the 2-Factor-Authentication."
 msgstr ""
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:14
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/register.ctp:14
-msgid "Username"
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/index.ctp:20
+msgid "Disable"
 msgstr ""
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:15
-msgid "Type your password here"
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/index.ctp:28
+msgid "Setup"
 msgstr ""
 
-#: /home/flow/workspaces/cakesites/cakephp3-user/src/Template/User/login.ctp:15
-msgid "Password"
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/setup.ctp:15
+msgid "Download Google Authenticator app for your smartphone"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/setup.ctp:18
+msgid "Open Google Authenticator app and scan QR code"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/setup.ctp:30
+msgid "Enter the code shown in the Google Authenticator app"
+msgstr ""
+
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/setup.ctp:35
+#: /home/low/workspaces/cakesites/cakephp3-user/src/Template/GoogleAuth/verify.ctp:16
+msgid "Enter code here"
 msgstr ""
 

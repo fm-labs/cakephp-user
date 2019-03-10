@@ -2,46 +2,95 @@
 
 namespace User\Service;
 
+use Cake\Core\InstanceConfigTrait;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
-use User\Mailer\UserMailer;
+use Cake\Log\Log;
+use User\Mailer\UserMailerAwareTrait;
 
 /**
  * Class UserMailerService
  *
  * @package User\Event
- * @todo error handling: catch mailer exceptions.
  */
 class UserMailerService implements EventListenerInterface
 {
+    use InstanceConfigTrait;
+    use UserMailerAwareTrait;
+
+    protected $_defaultConfig = [
+        //'enabled' => true,
+        //'profile' => 'default',
+        'mailerClass' => 'User.User',
+    ];
+
     /**
-     * @param Event $event
+     * @param array $config Instance config
+     */
+    public function __construct(array $config = [])
+    {
+        $this->config($config);
+        $this->setUserMailer($this->_config['mailerClass']);
+    }
+
+    /**
+     * @param string $action Mailer action to invoke
+     * @param array $args Mailer action args
+     * @return void
+     */
+    public function sendEmail($action, $args = [])
+    {
+        try {
+            $mailer = $this->getUserMailer();
+            $mailer->send($action, $args);
+        } catch (\Exception $ex) {
+            Log::error('UserMailerService::sendEmail: ' . $ex->getMessage(), ['user']);
+        }
+    }
+
+    /**
+     * @param Event $event The event object
      * @return void
      */
     public function onRegister(Event $event)
     {
-        $mailer = new UserMailer();
-        $mailer->send('userRegistration', [$event->subject()]);
+        $this->sendEmail('userRegistration', [$event->data['user']]);
     }
 
     /**
-     * @param Event $event
+     * @param Event $event The event object
+     * @return void
+     */
+    public function onActivate(Event $event)
+    {
+        $this->sendEmail('userActivation', [$event->data['user']]);
+    }
+
+    /**
+     * @param Event $event The event object
+     * @return void
+     */
+    public function onLogin(Event $event)
+    {
+        $this->sendEmail('newLogin', [$event->data['user']]);
+    }
+
+    /**
+     * @param Event $event The event object
      * @return void
      */
     public function onPasswordForgotten(Event $event)
     {
-        $mailer = new UserMailer();
-        $mailer->send('passwordForgotten', [$event->subject()]);
+        $this->sendEmail('passwordForgotten', [$event->data['user']]);
     }
 
     /**
-     * @param Event $event
+     * @param Event $event The event object
      * @return void
      */
     public function onPasswordReset(Event $event)
     {
-        $mailer = new UserMailer();
-        $mailer->send('passwordReset', [$event->subject()]);
+        $this->sendEmail('passwordReset', [$event->data['user']]);
     }
 
     /**
@@ -50,9 +99,12 @@ class UserMailerService implements EventListenerInterface
     public function implementedEvents()
     {
         return [
+            'User.Model.User.register' => 'onRegister',
+            'User.Model.User.activationResend' => 'onRegister',
+            'User.Model.User.activate' => 'onActivate',
             'User.Model.User.passwordForgotten' => 'onPasswordForgotten',
-            'User.Model.User.passwordReset'     => 'onPasswordReset',
-            'User.Model.User.register'          => 'onRegister',
+            'User.Model.User.passwordReset' => 'onPasswordReset',
+            'User.Model.User.newLogin' => 'onLogin'
         ];
     }
 }

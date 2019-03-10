@@ -2,20 +2,31 @@
 
 namespace User;
 
+use Backend\Backend;
+use Backend\BackendPluginInterface;
+use Banana\Application;
+use Banana\Plugin\PluginInterface;
+use Cake\Core\Configure;
+use Cake\Core\Plugin;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
-use Settings\SettingsManager;
-use User\Service\UserEventLoggerService;
-use User\Service\UserLoginLoggerService;
+use Cake\Http\MiddlewareQueue;
+use Cake\Routing\RouteBuilder;
+use User\Service\GoogleAuthenticatorService;
+use User\Service\UserActivityService;
+use User\Service\UserAuthService;
+use User\Service\UserLoggingService;
 use User\Service\UserMailerService;
+use User\Service\UserPasswordService;
+use User\Service\UserSessionService;
 
 /**
  * Class UserPlugin
  *
  * @package User
  */
-class UserPlugin implements EventListenerInterface
+class UserPlugin implements PluginInterface, /*BackendPluginInterface,*/ EventListenerInterface
 {
     /**
      * Returns a list of events this object is implementing. When the class is registered
@@ -28,28 +39,32 @@ class UserPlugin implements EventListenerInterface
     public function implementedEvents()
     {
         return [
-            'Settings.build' => 'buildSettings'
+            'Settings.build' => 'buildSettings',
+            'Backend.Sidebar.build' => ['callable' => 'buildBackendSidebarMenu', 'priority' => 99 ],
         ];
     }
 
     /**
-     * @param Event $event
+     * @param Event $event The event object
+     * @return void
      */
     public function buildSettings(Event $event)
     {
-        if ($event->subject() instanceof SettingsManager) {
+        if ($event->subject() instanceof \Settings\SettingsManager) {
             $event->subject()->add('User', [
-                'layout' => [
-                    'type' => 'string',
-                ],
-                'Login.layout' => [
-                    'type' => 'string',
-                ],
                 'Login.disabled' => [
                     'type' => 'boolean',
                     'default' => false
                 ],
                 'Signup.disabled' => [
+                    'type' => 'boolean',
+                    'default' => false
+                ],
+                'Recaptcha.enabled' => [
+                    'type' => 'boolean',
+                    'default' => false
+                ],
+                'Logging.enabled' => [
                     'type' => 'boolean',
                     'default' => false
                 ],
@@ -66,14 +81,84 @@ class UserPlugin implements EventListenerInterface
     }
 
     /**
-     * Run user plugin
-     *
+     * @param Event $event The event object
      * @return void
      */
-    public function __invoke()
+    public function buildBackendSidebarMenu(Event $event)
     {
-        EventManager::instance()->on(new UserEventLoggerService());
-        EventManager::instance()->on(new UserLoginLoggerService());
-        //EventManager::instance()->on(new UserMailerService());
+        if ($event->subject() instanceof \Banana\Menu\Menu) {
+            //$settingsMenu = new Menu();
+            //$this->eventManager()->dispatch(new Event('Backend.SysMenu.build', $settingsMenu));
+            $event->subject()->addItem([
+                'title' => __d('user', 'Users'),
+                'url' => ['plugin' => 'User', 'controller' => 'Users', 'action' => 'index'],
+                'data-icon' => 'users',
+                'children' => [
+                    'user_groups' => [
+                        'title' => __d('user', 'User Groups'),
+                        'url' => ['plugin' => 'User', 'controller' => 'UserGroups', 'action' => 'index'],
+                        'data-icon' => 'users',
+                    ]
+                ],
+            ]);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function bootstrap(Application $app)
+    {
+        EventManager::instance()->on($this);
+        EventManager::instance()->on(new UserAuthService());
+        EventManager::instance()->on(new UserSessionService());
+        EventManager::instance()->on(new UserPasswordService());
+
+        if (Configure::read('User.Logging.enabled') == true) {
+            EventManager::instance()->on(new UserLoggingService(Configure::read('User.Logging')));
+        }
+
+        if (Configure::read('User.Mailer.enabled') == true) {
+            EventManager::instance()->on(new UserMailerService(Configure::read('User.Mailer')));
+        }
+
+        if (Plugin::loaded('Activity')) {
+            EventManager::instance()->on(new UserActivityService());
+        }
+
+        if (Plugin::loaded('GoogleAuthenticator')) {
+            EventManager::instance()->on(new GoogleAuthenticatorService());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function routes(RouteBuilder $routes)
+    {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function middleware(MiddlewareQueue $middleware)
+    {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function backendBootstrap(Backend $backend)
+    {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function backendRoutes(RouteBuilder $routes)
+    {
+        $routes->fallbacks('DashedRoute');
+
+        return $routes;
     }
 }

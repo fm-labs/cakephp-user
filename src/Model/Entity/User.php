@@ -1,13 +1,49 @@
 <?php
 namespace User\Model\Entity;
 
-use Cake\ORM\Entity;
 use Cake\Auth\AbstractPasswordHasher;
-use Cake\Routing\Router;
-use User\Controller\Component\AuthComponent;
+use Cake\ORM\Entity;
 
 /**
- * User Entity.
+ * User Entity
+ *
+ * @property int $id
+ * @property bool $superuser
+ * @property string $name
+ * @property string $first_name
+ * @property string $last_name
+ * @property int $group_id
+ * @property string $username
+ * @property string $password
+ * @property string $email
+ * @property bool $email_verification_required
+ * @property string $email_verification_code
+ * @property \Cake\I18n\Time $email_verification_expiry_timestamp
+ * @property bool $email_verified
+ * @property int $password_change_min_days
+ * @property int $password_change_max_days
+ * @property int $password_change_warning_days
+ * @property \Cake\I18n\Time $password_change_timestamp
+ * @property \Cake\I18n\Time $password_expiry_timestamp
+ * @property bool $password_force_change
+ * @property string $password_reset_code
+ * @property \Cake\I18n\Time $password_reset_expiry_timestamp
+ * @property bool $login_enabled
+ * @property string $login_last_login_ip
+ * @property string $login_last_login_host
+ * @property \Cake\I18n\Time $login_last_login_datetime
+ * @property int $login_failure_count
+ * @property \Cake\I18n\Time $login_failure_datetime
+ * @property bool $block_enabled
+ * @property string $block_reason
+ * @property \Cake\I18n\Time $block_datetime
+ * @property string $locale
+ * @property string $timezone
+ * @property string $currency
+ * @property \Cake\I18n\Time $created
+ * @property \Cake\I18n\Time $modified
+ *
+ * @property \User\Model\Entity\UserGroup $group
  */
 class User extends Entity
 {
@@ -53,6 +89,9 @@ class User extends Entity
         'block_reason' => false,
         'block_datetime' => false,
         'groups' => false,
+        'locale' => false,
+        'timezone' => false,
+        'is_deleted' => false
     ];
 
     /**
@@ -62,7 +101,13 @@ class User extends Entity
         'display_name',
         'is_root',
         'is_superuser',
-        //'password_reset_url'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $_hidden = [
+        'password',
     ];
 
     /**
@@ -94,22 +139,7 @@ class User extends Entity
     }
 
     /**
-     * @return string
-     * @todo Move url creation to controller (SOC)
-     * @deprecated
-     */
-    protected function _getPasswordResetUrl()
-    {
-        $username = base64_encode($this->username);
-        $code = base64_encode($this->password_reset_code);
-
-        //return Router::url(['prefix' => false, 'plugin' => 'User', 'controller' => 'User', 'action' => 'passwordReset', 'u' => $username, 'c' => $code], true);
-        //return AuthComponent::url(['action' => 'passwordReset', 'u' => $username, 'c' => $code]);
-        return '/user/passwort-reset';
-    }
-
-    /**
-     * @param $password
+     * @param string $password Password value
      * @return string
      */
     protected function _setPassword($password)

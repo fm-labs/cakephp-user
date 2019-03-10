@@ -1,12 +1,16 @@
 <?php
 namespace User\Controller;
 
-use Cake\Event\Event;
 use Cake\Core\Configure;
+use Cake\Event\Event;
+use Cake\Form\Form;
+use Cake\Log\Log;
+use Cake\Network\Exception\InternalErrorException;
 use Cake\Network\Response;
 use Cake\Routing\Router;
-use User\Mailer\UserMailer;
-use User\Model\Table\GroupsTable;
+use User\Exception\PasswordResetException;
+use User\Form\PasswordForgottenForm;
+use User\Model\Entity\User;
 use User\Model\Table\UsersTable;
 
 /**
@@ -14,7 +18,6 @@ use User\Model\Table\UsersTable;
  *
  * @package User\Controller
  * @property UsersTable $Users
- * @property GroupsTable $Groups
  */
 class UserController extends AppController
 {
@@ -23,9 +26,18 @@ class UserController extends AppController
      */
     public $modelClass = "User.Users";
 
+    public $captchaActions = ['login', 'register'];
+
     /**
-     * @param Event $event
-     * @return \Cake\Network\Response|null|void
+     * {@inheritDoc}
+     */
+    public function initialize()
+    {
+        parent::initialize();
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public function beforeFilter(Event $event)
     {
@@ -33,11 +45,11 @@ class UserController extends AppController
 
         $this->Auth->allow([
             'login', 'register', 'registerGroup', 'activate', 'activateResend',
-            'passwordForgotten', 'passwordSent', 'passwordReset'
+            'passwordForgotten', 'passwordSent', 'passwordReset', 'passwordChanged'
         ]);
 
-        if (!Configure::read('User')) {
-            throw new \RuntimeException("UserPlugin: Configuration not loaded!");
+        if ($this->components()->has('UserSession')) {
+            $this->UserSession->ignoreActions(['checkAuth']);
         }
 
         if (Configure::read('User.layout')) {
@@ -48,6 +60,8 @@ class UserController extends AppController
     /**
      * Login method
      * No authentication required
+     *
+     * @return void
      */
     public function login()
     {
@@ -65,14 +79,6 @@ class UserController extends AppController
         if (Configure::read('User.Login.disabled') != true) {
             $redirectUrl = $this->Auth->login();
             if ($redirectUrl) {
-
-                if ($this->Auth->user('email_verification_required') && !$this->Auth->user('email_verified')) {
-                    $this->Auth->logout();
-                    $this->Flash->error(__d('user', 'Your account has not been activated yet'), ['key' => 'auth']);
-                    $redirectUrl = ['action' => 'activate'];
-                }
-
-                //$this->Flash->success('Login. Redirect to '. $redirectUrl);
                 $this->redirect($redirectUrl);
             }
         } elseif ($this->request->is(['post'])) {
@@ -89,6 +95,8 @@ class UserController extends AppController
 
     /**
      * Logout method
+     *
+     * @return void
      */
     public function logout()
     {
@@ -100,10 +108,11 @@ class UserController extends AppController
     /**
      * Index method
      * Show user profile
+     *
+     * @return void
      */
     public function index()
     {
-        debug($this->Auth->user);
         $user = $this->Users->get($this->Auth->user('id'));
         $this->set('user', $user);
     }
@@ -123,12 +132,22 @@ class UserController extends AppController
         // force group auth
         if (Configure::read('User.Signup.groupAuth') == true) {
             if (!$this->request->session()->read('User.Signup.group_id')) {
-
                 return $this->redirect(['action' => 'registerGroup']);
             }
         }
 
-        $user = null;
+        $formClass = '\\User\\Form\\UserRegisterForm';
+        if (Configure::read('User.Signup.formClass')) {
+            $formClass = Configure::read('User.Signup.formClass');
+        }
+        if (!class_exists($formClass)) {
+            throw new InternalErrorException("Class not found: $formClass");
+        }
+        $form = new $formClass();
+        if (!($form instanceof Form)) {
+            throw new InternalErrorException("Object is not an instance of \\Cake\\Form\\Form");
+        }
+
         if (Configure::read('User.Signup.disabled') != true) {
             if ($this->request->is('post')) {
                 $data = $this->request->data;
@@ -136,7 +155,8 @@ class UserController extends AppController
                     $data['group_id'] = $this->request->session()->read('User.Signup.group_id');
                 }
 
-                $user = $this->Users->register($data);
+                //$user = $this->Users->register($data);
+                $user = $form->execute($data);
                 if ($user && $user->id) {
                     //$this->request->session()->delete('User.Signup');
                     $this->Flash->success(__d('user', 'An activation email has been sent to your email address!'), ['key' => 'auth']);
@@ -146,19 +166,18 @@ class UserController extends AppController
                 } else {
                     $this->Flash->error(__d('user', 'Please fill all required fields'), ['key' => 'auth']);
                 }
-            } else {
-                $user = $this->Users->register([]);
             }
         } else {
             $this->Flash->error(__d('user', 'Sorry, but user registration is currently disabled.'), ['key' => 'auth']);
         }
 
-        $this->set(compact('user'));
-        $this->set('_serialize', ['user']);
+        $this->set(compact('user', 'form'));
     }
 
     /**
      * Group registration
+     *
+     * @return void
      */
     public function registerGroup()
     {
@@ -172,8 +191,8 @@ class UserController extends AppController
             }
 
             // find user group with that password
-            $this->loadModel('User.Groups');
-            $userGroup = $this->UserGroups->find()->where(['password' => $grpPass])->first();
+            //$this->loadModel('User.Groups');
+            $userGroup = $this->Users->UserGroups->find()->where(['password' => $grpPass])->first();
 
             if (!$userGroup) {
                 $this->request->session()->delete('User.Signup.group_id');
@@ -196,6 +215,8 @@ class UserController extends AppController
 
     /**
      * Activate
+     *
+     * @return void
      */
     public function activate()
     {
@@ -204,11 +225,13 @@ class UserController extends AppController
 
             return;
         }
+
+        /* @var User $user */
         $user = $this->Users->newEntity();
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Users->activate($this->request->data)) {
                 $this->Flash->success(__d('user', 'Your account has been activated. You can login now.'), ['key' => 'auth']);
-                $this->redirect(['action' => 'login', 'm' => base64_encode($user->email), ]);
+                $this->redirect(['action' => 'login', 'm' => base64_encode($user->email) ]);
             } else {
                 $this->Flash->error(__d('user', 'Account activation failed'), ['key' => 'auth']);
             }
@@ -217,12 +240,27 @@ class UserController extends AppController
                 ? base64_decode($this->request->query('m')) : null;
             $user->email_verification_code = ($this->request->query('c'))
                 ? base64_decode($this->request->query('c')) : null;
+
+            // auto-activation
+            if ($user->email && $user->email_verification_code) {
+                if ($this->Users->activate([
+                    'email' => $user->email,
+                    'email_verification_code' => $user->email_verification_code
+                ])) {
+                    $this->Flash->success(__d('user', 'Your account has been activated. You can login now.'), ['key' => 'auth']);
+                    $this->redirect(['action' => 'login', 'm' => base64_encode($user->email) ]);
+                } else {
+                    $this->Flash->error(__d('user', 'Account activation failed'), ['key' => 'auth']);
+                }
+            }
         }
         $this->set('user', $user);
     }
 
     /**
      * Resend email verification email
+     *
+     * @return void
      */
     public function activateResend()
     {
@@ -232,9 +270,9 @@ class UserController extends AppController
             return;
         }
 
+        /* @var User $user */
         $user = $this->Users->newEntity();
         if ($this->request->is('post') || $this->request->is('put')) {
-
             $email = trim($this->request->data('email'));
             if (!$email) {
                 $this->Flash->error(__d('user', 'Please enter an email address'), ['key' => 'auth']);
@@ -249,12 +287,12 @@ class UserController extends AppController
                 return;
             }
 
-            $mailer = new UserMailer();
-            if ($mailer->send('userRegistration', [$user])) {
+            $user = $this->Users->resendVerificationCode($user);
+            if ($user && !$user->errors()) {
                 $this->Flash->success(__d('user', 'An activation email has been sent to {0}', $user->email), ['key' => 'auth']);
                 $this->redirect(['action' => 'activate', 'm' => base64_encode($user->email)]);
             } else {
-                $this->Flash->error(__d('user', 'Something went wrong'), ['key' => 'auth']);
+                $this->Flash->error(__d('user', 'Please fill all required fields'), ['key' => 'auth']);
             }
         } else {
             $user->email = ($this->request->query('m'))
@@ -267,6 +305,8 @@ class UserController extends AppController
      * Password forgotten method
      * Creates a new password reset code and sends email with password reset link
      * No authentication required
+     *
+     * @return void
      */
     public function passwordForgotten()
     {
@@ -276,22 +316,30 @@ class UserController extends AppController
             return;
         }
 
-        $user = $this->Users->newEntity();
-        $user->username = ($this->request->query('u')) ? base64_decode($this->request->query('u')) : null;
+        $form = new PasswordForgottenForm();
+
         if ($this->request->is('post') || $this->request->is('put')) {
-            if ($success = $this->Users->forgotPassword($user, $this->request->data) && !$user->errors()) {
+            $user = $form->execute($this->request->data);
+            if ($user) {
                 $this->Flash->success(__d('user', 'Password recovery info has been sent to you via email. Please check your inbox.'), ['key' => 'auth']);
+
+                if (Configure::read('debug')) {
+                    $this->Flash->set(UsersTable::buildPasswordResetUrl($user), ['key' => 'auth']);
+                }
+
                 $this->redirect(['action' => 'passwordSent']);
             } else {
-                $this->Flash->error(__d('user', 'Something went wrong'), ['key' => 'auth']);
+                $this->Flash->error(__d('user', 'Please fill all required fields'), ['key' => 'auth']);
             }
         }
 
-        $this->set('user', $user);
+        $this->set('form', $form);
     }
 
     /**
      * Password forgotten default success action
+     *
+     * @return void
      */
     public function passwordSent()
     {
@@ -301,6 +349,8 @@ class UserController extends AppController
      * Password reset method
      * User can assign new password with username and a password reset code
      * No authentication required
+     *
+     * @return void|\Cake\Network\Response
      */
     public function passwordReset()
     {
@@ -308,27 +358,55 @@ class UserController extends AppController
             return $this->redirect(['action' => 'index']);
         }
 
-        $user = $this->Users->newEntity();
-        $user->username = ($this->request->query('u')) ? base64_decode($this->request->query('u')) : null;
-        $user->password_reset_code = ($this->request->query('c')) ? base64_decode($this->request->query('c')) : null;
-
-        if ($this->request->is('post') || $this->request->is('put')) {
-            if ($this->Users->resetPassword($user, $this->request->data)) {
-                $event = $this->eventManager()->dispatch(new Event('User.Model.User.passwordReset', $user));
-
-                $this->Flash->success(__d('user', 'You can now login with your new password'), ['key' => 'auth']);
-                $this->redirect(['_name' => 'user:login', 'u' => base64_encode($user->username)]);
-            } else {
-                //@todo check if link has expired -> Document expired
-                debug($user->errors());
-                $this->Flash->error(__d('user', 'Failed to reset password'), ['key' => 'auth']);
+        $user = null;
+        try {
+            $query = [];
+            if ($this->request->query('u')) {
+                $query['username'] = base64_decode($this->request->query('u'));
             }
+            if ($this->request->query('c')) {
+                $query['password_reset_code'] = base64_decode($this->request->query('c'));
+            }
+
+            if (!isset($query['password_reset_code'])) {
+                throw new PasswordResetException(__d('user', "Password reset code missing"));
+            }
+
+            /* @var User $user */
+            $user = $this->Users->find()
+                ->where($query)
+                ->first();
+            if (!$user) {
+                throw new PasswordResetException("Invalid request");
+            }
+
+            if ($this->request->is('post') || $this->request->is('put')) {
+                $user = $this->Users->resetPassword($user, $this->request->data);
+                if ($user && !$user->errors()) {
+                    $this->Flash->success(__d('user', 'You can now login with your new password'), ['key' => 'auth']);
+                    $this->redirect(['_name' => 'user:login', 'u' => base64_encode($user->username)]);
+                } else {
+                    $this->Flash->error(__d('user', 'Please fill all required fields'), ['key' => 'auth']);
+                }
+            }
+
+        } catch (PasswordResetException $ex) {
+            $this->Flash->error($ex->getMessage(), ['key' => 'auth']);
+            $this->redirect(['_name' => 'user:login']);
+
+        } catch (\Exception $ex) {
+            Log::error("UsersController::resetPassword: " . $ex->getMessage(), ['user']);
+            $this->Flash->error(__d('user', 'Something went wrong. Please try again.'), ['key' => 'auth']);
+            $this->redirect(['_name' => 'user:login']);
         }
+
         $this->set('user', $user);
     }
 
     /**
      * Passsword change method
+     *
+     * @return void
      */
     public function passwordChange()
     {
@@ -336,11 +414,33 @@ class UserController extends AppController
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Users->changePassword($user, $this->request->data)) {
                 $this->Flash->success(__d('user', 'Your password has been changed.'), ['key' => 'auth']);
-                $this->redirect(['_name' => 'user:profile']);
+                $this->redirect(['action' => 'passwordChanged']);
             } else {
-                $this->Flash->error(__d('user', 'Ups, something went wrong'), ['key' => 'auth']);
+                $this->Flash->error(__d('user', 'Please fill all required fields'), ['key' => 'auth']);
             }
         }
         $this->set('user', $user);
+    }
+
+    /**
+     * Password forgotten default success action
+     *
+     * @return void
+     */
+    public function passwordChanged()
+    {
+    }
+
+    /**
+     * Return client session info in JSON format
+     *
+     * @return void
+     */
+    public function session()
+    {
+        $this->viewBuilder()->className('Json');
+        $data = $this->UserSession->extractSessionInfo();
+        $this->set('data', $data);
+        $this->set('_serialize', 'data');
     }
 }

@@ -1,13 +1,13 @@
 {
-    "name": "fm-labs/cakephp3-user",
+    "name": "fm-labs/cakephp-user",
     "description": "User plugin for CakePHP",
     "type": "cakephp-plugin",
     "require": {
         "php": ">=5.4",
-        "cakephp/cakephp": "~3.0"
+        "cakephp/cakephp": "3.3.*"
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "<6.0"
     },
     "autoload": {
         "psr-4": {
@@ -19,5 +19,8 @@
             "User\\Test\\": "tests",
             "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
         }
+    },
+    "suggest": {
+        "matomo-org/device-detector": "Enabled User Agents parsing to detect devices, clients, operating systems, brands and models."
     }
 }

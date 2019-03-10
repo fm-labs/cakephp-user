@@ -10,7 +10,7 @@ use User\Model\Entity\Group;
 /**
  * UserGroups Model
  */
-class UserGroupsTable extends Table
+class UserGroupsTable extends UserBaseTable
 {
 
     /**
@@ -24,7 +24,7 @@ class UserGroupsTable extends Table
         $this->table('user_groups');
         $this->displayField('name');
         $this->primaryKey('id');
-        $this->hasMany('PrimaryUsers', [
+        $this->hasMany('Users', [
             'foreignKey' => 'group_id',
             'className' => 'User.Users'
         ]);

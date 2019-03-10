@@ -59,6 +59,8 @@ class RbacComponent extends Component
     /**
      * Get current authenticated user
      * via AuthComponent
+     *
+     * @return array
      */
     public function getAuthUser()
     {
@@ -67,7 +69,10 @@ class RbacComponent extends Component
 
     /**
      * Get user by model and id
-     * @param $userId
+     *
+     * @param int $userId User ID
+     * @throws NotImplementedException
+     * @return void
      */
     public function getUser($userId)
     {
@@ -76,7 +81,10 @@ class RbacComponent extends Component
 
     /**
      * Get roles of user
-     * @param $userId
+     *
+     * @param int $userId User ID
+     * @throws NotImplementedException
+     * @return void
      */
     public function getUserRoles($userId)
     {
@@ -85,7 +93,10 @@ class RbacComponent extends Component
 
     /**
      * Get permissions of user
-     * @param $userId
+     *
+     * @param int $userId User ID
+     * @throws NotImplementedException
+     * @return void
      */
     public function getUserPermissions($userId)
     {
@@ -94,7 +105,10 @@ class RbacComponent extends Component
 
     /**
      * Get role by id
-     * @param $roleId
+     *
+     * @param int $roleId Role ID
+     * @throws NotImplementedException
+     * @return void
      */
     public function getRole($roleId)
     {
@@ -103,7 +117,10 @@ class RbacComponent extends Component
 
     /**
      * Get list of users associated with given role
-     * @param $roleId
+     *
+     * @param int $roleId Role ID
+     * @throws NotImplementedException
+     * @return void
      */
     public function getRoleUsers($roleId)
     {
@@ -112,7 +129,10 @@ class RbacComponent extends Component
 
     /**
      * Get list of permissions associated with given role
-     * @param $roleId
+     *
+     * @param int $roleId Role ID
+     * @throws NotImplementedException
+     * @return void
      */
     public function getRolePermissions($roleId)
     {
@@ -121,7 +141,10 @@ class RbacComponent extends Component
 
     /**
      * Get permission by id
-     * @param $permId
+     *
+     * @param int $permId Permission ID
+     * @throws NotImplementedException
+     * @return void
      */
     public function getPermission($permId)
     {
@@ -130,7 +153,10 @@ class RbacComponent extends Component
 
     /**
      * Get list of roles associated with given permission
-     * @param $permId
+     *
+     * @param int $permId Permission ID
+     * @throws NotImplementedException
+     * @return void
      */
     public function getPermissionRoles($permId)
     {
@@ -139,7 +165,10 @@ class RbacComponent extends Component
 
     /**
      * Get list of permissions associated with given permission
-     * @param $permId
+     *
+     * @param int $permId Permission ID
+     * @throws NotImplementedException
+     * @return void
      */
     public function getPermissionUsers($permId)
     {
@@ -147,8 +176,10 @@ class RbacComponent extends Component
     }
 
     /**
-     * @param $user
-     * @param $role
+     * @param string $user User name
+     * @param string $role Role name
+     * @throws NotImplementedException
+     * @return void
      */
     public function userAddRole($user, $role)
     {
@@ -156,8 +187,10 @@ class RbacComponent extends Component
     }
 
     /**
-     * @param $role
-     * @param $permission
+     * @param string $role Role name
+     * @param string $permission Permission name
+     * @throws NotImplementedException
+     * @return void
      */
     public function roleAddPermission($role, $permission)
     {

@@ -1,73 +1,59 @@
 <?php
-use Cake\Routing\Router;
 use Cake\Core\Configure;
-use Cake\Utility\Hash;
-
-$userConfig = (array) Configure::read('User');
-
-/*
-if (Hash::get($userConfig, 'Router.rootScope') === true) {
-    Router::connect('/login',
-        $base + ['action' => 'login'],
-        ['_name' => 'user:login']
-    );
-    Router::connect('/logout',
-        $base + ['action' => 'logout'],
-        ['_name' => 'user:logout']
-    );
-    Router::connect('/register',
-        $base + ['action' => 'register'],
-        ['_name' => 'user:register']
-    );
-}
-*/
-
+use Cake\Routing\RouteBuilder;
+use Cake\Routing\Router;
 
 // User plugin routes
-Router::scope('/user', ['_namePrefix' => 'user:'], function ($routes) {
-
-    $userController = (Configure::read('User.controller')) ?: 'User.User';
-    list($plugin, $controller) = pluginSplit($userController);
-    $base = compact('plugin', 'controller');
-
-    $routes->connect('/login',
-        $base + ['action' => 'login'],
+Router::plugin('User', ['_namePrefix' => 'user:'], function (RouteBuilder $routes) {
+    $routes->connect(
+        '/login',
+        ['controller' => 'User', 'action' => 'login'],
         ['_name' => 'login']
     );
-    $routes->connect('/logout',
-        $base + ['action' => 'logout'],
+    $routes->connect(
+        '/logout',
+        ['controller' => 'User', 'action' => 'logout'],
         ['_name' => 'logout']
     );
-    $routes->connect('/register',
-        $base + ['action' => 'register'],
+    $routes->connect(
+        '/register',
+        ['controller' => 'User', 'action' => 'register'],
         ['_name' => 'register']
     );
-    $routes->connect('/activate',
-        $base + ['action' => 'activate'],
+    $routes->connect(
+        '/activate',
+        ['controller' => 'User', 'action' => 'activate'],
         ['_name' => 'activate']
     );
-    $routes->connect('/password-forgotten',
-        $base + ['action' => 'passwordForgotten'],
+    $routes->connect(
+        '/password-forgotten',
+        ['controller' => 'User', 'action' => 'passwordForgotten'],
         ['_name' => 'passwordforgotten']
     );
-    $routes->connect('/password-reset',
-        $base + ['action' => 'passwordReset'],
+    $routes->connect(
+        '/password-reset',
+        ['controller' => 'User', 'action' => 'passwordReset'],
         ['_name' => 'passwordreset']
     );
-    $routes->connect('/password-change',
-        $base + ['action' => 'passwordChange'],
+    $routes->connect(
+        '/password-change',
+        ['controller' => 'User', 'action' => 'passwordChange'],
         ['_name' => 'passwordchange']
     );
-    $routes->connect('/:action',
-        $base
+    $routes->connect(
+        '/session',
+        ['controller' => 'User', 'action' => 'session'],
+        ['_name' => 'checkauth']
     );
-    $routes->connect('/',
-        $base + ['action' => 'index'],
+    //$routes->connect('/:action',
+    //    $base
+    //);
+    $routes->connect(
+        '/',
+        ['controller' => 'User', 'action' => 'index'],
         ['_name' => 'profile']
     );
 
     //$routes->connect('/:controller');
-    //$routes->fallbacks('DashedRoute');
+    $routes->fallbacks('DashedRoute');
 });
-
-unset($userConfig);
