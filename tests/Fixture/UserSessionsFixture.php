@@ -46,17 +46,17 @@ class UserSessionsFixture extends TestFixture
      * @var array
      */
     public $records = [
-        [
-            'id' => 1,
-            'user_id' => 1,
-            'login_provider' => 'Lorem ipsum dolor sit amet',
-            'client_ip' => 'Lorem ipsum dolor sit amet',
-            'geo_location' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-            'sessionid' => 'Lorem ipsum dolor sit amet',
-            'sessiontoken' => 'Lorem ipsum dolor sit amet',
-            'timestamp' => 1551905845,
-            'expires' => 1551905845,
-            'created' => '2019-03-06 20:57:25'
-        ],
+//        [
+//            'id' => 1,
+//            'user_id' => 1,
+//            'login_provider' => 'Lorem ipsum dolor sit amet',
+//            'client_ip' => 'Lorem ipsum dolor sit amet',
+//            'geo_location' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
+//            'sessionid' => 'Lorem ipsum dolor sit amet',
+//            'sessiontoken' => 'Lorem ipsum dolor sit amet',
+//            'timestamp' => 1551905845,
+//            'expires' => 1551905845,
+//            'created' => '2019-03-06 20:57:25'
+//        ],
     ];
 }
