@@ -1,40 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="<?= Cake\I18n\I18n::locale(); ?>">
 <head>
     <?= $this->Html->charset() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <?= $this->fetch('title') ?>
-    </title>
+    <title><?= $this->fetch('title') ?></title>
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="robots" content="noindex,nofollow">
     <?= $this->Html->meta('icon') ?>
-
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('cake.css') ?>
-
     <?= $this->fetch('meta') ?>
+
+    <?= $this->Html->css('User.user'); ?>
     <?= $this->fetch('css') ?>
-    <?= $this->fetch('script') ?>
+    <?= $this->fetch('headjs') ?>
 </head>
 <body>
 <header>
-    <div class="header-title">
-        User:
-        <span><?= $this->fetch('title') ?></span>
-    </div>
-    <div class="header-help">
-    </div>
 </header>
-<div id="container">
-
-    <div id="content">
-        <?= $this->Flash->render() ?>
-
-        <div class="row">
-            <?= $this->fetch('content') ?>
-        </div>
+<div id="page">
+    <div id="flash" class="container">
+        <?= $this->Flash->render(); ?>
+        <?= $this->Flash->render('auth'); ?>
+        <?= $this->fetch('flash') ?>
     </div>
+    <main id="content">
+        <?= $this->fetch('content') ?>
+    </main>
     <footer>
     </footer>
 </div>
+<?= $this->fetch('script') ?>
 </body>
 </html>

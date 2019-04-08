@@ -1,11 +1,13 @@
 <?php
 namespace User\Test\TestCase\Controller\Component;
 
+use Cake\Auth\FormAuthenticate;
 use Cake\Controller\ComponentRegistry;
 use Cake\Event\Event;
 use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Security;
 use User\Controller\Component\AuthComponent;
 
 /**
@@ -19,7 +21,7 @@ class AuthComponentTest extends TestCase
      *
      * @var \User\Controller\Component\AuthComponent
      */
-    public $AuthComponent;
+    public $Auth;
 
     public $controller = null;
 
@@ -39,9 +41,9 @@ class AuthComponentTest extends TestCase
             ->setMethods(null)
             ->getMock();
         $registry = new ComponentRegistry($this->controller);
-        $this->AuthComponent = new AuthComponent($registry);
+        $this->Auth = new AuthComponent($registry);
         $event = new Event('Controller.startup', $this->controller);
-        $this->AuthComponent->startup($event);
+        $this->Auth->startup($event);
     }
 
     /**
@@ -51,7 +53,7 @@ class AuthComponentTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->AuthComponent);
+        unset($this->Auth);
 
         parent::tearDown();
     }
@@ -84,6 +86,34 @@ class AuthComponentTest extends TestCase
     public function testLogin()
     {
         $this->markTestIncomplete('Not implemented yet.');
+
+        $AuthLoginFormAuthenticate = $this->getMockBuilder(FormAuthenticate::class)
+            ->setMethods(['authenticate'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->Auth->authenticate = [
+            'AuthLoginForm' => [
+                'userModel' => 'AuthUsers'
+            ]
+        ];
+        $this->Auth->setAuthenticateObject(0, $AuthLoginFormAuthenticate);
+        $this->controller->request = $this->controller->request->withParsedBody([
+            'AuthUsers' => [
+                'username' => 'mark',
+                'password' => Security::hash('cake', null, true)
+            ]
+        ]);
+        $user = [
+            'id' => 1,
+            'username' => 'mark'
+        ];
+        $AuthLoginFormAuthenticate->expects($this->once())
+            ->method('authenticate')
+            ->with($this->Controller->request)
+            ->will($this->returnValue($user));
+        $result = $this->Auth->identify();
+        $this->assertEquals($user, $result);
+        $this->assertSame($AuthLoginFormAuthenticate, $this->Auth->authenticationProvider());
     }
 
     /**
@@ -102,16 +132,6 @@ class AuthComponentTest extends TestCase
      * @return void
      */
     public function testTable()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test userModel method
-     *
-     * @return void
-     */
-    public function testUserModel()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

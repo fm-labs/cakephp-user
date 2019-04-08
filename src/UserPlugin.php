@@ -39,45 +39,9 @@ class UserPlugin implements PluginInterface, /*BackendPluginInterface,*/ EventLi
     public function implementedEvents()
     {
         return [
-            'Settings.build' => 'buildSettings',
+            'Settings.build' => 'settings',
             'Backend.Sidebar.build' => ['callable' => 'buildBackendSidebarMenu', 'priority' => 99 ],
         ];
-    }
-
-    /**
-     * @param Event $event The event object
-     * @return void
-     */
-    public function buildSettings(Event $event)
-    {
-        if ($event->subject() instanceof \Settings\SettingsManager) {
-            $event->subject()->add('User', [
-                'Login.disabled' => [
-                    'type' => 'boolean',
-                    'default' => false
-                ],
-                'Signup.disabled' => [
-                    'type' => 'boolean',
-                    'default' => false
-                ],
-                'Recaptcha.enabled' => [
-                    'type' => 'boolean',
-                    'default' => false
-                ],
-                'Logging.enabled' => [
-                    'type' => 'boolean',
-                    'default' => false
-                ],
-                'Signup.groupAuth' => [
-                    'type' => 'boolean',
-                    'default' => false
-                ],
-                'Signup.verifyEmail' => [
-                    'type' => 'boolean',
-                    'default' => false
-                ],
-            ]);
-        }
     }
 
     /**
@@ -129,6 +93,16 @@ class UserPlugin implements PluginInterface, /*BackendPluginInterface,*/ EventLi
         if (Plugin::loaded('GoogleAuthenticator')) {
             EventManager::instance()->on(new GoogleAuthenticatorService());
         }
+    }
+
+    /**
+     * @param Event $event The event object
+     * @param \Settings\SettingsManager $settings The settings manager object
+     * @return void
+     */
+    public function settings(Event $event, $settings)
+    {
+        $settings->load('User.settings');
     }
 
     /**

@@ -11,7 +11,8 @@ $this->Html->meta('robots', 'noindex,nofollow', ['block' => true]);
 $this->assign('title', __d('user', 'Registration'));
 ?>
 <div id="user-registration-form">
-    <?= $this->Form->create($form, ['novalidate']); ?>
+    <?= $this->Form->create($form); ?>
+    <?php debug($form->errors()); ?>
     <?= $this->Form->input(
         'first_name',
         ['label' => __d('user', 'First name'), 'placeholder' => __d('user', 'Firstname')]

@@ -3,9 +3,8 @@
 namespace User\Controller;
 
 use Cake\Core\Configure;
-use Cake\Core\Plugin;
 use Cake\Event\Event;
-use Cake\Network\Exception\NotFoundException;
+use Cake\Network\Exception\ServiceUnavailableException;
 use User\Model\Entity\User;
 
 class GoogleAuthController extends AppController
@@ -17,8 +16,8 @@ class GoogleAuthController extends AppController
     {
         parent::beforeFilter($event);
 
-        if (!Plugin::loaded('GoogleAuthenticator')) {
-            throw new NotFoundException();
+        if (!class_exists('\Dolondro\GoogleAuthenticator\GoogleAuthenticator')) {
+            throw new ServiceUnavailableException();
         }
 
         //$this->Auth->allow(['test']);

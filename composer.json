@@ -4,7 +4,7 @@
     "type": "cakephp-plugin",
     "require": {
         "php": ">=5.5.9",
-        "cakephp/cakephp": "3.3.*"
+        "cakephp/cakephp": "~3.0"
     },
     "require-dev": {
         "phpunit/phpunit": "<6.0"
@@ -21,6 +21,8 @@
         }
     },
     "suggest": {
-        "matomo-org/device-detector": "Enabled User Agents parsing to detect devices, clients, operating systems, brands and models."
+        "fm-labs/google-recaptcha": "Enables Google Recaptcha form verification",
+        "Dolondro/google-authenticator": "Enabled Two-factor-authentication with Google Authenticator",
+        "piwik/device-detector": "Enables User Agents parsing to detect devices, clients, operating systems, brands and models."
     }
 }

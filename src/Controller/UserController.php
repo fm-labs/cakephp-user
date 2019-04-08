@@ -8,6 +8,7 @@ use Cake\Log\Log;
 use Cake\Network\Exception\InternalErrorException;
 use Cake\Network\Response;
 use Cake\Routing\Router;
+use User\Exception\AuthException;
 use User\Exception\PasswordResetException;
 use User\Form\PasswordForgottenForm;
 use User\Model\Entity\User;
@@ -52,9 +53,8 @@ class UserController extends AppController
             $this->UserSession->ignoreActions(['checkAuth']);
         }
 
-        if (Configure::read('User.layout')) {
-            $this->viewBuilder()->layout(Configure::read('User.layout'));
-        }
+        $layout = (Configure::read('User.layout')) ?: null; //'User.user';
+        $this->viewBuilder()->layout($layout);
     }
 
     /**
@@ -65,6 +65,10 @@ class UserController extends AppController
      */
     public function login()
     {
+        if (Configure::read('User.Login.layout')) {
+            $this->viewBuilder()->layout(Configure::read('User.Login.layout'));
+        }
+
         if ($this->request->query('goto')) {
             //@TODO Check if goto URL is within app scope and/or use a token
             $this->request->session()->write('Auth.redirect', urldecode($this->request->query('goto')));
@@ -76,21 +80,27 @@ class UserController extends AppController
             }
         }
 
-        if (Configure::read('User.Login.disabled') != true) {
-            $redirectUrl = $this->Auth->login();
-            if ($redirectUrl) {
-                $this->redirect($redirectUrl);
+        try {
+            if (Configure::read('User.Login.disabled') == true) {
+                throw new AuthException(__d('user', 'Sorry, but login is currently disabled.'));
             }
-        } elseif ($this->request->is(['post'])) {
-            $this->Flash->error(__d('user', 'Sorry, but login is currently disabled.'), ['key' => 'auth']);
+
+            $authUser = $this->Auth->login();
+            if ($authUser) {
+                $redirectUrl = $this->Auth->redirectUrl();
+                if ($redirectUrl) {
+                    $this->redirect($redirectUrl);
+                }
+            }
+
+        } catch (AuthException $ex) {
+            $this->Auth->flash($ex->getMessage());
+        } catch (\Exception $ex) {
+            $this->Auth->flash(__('Login unavailable'));
         }
 
         $user = $this->Users->newEntity();
         $this->set('user', $user);
-
-        if (Configure::read('User.Login.layout')) {
-            $this->viewBuilder()->layout(Configure::read('User.Login.layout'));
-        }
     }
 
     /**

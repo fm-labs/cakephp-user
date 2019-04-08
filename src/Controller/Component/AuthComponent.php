@@ -8,7 +8,6 @@ use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Log\Log;
-//use Cake\Routing\Router;
 use User\Exception\AuthException;
 use User\Model\Table\UsersTable;
 
@@ -24,22 +23,6 @@ class AuthComponent extends CakeAuthComponent
      * @var UsersTable
      */
     public $Users;
-
-//    /**
-//     * Build full URL for User controller actions
-//     *
-//     * @param array|string $url URL
-//     * @return string Full URL
-//     * @deprecated
-//     */
-//    public static function url($url)
-//    {
-//        if (is_array($url)) {
-//            $url += compact('plugin', 'controller');
-//        }
-//
-//        return Router::url($url, true);
-//    }
 
     /**
      * {@inheritDoc}
@@ -92,15 +75,16 @@ class AuthComponent extends CakeAuthComponent
      * Login method.
      * Dispatches event 'User.Auth.beforeLogin' after authentication, but before user is logged in.
      * Dispatches event 'User.Auth.login' after the user has been authenticated and logged in.
-     * Dispatches event 'User.Auth.error' after the user has been authenticated and logged in.
+     * Dispatches event 'User.Auth.error' after the user has been authenticated, but login failed.
      *
-     * @return void|null|string
+     * @throws \Exception
+     * @return array|null User data or NULL if login failed
      */
     public function login()
     {
         // check if user is already authenticated
         if ($this->user()) {
-            return $this->redirectUrl();
+            return $this->user();
         }
 
         $user = null;
@@ -117,17 +101,16 @@ class AuthComponent extends CakeAuthComponent
                     $this->storage()->redirectUrl($event->data['redirect']);
                 }
                 if (isset($event->data['error'])) {
-                    //$this->flash($event->data['error']);
                     throw new AuthException($event->data['error'], $event->data['user']);
                 }
 
                 if ($event->result === false || $event->isStopped()) {
-                    //$user = null;
                     throw new AuthException(__d('user', 'Login failed'), $event->data['user']);
                 }
 
                 // set user in session
-                $this->setUser($event->data['user']);
+                $user = $event->data['user'];
+                $this->setUser($user);
 
                 $event = new Event('User.Auth.login', $this, [
                     'user' => $user,
@@ -135,32 +118,29 @@ class AuthComponent extends CakeAuthComponent
                 ]);
                 $this->eventManager()->dispatch($event);
 
-                // redirect to originally requested url (or login redirect url)
-                return $this->redirectUrl();
+                return $user;
+
             } elseif ($this->request->is('post')) {
-                $this->flash(__d('user', 'Login failed'));
-                //throw new AuthException(__d('user', 'Login failed'), $this->request->data);
-            } else {
-                // show login form
+                throw new AuthException(__d('user', 'Login failed'), $this->request->data);
             }
         } catch (AuthException $ex) {
             $this->setUser(null);
             $this->flash($ex->getMessage());
 
-            // dispatch 'User.Auth.error' event
             $event = new Event('User.Auth.error', $this, [
                 'request' => $this->request,
                 'error' => $ex
             ]);
             $this->eventManager()->dispatch($event);
+
         } catch (\Exception $ex) {
             $this->setUser(null);
-            $this->flash(__('Login unavailable'));
-
             Log::error('AuthComponent: ' . $ex->getMessage(), ['user']);
+        } finally {
+
         }
 
-        return null;
+        return $user;
     }
 
     /**

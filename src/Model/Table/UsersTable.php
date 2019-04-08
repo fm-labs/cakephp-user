@@ -104,6 +104,10 @@ class UsersTable extends UserBaseTable
             'className' => 'User.UserGroups'
         ]);
 
+        if (Plugin::loaded('Banana')) {
+            $this->addBehavior('Banana.Attributes');
+        }
+
         if (Plugin::loaded('Search')) {
             $this->addBehavior('Search.Search');
             $this->searchManager()

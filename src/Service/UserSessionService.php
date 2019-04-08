@@ -18,6 +18,11 @@ use Cake\ORM\TableRegistry;
 class UserSessionService implements EventListenerInterface
 {
     /**
+     * @var \GeoIp\Model\Table\GeoIpTable $GeoIp
+     */
+    public $GeoIp = null;
+
+    /**
      * Constructor
      */
     public function __construct()
