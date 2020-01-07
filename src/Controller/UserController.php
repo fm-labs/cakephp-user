@@ -96,6 +96,7 @@ class UserController extends AppController
         } catch (AuthException $ex) {
             $this->Auth->flash($ex->getMessage());
         } catch (\Exception $ex) {
+            debug($ex->getMessage());
             $this->Auth->flash(__('Login unavailable'));
         }
 

@@ -4,6 +4,7 @@ use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 
 // User plugin routes
+/*
 Router::plugin('User', ['_namePrefix' => 'user:'], function (RouteBuilder $routes) {
     $routes->connect(
         '/login',
@@ -57,3 +58,4 @@ Router::plugin('User', ['_namePrefix' => 'user:'], function (RouteBuilder $route
     //$routes->connect('/:controller');
     $routes->fallbacks('DashedRoute');
 });
+*/

@@ -14,7 +14,6 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\Routing\Router;
 use Cake\Validation\Validator;
-use GoogleRecaptcha\Lib\Recaptcha2;
 use User\Exception\PasswordResetException;
 use User\Model\Entity\User;
 
@@ -57,14 +56,7 @@ class UsersTable extends UserBaseTable
     /**
      * @var string Allowd special chars
      */
-    public static $passwordSpecialChars = "_-!?$%()=";
-
-    /**
-     * @var string Allowed password pattern
-     * @deprecated
-     * @TODO Refactor/Merge with passwordSpecialChars
-     */
-    public static $passwordRegex = '/^[A-Za-z0-9\_\-\!\?\$\%\(\)\=]+$/';
+    public static $passwordSpecialChars = '_-!?$%()=+[].,§';
 
     /**
      * @var int Password reset expiration expiration in seconds
@@ -286,10 +278,6 @@ class UsersTable extends UserBaseTable
             ->requirePresence('password')
             ->notEmpty('password');
 
-        if (Configure::read('User.Recaptcha.enabled')) {
-            $this->validationRecaptcha($validator);
-        }
-
         return $validator;
     }
 
@@ -318,24 +306,6 @@ class UsersTable extends UserBaseTable
         }
 
         return $user;
-    }
-
-    /**
-     * @param Validator $validator The validator instance
-     * @return Validator
-     */
-    protected function validationRecaptcha(Validator $validator)
-    {
-        $validator
-            ->requirePresence('g-recaptcha-response')
-            ->notEmpty('g-recaptcha-response', __d('user', 'Are you human?'))
-            ->add('g-recaptcha-response', 'recaptcha', [
-                'rule' => 'checkRecaptcha',
-                'provider' => 'table',
-                'message' => __d('user', 'Invalid captcha')
-            ]);
-
-        return $validator;
     }
 
     /**
@@ -647,10 +617,6 @@ class UsersTable extends UserBaseTable
         $validator
             ->add('login_enabled', 'valid', ['rule' => 'boolean']);
 
-        if (Configure::read('User.Recaptcha.enabled')) {
-            $this->validationRecaptcha($validator);
-        }
-
         return $validator;
     }
 
@@ -792,27 +758,6 @@ class UsersTable extends UserBaseTable
     }
 
     /**
-     * Google Recaptcha Validation Rule
-     *
-     * @param mixed $value Check value
-     * @param mixed $context Check context
-     * @return bool|string
-     */
-    public function checkRecaptcha($value, $context)
-    {
-        try {
-            if (!Recaptcha2::verify(Configure::read('GoogleRecaptcha.secretKey'), $value)) {
-                return __d('user', 'Captcha verification failed');
-            }
-
-        } catch (\Exception $ex) {
-            return __d('user', 'Unable to verify reCAPTCHA. Please try again later');
-        }
-
-        return true;
-    }
-
-    /**
      * Password Validation Rule
      *
      * @param mixed $value Check value
@@ -822,16 +767,6 @@ class UsersTable extends UserBaseTable
     public function checkNewPassword1($value, $context)
     {
         $value = trim($value);
-
-        // Check password length
-        //if (strlen($value) < static::$passwordMinLength) {
-        //    return __d('user', 'Password too short. Minimum {0} characters', static::$passwordMinLength);
-        //}
-
-        // Check for illegal characters
-        //if (!preg_match(static::$passwordRegex, $value)) {
-        //    return __d('user', 'Password contains illegal characters');
-        //}
 
         // Check for weak password
         if (isset($context['data']['username']) && $value == $context['data']['username']) {
@@ -857,8 +792,7 @@ class UsersTable extends UserBaseTable
         }
 
         $defaults = [
-            'allowedPattern' => self::$passwordRegex,
-
+            'allowedPattern' => '/^[A-Za-z0-9' . preg_quote(self::$passwordSpecialChars, '/') . ']+$/',
             'allowedSpecialChars' => self::$passwordSpecialChars,
             'minLength' => self::$passwordMinLength,
             'lowercase' => self::$passwordMinLowercase,
@@ -869,36 +803,64 @@ class UsersTable extends UserBaseTable
         $options = array_merge($defaults, $options);
 
         // Check password length
-        if (strlen($value) < $options['minLength']) {
+        if ($options['minLength'] > 0 && strlen($value) < $options['minLength']) {
             return __d('user', 'Password too short. Minimum {0} characters', $options['minLength']);
         }
 
         // Check for illegal characters
         if ($options['allowedPattern'] && !preg_match($options['allowedPattern'], $value)) {
-            return __d('user', 'Password contains illegal characters');
+            return __d('user', 'Only letters, numbers and {0} are valid', $options['allowedSpecialChars']);
         }
 
         if ($options['numbers'] > 0) {
             if (preg_match_all("#([0-9])#", $value) < $options['numbers']) {
-                return __d('user', "Password must include at least {0} numbers!", $options['numbers']);
+                return __dn(
+                    'user',
+                    "Password must include at least one number!",
+                    "Password must include at least {0} numbers!",
+                    $options['numbers'],
+                    $options['numbers']
+                );
             }
         }
 
         if ($options['lowercase'] > 0) {
             if (preg_match_all("#([a-z])#", $value) < $options['lowercase']) {
-                return __d('user', "Password must include at least {0} lowercase letters!", $options['lowercase']);
+                //return __d('user', "Password must include at least {0} lowercase letters!", $options['lowercase']);
+                return __dn(
+                    'user',
+                    "Password must include at least one lowercase letter!",
+                    "Password must include at least {0} lowercase letters!",
+                    $options['lowercase'],
+                    $options['lowercase']
+                );
             }
         }
 
         if ($options['uppercase'] > 0) {
             if (preg_match_all("#([A-Z])#", $value) < $options['uppercase']) {
-                return __d('user', "Password must include at least {0} UPPERCASE letters!", $options['uppercase']);
+                //return __d('user', "Password must include at least {0} UPPERCASE letters!", $options['uppercase']);
+                return __dn(
+                    'user',
+                    "Password must include at least one UPPERCASE letter!",
+                    "Password must include at least {0} UPPERCASE letters!",
+                    $options['uppercase'],
+                    $options['uppercase']
+                );
             }
         }
 
         if ($options['special'] > 0) {
             if (preg_match_all("#([" . preg_quote($options['allowedSpecialChars'], "#") . "])#", $value) < $options['special']) {
-                return __d('user', "Password must include at least {0} special characters!", $options['special']);
+                //return __d('user', "Password must include at least {0} special characters! ({1})", $options['special'], $options['allowedSpecialChars']);
+                return __dn(
+                    'user',
+                    "Password must include at least one special character! Allowed characters: {1}",
+                    "Password must include at least {0} special characters! Allowed characters: {1}",
+                    $options['special'],
+                    $options['special'],
+                    $options['allowedSpecialChars']
+                );
             }
         }
 

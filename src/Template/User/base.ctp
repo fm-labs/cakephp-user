@@ -8,9 +8,6 @@ $this->set('_no_tracking', true);
         max-width: 500px;
         margin: 0 auto;
     }
-    form .required label::after {
-        content:"*"
-    }
 </style>
 <div class="user-view view">
     <?= $this->Flash->render('auth'); ?>

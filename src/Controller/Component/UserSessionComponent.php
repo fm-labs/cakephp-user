@@ -310,6 +310,7 @@ class UserSessionComponent extends Component
         $data = [
             't' => time(),
             'l' => ($this->Auth->user('id')) ? 1 : 0,
+            'lt' => $this->config('maxLifetimeSec'),
             'e' => $userSession['expires'],
             'efmt' => ($userSession['expires']) ? date(DATE_ATOM, $userSession['expires']) : 0
         ];
