@@ -29,7 +29,7 @@ class UserMailerService implements EventListenerInterface
      */
     public function __construct(array $config = [])
     {
-        $this->config($config);
+        $this->setConfig($config);
         $this->setUserMailer($this->_config['mailerClass']);
     }
 

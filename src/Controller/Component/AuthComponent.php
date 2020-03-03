@@ -43,25 +43,25 @@ class AuthComponent extends CakeAuthComponent
         parent::initialize($config);
 
         // user model
-        if (!$this->config('userModel')) {
+        if (!$this->getConfig('userModel')) {
             $this->config('userModel', 'User.Users');
         }
 
         // default login action
-        if (!$this->config('loginAction')) {
+        if (!$this->getConfig('loginAction')) {
             $this->config('loginAction', ['plugin' => 'User', 'controller' => 'User', 'action' => 'login']);
         }
 
         // default authenticate
-        if (!$this->config('authenticate')) {
+        if (!$this->getConfig('authenticate')) {
             $this->config('authenticate', [
-                self::ALL => ['userModel' => $this->config('userModel'), 'finder' => 'authUser'],
+                self::ALL => ['userModel' => $this->getConfig('userModel'), 'finder' => 'authUser'],
                 'Form' => [/*'className' => 'User.Form'*/]
             ]);
         }
 
         // default authorize
-        if (!$this->config('authorize')) {
+        if (!$this->getConfig('authorize')) {
             //$this->config('authorize', [
             //    'Controller'
             //]);
@@ -168,7 +168,7 @@ class AuthComponent extends CakeAuthComponent
     public function table()
     {
         if (!$this->Users) {
-            $this->Users = $this->_registry->getController()->loadModel($this->config('userModel'));
+            $this->Users = $this->_registry->getController()->loadModel($this->getConfig('userModel'));
         }
 
         return $this->Users;

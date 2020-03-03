@@ -21,7 +21,7 @@ class UserPasswordService implements EventListenerInterface
     {
         // rehash password, if needed
         /* @var \User\Controller\Component\AuthComponent $Auth */
-        $Auth = $event->subject();
+        $Auth = $event->getSubject();
         if ($Auth->user() && $Auth->authenticationProvider()->needsPasswordRehash()) {
             $user = $Auth->Users->get($Auth->user('id'));
             $user->password = $Auth->request->data('password');

@@ -23,7 +23,7 @@ class GoogleAuthenticatorService implements EventListenerInterface
      */
     public function onLogout(Event $event)
     {
-        $event->subject()->request->session()->delete('Auth.GoogleAuth');
+        $event->getSubject()->request->session()->delete('Auth.GoogleAuth');
     }
 
     /**

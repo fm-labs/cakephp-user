@@ -30,7 +30,7 @@ class UserActivityService implements EventListenerInterface
     public function userActivity(Event $event)
     {
         /* @var \Cake\ORM\Table $Table */
-        $Table = $event->subject();
+        $Table = $event->getSubject();
         $activity = $this->Activities->newEntity([
             'type' => 'user',
             'model' => $Table->registryAlias(),
@@ -50,7 +50,7 @@ class UserActivityService implements EventListenerInterface
     public function authActivity(Event $event)
     {
         /* @var \User\Controller\Component\AuthComponent $auth */
-        $Auth = $event->subject();
+        $Auth = $event->getSubject();
         $activity = $this->Activities->newEntity([
             'type' => 'auth',
             'model' => $Auth->Users->registryAlias(),

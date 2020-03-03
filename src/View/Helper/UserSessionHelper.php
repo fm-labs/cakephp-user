@@ -25,7 +25,7 @@ class UserSessionHelper extends Helper
      */
     public function beforeLayout(Event $event)
     {
-        if ($this->request->session()->check($this->config('sessionKey'))) {
+        if ($this->request->session()->check($this->getConfig('sessionKey'))) {
             $script = <<<SCRIPT
 (function($, _) {
     function updateSessionInfo() {
@@ -58,8 +58,8 @@ SCRIPT;
             $script = str_replace(
                 ['{{LOGIN_URL}}', '{{CHECK_URL}}'],
                 [
-                    Router::url($this->config('loginUrl')),
-                    Router::url($this->config('checkUrl')),
+                    Router::url($this->getConfig('loginUrl')),
+                    Router::url($this->getConfig('checkUrl')),
                 ],
                 $script
             );

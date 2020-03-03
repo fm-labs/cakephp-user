@@ -93,14 +93,14 @@ class UserAuthService implements EventListenerInterface
             ];
 
             /* @var \User\Model\Entity\User $entity */
-            $entity = $event->subject()->Users->get($user['id']);
+            $entity = $event->getSubject()->Users->get($user['id']);
             $entity->accessible(array_keys($data), true);
-            $entity = $event->subject()->Users->patchEntity($entity, $data);
-            if (!$event->subject()->Users->save($entity)) {
+            $entity = $event->getSubject()->Users->patchEntity($entity, $data);
+            if (!$event->getSubject()->Users->save($entity)) {
                 Log::error("Failed to update user login info", ['user']);
             }
 
-            EventManager::instance()->dispatch(new Event('User.Model.User.newLogin', $event->subject()->Users, [
+            EventManager::instance()->dispatch(new Event('User.Model.User.newLogin', $event->getSubject()->Users, [
                 'user' => $entity,
                 'data' => $data
             ]));
@@ -117,12 +117,12 @@ class UserAuthService implements EventListenerInterface
         $data = $request->data;
 
         if (isset($data['username'])) {
-            $user = $event->subject()->Users->findByUsername($data['username'])->first();
+            $user = $event->getSubject()->Users->findByUsername($data['username'])->first();
             if ($user) {
                 $user->login_failure_count++;
                 $user->login_failure_datetime = new Time();
 
-                if (!$event->subject()->Users->save($user)) {
+                if (!$event->getSubject()->Users->save($user)) {
                     Log::error("Failed to update user with login info", ['user']);
                 }
             }

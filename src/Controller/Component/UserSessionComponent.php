@@ -97,7 +97,7 @@ class UserSessionComponent extends Component
         }
 
         /* @var \Cake\Controller\Controller $controller */
-        $controller = $event->subject();
+        $controller = $event->getSubject();
         $userSession = $this->userSession();
 
         if ($userSession !== null) {
@@ -133,7 +133,7 @@ class UserSessionComponent extends Component
 
         $expiresIn = $this->expiresIn();
         // auto-extend when 80% of the lifetime has been exeeded
-        if ($expiresIn < 0 || $expiresIn > $this->config('maxLifetimeSec') * 0.2) {
+        if ($expiresIn < 0 || $expiresIn > $this->getConfig('maxLifetimeSec') * 0.2) {
             return null;
         }
 
@@ -310,7 +310,7 @@ class UserSessionComponent extends Component
         $data = [
             't' => time(),
             'l' => ($this->Auth->user('id')) ? 1 : 0,
-            'lt' => $this->config('maxLifetimeSec'),
+            'lt' => $this->getConfig('maxLifetimeSec'),
             'e' => $userSession['expires'],
             'efmt' => ($userSession['expires']) ? date(DATE_ATOM, $userSession['expires']) : 0
         ];
