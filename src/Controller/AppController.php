@@ -30,9 +30,10 @@ class AppController extends BaseAppController
             throw new Exception('User: AuthComponent is not an instance of \User\Controller\Component\AuthComponent');
         }
 
-        if (!$this->components()->has('UserSession')) {
-            $this->loadComponent('User.UserSession', (array)Configure::read('User.UserSession'));
-        }
+        //@todo Enable UserSession component
+        //if (!$this->components()->has('UserSession')) {
+        //    $this->loadComponent('User.UserSession', (array)Configure::read('User.UserSession'));
+        //}
 
         $this->loadComponent('Flash');
     }

@@ -27,10 +27,10 @@ class UserSessionService implements EventListenerInterface
      */
     public function __construct()
     {
-        $this->UserSessions = TableRegistry::get('User.UserSessions');
+        $this->UserSessions = TableRegistry::getTableLocator()->get('User.UserSessions');
 
         if (Plugin::loaded('GeoIp')) {
-            $this->GeoIp = TableRegistry::get('GeoIp.GeoIp');
+            $this->GeoIp = TableRegistry::getTableLocator()->get('GeoIp.GeoIp');
         }
     }
 

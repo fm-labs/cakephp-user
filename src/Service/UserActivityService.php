@@ -20,7 +20,7 @@ class UserActivityService implements EventListenerInterface
      */
     public function __construct()
     {
-        $this->Activities = TableRegistry::get('Activity.Activities');
+        $this->Activities = TableRegistry::getTableLocator()->get('Activity.Activities');
     }
 
     /**

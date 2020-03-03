@@ -59,7 +59,7 @@ class UsersTableTest extends TestCase
         $config = TableRegistry::exists('Users') ? [] : [
             'className' => 'User\Model\Table\UsersTable'
         ];
-        $this->Users = TableRegistry::get('Users', $config);
+        $this->Users = TableRegistry::getTableLocator()->get('Users', $config);
     }
 
     /**
@@ -309,7 +309,7 @@ class UsersTableTest extends TestCase
         TableRegistry::remove('Users');
         UsersTable::$emailAsUsername = true;
 
-        $this->Users = TableRegistry::get('Users', [
+        $this->Users = TableRegistry::getTableLocator()->get('Users', [
             'className' => 'User\Model\Table\UsersTable'
         ]);
 

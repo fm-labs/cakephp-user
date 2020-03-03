@@ -38,7 +38,7 @@ class UserSessionsTableTest extends TestCase
     {
         parent::setUp();
         $config = TableRegistry::exists('UserSessions') ? [] : ['className' => 'User\Model\Table\UserSessionsTable'];
-        $this->UserSessions = TableRegistry::get('UserSessions', $config);
+        $this->UserSessions = TableRegistry::getTableLocator()->get('UserSessions', $config);
     }
 
     /**

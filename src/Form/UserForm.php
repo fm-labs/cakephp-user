@@ -24,7 +24,7 @@ abstract class UserForm extends Form
      */
     public function __construct(User $user = null)
     {
-        $this->Users = TableRegistry::get('User.Users');
+        $this->Users = TableRegistry::getTableLocator()->get('User.Users');
         if ($user === null) {
             $user = $this->Users->newEntity();
         }
