@@ -34,9 +34,9 @@ class UserSessionsTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('user_sessions');
-        $this->displayField('id');
-        $this->primaryKey('id');
+        $this->setTable('user_sessions');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
 

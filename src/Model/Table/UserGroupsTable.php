@@ -21,9 +21,9 @@ class UserGroupsTable extends UserBaseTable
      */
     public function initialize(array $config)
     {
-        $this->table('user_groups');
-        $this->displayField('name');
-        $this->primaryKey('id');
+        $this->setTable('user_groups');
+        $this->setDisplayField('name');
+        $this->setPrimaryKey('id');
         $this->hasMany('Users', [
             'foreignKey' => 'group_id',
             'className' => 'User.Users'

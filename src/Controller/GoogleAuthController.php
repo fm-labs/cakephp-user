@@ -4,7 +4,7 @@ namespace User\Controller;
 
 use Cake\Core\Configure;
 use Cake\Event\Event;
-use Cake\Network\Exception\ServiceUnavailableException;
+use Cake\Http\Exception\ServiceUnavailableException;
 use User\Model\Entity\User;
 
 class GoogleAuthController extends AppController

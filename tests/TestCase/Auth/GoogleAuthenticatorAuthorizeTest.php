@@ -3,7 +3,7 @@ namespace User\Test\TestCase\Auth;
 
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
-use Cake\Network\Request;
+use Cake\Http\ServerRequest as Request;
 use Cake\TestSuite\TestCase;
 use User\Auth\GoogleAuthenticatorAuthorize;
 

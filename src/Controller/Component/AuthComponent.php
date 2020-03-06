@@ -96,7 +96,7 @@ class AuthComponent extends CakeAuthComponent
                     'user' => $user,
                     'request' => $this->request
                 ]);
-                $event = $this->eventManager()->dispatch($event);
+                $event = $this->getEventManager()->dispatch($event);
                 if (isset($event->data['redirect'])) {
                     $this->storage()->redirectUrl($event->data['redirect']);
                 }
@@ -116,7 +116,7 @@ class AuthComponent extends CakeAuthComponent
                     'user' => $user,
                     'request' => $this->request
                 ]);
-                $this->eventManager()->dispatch($event);
+                $this->getEventManager()->dispatch($event);
 
                 return $user;
 
@@ -131,7 +131,7 @@ class AuthComponent extends CakeAuthComponent
                 'request' => $this->request,
                 'error' => $ex
             ]);
-            $this->eventManager()->dispatch($event);
+            $this->getEventManager()->dispatch($event);
 
         } catch (\Exception $ex) {
             $this->setUser(null);
@@ -155,7 +155,7 @@ class AuthComponent extends CakeAuthComponent
             'user' => $this->user(),
             'request' => $this->request // @deprecated This is redundant, as the request object can be accessed from the event subject
         ]);
-        $this->eventManager()->dispatch($event);
+        $this->getEventManager()->dispatch($event);
 
         return parent::logout();
     }

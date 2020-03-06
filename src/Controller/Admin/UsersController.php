@@ -125,7 +125,7 @@ class UsersController extends AppController
      *
      * @param string|null $id User id.
      * @return void
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function view($id = null)
     {
@@ -142,7 +142,7 @@ class UsersController extends AppController
     /**
      * Change password of current user
      * @param null $userId User ID
-     * @return \Cake\Network\Response|void
+     * @return \Cake\Http\Response|void
      */
     public function passwordChange($userId = null)
     {
@@ -170,7 +170,7 @@ class UsersController extends AppController
     /**
      * Change password of current user
      * @param null $userId User ID
-     * @return \Cake\Network\Response|void
+     * @return \Cake\Http\Response|void
      */
     public function passwordReset($userId = null)
     {
@@ -199,7 +199,7 @@ class UsersController extends AppController
      * User emails
      *
      * @param null $id User ID
-     * @return \Cake\Network\Response|void
+     * @return \Cake\Http\Response|void
      */
     public function emails($id = null)
     {

@@ -5,8 +5,8 @@ use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Form\Form;
 use Cake\Log\Log;
-use Cake\Network\Exception\InternalErrorException;
-use Cake\Network\Response;
+use Cake\Http\Exception\InternalErrorException;
+use Cake\Http\Response;
 use Cake\Routing\Router;
 use User\Exception\AuthException;
 use User\Exception\PasswordResetException;
@@ -69,9 +69,9 @@ class UserController extends AppController
             $this->viewBuilder()->layout(Configure::read('User.Login.layout'));
         }
 
-        if ($this->request->query('goto')) {
+        if ($this->request->getQuery('goto')) {
             //@TODO Check if goto URL is within app scope and/or use a token
-            $this->request->session()->write('Auth.redirect', urldecode($this->request->query('goto')));
+            $this->request->session()->write('Auth.redirect', urldecode($this->request->getQuery('goto')));
         } elseif (!$this->request->session()->check('Auth.redirect')) {
             $referer = $this->referer();
             if ($referer && Router::normalize($referer) != Router::normalize(['action' => __FUNCTION__])) {
@@ -247,10 +247,10 @@ class UserController extends AppController
                 $this->Flash->error(__d('user', 'Account activation failed'), ['key' => 'auth']);
             }
         } else {
-            $user->email = ($this->request->query('m'))
-                ? base64_decode($this->request->query('m')) : null;
-            $user->email_verification_code = ($this->request->query('c'))
-                ? base64_decode($this->request->query('c')) : null;
+            $user->email = ($this->request->getQuery('m'))
+                ? base64_decode($this->request->getQuery('m')) : null;
+            $user->email_verification_code = ($this->request->getQuery('c'))
+                ? base64_decode($this->request->getQuery('c')) : null;
 
             // auto-activation
             if ($user->email && $user->email_verification_code) {
@@ -299,15 +299,15 @@ class UserController extends AppController
             }
 
             $user = $this->Users->resendVerificationCode($user);
-            if ($user && !$user->errors()) {
+            if ($user && !$user->getErrors()) {
                 $this->Flash->success(__d('user', 'An activation email has been sent to {0}', $user->email), ['key' => 'auth']);
                 $this->redirect(['action' => 'activate', 'm' => base64_encode($user->email)]);
             } else {
                 $this->Flash->error(__d('user', 'Please fill all required fields'), ['key' => 'auth']);
             }
         } else {
-            $user->email = ($this->request->query('m'))
-                ? base64_decode($this->request->query('m')) : null;
+            $user->email = ($this->request->getQuery('m'))
+                ? base64_decode($this->request->getQuery('m')) : null;
         }
         $this->set('user', $user);
     }
@@ -361,7 +361,7 @@ class UserController extends AppController
      * User can assign new password with username and a password reset code
      * No authentication required
      *
-     * @return void|\Cake\Network\Response
+     * @return void|\Cake\Http\Response
      */
     public function passwordReset()
     {
@@ -372,11 +372,11 @@ class UserController extends AppController
         $user = null;
         try {
             $query = [];
-            if ($this->request->query('u')) {
-                $query['username'] = base64_decode($this->request->query('u'));
+            if ($this->request->getQuery('u')) {
+                $query['username'] = base64_decode($this->request->getQuery('u'));
             }
-            if ($this->request->query('c')) {
-                $query['password_reset_code'] = base64_decode($this->request->query('c'));
+            if ($this->request->getQuery('c')) {
+                $query['password_reset_code'] = base64_decode($this->request->getQuery('c'));
             }
 
             if (!isset($query['password_reset_code'])) {
@@ -393,7 +393,7 @@ class UserController extends AppController
 
             if ($this->request->is('post') || $this->request->is('put')) {
                 $user = $this->Users->resetPassword($user, $this->request->data);
-                if ($user && !$user->errors()) {
+                if ($user && !$user->getErrors()) {
                     $this->Flash->success(__d('user', 'You can now login with your new password'), ['key' => 'auth']);
                     $this->redirect(['_name' => 'user:login', 'u' => base64_encode($user->username)]);
                 } else {
@@ -449,7 +449,7 @@ class UserController extends AppController
      */
     public function session()
     {
-        $this->viewBuilder()->className('Json');
+        $this->viewBuilder()->setClassName('Json');
         $data = $this->UserSession->extractSessionInfo();
         $this->set('data', $data);
         $this->set('_serialize', 'data');

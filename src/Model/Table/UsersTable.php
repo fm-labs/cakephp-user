@@ -87,9 +87,9 @@ class UsersTable extends UserBaseTable
      */
     public function initialize(array $config)
     {
-        $this->table('user_users');
-        $this->displayField('username');
-        $this->primaryKey('id');
+        $this->setTable('user_users');
+        $this->setDisplayField('username');
+        $this->setPrimaryKey('id');
         $this->addBehavior('Timestamp');
         $this->belongsTo('UserGroups', [
             'foreignKey' => 'group_id',
@@ -295,7 +295,7 @@ class UsersTable extends UserBaseTable
         $user->accessible('password', false);
 
         $this->patchEntity($user, $data, ['validate' => 'add']);
-        if ($user->errors()) {
+        if ($user->getErrors()) {
             return $user;
         }
 
@@ -578,12 +578,12 @@ class UsersTable extends UserBaseTable
 
         // Event 'User.Model.User.beforeRegister'
         if ($dispatchEvent === true) {
-            $this->eventManager()->dispatch(new Event('User.Model.User.beforeRegister', $this, compact('user', 'data')));
+            $this->getEventManager()->dispatch(new Event('User.Model.User.beforeRegister', $this, compact('user', 'data')));
         }
 
         // User data validation
         $this->patchEntity($user, $data, ['validate' => 'register']);
-        if ($user->errors()) {
+        if ($user->getErrors()) {
             return $user;
         }
 
@@ -598,7 +598,7 @@ class UsersTable extends UserBaseTable
         if ($this->save($user)) {
             // Event 'User.Model.User.register'
             if ($dispatchEvent === true) {
-                $this->eventManager()->dispatch(new Event('User.Model.User.register', $this, compact('user', 'data')));
+                $this->getEventManager()->dispatch(new Event('User.Model.User.register', $this, compact('user', 'data')));
             }
         }
 
@@ -636,7 +636,7 @@ class UsersTable extends UserBaseTable
         $user->accessible('password2', true);
 
         $user = $this->patchEntity($user, $data, ['validate' => 'changePassword']);
-        if ($user->errors()) {
+        if ($user->getErrors()) {
             return false;
         }
 
@@ -717,7 +717,7 @@ class UsersTable extends UserBaseTable
         $user->accessible('password1', true);
         $user->accessible('password2', true);
         $user = $this->patchEntity($user, $data, ['validate' => 'resetPassword']);
-        if ($user->errors()) {
+        if ($user->getErrors()) {
             return $user;
         }
 
@@ -739,7 +739,7 @@ class UsersTable extends UserBaseTable
         unset($user->password); // hide password
 
         // dispatch event
-        $event = $this->eventManager()->dispatch(new Event('User.Model.User.passwordReset', $this, compact('user')));
+        $event = $this->getEventManager()->dispatch(new Event('User.Model.User.passwordReset', $this, compact('user')));
 
         return $user;
     }
@@ -992,7 +992,7 @@ class UsersTable extends UserBaseTable
         $user->email_verified = true;
         if ($this->save($user)) {
             if ($dispatchEvent === true) {
-                $this->eventManager()->dispatch(new Event('User.Model.User.activate', $this, compact('user')));
+                $this->getEventManager()->dispatch(new Event('User.Model.User.activate', $this, compact('user')));
             }
 
             return $user;
@@ -1020,7 +1020,7 @@ class UsersTable extends UserBaseTable
         }
 
         if ($dispatchEvent === true) {
-            $this->eventManager()->dispatch(new Event('User.Model.User.passwordForgotten', $this, compact('user')));
+            $this->getEventManager()->dispatch(new Event('User.Model.User.passwordForgotten', $this, compact('user')));
         }
 
         return $user;
@@ -1046,7 +1046,7 @@ class UsersTable extends UserBaseTable
         }
 
         if ($dispatchEvent === true) {
-            $this->eventManager()->dispatch(new Event('User.Model.User.markedDeleted', $this, compact('user')));
+            $this->getEventManager()->dispatch(new Event('User.Model.User.markedDeleted', $this, compact('user')));
         }
 
         return $user;
@@ -1072,7 +1072,7 @@ class UsersTable extends UserBaseTable
         }
 
         if ($dispatchEvent === true) {
-            $this->eventManager()->dispatch(new Event('User.Model.User.resetDeleted', $this, compact('user')));
+            $this->getEventManager()->dispatch(new Event('User.Model.User.resetDeleted', $this, compact('user')));
         }
 
         return $user;
@@ -1087,7 +1087,7 @@ class UsersTable extends UserBaseTable
     public function resendVerificationCode(User $user)
     {
         //@TODO Check if the verification code has expired. If so, create new verification code.
-        $event = $this->eventManager()->dispatch(new Event('User.Model.User.activationResend', $this, compact('user')));
+        $event = $this->getEventManager()->dispatch(new Event('User.Model.User.activationResend', $this, compact('user')));
 
         if ($event->result === false) {
             return false;

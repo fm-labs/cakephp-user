@@ -105,8 +105,8 @@ class UserRegisterForm extends UserForm
         $this->Users->validator('register', $this->Users->validationRegister(new Validator()));
 
         $user = $this->Users->register($data);
-        if ($user && $user->errors()) {
-            $this->_errors = $user->errors();
+        if ($user && $user->getErrors()) {
+            $this->_errors = $user->getErrors();
 
             return false;
         }

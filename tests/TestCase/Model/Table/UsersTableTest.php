@@ -251,7 +251,7 @@ class UsersTableTest extends TestCase
         // test with valid username and password
         $user = $this->Users->register(['username' => 'test2', 'email' => 'test2@example.org', 'password1' => self::TEST_PASS1, 'password2' => self::TEST_PASS1]);
         $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
-        $this->assertEmpty($user->errors());
+        $this->assertEmpty($user->getErrors());
         $this->assertNotEmpty($user->id);
 
         $user = $this->Users->get($user->id);
@@ -271,7 +271,7 @@ class UsersTableTest extends TestCase
         ];
         $user = $this->Users->register($data);
         $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
-        $this->assertEmpty($user->errors());
+        $this->assertEmpty($user->getErrors());
         $this->assertNotEmpty($user->id);
 
         $user = $this->Users->get($user->id);
@@ -292,7 +292,7 @@ class UsersTableTest extends TestCase
         ];
         $user = $this->Users->register($data);
         $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
-        $this->assertEmpty($user->errors());
+        $this->assertEmpty($user->getErrors());
         $this->assertNotEmpty($user->id);
 
         $user = $this->Users->get($user->id);
@@ -320,7 +320,7 @@ class UsersTableTest extends TestCase
 
         // test with valid username and password
         $user = $this->Users->register(['email' => 'test1@example.org', 'password1' => self::TEST_PASS1, 'password2' => self::TEST_PASS1]);
-        $this->assertEmpty($user->errors());
+        $this->assertEmpty($user->getErrors());
         $this->assertNotEmpty($user->id);
         $this->assertEquals('test1@example.org', $user->username);
         $this->assertEquals('test1@example.org', $user->email);
@@ -333,7 +333,7 @@ class UsersTableTest extends TestCase
             'username' => 'admin', // <-- this should get overridden
             'locale' => 'en'
         ]);
-        $this->assertEmpty($user->errors());
+        $this->assertEmpty($user->getErrors());
         $this->assertNotEmpty($user->id);
         $this->assertEquals('test2@example.org', $user->username);
         $this->assertEquals('test2@example.org', $user->email);

@@ -39,7 +39,7 @@ class UserActivityService implements EventListenerInterface
         ]);
 
         if (!$this->Activities->save($activity)) {
-            Log::error('Failed to save user activity: ' . json_encode($activity->errors()), ['user']);
+            Log::error('Failed to save user activity: ' . json_encode($activity->getErrors()), ['user']);
         }
     }
 
@@ -59,7 +59,7 @@ class UserActivityService implements EventListenerInterface
         ]);
 
         if (!$this->Activities->save($activity)) {
-            Log::error('Failed to save auth activity: ' . json_encode($activity->errors()), ['user']);
+            Log::error('Failed to save auth activity: ' . json_encode($activity->getErrors()), ['user']);
         }
     }
 

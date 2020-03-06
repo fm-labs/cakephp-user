@@ -7,7 +7,7 @@ use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
 use Cake\I18n\Time;
 use Cake\Log\Log;
-use Cake\Network\Request;
+use Cake\Http\ServerRequest as Request;
 
 /**
  * Class UserAuthService

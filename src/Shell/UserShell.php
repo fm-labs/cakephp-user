@@ -86,7 +86,7 @@ class UserShell extends Shell
         $user = $this->Users->patchEntity($user, $data);
 
         if (!$this->Users->save($user)) {
-            debug($user->errors());
+            debug($user->getErrors());
             $this->abort("Failed to create user");
         }
 

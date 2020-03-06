@@ -35,7 +35,7 @@ class UserPermissionsController extends AppController
      *
      * @param string|null $id Permission id.
      * @return void
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function view($id = null)
     {
@@ -49,7 +49,7 @@ class UserPermissionsController extends AppController
     /**
      * Add method
      *
-     * @return void|\Cake\Network\Response Redirects on successful add, renders view otherwise.
+     * @return void|\Cake\Http\Response Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
@@ -72,8 +72,8 @@ class UserPermissionsController extends AppController
      * Edit method
      *
      * @param string|null $id Permission id.
-     * @return void|\Cake\Network\Response Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @return void|\Cake\Http\Response Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
     {
@@ -98,8 +98,8 @@ class UserPermissionsController extends AppController
      * Delete method
      *
      * @param string|null $id Permission id.
-     * @return \Cake\Network\Response Redirects to index.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @return \Cake\Http\Response Redirects to index.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function delete($id = null)
     {

@@ -59,7 +59,7 @@ class UserSessionService implements EventListenerInterface
 
         $userSession = $this->UserSessions->newEntity($data);
         if (!$this->UserSessions->save($userSession)) {
-            Log::error('Failed to save user session: ' . json_encode($userSession->errors()), ['user']);
+            Log::error('Failed to save user session: ' . json_encode($userSession->getErrors()), ['user']);
         }
 
         $event->data = $data;
@@ -84,7 +84,7 @@ class UserSessionService implements EventListenerInterface
 
         $this->UserSessions->save($userSession);
         if (!$this->UserSessions->save($userSession)) {
-            Log::error('Failed to save user session: ' . json_encode($userSession->errors()), ['user']);
+            Log::error('Failed to save user session: ' . json_encode($userSession->getErrors()), ['user']);
         }
 
         Log::debug("User session extended for user with ID " . $userSession['user_id'], ['user']);

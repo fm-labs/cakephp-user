@@ -44,7 +44,7 @@ class UserSessionComponent extends Component
 
     /**
      * @param Event $event The event object
-     * @return \Cake\Network\Response|null
+     * @return \Cake\Http\Response|null
      */
     public function beforeFilter(Event $event)
     {
@@ -53,7 +53,7 @@ class UserSessionComponent extends Component
 
     /**
      * @param Event $event The event object
-     * @return \Cake\Network\Response|null
+     * @return \Cake\Http\Response|null
      */
     public function startup(Event $event)
     {
@@ -78,7 +78,7 @@ class UserSessionComponent extends Component
      * Check user session
      *
      * @param Event $event The event object
-     * @return \Cake\Network\Response|null|void
+     * @return \Cake\Http\Response|null|void
      */
     public function checkSession(Event $event)
     {
@@ -333,7 +333,7 @@ class UserSessionComponent extends Component
      * Send 'expired' response
      *
      * @param \Cake\Controller\Controller $controller Current controller instance
-     * @return \Cake\Network\Response|null
+     * @return \Cake\Http\Response|null
      */
     protected function _expired(Controller $controller)
     {

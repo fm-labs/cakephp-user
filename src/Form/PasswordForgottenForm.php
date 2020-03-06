@@ -73,8 +73,8 @@ class PasswordForgottenForm extends UserForm
             return false;
         }
 
-        if ($user->errors()) {
-            $this->_errors = $user->errors();
+        if ($user->getErrors()) {
+            $this->_errors = $user->getErrors();
 
             return false;
         }
