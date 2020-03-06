@@ -121,7 +121,7 @@ class GoogleAuthenticatorAuthorizeTest extends TestCase
     {
         $user = ['gauth_enabled' => true];
         $request = new Request('/posts/index');
-        $request->session()->write('Auth.GoogleAuth.verified', true);
+        $request->getSession()->write('Auth.GoogleAuth.verified', true);
 
         $this->assertTrue($this->auth->authorize($user, $request));
     }

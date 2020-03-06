@@ -7,14 +7,14 @@
     </p>
 
     <?= $this->Form->create(null); ?>
-    <?= $this->Form->input('user_id', ['type' => 'text', 'readonly' => true, 'value' => $user->id]); ?>
-    <?= $this->Form->input('email', ['type' => 'text', 'readonly' => true, 'value' => $user->email]); ?>
-    <?= $this->Form->input('email_type', [
+    <?= $this->Form->control('user_id', ['type' => 'text', 'readonly' => true, 'value' => $user->id]); ?>
+    <?= $this->Form->control('email', ['type' => 'text', 'readonly' => true, 'value' => $user->email]); ?>
+    <?= $this->Form->control('email_type', [
         'type' => 'select',
         'options' => $emailTypes
     ]); ?>
 
-    <?= $this->Form->input('debug_only', [
+    <?= $this->Form->control('debug_only', [
         'type' => 'checkbox',
         'checked' => 'checked'
     ]); ?>

@@ -3,10 +3,10 @@
 <div class="form">
     <?= $this->Form->create($entity); ?>
         <?php
-        echo $this->Form->input('superuser');
-        echo $this->Form->input('group_id');
-        echo $this->Form->input('email');
-        echo $this->Form->input('username');
+        echo $this->Form->control('superuser');
+        echo $this->Form->control('group_id');
+        echo $this->Form->control('email');
+        echo $this->Form->control('username');
         ?>
     <?= $this->Form->button(__d('user', 'Add')) ?>
     <?= $this->Form->end() ?>

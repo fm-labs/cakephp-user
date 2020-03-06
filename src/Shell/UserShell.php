@@ -44,8 +44,8 @@ class UserShell extends Shell
 
         debug($this->params);
 
-        $email = $this->param('email');
-        $password = $this->param('password');
+        $email = $this->getParam('email');
+        $password = $this->getParam('password');
 
         $this->loadModel('User.Users');
 

@@ -23,49 +23,49 @@ class UserAuthService implements EventListenerInterface
      */
     public function beforeLogin(Event $event)
     {
-        $user = (isset($event->data['user'])) ? $event->data['user'] : [];
+        $user = ($event->getData('user')) ?: [];
 
         if (empty($user)) {
-            $event->data += [
+            $event->setData([
                 'redirect' => ['_name' => 'user:login']
-            ];
+            ]);
 
             return false;
         }
 
         if (isset($user['is_deleted']) && $user['is_deleted'] == true) {
-            $event->data['user'] = null;
-            $event->data += [
+            $event->setData([
+                'user' => null,
                 'error' => __d('user', 'This account has been deleted'),
                 'redirect' => ['_name' => 'user:login']
-            ];
+            ]);
 
             return false;
         }
 
         if (isset($user['block_enabled']) && $user['block_enabled'] == true) {
-            $event->data += [
+            $event->setData([
                 'error' => __d('user', 'This account has been blocked'),
                 'redirect' => ['_name' => 'user:login']
-            ];
+            ]);
 
             return false;
         }
 
         if (isset($user['login_enabled']) && $user['login_enabled'] != true) {
-            $event->data += [
+            $event->setData([
                 'error' => __d('user', 'Login to this account is not enabled'),
                 'redirect' => ['_name' => 'user:login']
-            ];
+            ]);
 
             return false;
         }
 
         if ($user['email_verification_required'] && !$user['email_verified']) {
-            $event->data += [
+            $event->setData([
                 'error' => __d('user', 'Your account has not been verified yet'),
                 'redirect' => ['_name' => 'user:activate']
-            ];
+            ]);
 
             return false;
         }
@@ -77,8 +77,8 @@ class UserAuthService implements EventListenerInterface
      */
     public function afterLogin(Event $event)
     {
-        $request = (isset($event->data['request'])) ? $event->data['request'] : null;
-        $user = (isset($event->data['user'])) ? $event->data['user'] : null;
+        $request = $event->getData('request');
+        $user = $event->getData('user');
         if ($user && isset($user['id'])) {
             $clientIp = $clientHostname = null;
             if ($request instanceof Request) {
@@ -94,7 +94,7 @@ class UserAuthService implements EventListenerInterface
 
             /* @var \User\Model\Entity\User $entity */
             $entity = $event->getSubject()->Users->get($user['id']);
-            $entity->accessible(array_keys($data), true);
+            $entity->setAccess(array_keys($data), true);
             $entity = $event->getSubject()->Users->patchEntity($entity, $data);
             if (!$event->getSubject()->Users->save($entity)) {
                 Log::error("Failed to update user login info", ['user']);
@@ -113,8 +113,8 @@ class UserAuthService implements EventListenerInterface
      */
     public function onLoginError(Event $event)
     {
-        $request = $event->data['request'];
-        $data = $request->data;
+        $request = $event->getData('request');
+        $data = $request->getData();
 
         if (isset($data['username'])) {
             $user = $event->getSubject()->Users->findByUsername($data['username'])->first();

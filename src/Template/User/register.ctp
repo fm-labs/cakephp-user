@@ -13,23 +13,23 @@ $this->assign('title', __d('user', 'Registration'));
 <div id="user-registration-form">
     <?= $this->Form->create($form); ?>
     <?php debug($form->errors()); ?>
-    <?= $this->Form->input(
+    <?= $this->Form->control(
         'first_name',
         ['label' => __d('user', 'First name'), 'placeholder' => __d('user', 'Firstname')]
     ); ?>
-    <?= $this->Form->input(
+    <?= $this->Form->control(
         'last_name',
         ['label' => __d('user', 'Last name'), 'placeholder' => __d('user', 'Lastname')]
     ); ?>
-    <?= $this->Form->input(
+    <?= $this->Form->control(
         'email',
         ['label' => __d('user', 'Email'), 'placeholder' => 'email@example.com']
     ); ?>
-    <?= $this->Form->input(
+    <?= $this->Form->control(
         'password1',
         ['type' => 'password', 'required' => true, 'label' => __d('user', 'Password')]
     ); ?>
-    <?= $this->Form->input(
+    <?= $this->Form->control(
         'password2',
         ['type' => 'password', 'required' => true, 'label' => __d('user', 'Repeat password')]
     ); ?>

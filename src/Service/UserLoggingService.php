@@ -20,10 +20,10 @@ class UserLoggingService implements EventListenerInterface
     public function logEvent(Event $event)
     {
         $user = null;
-        if (isset($event->data['user'])) {
-            Log::info(sprintf("[User:%s] %s", $event->name(), $event->data['user']['username']), ['user']);
+        if (isset($event->getData('user'))) {
+            Log::info(sprintf("[User:%s] %s", $event->getName(), $event->getData('user')['username']), ['user']);
         } else {
-            Log::info(sprintf("[User:%s]", $event->name()), ['user']);
+            Log::info(sprintf("[User:%s]", $event->getName()), ['user']);
         }
     }
 

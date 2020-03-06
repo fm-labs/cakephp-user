@@ -218,7 +218,7 @@ class UsersController extends AppController
                 if ($this->request->data('debug_only')) {
                     $this->Flash->info('Debug Only');
 
-                    if (Plugin::loaded('Mailman')) {
+                    if (Plugin::isLoaded('Mailman')) {
                         $mailer->transport(new \Mailman\Mailer\Transport\MailmanTransport(['originalClassName' => 'Debug']));
                     } else {
                         $mailer->transport(new DebugTransport());

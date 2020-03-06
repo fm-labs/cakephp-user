@@ -12,8 +12,8 @@ $this->assign('title', __d('user', 'Google Authentication'));
 <?= $this->Flash->render(); ?>
 <div id="user-login-form" class="user-form">
     <?= $this->Form->create(null); ?>
-    <?= $this->Form->input('secretKey', ['value' => $secretKey]); ?>
-    <?= $this->Form->input('code', ['label' => __d('user', 'Authentication Code')]); ?>
+    <?= $this->Form->control('secretKey', ['value' => $secretKey]); ?>
+    <?= $this->Form->control('code', ['label' => __d('user', 'Authentication Code')]); ?>
     <?= $this->Form->button(__d('user', 'Authenticate'), ['class' => 'btn btn-primary']); ?>
     <?= $this->Form->end(); ?>
 

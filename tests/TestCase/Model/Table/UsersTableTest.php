@@ -280,7 +280,7 @@ class UsersTableTest extends TestCase
         $this->Users->delete($user);
 
         // test with valid username and password + default data (+i18n)
-        $_tmpLocale = I18n::locale();
+        $_tmpLocale = I18n::getLocale();
         $_tmpTz = date_default_timezone_get();
         $_tmpCur = 'EUR';
         I18n::locale('en');

@@ -32,7 +32,7 @@ $this->assign('title', __d('user', 'Setup 2-Factor Authentication'));
 
     <?= $this->Form->create(); ?>
     <?= $this->Form->hidden('user_id', ['value' => $user->id]); ?>
-    <?= $this->Form->input('code', ['placeholder' => __d('user','Enter code here'), 'autocomplete' => 'off']); ?>
+    <?= $this->Form->control('code', ['placeholder' => __d('user','Enter code here'), 'autocomplete' => 'off']); ?>
     <?= $this->Form->submit(__d('user', 'Enable'), ['class' => 'btn btn-primary btn-block']); ?>
     <?= $this->Form->end(); ?>
 

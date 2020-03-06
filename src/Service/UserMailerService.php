@@ -54,7 +54,7 @@ class UserMailerService implements EventListenerInterface
      */
     public function onRegister(Event $event)
     {
-        $this->sendEmail('userRegistration', [$event->data['user']]);
+        $this->sendEmail('userRegistration', [$event->getData('user')]);
     }
 
     /**
@@ -63,7 +63,7 @@ class UserMailerService implements EventListenerInterface
      */
     public function onActivate(Event $event)
     {
-        $this->sendEmail('userActivation', [$event->data['user']]);
+        $this->sendEmail('userActivation', [$event->getData('user')]);
     }
 
     /**
@@ -72,7 +72,7 @@ class UserMailerService implements EventListenerInterface
      */
     public function onLogin(Event $event)
     {
-        $this->sendEmail('newLogin', [$event->data['user']]);
+        $this->sendEmail('newLogin', [$event->getData('user')]);
     }
 
     /**
@@ -81,7 +81,7 @@ class UserMailerService implements EventListenerInterface
      */
     public function onPasswordForgotten(Event $event)
     {
-        $this->sendEmail('passwordForgotten', [$event->data['user']]);
+        $this->sendEmail('passwordForgotten', [$event->getData('user')]);
     }
 
     /**
@@ -90,7 +90,7 @@ class UserMailerService implements EventListenerInterface
      */
     public function onPasswordReset(Event $event)
     {
-        $this->sendEmail('passwordReset', [$event->data['user']]);
+        $this->sendEmail('passwordReset', [$event->getData('user')]);
     }
 
     /**

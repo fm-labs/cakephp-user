@@ -12,17 +12,17 @@ $this->assign('title', __d('user','Set a new password'));
 ?>
 <div id="user-password-change-form" class="user-form">
     <?= $this->Form->create($user); ?>
-    <?= $this->Form->input('password0', [
+    <?= $this->Form->control('password0', [
         'label' => __d('user','Current password'),
         'type' => 'password',
         'required' => true
     ]); ?>
-    <?= $this->Form->input('password1', [
+    <?= $this->Form->control('password1', [
         'label' => __d('user','New password'),
         'type' => 'password',
         'required' => true
     ]); ?>
-    <?= $this->Form->input('password2', [
+    <?= $this->Form->control('password2', [
         'label' => __d('user','Repeat password'),
         'type' => 'password',
         'required' => true

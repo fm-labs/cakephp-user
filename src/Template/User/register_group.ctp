@@ -12,7 +12,7 @@ $this->assign('title', __d('user','Registration'));
 ?>
 <div id="user-registration-form">
     <?= $this->Form->create(null, ['novalidate']); ?>
-    <?= $this->Form->input('group_pass', ['type' => 'text', 'required' => true, 'label' => 'Bitte geben Sie das Zugangspasswort für die Registrierung ein']); ?>
+    <?= $this->Form->control('group_pass', ['type' => 'text', 'required' => true, 'label' => 'Bitte geben Sie das Zugangspasswort für die Registrierung ein']); ?>
     <?= $this->Form->hidden('group_id'); ?>
     <div class="text-right">
         <?= $this->Form->button(__d('user','Continue'), ['class' => 'btn btn-primary']); ?>

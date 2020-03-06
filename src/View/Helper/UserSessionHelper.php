@@ -25,7 +25,7 @@ class UserSessionHelper extends Helper
      */
     public function beforeLayout(Event $event)
     {
-        if ($this->request->session()->check($this->getConfig('sessionKey'))) {
+        if ($this->request->getSession()->check($this->getConfig('sessionKey'))) {
             $script = <<<SCRIPT
 (function($, _) {
     function updateSessionInfo() {

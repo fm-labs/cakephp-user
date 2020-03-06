@@ -71,7 +71,7 @@ class UserSessionComponent extends Component
      */
     public function ignoreActions(array $actions, $merge = true)
     {
-        $this->config('ignoreActions', $actions, $merge);
+        $this->setConfig('ignoreActions', $actions, $merge);
     }
 
     /**
@@ -82,7 +82,7 @@ class UserSessionComponent extends Component
      */
     public function checkSession(Event $event)
     {
-        if ($this->Auth->config('checkAuthIn') != $event->name()) {
+        if ($this->Auth->getConfig('checkAuthIn') != $event->getName()) {
             return null;
         }
 
@@ -92,7 +92,7 @@ class UserSessionComponent extends Component
             return null;
         }
 
-        if (in_array($this->request->param('action'), $this->_config['ignoreActions'])) {
+        if (in_array($this->getController()->getRequest()->getParam('action'), $this->_config['ignoreActions'])) {
             return null;
         }
 
@@ -107,7 +107,7 @@ class UserSessionComponent extends Component
                 return $this->_expired($controller);
             }
 
-            if (!$this->request->is(['ajax', 'requested']) && !$this->extend()) {
+            if (!$this->getController()->getRequest()->is(['ajax', 'requested']) && !$this->extend()) {
                 $event->stopPropagation();
 
                 return $this->_expired($controller);
@@ -127,7 +127,7 @@ class UserSessionComponent extends Component
      */
     public function autoExtend()
     {
-        if ($this->userSession() === null || $this->request->is(['ajax', 'requested'])) {
+        if ($this->userSession() === null || $this->getController()->getRequest()->is(['ajax', 'requested'])) {
             return null;
         }
 
@@ -148,8 +148,8 @@ class UserSessionComponent extends Component
      */
     public function userSession()
     {
-        if ($this->request->session()->check($this->_config['sessionKey'])) {
-            return $this->request->session()->read($this->_config['sessionKey']);
+        if ($this->getController()->getRequest()->getSession()->check($this->_config['sessionKey'])) {
+            return $this->getController()->getRequest()->getSession()->read($this->_config['sessionKey']);
         }
 
         return null;
@@ -163,7 +163,7 @@ class UserSessionComponent extends Component
      */
     public function setUserSession(array $userSession)
     {
-        $this->request->session()->write($this->_config['sessionKey'], $userSession);
+        $this->getController()->getRequest()->getSession()->write($this->_config['sessionKey'], $userSession);
     }
 
     /**
@@ -178,19 +178,20 @@ class UserSessionComponent extends Component
             return;
         }
 
-        $sessionId = $this->request->session()->id();
+        $sessionId = $this->getController()->getRequest()->getSession()->id();
         $userSession = [
             'user_id' => $user['id'],
             'sessionid' => $sessionId,
             'sessiontoken' => $this->_createToken($sessionId),
             'timestamp' => time(),
             'expires' => ($this->_config['maxLifetimeSec'] > 0) ? time() + $this->_config['maxLifetimeSec'] : null,
-            'client_ip' => $this->request->clientIp(),
-            'user_agent' => $this->request->header('User-Agent')
+            'client_ip' => $this->getController()->getRequest()->clientIp(),
+            'user_agent' => $this->getController()->getRequest()->getHeaderLine('User-Agent')
         ];
 
+        /** @var Event $event */
         $event = $this->_registry->getController()->dispatchEvent('User.Session.create', $userSession, $this);
-        $this->setUserSession($event->data);
+        $this->setUserSession($event->getData());
     }
 
     /**
@@ -210,27 +211,27 @@ class UserSessionComponent extends Component
             return false;
         }
 
-        if ($userSession['sessionid'] != $this->request->session()->id()) {
+        if ($userSession['sessionid'] != $this->getController()->getRequest()->getSession()->id()) {
             Log::alert(
-                "SessionID mismatch! Possible Hijacking attempt. IP: " . $this->request->clientIp(),
+                "SessionID mismatch! Possible Hijacking attempt. IP: " . $this->getController()->getRequest()->clientIp(),
                 ['auth', 'user']
             );
 
             return false;
         }
 
-        if ($userSession['client_ip'] != $this->request->clientIp()) {
+        if ($userSession['client_ip'] != $this->getController()->getRequest()->clientIp()) {
             Log::alert(
-                "ClientIP mismatch! Possible Hijacking attempt. IP: " . $this->request->clientIp(),
+                "ClientIP mismatch! Possible Hijacking attempt. IP: " . $this->getController()->getRequest()->clientIp(),
                 ['auth', 'user']
             );
 
             return false;
         }
 
-        if ($userSession['user_agent'] != $this->request->header('User-Agent')) {
+        if ($userSession['user_agent'] != $this->getController()->getRequest()->getHeaderLine('User-Agent')) {
             Log::alert(
-                "User agent mismatch! Possible Hijacking attempt. IP: " . $this->request->clientIp(),
+                "User agent mismatch! Possible Hijacking attempt. IP: " . $this->getController()->getRequest()->clientIp(),
                 ['auth', 'user']
             );
 
@@ -258,8 +259,9 @@ class UserSessionComponent extends Component
 
         $userSession['expires'] = time() + $this->_config['maxLifetimeSec'];
 
+        /** @var Event $event */
         $event = $this->_registry->getController()->dispatchEvent('User.Session.extend', $userSession, $this);
-        $this->setUserSession($event->data);
+        $this->setUserSession($event->getData());
 
         return true;
     }
@@ -292,7 +294,7 @@ class UserSessionComponent extends Component
     {
         $userSession = $this->userSession();
         $this->_registry->getController()->dispatchEvent('User.Session.destroy', $userSession, $this);
-        $this->request->session()->delete($this->_config['sessionKey']);
+        $this->getController()->getRequest()->getSession()->delete($this->_config['sessionKey']);
     }
 
     /**
@@ -344,12 +346,11 @@ class UserSessionComponent extends Component
         if (!$controller->request->is('ajax')) {
             $this->Auth->flash(__d('user', 'Session timed out'));
 
-            return $controller->redirect($this->Auth->config('loginAction'));
-        }
+            return $controller->redirect($this->Auth->getConfig('loginAction'));
+        };
 
-        $this->response->statusCode(403);
-
-        return $this->response;
+        return $controller->getResponse()
+            ->withStatus(403);
     }
 
     /**

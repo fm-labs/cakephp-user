@@ -29,7 +29,7 @@ class UserSessionService implements EventListenerInterface
     {
         $this->UserSessions = TableRegistry::getTableLocator()->get('User.UserSessions');
 
-        if (Plugin::loaded('GeoIp')) {
+        if (Plugin::isLoaded('GeoIp')) {
             $this->GeoIp = TableRegistry::getTableLocator()->get('GeoIp.GeoIp');
         }
     }
@@ -73,7 +73,7 @@ class UserSessionService implements EventListenerInterface
     public function sessionExtend(Event $event)
     {
         /* @var \User\Model\Entity\UserSession $userSession */
-        $userSession = $this->UserSessions->findBySessionid($event->data['sessionid'])->first();
+        $userSession = $this->UserSessions->findBySessionid($event->getData('sessionid'))->first();
         if (!$userSession) {
             return;
         }
@@ -97,7 +97,7 @@ class UserSessionService implements EventListenerInterface
     public function sessionDestroy(Event $event)
     {
         /* @var \User\Model\Entity\UserSession $userSession */
-        $userSession = $this->UserSessions->findBySessionid($event->data['sessionid'])->first();
+        $userSession = $this->UserSessions->findBySessionid($event->getData('sessionid'))->first();
         if (!$userSession) {
             return;
         }

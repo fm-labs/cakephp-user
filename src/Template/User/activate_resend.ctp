@@ -12,7 +12,7 @@ $this->assign('title', __d('user','Resend verification email'));
 <div id="user-registration-form" class="form">
 
     <?= $this->Form->create($user); ?>
-    <?= $this->Form->input('email', ['type' => 'text', 'required' => true]); ?>
+    <?= $this->Form->control('email', ['type' => 'text', 'required' => true]); ?>
     <div class="text-right">
         <?= $this->Form->button(__d('user','Continue'), ['class' => 'btn btn-primary']); ?>
     </div>

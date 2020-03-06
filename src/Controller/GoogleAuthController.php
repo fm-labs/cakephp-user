@@ -126,7 +126,7 @@ class GoogleAuthController extends AppController
                     //$authUser['gauth_enabled'] = false;
                     //$this->Auth->setUser($authUser);
 
-                    //$this->request->session()->delete('Auth.GoogleAuth');
+                    //$this->request->getSession()->delete('Auth.GoogleAuth');
                     $this->redirect(['action' => 'index']);
                 } else {
                     $this->Flash->error("Operation failed");
@@ -160,7 +160,7 @@ class GoogleAuthController extends AppController
                 $this->Flash->error("Code missing");
             } elseif ($this->_checkGoogleAuth($user, $code)) {
                 //$this->Flash->success("Verification successful");
-                $this->request->session()->write('Auth.GoogleAuth', [
+                $this->request->getSession()->write('Auth.GoogleAuth', [
                     'verified' => true,
                     'client_ip' => $this->request->clientIp(),
                     'time' => time()

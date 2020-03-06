@@ -36,13 +36,13 @@ class GoogleAuthenticatorAuthorize extends BaseAuthorize
         if ($user['gauth_enabled'] == false) {
             return true;
         }
-        if ($request->session()->read('Auth.GoogleAuth.verified') == true) {
+        if ($request->getSession()->read('Auth.GoogleAuth.verified') == true) {
             return true;
         }
-        if ($request->param('plugin') == 'User' && $request->param('controller') == 'GoogleAuth') {
+        if ($request->getParam('plugin') == 'User' && $request->getParam('controller') == 'GoogleAuth') {
             return true;
         }
-        if ($request->param('plugin') == 'User' && $request->param('controller') == 'User' && $request->param('action') == 'logout') {
+        if ($request->getParam('plugin') == 'User' && $request->getParam('controller') == 'User' && $request->getParam('action') == 'logout') {
             return true;
         }
 

@@ -6,13 +6,13 @@
     <h2>
         <?= __d('user','Set a new password for user {0} (ID: {1})', $user->username, $user->id); ?>
     </h2>
-    <?= $this->Form->input('password1', [
+    <?= $this->Form->control('password1', [
         'label' => __d('user','New password'),
         'type' => 'password',
         'required' => true,
         'default' => '',
     ]); ?>
-    <?= $this->Form->input('password2', [
+    <?= $this->Form->control('password2', [
         'label' => __d('user','Repeat password'),
         'type' => 'password',
         'required' => true,

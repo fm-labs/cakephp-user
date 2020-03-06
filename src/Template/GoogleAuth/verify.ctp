@@ -13,7 +13,7 @@ $this->assign('userActions', '&nbsp;');
 <div class="user-gauth-form user-form form">
     <?= $this->Form->create(); ?>
     <?= $this->Form->hidden('user_id', ['value' => $user->id]); ?>
-    <?= $this->Form->input('code', ['placeholder' => __d('user','Enter code here'), 'autocomplete' => 'off']); ?>
+    <?= $this->Form->control('code', ['placeholder' => __d('user','Enter code here'), 'autocomplete' => 'off']); ?>
     <?= $this->Form->submit(__d('user', 'Verify')); ?>
     <?= $this->Form->end(); ?>
 </div>

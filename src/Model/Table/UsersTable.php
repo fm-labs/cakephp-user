@@ -96,11 +96,11 @@ class UsersTable extends UserBaseTable
             'className' => 'User.UserGroups'
         ]);
 
-        if (Plugin::loaded('Banana')) {
+        if (Plugin::isLoaded('Banana')) {
             $this->addBehavior('Banana.Attributes');
         }
 
-        if (Plugin::loaded('Search')) {
+        if (Plugin::isLoaded('Search')) {
             $this->addBehavior('Search.Search');
             $this->searchManager()
                 ->add('name', 'Search.Like', [
@@ -567,7 +567,7 @@ class UsersTable extends UserBaseTable
 
         // Locale
         if (!isset($data['locale'])) {
-            $data['locale'] = I18n::locale();
+            $data['locale'] = I18n::getLocale();
         }
         if (!isset($data['timezone'])) {
             $data['timezone'] = date_default_timezone_get();

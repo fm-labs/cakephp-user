@@ -54,7 +54,7 @@ class UserController extends AppController
         }
 
         $layout = (Configure::read('User.layout')) ?: null; //'User.user';
-        $this->viewBuilder()->layout($layout);
+        $this->viewBuilder()->setLayout($layout);
     }
 
     /**
@@ -71,12 +71,12 @@ class UserController extends AppController
 
         if ($this->request->getQuery('goto')) {
             //@TODO Check if goto URL is within app scope and/or use a token
-            $this->request->session()->write('Auth.redirect', urldecode($this->request->getQuery('goto')));
-        } elseif (!$this->request->session()->check('Auth.redirect')) {
+            $this->request->getSession()->write('Auth.redirect', urldecode($this->request->getQuery('goto')));
+        } elseif (!$this->request->getSession()->check('Auth.redirect')) {
             $referer = $this->referer();
             if ($referer && Router::normalize($referer) != Router::normalize(['action' => __FUNCTION__])) {
                 //debug("set referer to " . Router::normalize($referer));
-                //$this->request->session()->write('Auth.redirect', $referer);
+                //$this->request->getSession()->write('Auth.redirect', $referer);
             }
         }
 
@@ -142,7 +142,7 @@ class UserController extends AppController
 
         // force group auth
         if (Configure::read('User.Signup.groupAuth') == true) {
-            if (!$this->request->session()->read('User.Signup.group_id')) {
+            if (!$this->request->getSession()->read('User.Signup.group_id')) {
                 return $this->redirect(['action' => 'registerGroup']);
             }
         }
@@ -163,15 +163,15 @@ class UserController extends AppController
             if ($this->request->is('post')) {
                 $data = $this->request->data;
                 if (Configure::read('User.Signup.groupAuth') == true) {
-                    $data['group_id'] = $this->request->session()->read('User.Signup.group_id');
+                    $data['group_id'] = $this->request->getSession()->read('User.Signup.group_id');
                 }
 
                 //$user = $this->Users->register($data);
                 $user = $form->execute($data);
                 if ($user && $user->id) {
-                    //$this->request->session()->delete('User.Signup');
+                    //$this->request->getSession()->delete('User.Signup');
                     $this->Flash->success(__d('user', 'An activation email has been sent to your email address!'), ['key' => 'auth']);
-                    $redirect = $this->Auth->config('registerRedirect');
+                    $redirect = $this->Auth->getConfig('registerRedirect');
                     $redirect = ($redirect) ?: ['_name' => 'user:login'];
                     $this->redirect($redirect);
                 } else {
@@ -206,19 +206,19 @@ class UserController extends AppController
             $userGroup = $this->Users->UserGroups->find()->where(['password' => $grpPass])->first();
 
             if (!$userGroup) {
-                $this->request->session()->delete('User.Signup.group_id');
+                $this->request->getSession()->delete('User.Signup.group_id');
                 $this->Flash->error(__d('user', 'Invalid password'), ['key' => 'auth']);
 
                 return;
             }
 
             // store group auth info in session
-            $this->request->session()->write('User.Signup.group_id', $userGroup->id);
-            $this->request->session()->write('User.Signup.group_pass', $grpPass);
+            $this->request->getSession()->write('User.Signup.group_id', $userGroup->id);
+            $this->request->getSession()->write('User.Signup.group_pass', $grpPass);
 
             // continue registration
             $this->redirect(['action' => 'register']);
-        } elseif ($this->request->session()->read('User.Signup.group_id')) {
+        } elseif ($this->request->getSession()->read('User.Signup.group_id')) {
             // continue registration
             //$this->redirect(['action' => 'register']);
         }

@@ -12,24 +12,24 @@ $this->assign('title', __d('user','Reset your password'));
 ?>
 <div id="user-password-reset-form" class="user-form">
     <?= $this->Form->create($user); ?>
-    <?= $this->Form->input('username', [
+    <?= $this->Form->control('username', [
         'label' => __d('user','Username'),
         'placeholder' => __d('user','Enter username or email'),
         'required' => true
     ]); ?>
-    <?= $this->Form->input('password_reset_code', [
+    <?= $this->Form->control('password_reset_code', [
         'label' => __d('user','Password reset code received via email'),
         'placeholder' => '',
         'required' => true,
         'autocomplete' => 'off'
     ]); ?>
-    <?= $this->Form->input('password1', [
+    <?= $this->Form->control('password1', [
         'label' => __d('user','New password'),
         'type' => 'password',
         'required' => true,
         'autocomplete' => 'off'
     ]); ?>
-    <?= $this->Form->input('password2', [
+    <?= $this->Form->control('password2', [
         'label' => __d('user','Repeat password'),
         'type' => 'password',
         'required' => true,

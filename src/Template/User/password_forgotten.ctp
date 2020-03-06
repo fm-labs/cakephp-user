@@ -12,7 +12,7 @@ $this->assign('title', __d('user','Password forgotten?'));
 ?>
 <div id="user-password-forgotten-form" class="user-form">
     <?= $this->Form->create($form); ?>
-    <?= $this->Form->input('username', [
+    <?= $this->Form->control('username', [
         'label' => __d('user', 'Email'),
         //'placeholder' => __d('user','Enter username or email address'),
         'required' => true

@@ -21,8 +21,8 @@ $this->assign('title', __d('user','Verify your email address'));
     </div>
 
     <?= $this->Form->create($user, ['context' => ['validator' => 'activate']]); ?>
-    <?= $this->Form->input('email', ['type' => 'text', 'required' => true]); ?>
-    <?= $this->Form->input('email_verification_code'); ?>
+    <?= $this->Form->control('email', ['type' => 'text', 'required' => true]); ?>
+    <?= $this->Form->control('email_verification_code'); ?>
     <div class="text-right">
         <?= $this->Form->button(__d('user','Continue'), ['class' => 'btn btn-primary']); ?>
     </div>
