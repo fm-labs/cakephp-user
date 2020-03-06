@@ -283,7 +283,7 @@ class UsersTableTest extends TestCase
         $_tmpLocale = I18n::getLocale();
         $_tmpTz = date_default_timezone_get();
         $_tmpCur = 'EUR';
-        I18n::locale('en');
+        I18n::setLocale('en');
         $data = [
             'username' => 'test3',
             'email' => 'test3@example.org',
@@ -298,7 +298,7 @@ class UsersTableTest extends TestCase
         $user = $this->Users->get($user->id);
         $this->assertArraySubset(['locale' => 'en', 'timezone' => $_tmpTz, 'currency' => $_tmpCur], $user->toArray());
         $this->Users->delete($user);
-        I18n::locale($_tmpLocale); // restore locale
+        I18n::setLocale($_tmpLocale); // restore locale
     }
 
     /**

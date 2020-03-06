@@ -1,7 +1,7 @@
 <?php
 namespace User\Model\Table;
 
-use Cake\Database\Schema\Table as Schema;
+use Cake\Database\Schema\TableSchema as Schema;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -52,7 +52,7 @@ class UserSessionsTable extends Table
      */
     protected function _initializeSchema(Schema $table)
     {
-        $table->columnType('geo_location', 'json');
+        $table->setColumnType('geo_location', 'json');
 
         return $table;
     }

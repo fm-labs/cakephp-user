@@ -15,9 +15,9 @@ class UserRegisterForm extends UserForm
      */
     protected function _buildSchema(Schema $schema)
     {
-        $schema->addField('email', $this->Users->schema()->column('email'));
-        $schema->addField('password1', [] /*$this->Users->schema()->column('password1')*/);
-        $schema->addField('password2', [] /*$this->Users->schema()->column('password2')*/);
+        $schema->addField('email', $this->Users->getSchema()->column('email'));
+        $schema->addField('password1', [] /*$this->Users->getSchema()->column('password1')*/);
+        $schema->addField('password2', [] /*$this->Users->getSchema()->column('password2')*/);
 
         if (Configure::read('User.Recaptcha.enabled')) {
             $schema->addField('g-recaptcha-response', []);
