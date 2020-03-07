@@ -39,7 +39,7 @@ class UserSessionsCellTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->request = $this->getMockBuilder('Cake\Http\Request')->getMock();
+        $this->request = $this->getMockBuilder('Cake\Http\ServerRequest')->getMock();
         $this->response = $this->getMockBuilder('Cake\Http\Response')->getMock();
         $this->UserSessions = new UserSessionsCell($this->request, $this->response);
     }

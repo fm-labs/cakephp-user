@@ -4,6 +4,7 @@ namespace User\Model\Table;
 use Cake\Chronos\Chronos;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
+use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\Filesystem\File;
 use Cake\I18n\I18n;
@@ -189,76 +190,76 @@ class UsersTable extends UserBaseTable
     {
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
-            ->allowEmpty('id', 'create')
+            ->allowEmptyString('id', null, 'create')
 
             ->add('superuser', 'valid', ['rule' => 'boolean'])
-            ->allowEmpty('superuser')
+            ->allowEmptyString('superuser')
 
             //->requirePresence('name', 'create')
-            //->notEmpty('name')
+            //->notEmptyString('name')
 
             ->requirePresence('username', 'create')
-            ->notEmpty('username')
+            ->notEmptyString('username')
 
             //->requirePresence('password', 'create')
-            //->notEmpty('password')
+            //->notEmptyString('password')
 
             ->add('email', 'valid', ['rule' => 'email'])
-            //->allowEmpty('email')
+            //->allowEmptyString('email')
 
             ->add('email_verification_required', 'valid', ['rule' => 'boolean'])
-            ->allowEmpty('email_verification_required')
+            ->allowEmptyString('email_verification_required')
 
-            ->allowEmpty('email_verification_code')
+            ->allowEmptyString('email_verification_code')
 
-            ->allowEmpty('email_verification_expiry_timestamp')
+            ->allowEmptyString('email_verification_expiry_timestamp')
 
             ->add('email_verified', 'valid', ['rule' => 'boolean'])
-            ->allowEmpty('email_verified')
+            ->allowEmptyString('email_verified')
 
             ->add('password_change_min_days', 'valid', ['rule' => 'numeric'])
-            ->allowEmpty('password_change_min_days')
+            ->allowEmptyString('password_change_min_days')
 
             ->add('password_change_max_days', 'valid', ['rule' => 'numeric'])
-            ->allowEmpty('password_change_max_days')
+            ->allowEmptyString('password_change_max_days')
 
             ->add('password_change_warning_days', 'valid', ['rule' => 'numeric'])
-            ->allowEmpty('password_change_warning_days')
+            ->allowEmptyString('password_change_warning_days')
 
-            ->allowEmpty('password_change_timestamp')
+            ->allowEmptyString('password_change_timestamp')
 
-            ->allowEmpty('password_expiry_timestamp')
+            ->allowEmptyString('password_expiry_timestamp')
 
             ->add('password_force_change', 'valid', ['rule' => 'boolean'])
-            ->allowEmpty('password_force_change')
+            ->allowEmptyString('password_force_change')
 
-            ->allowEmpty('password_reset_code')
+            ->allowEmptyString('password_reset_code')
 
-            ->allowEmpty('password_reset_expiry_timestamp')
+            ->allowEmptyString('password_reset_expiry_timestamp')
 
             ->add('login_enabled', 'valid', ['rule' => 'boolean'])
-            ->allowEmpty('login_enabled')
+            ->allowEmptyString('login_enabled')
 
-            ->allowEmpty('login_last_login_ip')
+            ->allowEmptyString('login_last_login_ip')
 
-            ->allowEmpty('login_last_login_host')
+            ->allowEmptyString('login_last_login_host')
 
             ->add('login_last_login_datetime', 'valid', ['rule' => 'datetime'])
-            ->allowEmpty('login_last_login_datetime')
+            ->allowEmptyDateTime('login_last_login_datetime')
 
             ->add('login_failure_count', 'valid', ['rule' => 'numeric'])
-            ->allowEmpty('login_failure_count')
+            ->allowEmptyString('login_failure_count')
 
             ->add('login_failure_datetime', 'valid', ['rule' => 'datetime'])
-            ->allowEmpty('login_failure_datetime')
+            ->allowEmptyDateTime('login_failure_datetime')
 
             ->add('block_enabled', 'valid', ['rule' => 'boolean'])
-            ->allowEmpty('block_enabled')
+            ->allowEmptyString('block_enabled')
 
-            ->allowEmpty('block_reason')
+            ->allowEmptyString('block_reason')
 
             ->add('block_datetime', 'valid', ['rule' => 'datetime'])
-            ->allowEmpty('block_datetime');
+            ->allowEmptyDateTime('block_datetime');
 
         return $validator;
     }
@@ -274,9 +275,9 @@ class UsersTable extends UserBaseTable
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
             ->requirePresence('username')
-            ->notEmpty('username')
+            ->notEmptyString('username')
             ->requirePresence('password')
-            ->notEmpty('password');
+            ->notEmptyString('password');
 
         return $validator;
     }
@@ -290,9 +291,9 @@ class UsersTable extends UserBaseTable
     public function add(array $data)
     {
         $user = $this->newEntity(null);
-        $user->accessible('*', true);
-        $user->accessible(['password1', 'password2'], true);
-        $user->accessible('password', false);
+        $user->setAccess('*', true);
+        $user->setAccess(['password1', 'password2'], true);
+        $user->setAccess('password', false);
 
         $this->patchEntity($user, $data, ['validate' => 'add']);
         if ($user->getErrors()) {
@@ -316,7 +317,7 @@ class UsersTable extends UserBaseTable
     {
         $validator
             ->requirePresence('password1', 'create')
-            ->notEmpty('password1')
+            ->notEmptyString('password1')
             ->add('password1', 'password', [
                 'rule' => 'checkNewPassword1',
                 'provider' => 'table',
@@ -329,7 +330,7 @@ class UsersTable extends UserBaseTable
             ])
 
             ->requirePresence('password2', 'create')
-            ->notEmpty('password2')
+            ->notEmptyString('password2')
             ->add('password2', 'password', [
                 'rule' => 'checkNewPassword2',
                 'provider' => 'table',
@@ -347,7 +348,7 @@ class UsersTable extends UserBaseTable
     {
         $validator
             ->requirePresence('email', 'create')
-            ->notEmpty('email')
+            ->notEmptyString('email')
             ->add('email', 'email', [
                 'rule' => ['email', true],
                 'message' => __d('user', 'The provided email address is invalid')
@@ -369,7 +370,7 @@ class UsersTable extends UserBaseTable
     {
         $validator
             ->requirePresence('username', 'create')
-            ->notEmpty('username');
+            ->notEmptyString('username');
 
         if (static::$emailAsUsername) {
             // email validation for 'username'
@@ -496,7 +497,7 @@ class UsersTable extends UserBaseTable
         ];
 
         $user = $this->newEntity();
-        $user->accessible(array_keys($data), true);
+        $user->setAccess(array_keys($data), true);
         $this->patchEntity($user, $data);
 
         //@TODO Add validation
@@ -516,11 +517,12 @@ class UsersTable extends UserBaseTable
      */
     public function register(array $data, $dispatchEvent = true)
     {
+        /** @var User $user */
         $user = $this->newEntity();
-        $user->accessible('*', false);
-        $user->accessible(['username', 'name', 'first_name', 'last_name', 'email', 'locale', 'timezone', 'currency'], true);
-        $user->accessible(['password1', 'password2'], true);
-        $user->accessible(['group_id'], true);
+        $user->setAccess('*', false);
+        $user->setAccess(['username', 'name', 'first_name', 'last_name', 'email', 'locale', 'timezone', 'currency'], true);
+        $user->setAccess(['password1', 'password2'], true);
+        $user->setAccess(['group_id'], true);
 
         // Login
         // By default registered users are allowed to log in
@@ -534,13 +536,13 @@ class UsersTable extends UserBaseTable
         if ($noLogin) {
             $user->login_enabled = false;
 
-            $this->validator('register')
-                ->allowEmpty('password1')
+            $this->getValidator('register')
+                ->allowEmptyString('password1')
                 ->requirePresence('password1', false)
-                ->allowEmpty('password2')
+                ->allowEmptyString('password2')
                 ->requirePresence('password2', false);
 
-            $user->accessible(['password1', 'password2'], false);
+            $user->setAccess(['password1', 'password2'], false);
         }
 
         // Email-As-Username
@@ -625,16 +627,17 @@ class UsersTable extends UserBaseTable
      * - Requires the current user password
      * - The new password MUST NOT match the current user password
      *
-     * @param Entity|User $user The user entity
+     * @param User|EntityInterface $user The user entity
      * @param array $data User data
      * @return bool
      */
     public function changePassword(User &$user, array $data)
     {
-        $user->accessible('password0', true);
-        $user->accessible('password1', true);
-        $user->accessible('password2', true);
+        $user->setAccess('password0', true);
+        $user->setAccess('password1', true);
+        $user->setAccess('password2', true);
 
+        /** @var User $user */
         $user = $this->patchEntity($user, $data, ['validate' => 'changePassword']);
         if ($user->getErrors()) {
             return false;
@@ -642,7 +645,7 @@ class UsersTable extends UserBaseTable
 
         // validate current password
         if (!$user->getPasswordHasher()->check($data['password0'], $user->password)) {
-            $user->errors('password0', ['password' => __d('user', 'This is not your current password')]);
+            $user->setError('password0', ['password' => __d('user', 'This is not your current password')]);
             unset($user->password0);
             unset($user->password1);
             unset($user->password2);
@@ -652,7 +655,7 @@ class UsersTable extends UserBaseTable
 
         // new password should not match current password
         if (strcmp($user->password0, $user->password1) === 0) {
-            $user->errors('password1', [
+            $user->setError('password1', [
                 'password' => __d('user', 'This is your current password. Please create a new one!')
             ]);
             unset($user->password1);
@@ -662,7 +665,7 @@ class UsersTable extends UserBaseTable
         }
 
         // apply new password
-        $user->accessible('password', true);
+        $user->setAccess('password', true);
         $user->password = $data['password1'];
         $saved = $this->save($user);
 
@@ -686,7 +689,7 @@ class UsersTable extends UserBaseTable
         $validator = $this->validationNewPassword($validator);
         $validator
             ->requirePresence('password0')
-            ->notEmpty('password0');
+            ->notEmptyString('password0');
 
         return $validator;
     }
@@ -713,16 +716,16 @@ class UsersTable extends UserBaseTable
             throw new PasswordResetException(__d('user', 'Password reset code is invalid'));
         }
 
-        $user->accessible('*', false);
-        $user->accessible('password1', true);
-        $user->accessible('password2', true);
+        $user->setAccess('*', false);
+        $user->setAccess('password1', true);
+        $user->setAccess('password2', true);
         $user = $this->patchEntity($user, $data, ['validate' => 'resetPassword']);
         if ($user->getErrors()) {
             return $user;
         }
 
         // apply new password
-        $user->accessible('password', true);
+        $user->setAccess('password', true);
         $user->password = $data['password1'];
 
         // clean the reset codes
@@ -964,9 +967,9 @@ class UsersTable extends UserBaseTable
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
             ->requirePresence('email')
-            ->notEmpty('email')
+            ->notEmptyString('email')
             ->requirePresence('email_verification_code')
-            ->notEmpty('email_verification_code');
+            ->notEmptyString('email_verification_code');
 
         return $validator;
     }

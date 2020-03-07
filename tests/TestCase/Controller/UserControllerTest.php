@@ -1,14 +1,15 @@
 <?php
 namespace User\Test\TestCase\Controller;
 
-use Cake\TestSuite\IntegrationTestCase;
-use User\Controller\UserController;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
 
 /**
  * User\Controller\UserController Test Case
  */
-class UserControllerTest extends IntegrationTestCase
+class UserControllerTest extends TestCase
 {
+    use IntegrationTestTrait;
 
     /**
      * Fixtures
@@ -16,8 +17,8 @@ class UserControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.user.users',
-        'plugin.user.groups',
+        'plugin.User.Users',
+        'plugin.User.Groups',
     ];
 
     /**

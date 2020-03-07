@@ -25,7 +25,7 @@ class UsersTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'Users' => 'plugin.user.users'
+        'Users' => 'plugin.User.Users'
     ];
 
     /**
@@ -56,7 +56,7 @@ class UsersTableTest extends TestCase
         UsersTable::$passwordMinSpecialChars = -1;
         UsersTable::$passwordMinNumbers = -1;
 
-        $config = TableRegistry::exists('Users') ? [] : [
+        $config = TableRegistry::getTableLocator()->exists('Users') ? [] : [
             'className' => 'User\Model\Table\UsersTable'
         ];
         $this->Users = TableRegistry::getTableLocator()->get('Users', $config);
@@ -232,19 +232,19 @@ class UsersTableTest extends TestCase
         $user = $this->Users->register(['username' => 'test1', 'email' => 'test1@example.org']);
         $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
         $this->assertEmpty($user->id);
-        $this->assertEmpty($user->errors('username'));
-        $this->assertEmpty($user->errors('email'));
-        $this->assertNotEmpty($user->errors('password1'));
-        $this->assertNotEmpty($user->errors('password2'));
+        $this->assertEmpty($user->getError('username'));
+        $this->assertEmpty($user->getError('email'));
+        $this->assertNotEmpty($user->getError('password1'));
+        $this->assertNotEmpty($user->getError('password2'));
         $this->Users->delete($user);
 
         // test with no login
         $user = $this->Users->register(['username' => 'test1', 'email' => 'test1@example.org', '_nologin' => true]);
         $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
-        $this->assertEmpty($user->errors('username'));
-        $this->assertEmpty($user->errors('email'));
-        $this->assertEmpty($user->errors('password1'));
-        $this->assertEmpty($user->errors('password2'));
+        $this->assertEmpty($user->getError('username'));
+        $this->assertEmpty($user->getError('email'));
+        $this->assertEmpty($user->getError('password1'));
+        $this->assertEmpty($user->getError('password2'));
         $this->assertNotEmpty($user->id);
         $this->Users->delete($user);
 
@@ -306,7 +306,7 @@ class UsersTableTest extends TestCase
      */
     public function testRegisterWithEmailAsUsername()
     {
-        TableRegistry::remove('Users');
+        TableRegistry::getTableLocator()->remove('Users');
         UsersTable::$emailAsUsername = true;
 
         $this->Users = TableRegistry::getTableLocator()->get('Users', [
@@ -315,8 +315,8 @@ class UsersTableTest extends TestCase
 
         // test with username instead of email
         $user = $this->Users->register(['username' => 'test1', 'password1' => self::TEST_PASS1, 'password2' => self::TEST_PASS1]);
-        $this->assertNotEmpty($user->errors('username'));
-        $this->assertNotEmpty($user->errors('email'));
+        $this->assertNotEmpty($user->getError('username'));
+        $this->assertNotEmpty($user->getError('email'));
 
         // test with valid username and password
         $user = $this->Users->register(['email' => 'test1@example.org', 'password1' => self::TEST_PASS1, 'password2' => self::TEST_PASS1]);
@@ -339,7 +339,7 @@ class UsersTableTest extends TestCase
         $this->assertEquals('test2@example.org', $user->email);
         $this->assertEquals('en', $user->locale);
 
-        TableRegistry::remove('Users');
+        TableRegistry::getTableLocator()->remove('Users');
         UsersTable::$emailAsUsername = false;
     }
 
@@ -359,7 +359,7 @@ class UsersTableTest extends TestCase
 
         $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
         $this->assertEmpty($user->id);
-        $this->assertArrayHasKey('email_blacklist', $user->errors('email'));
+        $this->assertArrayHasKey('email_blacklist', $user->getError('email'));
     }
 
     /**
@@ -367,7 +367,7 @@ class UsersTableTest extends TestCase
      */
     public function testRegisterWithBlacklistedEmailAsUsername()
     {
-        TableRegistry::remove('Users');
+        TableRegistry::getTableLocator()->remove('Users');
         UsersTable::$emailAsUsername = true;
 
         Configure::write('User.Blacklist', ['enabled' => true, 'domainList' => ['example.net']]);
@@ -380,9 +380,9 @@ class UsersTableTest extends TestCase
 
         $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
         $this->assertEmpty($user->id);
-        $this->assertArrayHasKey('email_blacklist', $user->errors('email'));
+        $this->assertArrayHasKey('email_blacklist', $user->getError('email'));
 
-        TableRegistry::remove('Users');
+        TableRegistry::getTableLocator()->remove('Users');
         UsersTable::$emailAsUsername = true;
     }
 
@@ -429,42 +429,42 @@ class UsersTableTest extends TestCase
             $user,
             ['password0' => self::TEST_PASS1, 'password1' => self::TEST_PASS1, 'password2' => self::TEST_PASS1]
         ));
-        $this->assertNotEmpty($user->errors('password1'));
-        $this->assertFalse($user->dirty('password1'));
-        $this->assertFalse($user->dirty('password2'));
+        $this->assertNotEmpty($user->getError('password1'));
+        $this->assertFalse($user->isDirty('password1'));
+        $this->assertFalse($user->isDirty('password2'));
 
         // test with empty password
         $this->assertFalse($this->Users->changePassword(
             $user,
             ['password0' => '', 'password1' => self::TEST_PASS2, 'password2' => self::TEST_PASS2]
         ));
-        $this->assertNotEmpty($user->errors('password0'));
-        $this->assertNotEmpty($user->errors('password0')['_empty']);
+        $this->assertNotEmpty($user->getError('password0'));
+        $this->assertNotEmpty($user->getError('password0')['_empty']);
 
         // test with bad new password
         $this->assertFalse($this->Users->changePassword(
             $user,
             ['password0' => '2short', 'password1' => self::TEST_PASS2, 'password2' => self::TEST_PASS2]
         ));
-        $this->assertNotEmpty($user->errors('password0'));
-        $this->assertNotEmpty($user->errors('password0')['password']);
+        $this->assertNotEmpty($user->getError('password0'));
+        $this->assertNotEmpty($user->getError('password0')['password']);
 
         // test with good data
         $this->assertTrue($this->Users->changePassword(
             $user,
             ['password0' => self::TEST_PASS1, 'password1' => self::TEST_PASS2, 'password2' => self::TEST_PASS2]
         ));
-        $this->assertFalse($user->dirty('password'));
-        $this->assertFalse($user->dirty('password0'));
-        $this->assertFalse($user->dirty('password1'));
-        $this->assertFalse($user->dirty('password2'));
+        $this->assertFalse($user->isDirty('password'));
+        $this->assertFalse($user->isDirty('password0'));
+        $this->assertFalse($user->isDirty('password1'));
+        $this->assertFalse($user->isDirty('password2'));
         $this->assertTrue((new DefaultPasswordHasher())->check(self::TEST_PASS2, $user->password));
     }
 
     /**
      * @return void
      */
-    public function testForgottPassword()
+    public function testForgotPassword()
     {
         $user = $this->Users->find()->first();
         if (!$user) {

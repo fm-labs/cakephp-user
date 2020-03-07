@@ -190,7 +190,7 @@ class UserSessionComponent extends Component
         ];
 
         /** @var Event $event */
-        $event = $this->_registry->getController()->dispatchEvent('User.Session.create', $userSession, $this);
+        $event = $this->getController()->dispatchEvent('User.Session.create', $userSession, $this);
         $this->setUserSession($event->getData());
     }
 
@@ -260,7 +260,7 @@ class UserSessionComponent extends Component
         $userSession['expires'] = time() + $this->_config['maxLifetimeSec'];
 
         /** @var Event $event */
-        $event = $this->_registry->getController()->dispatchEvent('User.Session.extend', $userSession, $this);
+        $event = $this->getController()->dispatchEvent('User.Session.extend', $userSession, $this);
         $this->setUserSession($event->getData());
 
         return true;
@@ -293,7 +293,7 @@ class UserSessionComponent extends Component
     public function destroy()
     {
         $userSession = $this->userSession();
-        $this->_registry->getController()->dispatchEvent('User.Session.destroy', $userSession, $this);
+        $this->getController()->dispatchEvent('User.Session.destroy', $userSession, $this);
         $this->getController()->getRequest()->getSession()->delete($this->_config['sessionKey']);
     }
 

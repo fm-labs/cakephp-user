@@ -37,13 +37,15 @@ class Plugin extends BasePlugin
         /**
          * Logs
          */
-        Log::setConfig('user', [
-            'className' => 'Cake\Log\Engine\FileLog',
-            'path' => LOGS,
-            'file' => 'user',
-            //'levels' => ['info'],
-            'scopes' => ['user', 'auth']
-        ]);
+        if (!Log::getConfig('user')) {
+            Log::setConfig('user', [
+                'className' => 'Cake\Log\Engine\FileLog',
+                'path' => LOGS,
+                'file' => 'user',
+                //'levels' => ['info'],
+                'scopes' => ['user', 'auth']
+            ]);
+        }
 
         /**
          * Mailer support

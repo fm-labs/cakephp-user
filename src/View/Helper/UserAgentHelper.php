@@ -39,7 +39,7 @@ class UserAgentHelper extends Helper
             'ua_icon' => '<span class="ua-info-os" data-toggle="tooltip" data-title="{{content}}" {{attrs}}><i class="fa fa-{{icon}}"></i></span>'
         ]);
 
-        $this->set($this->request->header('User-Agent'));
+        $this->set($this->getView()->getResponse()->getHeaderLine('User-Agent'));
     }
 
     /**

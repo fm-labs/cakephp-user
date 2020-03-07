@@ -169,7 +169,7 @@ class AuthComponent extends CakeAuthComponent
     public function table()
     {
         if (!$this->Users) {
-            $this->Users = $this->_registry->getController()->loadModel($this->getConfig('userModel'));
+            $this->Users = $this->getController()->loadModel($this->getConfig('userModel'));
         }
 
         return $this->Users;

@@ -24,9 +24,9 @@ class UserSessionsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.user.user_sessions',
-        'plugin.user.users',
-        'plugin.user.groups'
+        'plugin.User.UserSessions',
+        'plugin.User.Users',
+        'plugin.User.Groups'
     ];
 
     /**

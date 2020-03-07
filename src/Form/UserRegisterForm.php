@@ -31,7 +31,7 @@ class UserRegisterForm extends UserForm
      */
     protected function _buildValidator(Validator $validator)
     {
-        $validator = $this->Users->validator('register');
+        $validator = $this->Users->getValidator('register');
         $validator->provider('form', $this);
 
         if (Configure::read('User.Recaptcha.enabled')) {
@@ -102,7 +102,7 @@ class UserRegisterForm extends UserForm
     protected function _execute(array $data)
     {
         // reset the validator
-        $this->Users->validator('register', $this->Users->validationRegister(new Validator()));
+        $this->Users->setValidator('register', $this->Users->validationRegister(new Validator()));
 
         $user = $this->Users->register($data);
         if ($user && $user->getErrors()) {
