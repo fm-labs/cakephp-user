@@ -93,19 +93,19 @@ class AuthComponentTest extends TestCase
             ->getMock();
         $this->Auth->authenticate = [
             'AuthLoginForm' => [
-                'userModel' => 'AuthUsers'
-            ]
+                'userModel' => 'AuthUsers',
+            ],
         ];
         $this->Auth->setAuthenticateObject(0, $AuthLoginFormAuthenticate);
         $this->controller->request = $this->controller->request->withParsedBody([
             'AuthUsers' => [
                 'username' => 'mark',
-                'password' => Security::hash('cake', null, true)
-            ]
+                'password' => Security::hash('cake', null, true),
+            ],
         ]);
         $user = [
             'id' => 1,
-            'username' => 'mark'
+            'username' => 'mark',
         ];
         $AuthLoginFormAuthenticate->expects($this->once())
             ->method('authenticate')

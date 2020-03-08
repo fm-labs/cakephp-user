@@ -53,7 +53,7 @@ class UserBackend implements EventListenerInterface
                     'title' => __d('user', 'User Groups'),
                     'url' => ['plugin' => 'User', 'controller' => 'UserGroups', 'action' => 'index'],
                     'data-icon' => 'users',
-                ]
+                ],
             ],
         ]);
     }

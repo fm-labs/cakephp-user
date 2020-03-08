@@ -26,7 +26,7 @@ class PasswordForgottenForm extends UserForm
         if (UsersTable::$emailAsUsername) {
             $validator->add('username', 'email', [
                 'rule' => ['email', false],
-                'message' => __d('user', 'This is not a valid email address')
+                'message' => __d('user', 'This is not a valid email address'),
             ]);
         }
 

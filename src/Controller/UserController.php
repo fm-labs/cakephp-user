@@ -46,7 +46,7 @@ class UserController extends AppController
 
         $this->Auth->allow([
             'login', 'register', 'registerGroup', 'activate', 'activateResend',
-            'passwordForgotten', 'passwordSent', 'passwordReset', 'passwordChanged'
+            'passwordForgotten', 'passwordSent', 'passwordReset', 'passwordChanged',
         ]);
 
         if ($this->components()->has('UserSession')) {
@@ -92,7 +92,6 @@ class UserController extends AppController
                     $this->redirect($redirectUrl);
                 }
             }
-
         } catch (AuthException $ex) {
             $this->Auth->flash($ex->getMessage());
         } catch (\Exception $ex) {
@@ -254,10 +253,12 @@ class UserController extends AppController
 
             // auto-activation
             if ($user->email && $user->email_verification_code) {
-                if ($this->Users->activate([
+                if (
+                    $this->Users->activate([
                     'email' => $user->email,
-                    'email_verification_code' => $user->email_verification_code
-                ])) {
+                    'email_verification_code' => $user->email_verification_code,
+                    ])
+                ) {
                     $this->Flash->success(__d('user', 'Your account has been activated. You can login now.'), ['key' => 'auth']);
                     $this->redirect(['action' => 'login', 'm' => base64_encode($user->email) ]);
                 } else {
@@ -400,11 +401,9 @@ class UserController extends AppController
                     $this->Flash->error(__d('user', 'Please fill all required fields'), ['key' => 'auth']);
                 }
             }
-
         } catch (PasswordResetException $ex) {
             $this->Flash->error($ex->getMessage(), ['key' => 'auth']);
             $this->redirect(['_name' => 'user:login']);
-
         } catch (\Exception $ex) {
             Log::error("UsersController::resetPassword: " . $ex->getMessage(), ['user']);
             $this->Flash->error(__d('user', 'Something went wrong. Please try again.'), ['key' => 'auth']);

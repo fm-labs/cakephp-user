@@ -5,37 +5,37 @@ return [
             'settings' => [
                 'User.Login.disabled' => [
                     'type' => 'boolean',
-                    'default' => false
+                    'default' => false,
                 ],
                 'User.EventLogger.enabled' => [
                     'type' => 'boolean',
-                    'default' => false
+                    'default' => false,
                 ],
-            ]
+            ],
         ],
         'user_signup' => [
             'settings' => [
                 'User.Signup.disabled' => [
                     'type' => 'boolean',
-                    'default' => false
+                    'default' => false,
                 ],
                 'User.Signup.groupAuth' => [
                     'type' => 'boolean',
-                    'default' => false
+                    'default' => false,
                 ],
                 'User.Signup.verifyEmail' => [
                     'type' => 'boolean',
-                    'default' => false
-                ]
-            ]
+                    'default' => false,
+                ],
+            ],
         ],
         'user_recaptcha' => [
             'settings' => [
                 'User.Recaptcha.enabled' => [
                     'type' => 'boolean',
-                    'default' => false
+                    'default' => false,
                 ],
-            ]
-        ]
-    ]
+            ],
+        ],
+    ],
 ];

@@ -18,15 +18,15 @@ class UserShell extends Shell
         $parser
             ->description(__d('user', "Manage user"))
             ->addSubcommand('add', [
-                'help' => 'Add user'
+                'help' => 'Add user',
             ])
             ->addOption('email', [
                 'help' => 'User email',
-                'short' => 'e'
+                'short' => 'e',
             ])
             ->addOption('password', [
                 'help' => 'User password',
-                'short' => 'p'
+                'short' => 'p',
             ]);
 
         return $parser;

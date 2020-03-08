@@ -36,7 +36,7 @@ class UserAgentHelper extends Helper
     {
         $this->templater()->add([
             'ua_label' => '<span class="ua-info-os" data-toggle="tooltip" data-title="{{content}}" {{attrs}}>{{label}}: <i class="fa fa-{{icon}}"></i></span>',
-            'ua_icon' => '<span class="ua-info-os" data-toggle="tooltip" data-title="{{content}}" {{attrs}}><i class="fa fa-{{icon}}"></i></span>'
+            'ua_icon' => '<span class="ua-info-os" data-toggle="tooltip" data-title="{{content}}" {{attrs}}><i class="fa fa-{{icon}}"></i></span>',
         ]);
 
         $this->set($this->getView()->getResponse()->getHeaderLine('User-Agent'));
@@ -111,7 +111,7 @@ class UserAgentHelper extends Helper
             'label' => __('OS'),
             'icon' => $icon,
             'content' => $val,
-            'attrs' => $this->templater()->formatAttributes($options)
+            'attrs' => $this->templater()->formatAttributes($options),
         ]);
     }
 
@@ -146,7 +146,7 @@ class UserAgentHelper extends Helper
             'label' => __('Device'),
             'icon' => $icon,
             'content' => $val,
-            'attrs' => $this->templater()->formatAttributes($options)
+            'attrs' => $this->templater()->formatAttributes($options),
         ]);
     }
 
@@ -184,7 +184,7 @@ class UserAgentHelper extends Helper
             'label' => __('Model'),
             'icon' => $icon,
             'content' => $val,
-            'attrs' => $this->templater()->formatAttributes($options)
+            'attrs' => $this->templater()->formatAttributes($options),
         ]);
     }
 
@@ -211,7 +211,7 @@ class UserAgentHelper extends Helper
             'label' => __('Bot'),
             'icon' => $icon,
             'content' => $val,
-            'attrs' => $this->templater()->formatAttributes($options)
+            'attrs' => $this->templater()->formatAttributes($options),
         ]);
     }
 
@@ -238,7 +238,7 @@ class UserAgentHelper extends Helper
             'label' => '',
             'icon' => $icon,
             'content' => $val,
-            'attrs' => $this->templater()->formatAttributes($options)
+            'attrs' => $this->templater()->formatAttributes($options),
         ]);
     }
 }

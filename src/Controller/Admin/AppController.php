@@ -1,7 +1,7 @@
 <?php
 namespace User\Controller\Admin;
 
-use \App\Controller\Admin\AppController as BaseAdminController;
+use App\Controller\Admin\AppController as BaseAdminController;
 
 /**
  * Class AppController

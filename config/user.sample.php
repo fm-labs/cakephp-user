@@ -19,5 +19,5 @@ return [
     'User.Recaptcha.enabled' => false,
 
     // Auth component config
-    'User.Auth' => []
+    'User.Auth' => [],
 ];

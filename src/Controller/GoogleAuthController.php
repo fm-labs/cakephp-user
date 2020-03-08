@@ -163,7 +163,7 @@ class GoogleAuthController extends AppController
                 $this->request->getSession()->write('Auth.GoogleAuth', [
                     'verified' => true,
                     'client_ip' => $this->request->clientIp(),
-                    'time' => time()
+                    'time' => time(),
                 ]);
 
                 $this->redirect($this->Auth->redirectUrl());

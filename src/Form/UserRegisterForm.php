@@ -53,7 +53,7 @@ class UserRegisterForm extends UserForm
             ->add('g-recaptcha-response', 'recaptcha', [
                 'rule' => 'checkRecaptcha',
                 'provider' => 'form',
-                'message' => __d('user', 'Invalid captcha')
+                'message' => __d('user', 'Invalid captcha'),
             ]);
 
         return $validator;
@@ -72,7 +72,6 @@ class UserRegisterForm extends UserForm
             if (!Recaptcha2::verify(Configure::read('GoogleRecaptcha.secretKey'), $value)) {
                 return __d('user', 'Captcha verification failed');
             }
-
         } catch (\Exception $ex) {
             return __d('user', 'Unable to verify reCAPTCHA. Please try again later');
         }

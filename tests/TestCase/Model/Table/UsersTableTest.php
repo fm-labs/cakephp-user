@@ -25,7 +25,7 @@ class UsersTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'Users' => 'plugin.User.Users'
+        'Users' => 'plugin.User.Users',
     ];
 
     /**
@@ -57,7 +57,7 @@ class UsersTableTest extends TestCase
         UsersTable::$passwordMinNumbers = -1;
 
         $config = TableRegistry::getTableLocator()->exists('Users') ? [] : [
-            'className' => 'User\Model\Table\UsersTable'
+            'className' => 'User\Model\Table\UsersTable',
         ];
         $this->Users = TableRegistry::getTableLocator()->get('Users', $config);
     }
@@ -137,7 +137,7 @@ class UsersTableTest extends TestCase
         $fakeContext = ['newEntity' => true, 'data' => []];
         $options = [
             'enabled' => true,
-            'domainList' => ['example.net']
+            'domainList' => ['example.net'],
         ];
 
         // test minLength
@@ -267,7 +267,7 @@ class UsersTableTest extends TestCase
             'password2' => self::TEST_PASS1,
             'locale' => 'de',
             'first_name' => 'First',
-            'last_name' => 'Last'
+            'last_name' => 'Last',
         ];
         $user = $this->Users->register($data);
         $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
@@ -288,7 +288,7 @@ class UsersTableTest extends TestCase
             'username' => 'test3',
             'email' => 'test3@example.org',
             'password1' => self::TEST_PASS1,
-            'password2' => self::TEST_PASS1
+            'password2' => self::TEST_PASS1,
         ];
         $user = $this->Users->register($data);
         $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
@@ -310,7 +310,7 @@ class UsersTableTest extends TestCase
         UsersTable::$emailAsUsername = true;
 
         $this->Users = TableRegistry::getTableLocator()->get('Users', [
-            'className' => 'User\Model\Table\UsersTable'
+            'className' => 'User\Model\Table\UsersTable',
         ]);
 
         // test with username instead of email
@@ -331,7 +331,7 @@ class UsersTableTest extends TestCase
             'password1' => self::TEST_PASS1,
             'password2' => self::TEST_PASS1,
             'username' => 'admin', // <-- this should get overridden
-            'locale' => 'en'
+            'locale' => 'en',
         ]);
         $this->assertEmpty($user->getErrors());
         $this->assertNotEmpty($user->id);
@@ -354,7 +354,7 @@ class UsersTableTest extends TestCase
             'username' => 'test1',
             'email' => 'test1@example.net', // @example.net is blacklisted in test config
             'password1' => self::TEST_PASS1,
-            'password2' => self::TEST_PASS1
+            'password2' => self::TEST_PASS1,
         ]);
 
         $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
@@ -375,7 +375,7 @@ class UsersTableTest extends TestCase
         $user = $this->Users->register([
             'email' => 'test1@example.net', // @example.net is blacklisted in test config
             'password1' => self::TEST_PASS1,
-            'password2' => self::TEST_PASS1
+            'password2' => self::TEST_PASS1,
         ]);
 
         $this->assertInstanceOf('User\\Model\\Entity\\User', $user);
@@ -397,7 +397,7 @@ class UsersTableTest extends TestCase
             'username' => 'test1',
             'email' => 'test1@example.org',
             'password1' => self::TEST_PASS1,
-            'password2' => self::TEST_PASS1
+            'password2' => self::TEST_PASS1,
         ]);
 
         $this->assertFalse($user->email_verified);

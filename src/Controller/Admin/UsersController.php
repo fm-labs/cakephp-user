@@ -24,7 +24,7 @@ class UsersController extends AppController
         'view' => 'Backend.View',
         'add' => 'Backend.Add',
         'edit' => 'Backend.Edit',
-        'delete' => 'Backend.Delete'
+        'delete' => 'Backend.Delete',
     ];
 
     /**
@@ -56,7 +56,7 @@ class UsersController extends AppController
     {
         $this->paginate = [
             'contain' => ['UserGroups'],
-            'order' => ['superuser' => 'DESC', 'username' => 'ASC']
+            'order' => ['superuser' => 'DESC', 'username' => 'ASC'],
         ];
 
         $this->set('fields', [
@@ -77,7 +77,7 @@ class UsersController extends AppController
             }],
             //'email',
             'login_enabled',
-            'created'
+            'created',
         ]);
         $this->set('filter', false);
 
@@ -97,7 +97,7 @@ class UsersController extends AppController
             'email_verification_expiry_timestamp', 'password_expiry_timestamp', 'password_change_timestamp',
             'password_reset_expiry_timestamp', 'login_last_login_datetime', 'login_failure_datetime',
             'login_last_login_ip', 'login_last_login_host',
-            'block_datetime', 'gauth_last_verify_datetime'
+            'block_datetime', 'gauth_last_verify_datetime',
         ]);
         $this->Action->execute();
     }
@@ -115,7 +115,7 @@ class UsersController extends AppController
             'email_verification_expiry_timestamp', 'password_expiry_timestamp', 'password_change_timestamp',
             'password_reset_expiry_timestamp', 'login_last_login_datetime', 'login_failure_datetime',
             'login_last_login_ip', 'login_last_login_host',
-            'block_datetime', 'gauth_last_verify_datetime'
+            'block_datetime', 'gauth_last_verify_datetime',
         ]);
         $this->Action->execute();
     }
@@ -133,7 +133,7 @@ class UsersController extends AppController
         $this->set('entityOptions', ['contain' => ['UserGroups']]);
         $this->set('fields', [
             'email' => ['formatter' => 'email'],
-            'password_reset_url' => ['formatter' => 'link']
+            'password_reset_url' => ['formatter' => 'link'],
         ]);
         $this->set('fields.blacklist', ['password']);
         $this->Action->execute();

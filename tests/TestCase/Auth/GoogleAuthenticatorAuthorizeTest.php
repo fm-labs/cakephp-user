@@ -85,8 +85,8 @@ class GoogleAuthenticatorAuthorizeTest extends TestCase
                 'controller' => 'GoogleAuth',
                 'action' => 'index',
                 '_ext' => null,
-                'pass' => []
-            ]
+                'pass' => [],
+            ],
         ]);
         $this->assertTrue($this->auth->authorize($user, $request));
     }
@@ -106,8 +106,8 @@ class GoogleAuthenticatorAuthorizeTest extends TestCase
                 'controller' => 'User',
                 'action' => 'logout',
                 '_ext' => null,
-                'pass' => []
-            ]
+                'pass' => [],
+            ],
         ]);
         $this->assertTrue($this->auth->authorize($user, $request));
     }
@@ -125,5 +125,4 @@ class GoogleAuthenticatorAuthorizeTest extends TestCase
 
         $this->assertTrue($this->auth->authorize($user, $request));
     }
-
 }

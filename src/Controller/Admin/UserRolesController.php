@@ -17,7 +17,7 @@ class UserRolesController extends AppController
         'index' => 'User.Index',
         'view' => 'User.View',
         'edit' => 'User.Edit',
-        'delete' => 'User.Delete'
+        'delete' => 'User.Delete',
     ];
 
     /**
@@ -40,7 +40,7 @@ class UserRolesController extends AppController
     public function view($id = null)
     {
         $role = $this->Roles->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         $this->set('role', $role);
         $this->set('_serialize', ['role']);
@@ -78,7 +78,7 @@ class UserRolesController extends AppController
     public function edit($id = null)
     {
         $role = $this->Roles->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $role = $this->Roles->patchEntity($role, $this->request->data);

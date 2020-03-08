@@ -94,7 +94,7 @@ class UsersTable extends UserBaseTable
         $this->addBehavior('Timestamp');
         $this->belongsTo('UserGroups', [
             'foreignKey' => 'group_id',
-            'className' => 'User.UserGroups'
+            'className' => 'User.UserGroups',
         ]);
 
         if (Plugin::isLoaded('Banana')) {
@@ -111,7 +111,7 @@ class UsersTable extends UserBaseTable
                     'comparison' => 'LIKE',
                     'wildcardAny' => '*',
                     'wildcardOne' => '?',
-                    'field' => ['title']
+                    'field' => ['title'],
                 ])
                 ->add('username', 'Search.Like', [
                     'before' => true,
@@ -120,7 +120,7 @@ class UsersTable extends UserBaseTable
                     'comparison' => 'LIKE',
                     'wildcardAny' => '*',
                     'wildcardOne' => '?',
-                    'field' => ['title']
+                    'field' => ['title'],
                 ])
                 ->add('email', 'Search.Like', [
                     'before' => true,
@@ -129,10 +129,10 @@ class UsersTable extends UserBaseTable
                     'comparison' => 'LIKE',
                     'wildcardAny' => '*',
                     'wildcardOne' => '?',
-                    'field' => ['title']
+                    'field' => ['title'],
                 ])
                 ->value('login_enabled', [
-                    'filterEmpty' => true
+                    'filterEmpty' => true,
                 ]);
         }
     }
@@ -321,12 +321,12 @@ class UsersTable extends UserBaseTable
             ->add('password1', 'password', [
                 'rule' => 'checkNewPassword1',
                 'provider' => 'table',
-                'message' => __d('user', 'Invalid password')
+                'message' => __d('user', 'Invalid password'),
             ])
             ->add('password1', 'password_strength', [
                 'rule' => ['checkPasswordComplexity'],
                 'provider' => 'table',
-                'message' => __d('user', 'Weak password')
+                'message' => __d('user', 'Weak password'),
             ])
 
             ->requirePresence('password2', 'create')
@@ -334,7 +334,7 @@ class UsersTable extends UserBaseTable
             ->add('password2', 'password', [
                 'rule' => 'checkNewPassword2',
                 'provider' => 'table',
-                'message' => __d('user', 'Passwords do not match')
+                'message' => __d('user', 'Passwords do not match'),
             ]);
 
         return $validator;
@@ -351,12 +351,12 @@ class UsersTable extends UserBaseTable
             ->notEmptyString('email')
             ->add('email', 'email', [
                 'rule' => ['email', true],
-                'message' => __d('user', 'The provided email address is invalid')
+                'message' => __d('user', 'The provided email address is invalid'),
             ])
             ->add('email', 'email_blacklist', [
                 'rule' => 'checkEmailBlacklist',
                 'provider' => 'table',
-                'last' => true
+                'last' => true,
             ]);
 
         return $validator;
@@ -377,12 +377,12 @@ class UsersTable extends UserBaseTable
             $validator
                 ->add('username', 'email', [
                     'rule' => ['email', true],
-                    'message' => __d('user', 'The provided email address is invalid')
+                    'message' => __d('user', 'The provided email address is invalid'),
                 ])
                 ->add('email', 'email_blacklist', [
                     'rule' => 'checkEmailBlacklist',
                     'provider' => 'table',
-                    'last' => true
+                    'last' => true,
                 ]);
         }
 
@@ -656,7 +656,7 @@ class UsersTable extends UserBaseTable
         // new password should not match current password
         if (strcmp($user->password0, $user->password1) === 0) {
             $user->setError('password1', [
-                'password' => __d('user', 'This is your current password. Please create a new one!')
+                'password' => __d('user', 'This is your current password. Please create a new one!'),
             ]);
             unset($user->password1);
             unset($user->password2);
@@ -1122,7 +1122,7 @@ class UsersTable extends UserBaseTable
         return Router::url([
             'prefix' => false, 'plugin' => 'User', 'controller' => 'User', 'action' => 'activate',
             'c' => base64_encode($user->email_verification_code),
-            'm' => base64_encode($user->email)
+            'm' => base64_encode($user->email),
         ], true);
     }
 
@@ -1137,7 +1137,7 @@ class UsersTable extends UserBaseTable
         return Router::url([
             'prefix' => false, 'plugin' => 'User', 'controller' => 'User', 'action' => 'passwordReset',
             'c' => base64_encode($user->password_reset_code),
-            'u' => base64_encode($user->username)
+            'u' => base64_encode($user->username),
         ], true);
     }
 

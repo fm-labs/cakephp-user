@@ -27,7 +27,7 @@ class UserAuthService implements EventListenerInterface
 
         if (empty($user)) {
             $event->setData([
-                'redirect' => ['_name' => 'user:login']
+                'redirect' => ['_name' => 'user:login'],
             ]);
 
             return false;
@@ -37,7 +37,7 @@ class UserAuthService implements EventListenerInterface
             $event->setData([
                 'user' => null,
                 'error' => __d('user', 'This account has been deleted'),
-                'redirect' => ['_name' => 'user:login']
+                'redirect' => ['_name' => 'user:login'],
             ]);
 
             return false;
@@ -46,7 +46,7 @@ class UserAuthService implements EventListenerInterface
         if (isset($user['block_enabled']) && $user['block_enabled'] == true) {
             $event->setData([
                 'error' => __d('user', 'This account has been blocked'),
-                'redirect' => ['_name' => 'user:login']
+                'redirect' => ['_name' => 'user:login'],
             ]);
 
             return false;
@@ -55,7 +55,7 @@ class UserAuthService implements EventListenerInterface
         if (isset($user['login_enabled']) && $user['login_enabled'] != true) {
             $event->setData([
                 'error' => __d('user', 'Login to this account is not enabled'),
-                'redirect' => ['_name' => 'user:login']
+                'redirect' => ['_name' => 'user:login'],
             ]);
 
             return false;
@@ -64,7 +64,7 @@ class UserAuthService implements EventListenerInterface
         if ($user['email_verification_required'] && !$user['email_verified']) {
             $event->setData([
                 'error' => __d('user', 'Your account has not been verified yet'),
-                'redirect' => ['_name' => 'user:activate']
+                'redirect' => ['_name' => 'user:activate'],
             ]);
 
             return false;
@@ -102,7 +102,7 @@ class UserAuthService implements EventListenerInterface
 
             EventManager::instance()->dispatch(new Event('User.Model.User.newLogin', $event->getSubject()->Users, [
                 'user' => $entity,
-                'data' => $data
+                'data' => $data,
             ]));
         }
     }

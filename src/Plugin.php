@@ -43,7 +43,7 @@ class Plugin extends BasePlugin
                 'path' => LOGS,
                 'file' => 'user',
                 //'levels' => ['info'],
-                'scopes' => ['user', 'auth']
+                'scopes' => ['user', 'auth'],
             ]);
         }
 
@@ -83,7 +83,7 @@ class Plugin extends BasePlugin
      */
     public function routes($routes)
     {
-        $routes->plugin('User', [], function($routes) {
+        $routes->plugin('User', [], function ($routes) {
             $routes->connect(
                 '/login',
                 ['controller' => 'User', 'action' => 'login'],
@@ -137,8 +137,7 @@ class Plugin extends BasePlugin
             $routes->fallbacks('DashedRoute');
         });
 
-
-        $routes->scope('/admin/user', ['prefix' => 'admin', 'plugin' => 'User'], function($routes) {
+        $routes->scope('/admin/user', ['prefix' => 'admin', 'plugin' => 'User'], function ($routes) {
             $routes->fallbacks(DashedRoute::class);
         });
     }

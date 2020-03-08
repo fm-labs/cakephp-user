@@ -43,7 +43,7 @@ class UserSessionsTable extends Table
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
             'joinType' => 'INNER',
-            'className' => 'User.Users'
+            'className' => 'User.Users',
         ]);
     }
 

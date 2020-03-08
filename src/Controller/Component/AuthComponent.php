@@ -56,7 +56,7 @@ class AuthComponent extends CakeAuthComponent
         if (!$this->getConfig('authenticate')) {
             $this->setConfig('authenticate', [
                 self::ALL => ['userModel' => $this->getConfig('userModel'), 'finder' => 'authUser'],
-                'Form' => [/*'className' => 'User.Form'*/]
+                'Form' => [/*'className' => 'User.Form'*/],
             ]);
         }
 
@@ -95,7 +95,7 @@ class AuthComponent extends CakeAuthComponent
             if ($user) {
                 $event = new Event('User.Auth.beforeLogin', $this, [
                     'user' => $user,
-                    'request' => $request
+                    'request' => $request,
                 ]);
                 $event = $this->getEventManager()->dispatch($event);
                 if ($event->getData('redirect')) {
@@ -115,12 +115,11 @@ class AuthComponent extends CakeAuthComponent
 
                 $event = new Event('User.Auth.login', $this, [
                     'user' => $user,
-                    'request' => $request
+                    'request' => $request,
                 ]);
                 $this->getEventManager()->dispatch($event);
 
                 return $user;
-
             } elseif ($request->is('post')) {
                 throw new AuthException(__d('user', 'Login failed'), $request->getData());
             }
@@ -130,15 +129,13 @@ class AuthComponent extends CakeAuthComponent
 
             $event = new Event('User.Auth.error', $this, [
                 'request' => $request,
-                'error' => $ex
+                'error' => $ex,
             ]);
             $this->getEventManager()->dispatch($event);
-
         } catch (\Exception $ex) {
             $this->setUser(null);
             Log::error('AuthComponent: ' . $ex->getMessage(), ['user']);
         } finally {
-
         }
 
         return $user;
@@ -154,7 +151,7 @@ class AuthComponent extends CakeAuthComponent
     {
         $event = new Event('User.Auth.logout', $this, [
             'user' => $this->user(),
-            'request' => $this->getController()->getRequest() // @deprecated This is redundant, as the request object can be accessed from the event subject
+            'request' => $this->getController()->getRequest(), // @deprecated This is redundant, as the request object can be accessed from the event subject
         ]);
         $this->getEventManager()->dispatch($event);
 

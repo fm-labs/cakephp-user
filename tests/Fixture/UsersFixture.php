@@ -109,7 +109,7 @@ class UsersFixture extends TestFixture
             'block_reason' => null,
             'block_datetime' => null,
             'created' => '2015-04-19 15:52:37',
-            'modified' => '2015-04-19 15:52:37'
+            'modified' => '2015-04-19 15:52:37',
         ],
         [
             'id' => 2,
@@ -140,7 +140,7 @@ class UsersFixture extends TestFixture
             'block_reason' => null,
             'block_datetime' => null,
             'created' => '2015-04-19 15:52:37',
-            'modified' => '2015-04-19 15:52:37'
+            'modified' => '2015-04-19 15:52:37',
         ],
     ];
 }

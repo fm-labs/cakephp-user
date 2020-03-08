@@ -91,7 +91,7 @@ class User extends Entity
         'groups' => false,
         'locale' => false,
         'timezone' => false,
-        'is_deleted' => false
+        'is_deleted' => false,
     ];
 
     /**

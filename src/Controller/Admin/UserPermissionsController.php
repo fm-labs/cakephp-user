@@ -17,7 +17,7 @@ class UserPermissionsController extends AppController
         'index' => 'User.Index',
         'view' => 'User.View',
         'edit' => 'User.Edit',
-        'delete' => 'User.Delete'
+        'delete' => 'User.Delete',
     ];
 
     /**
@@ -40,7 +40,7 @@ class UserPermissionsController extends AppController
     public function view($id = null)
     {
         $permission = $this->Permissions->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         $this->set('permission', $permission);
         $this->set('_serialize', ['permission']);
@@ -78,7 +78,7 @@ class UserPermissionsController extends AppController
     public function edit($id = null)
     {
         $permission = $this->Permissions->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $permission = $this->Permissions->patchEntity($permission, $this->request->data);

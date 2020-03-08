@@ -190,7 +190,7 @@ class UserAgent
             'os_platform' => $osPlatform,
             'device' => $device,
             'brand' => $brand,
-            'model' => $model
+            'model' => $model,
         ];
     }
 
@@ -247,7 +247,7 @@ class UserAgent
             'os_platform' => $dd->getOs('platform'),
             'device' => $this->_mapDevice($dd->getDeviceName()),
             'brand' => $dd->getBrandName(),
-            'model' => $dd->getModel()
+            'model' => $dd->getModel(),
         ];
 
         return array_filter($data, function ($val) {
@@ -262,7 +262,7 @@ class UserAgent
     protected function _mapDevice($val)
     {
         $map = [
-            'smartphone' => 'phone'
+            'smartphone' => 'phone',
         ];
 
         return (isset($map[$val])) ? $map[$val] : $val;

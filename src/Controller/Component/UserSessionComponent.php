@@ -186,7 +186,7 @@ class UserSessionComponent extends Component
             'timestamp' => time(),
             'expires' => ($this->_config['maxLifetimeSec'] > 0) ? time() + $this->_config['maxLifetimeSec'] : null,
             'client_ip' => $this->getController()->getRequest()->clientIp(),
-            'user_agent' => $this->getController()->getRequest()->getHeaderLine('User-Agent')
+            'user_agent' => $this->getController()->getRequest()->getHeaderLine('User-Agent'),
         ];
 
         /** @var Event $event */
@@ -314,7 +314,7 @@ class UserSessionComponent extends Component
             'l' => ($this->Auth->user('id')) ? 1 : 0,
             'lt' => $this->getConfig('maxLifetimeSec'),
             'e' => $userSession['expires'],
-            'efmt' => ($userSession['expires']) ? date(DATE_ATOM, $userSession['expires']) : 0
+            'efmt' => ($userSession['expires']) ? date(DATE_ATOM, $userSession['expires']) : 0,
         ];
 
         return $data;
@@ -363,7 +363,7 @@ class UserSessionComponent extends Component
         return [
             'Controller.initialize' => 'beforeFilter',
             'Controller.startup' => 'startup',
-            'User.Auth.logout' => 'destroy'
+            'User.Auth.logout' => 'destroy',
         ];
     }
 }

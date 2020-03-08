@@ -24,8 +24,8 @@ class UserGroupsController extends AppController
         $this->set('related', ['Users' => [
             'fields' => ['id', 'superuser', 'first_name', 'last_name', 'username', 'email', 'login_enabled'],
             'rowActions' => [
-                [__('Details'), ['controller' => 'Users', 'action' => 'view', ':id']]
-            ]
+                [__('Details'), ['controller' => 'Users', 'action' => 'view', ':id']],
+            ],
         ]]);
         $this->Action->execute();
     }

@@ -104,7 +104,7 @@ class UserMailerService implements EventListenerInterface
             'User.Model.User.activate' => 'onActivate',
             'User.Model.User.passwordForgotten' => 'onPasswordForgotten',
             'User.Model.User.passwordReset' => 'onPasswordReset',
-            'User.Model.User.newLogin' => 'onLogin'
+            'User.Model.User.newLogin' => 'onLogin',
         ];
     }
 }

@@ -48,19 +48,19 @@ class GroupsFixture extends TestFixture
             'id' => 1,
             'alias' => 'root',
             'name' => 'Root Users',
-            'password' => null
+            'password' => null,
         ],
         [
             'id' => 2,
             'alias' => 'users',
             'name' => 'Normal Users',
-            'password' => null
+            'password' => null,
         ],
         [
             'id' => 3,
             'alias' => 'admins',
             'name' => 'Admin Users',
-            'password' => null
+            'password' => null,
         ],
     ];
 }

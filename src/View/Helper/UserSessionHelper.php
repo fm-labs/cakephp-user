@@ -16,7 +16,7 @@ class UserSessionHelper extends Helper
     protected $_defaultConfig = [
         'sessionKey' => 'Auth.UserSession',
         'checkUrl' => ['_name' => 'user:checkauth'],
-        'loginUrl' => ['_name' => 'user:login']
+        'loginUrl' => ['_name' => 'user:login'],
     ];
 
     /**
