@@ -55,7 +55,7 @@ class UserPermissionsController extends AppController
     {
         $permission = $this->Permissions->newEntity();
         if ($this->request->is('post')) {
-            $permission = $this->Permissions->patchEntity($permission, $this->request->data);
+            $permission = $this->Permissions->patchEntity($permission, $this->request->getData());
             if ($this->Permissions->save($permission)) {
                 $this->Flash->success(__d('user', 'The {0} has been saved.', __d('user', 'permission')));
 
@@ -81,7 +81,7 @@ class UserPermissionsController extends AppController
             'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $permission = $this->Permissions->patchEntity($permission, $this->request->data);
+            $permission = $this->Permissions->patchEntity($permission, $this->request->getData());
             if ($this->Permissions->save($permission)) {
                 $this->Flash->success(__d('user', 'The {0} has been saved.', __d('user', 'permission')));
 

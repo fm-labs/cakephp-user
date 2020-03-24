@@ -55,7 +55,7 @@ class UserRolesController extends AppController
     {
         $role = $this->Roles->newEntity();
         if ($this->request->is('post')) {
-            $role = $this->Roles->patchEntity($role, $this->request->data);
+            $role = $this->Roles->patchEntity($role, $this->request->getData());
             if ($this->Roles->save($role)) {
                 $this->Flash->success(__d('user', 'The {0} has been saved.', __d('user', 'role')));
 
@@ -81,7 +81,7 @@ class UserRolesController extends AppController
             'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $role = $this->Roles->patchEntity($role, $this->request->data);
+            $role = $this->Roles->patchEntity($role, $this->request->getData());
             if ($this->Roles->save($role)) {
                 $this->Flash->success(__d('user', 'The {0} has been saved.', __d('user', 'role')));
 

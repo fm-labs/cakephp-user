@@ -66,7 +66,7 @@ class UserController extends AppController
     public function login()
     {
         if (Configure::read('User.Login.layout')) {
-            $this->viewBuilder()->layout(Configure::read('User.Login.layout'));
+            $this->viewBuilder()->setLayout(Configure::read('User.Login.layout'));
         }
 
         if ($this->request->getQuery('goto')) {
@@ -160,7 +160,7 @@ class UserController extends AppController
 
         if (Configure::read('User.Signup.disabled') != true) {
             if ($this->request->is('post')) {
-                $data = $this->request->data;
+                $data = $this->request->getData();
                 if (Configure::read('User.Signup.groupAuth') == true) {
                     $data['group_id'] = $this->request->getSession()->read('User.Signup.group_id');
                 }
@@ -239,7 +239,7 @@ class UserController extends AppController
         /* @var User $user */
         $user = $this->Users->newEntity();
         if ($this->request->is('post') || $this->request->is('put')) {
-            if ($this->Users->activate($this->request->data)) {
+            if ($this->Users->activate($this->request->getData())) {
                 $this->Flash->success(__d('user', 'Your account has been activated. You can login now.'), ['key' => 'auth']);
                 $this->redirect(['action' => 'login', 'm' => base64_encode($user->email) ]);
             } else {
@@ -331,7 +331,7 @@ class UserController extends AppController
         $form = new PasswordForgottenForm();
 
         if ($this->request->is('post') || $this->request->is('put')) {
-            $user = $form->execute($this->request->data);
+            $user = $form->execute($this->request->getData());
             if ($user) {
                 $this->Flash->success(__d('user', 'Password recovery info has been sent to you via email. Please check your inbox.'), ['key' => 'auth']);
 
@@ -393,7 +393,7 @@ class UserController extends AppController
             }
 
             if ($this->request->is('post') || $this->request->is('put')) {
-                $user = $this->Users->resetPassword($user, $this->request->data);
+                $user = $this->Users->resetPassword($user, $this->request->getData());
                 if ($user && !$user->getErrors()) {
                     $this->Flash->success(__d('user', 'You can now login with your new password'), ['key' => 'auth']);
                     $this->redirect(['_name' => 'user:login', 'u' => base64_encode($user->username)]);
@@ -422,7 +422,7 @@ class UserController extends AppController
     {
         $user = $this->Users->get($this->Auth->user('id'));
         if ($this->request->is('post') || $this->request->is('put')) {
-            if ($this->Users->changePassword($user, $this->request->data)) {
+            if ($this->Users->changePassword($user, $this->request->getData())) {
                 $this->Flash->success(__d('user', 'Your password has been changed.'), ['key' => 'auth']);
                 $this->redirect(['action' => 'passwordChanged']);
             } else {

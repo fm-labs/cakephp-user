@@ -2,8 +2,32 @@
     "name": "fm-labs/cakephp-user",
     "description": "User plugin for CakePHP",
     "type": "cakephp-plugin",
+    "keywords": ["cakephp", "user", "authentication"],
+    "homepage": "https://github.com/fm-labs/cakephp-user",
+    "readme": "README.md",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "fm-labs",
+            "email": "flowmotionlabs@gmail.com",
+            "homepage": "https://www.flowmotion-labs.com",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+       "email": "flowmotionlabs@gmail.com",
+        "issues": null,
+        "forum": null,
+        "wiki": null,
+        "irc": null,
+        "source": "https://github.com/fm-labs/cakephp-user",
+        "docs": null,
+        "rss": null,
+        "chat": null
+    },
+    "funding": [],
     "require": {
-        "php": ">=7.1",
+        "php": "^7.1",
         "cakephp/cakephp": "~3.8"
     },
     "require-dev": {

@@ -157,7 +157,7 @@ class UsersController extends AppController
 
         $user = $this->Users->get($userId);
         if ($this->request->is('post') || $this->request->is('put')) {
-            if ($this->Users->changePassword($user, $this->request->data)) {
+            if ($this->Users->changePassword($user, $this->request->getData())) {
                 $this->Flash->success(__d('user', 'Your password has been changed.'));
                 $this->redirect(['action' => 'index']);
             } else {
@@ -185,7 +185,7 @@ class UsersController extends AppController
 
         $user = $this->Users->get($userId);
         if ($this->request->is('post') || $this->request->is('put')) {
-            if ($this->Users->resetPassword($user, $this->request->data)) {
+            if ($this->Users->resetPassword($user, $this->request->getData())) {
                 $this->Flash->success(__d('user', 'Your password has been changed.'));
                 $this->redirect(['action' => 'index']);
             } else {

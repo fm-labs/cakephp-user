@@ -79,7 +79,7 @@ class UserSessionService implements EventListenerInterface
         }
 
         $userSession->accessible('*', false);
-        $userSession->accessible('expires', true);
+        $userSession->setAccess('expires', true);
         $userSession = $this->UserSessions->patchEntity($userSession, $event->data);
 
         $this->UserSessions->save($userSession);

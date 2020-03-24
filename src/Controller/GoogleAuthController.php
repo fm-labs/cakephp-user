@@ -23,7 +23,7 @@ class GoogleAuthController extends AppController
         //$this->Auth->allow(['test']);
 
         if (Configure::read('User.layout')) {
-            $this->viewBuilder()->layout(Configure::read('User.layout'));
+            $this->viewBuilder()->setLayout(Configure::read('User.layout'));
         }
     }
 

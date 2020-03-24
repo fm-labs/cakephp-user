@@ -1,7 +1,7 @@
 <?php
 return [
     'Settings' => [
-        'user_auth' => [
+        'User.Auth' => [
             'settings' => [
                 'User.Login.disabled' => [
                     'type' => 'boolean',
@@ -13,7 +13,7 @@ return [
                 ],
             ],
         ],
-        'user_signup' => [
+        'User.Signup' => [
             'settings' => [
                 'User.Signup.disabled' => [
                     'type' => 'boolean',
@@ -29,7 +29,7 @@ return [
                 ],
             ],
         ],
-        'user_recaptcha' => [
+        'User.Captcha' => [
             'settings' => [
                 'User.Recaptcha.enabled' => [
                     'type' => 'boolean',

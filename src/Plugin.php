@@ -2,7 +2,6 @@
 
 namespace User;
 
-use Banana\Application;
 use Banana\Plugin\BasePlugin;
 use Cake\Core\Configure;
 use Cake\Core\PluginApplicationInterface;
@@ -48,23 +47,62 @@ class Plugin extends BasePlugin
         }
 
         /**
+         * Authentication
+         */
+        EventManager::instance()->on(new UserAuthService());
+        EventManager::instance()->on(new UserPasswordService());
+        //EventManager::instance()->on(new UserSessionService());
+
+
+        /**
          * Mailer support
          */
-        if (Configure::read('User.Mailer.enabled') == true && !Configure::check('User.Email')) {
-            Configure::load('User.emails');
+        if (Configure::read('User.Mailer.enabled') == true) {
+            if (!Configure::check('User.Email')) {
+                Configure::load('User.emails');
+            }
+            EventManager::instance()->on(new UserMailerService(Configure::read('User.Mailer')));
         }
 
-        EventManager::instance()->on(new UserBackend());
-        EventManager::instance()->on(new UserAuthService());
-        //EventManager::instance()->on(new UserSessionService());
-        EventManager::instance()->on(new UserPasswordService());
-
+        /**
+         * Logging
+         */
         if (Configure::read('User.Logging.enabled') == true) {
             EventManager::instance()->on(new UserLoggingService(Configure::read('User.Logging')));
         }
 
-        if (Configure::read('User.Mailer.enabled') == true) {
-            EventManager::instance()->on(new UserMailerService(Configure::read('User.Mailer')));
+        /**
+         * Administration
+         */
+        if (\Cake\Core\Plugin::isLoaded('Backend')) {
+            EventManager::instance()->on(new UserBackend());
+            //\Backend\Backend::register($this->getName, UserBackend::class);
+        }
+
+        /**
+         * Settings
+         */
+        if (\Cake\Core\Plugin::isLoaded('Settings')) {
+            //EventManager::instance()->on(new Settings());
+            \Settings\SettingsManager::register($this->getName(), function ($settings) {
+                /** @var \Settings\SettingsManager $settings */
+                $settings->load('User.settings');
+            });
+
+            /*
+            Hook::addCallback('settings_build', function ($settings, $options) {
+                $settings['foo'] = [
+                    'type' => 'string'
+                ];
+                return $settings;
+            });
+            $settings = Hook::callback('settings_build', [], ['some' => 'option']);
+
+            Hook::addAction('settings_notify', function ($xy) {
+                // do something without returning anything
+            });
+            Hook::action('settings_notify', '1234');
+            */
         }
 
         /*
