@@ -96,7 +96,7 @@ class UserMailerService implements EventListenerInterface
     /**
      * @return array
      */
-    public function implementedEvents()
+    public function implementedEvents(): array
     {
         return [
             'User.Model.User.register' => 'onRegister',

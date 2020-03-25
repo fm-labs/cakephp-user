@@ -27,7 +27,7 @@ class Plugin extends BasePlugin
     /**
      * {@inheritDoc}
      */
-    public function bootstrap(PluginApplicationInterface $app)
+    public function bootstrap(PluginApplicationInterface $app): void
     {
         parent::bootstrap($app);
 
@@ -119,7 +119,7 @@ class Plugin extends BasePlugin
     /**
      * {@inheritDoc}
      */
-    public function routes($routes)
+    public function routes(\Cake\Routing\RouteBuilder $routes): void
     {
         $routes->plugin('User', [], function ($routes) {
             $routes->connect(

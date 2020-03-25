@@ -32,7 +32,7 @@ class UserAgentHelper extends Helper
     /**
      * {@inheritDoc}
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         $this->templater()->add([
             'ua_label' => '<span class="ua-info-os" data-toggle="tooltip" data-title="{{content}}" {{attrs}}>{{label}}: <i class="fa fa-{{icon}}"></i></span>',

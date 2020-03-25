@@ -33,7 +33,7 @@ class UserSessionComponent extends Component
     /**
      * {@inheritDoc}
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         $sessionTimeout = Configure::read('Session.timeout');
         if ($sessionTimeout && $sessionTimeout > 0 && $this->_config['maxLifetimeSec'] > $sessionTimeout * MINUTE) {
@@ -46,7 +46,7 @@ class UserSessionComponent extends Component
      * @param Event $event The event object
      * @return \Cake\Http\Response|null
      */
-    public function beforeFilter(Event $event)
+    public function beforeFilter(\Cake\Event\EventInterface $event)
     {
         return $this->checkSession($event);
     }
@@ -55,7 +55,7 @@ class UserSessionComponent extends Component
      * @param Event $event The event object
      * @return \Cake\Http\Response|null
      */
-    public function startup(Event $event)
+    public function startup(\Cake\Event\EventInterface $event)
     {
         return $this->checkSession($event);
     }
@@ -358,7 +358,7 @@ class UserSessionComponent extends Component
      *
      * @return array
      */
-    public function implementedEvents()
+    public function implementedEvents(): array
     {
         return [
             'Controller.initialize' => 'beforeFilter',

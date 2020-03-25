@@ -33,7 +33,7 @@ class UsersTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -67,7 +67,7 @@ class UsersTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->Users);
 
@@ -142,7 +142,7 @@ class UsersTableTest extends TestCase
 
         // test minLength
         $this->assertTrue($this->Users->checkEmailBlacklist('asdf@example.org', $options, $fakeContext));
-        $this->assertInternalType('string', $this->Users->checkEmailBlacklist('asdf@example.net', $options, $fakeContext));
+        $this->assertIsString($this->Users->checkEmailBlacklist('asdf@example.net', $options, $fakeContext));
     }
 
     /**
@@ -276,7 +276,12 @@ class UsersTableTest extends TestCase
 
         $user = $this->Users->get($user->id);
         $this->assertTrue((new DefaultPasswordHasher())->check(self::TEST_PASS1, $user->password));
-        $this->assertArraySubset(['locale' => 'de', 'first_name' => 'First', 'last_name' => 'Last'], $user->toArray());
+        $this->assertArrayHasKey('locale', $user->toArray());
+        $this->assertArrayHasKey('first_name', $user->toArray());
+        $this->assertArrayHasKey('last_name', $user->toArray());
+        $this->assertSame('de', $user->toArray()['locale']);
+        $this->assertSame('First', $user->toArray()['first_name']);
+        $this->assertSame('Last', $user->toArray()['last_name']);
         $this->Users->delete($user);
 
         // test with valid username and password + default data (+i18n)
@@ -296,7 +301,12 @@ class UsersTableTest extends TestCase
         $this->assertNotEmpty($user->id);
 
         $user = $this->Users->get($user->id);
-        $this->assertArraySubset(['locale' => 'en', 'timezone' => $_tmpTz, 'currency' => $_tmpCur], $user->toArray());
+        $this->assertArrayHasKey('locale', $user->toArray());
+        $this->assertArrayHasKey('timezone', $user->toArray());
+        $this->assertArrayHasKey('currency', $user->toArray());
+        $this->assertSame('en', $user->toArray()['locale']);
+        $this->assertSame($_tmpTz, $user->toArray()['timezone']);
+        $this->assertSame($_tmpCur, $user->toArray()['currency']);
         $this->Users->delete($user);
         I18n::setLocale($_tmpLocale); // restore locale
     }

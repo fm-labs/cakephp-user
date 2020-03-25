@@ -14,7 +14,7 @@ abstract class UserBaseTable extends Table
     /**
      * {@inheritDoc}
      */
-    public static function defaultConnectionName()
+    public static function defaultConnectionName(): string
     {
         return static::$connectionName;
     }

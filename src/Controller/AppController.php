@@ -18,7 +18,7 @@ class AppController extends BaseAppController
     /**
      * {@inheritDoc}
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 

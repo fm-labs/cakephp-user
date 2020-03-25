@@ -34,7 +34,7 @@ class UserSessionsTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $config = TableRegistry::getTableLocator()->exists('UserSessions') ? [] : ['className' => 'User\Model\Table\UserSessionsTable'];
@@ -46,7 +46,7 @@ class UserSessionsTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->UserSessions);
 

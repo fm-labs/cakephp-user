@@ -132,7 +132,7 @@ class UserAuthService implements EventListenerInterface
     /**
      * @return array
      */
-    public function implementedEvents()
+    public function implementedEvents(): array
     {
         return [
             'User.Auth.beforeLogin' => 'beforeLogin',

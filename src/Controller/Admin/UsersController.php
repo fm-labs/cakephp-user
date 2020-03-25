@@ -30,7 +30,7 @@ class UsersController extends AppController
     /**
      * {@inheritDoc}
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         //$this->Action->registerInline('password_change', [

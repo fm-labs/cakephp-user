@@ -112,7 +112,7 @@ class UserSessionService implements EventListenerInterface
     /**
      * @return array
      */
-    public function implementedEvents()
+    public function implementedEvents(): array
     {
         return [
             'User.Session.create' => 'sessionCreate',
