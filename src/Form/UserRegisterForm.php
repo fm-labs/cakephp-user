@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace User\Form;
 
@@ -42,8 +43,8 @@ class UserRegisterForm extends UserForm
     }
 
     /**
-     * @param Validator $validator The validator instance
-     * @return Validator
+     * @param \Cake\Validation\Validator $validator The validator instance
+     * @return \Cake\Validation\Validator
      */
     protected function validationRecaptcha(Validator $validator)
     {

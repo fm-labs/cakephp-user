@@ -1,26 +1,25 @@
 <?php
+declare(strict_types=1);
+
 namespace User\Controller\Component;
 
-use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Component\AuthComponent as CakeAuthComponent;
-use Cake\Controller\Component\FlashComponent;
+use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
-use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Log\Log;
 use User\Exception\AuthException;
-use User\Model\Table\UsersTable;
 
 /**
  * Class AuthComponent
  *
  * @package User\Controller\Component
- * @property FlashComponent $Flash
+ * @property \Cake\Controller\Component\FlashComponent $Flash
  */
 class AuthComponent extends CakeAuthComponent
 {
     /**
-     * @var UsersTable
+     * @var \User\Model\Table\UsersTable
      */
     public $Users;
 
@@ -161,7 +160,7 @@ class AuthComponent extends CakeAuthComponent
     /**
      * Get user table instance
      *
-     * @return UsersTable
+     * @return \User\Model\Table\UsersTable
      */
     public function table()
     {

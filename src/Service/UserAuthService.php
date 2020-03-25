@@ -1,13 +1,14 @@
 <?php
+declare(strict_types=1);
 
 namespace User\Service;
 
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
+use Cake\Http\ServerRequest as Request;
 use Cake\I18n\Time;
 use Cake\Log\Log;
-use Cake\Http\ServerRequest as Request;
 
 /**
  * Class UserAuthService
@@ -16,14 +17,13 @@ use Cake\Http\ServerRequest as Request;
  */
 class UserAuthService implements EventListenerInterface
 {
-
     /**
-     * @param Event $event The event object
+     * @param \Cake\Event\Event $event The event object
      * @return array|void
      */
     public function beforeLogin(Event $event)
     {
-        $user = ($event->getData('user')) ?: [];
+        $user = $event->getData('user') ?: [];
 
         if (empty($user)) {
             $event->setData([
@@ -72,7 +72,7 @@ class UserAuthService implements EventListenerInterface
     }
 
     /**
-     * @param Event $event The event object
+     * @param \Cake\Event\Event $event The event object
      * @return array|void
      */
     public function afterLogin(Event $event)
@@ -92,7 +92,7 @@ class UserAuthService implements EventListenerInterface
                 'login_failure_count' => 0, // reset login failure counter
             ];
 
-            /* @var \User\Model\Entity\User $entity */
+            /** @var \User\Model\Entity\User $entity */
             $entity = $event->getSubject()->Users->get($user['id']);
             $entity->setAccess(array_keys($data), true);
             $entity = $event->getSubject()->Users->patchEntity($entity, $data);
@@ -108,7 +108,7 @@ class UserAuthService implements EventListenerInterface
     }
 
     /**
-     * @param Event $event The event object
+     * @param \Cake\Event\Event $event The event object
      * @return void
      */
     public function onLoginError(Event $event)

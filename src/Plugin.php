@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace User;
 
@@ -8,14 +9,10 @@ use Cake\Core\PluginApplicationInterface;
 use Cake\Event\EventManager;
 use Cake\Log\Log;
 use Cake\Routing\Route\DashedRoute;
-use Cake\Routing\RouteBuilder;
-use User\Service\GoogleAuthenticatorService;
-use User\Service\UserActivityService;
 use User\Service\UserAuthService;
 use User\Service\UserLoggingService;
 use User\Service\UserMailerService;
 use User\Service\UserPasswordService;
-use User\Service\UserSessionService;
 
 /**
  * Class UserPlugin

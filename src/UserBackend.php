@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace User;
 
@@ -24,7 +25,7 @@ class UserBackend implements EventListenerInterface
     }
 
     /**
-     * @param Event $event The event object
+     * @param \Cake\Event\Event $event The event object
      * @param \Settings\SettingsManager $settings The settings manager object
      * @return void
      */
@@ -34,7 +35,7 @@ class UserBackend implements EventListenerInterface
     }
 
     /**
-     * @param Event $event The event object
+     * @param \Cake\Event\Event $event The event object
      * @return void
      */
     public function buildMenu(Event $event, \Banana\Menu\Menu $menu)

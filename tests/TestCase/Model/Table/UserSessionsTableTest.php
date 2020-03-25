@@ -1,16 +1,16 @@
 <?php
+declare(strict_types=1);
+
 namespace User\Test\TestCase\Model\Table;
 
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use User\Model\Table\UserSessionsTable;
 
 /**
  * User\Model\Table\UserSessionsTable Test Case
  */
 class UserSessionsTableTest extends TestCase
 {
-
     /**
      * Test subject
      *

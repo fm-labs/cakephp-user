@@ -1,9 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace User\Controller;
 
 use Cake\Core\Configure;
-use Cake\Event\Event;
 use Cake\Http\Exception\ServiceUnavailableException;
 use User\Model\Entity\User;
 
@@ -177,9 +177,9 @@ class GoogleAuthController extends AppController
 
     /**
      * Autheticate user with google authenticator code
-     * @param User $user The user entity
+     * @param \User\Model\Entity\User $user The user entity
      * @param string $code Google authenticator code
-     * @return bool|User
+     * @return bool|\User\Model\Entity\User
      */
     protected function _checkGoogleAuth(User $user, $code)
     {

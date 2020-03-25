@@ -1,16 +1,16 @@
 <?php
+declare(strict_types=1);
+
 namespace User\Model\Table;
 
 use Cake\Chronos\Chronos;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
-use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\Filesystem\File;
 use Cake\I18n\I18n;
 use Cake\I18n\Time;
 use Cake\Log\Log;
-use Cake\ORM\Entity;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\Routing\Router;
@@ -23,7 +23,6 @@ use User\Model\Entity\User;
  */
 class UsersTable extends UserBaseTable
 {
-
     /**
      * @var bool Use email as username
      */
@@ -156,9 +155,9 @@ class UsersTable extends UserBaseTable
     /**
      * Finder method for user authentication
      *
-     * @param Query $query The query object
+     * @param \Cake\ORM\Query $query The query object
      * @param array $options Finder options
-     * @return Query
+     * @return \Cake\ORM\Query
      * @todo Exclude superusers from frontend user authentication (or make it optional)
      */
     public function findAuthUser(Query $query, array $options)
@@ -173,7 +172,7 @@ class UsersTable extends UserBaseTable
     /**
      * @param string $username Username to search for
      * @param array $options Finder options
-     * @return Query
+     * @return \Cake\ORM\Query
      */
     public function findByUsername($username, array $options = [])
     {
@@ -267,8 +266,8 @@ class UsersTable extends UserBaseTable
     /**
      * Validation rules for form login
      *
-     * @param Validator $validator The validator instance
-     * @return Validator
+     * @param \Cake\Validation\Validator $validator The validator instance
+     * @return \Cake\Validation\Validator
      */
     public function validationLogin(Validator $validator)
     {
@@ -286,7 +285,7 @@ class UsersTable extends UserBaseTable
      * Add new user
      *
      * @param array $data User data
-     * @return User
+     * @return \User\Model\Entity\User
      */
     public function add(array $data)
     {
@@ -310,8 +309,8 @@ class UsersTable extends UserBaseTable
     }
 
     /**
-     * @param Validator $validator The validator instance
-     * @return Validator
+     * @param \Cake\Validation\Validator $validator The validator instance
+     * @return \Cake\Validation\Validator
      */
     protected function validationNewPassword(Validator $validator)
     {
@@ -341,8 +340,8 @@ class UsersTable extends UserBaseTable
     }
 
     /**
-     * @param Validator $validator The validator instance
-     * @return Validator
+     * @param \Cake\Validation\Validator $validator The validator instance
+     * @return \Cake\Validation\Validator
      */
     protected function validationEmail(Validator $validator)
     {
@@ -363,8 +362,8 @@ class UsersTable extends UserBaseTable
     }
 
     /**
-     * @param Validator $validator The validator instance
-     * @return Validator
+     * @param \Cake\Validation\Validator $validator The validator instance
+     * @return \Cake\Validation\Validator
      */
     protected function validationUsername(Validator $validator)
     {
@@ -390,8 +389,8 @@ class UsersTable extends UserBaseTable
     }
 
     /**
-     * @param Validator $validator The validator instance
-     * @return Validator
+     * @param \Cake\Validation\Validator $validator The validator instance
+     * @return \Cake\Validation\Validator
      */
     public function validationAdd(Validator $validator)
     {
@@ -404,9 +403,9 @@ class UsersTable extends UserBaseTable
     }
 
     /**
-     * @param User $user The user entity
+     * @param \User\Model\Entity\User $user The user entity
      * @param null|string $secretKey Secret key for Google authenticator
-     * @return User
+     * @return \User\Model\Entity\User
      */
     public function setGoogleAuthSecret(User $user, $secretKey = null)
     {
@@ -422,7 +421,7 @@ class UsersTable extends UserBaseTable
     }
 
     /**
-     * @param User $user The user entity
+     * @param \User\Model\Entity\User $user The user entity
      * @return \Dolondro\GoogleAuthenticator\Secret
      */
     public function getGoogleAuthSecret(User $user)
@@ -441,8 +440,8 @@ class UsersTable extends UserBaseTable
     }
 
     /**
-     * @param User $user The user entity
-     * @return User
+     * @param \User\Model\Entity\User $user The user entity
+     * @return \User\Model\Entity\User
      */
     public function enableGoogleAuth(User $user)
     {
@@ -460,8 +459,8 @@ class UsersTable extends UserBaseTable
     }
 
     /**
-     * @param User $user The user entity
-     * @return User
+     * @param \User\Model\Entity\User $user The user entity
+     * @return \User\Model\Entity\User
      */
     public function disableGoogleAuth(User $user)
     {
@@ -476,7 +475,7 @@ class UsersTable extends UserBaseTable
      *
      * @param string $email User email address
      * @param string $password User password
-     * @return bool|User
+     * @return bool|\User\Model\Entity\User
      */
     public function createRootUser($email, $password)
     {
@@ -513,11 +512,11 @@ class UsersTable extends UserBaseTable
      *
      * @param array $data User data
      * @param bool $dispatchEvent If True, trigger custom events (Default: True)
-     * @return User
+     * @return \User\Model\Entity\User
      */
     public function register(array $data, $dispatchEvent = true)
     {
-        /** @var User $user */
+        /** @var \User\Model\Entity\User $user */
         $user = $this->newEntity();
         $user->setAccess('*', false);
         $user->setAccess(['username', 'name', 'first_name', 'last_name', 'email', 'locale', 'timezone', 'currency'], true);
@@ -532,7 +531,7 @@ class UsersTable extends UserBaseTable
 
         // No-Login
         // Creates a user with no password and login disabled
-        $noLogin = (isset($data['_nologin'])) ? (bool)$data['_nologin'] : false; //@TODO Read from config
+        $noLogin = isset($data['_nologin']) ? (bool)$data['_nologin'] : false; //@TODO Read from config
         if ($noLogin) {
             $user->login_enabled = false;
 
@@ -610,8 +609,8 @@ class UsersTable extends UserBaseTable
     /**
      * Validation rules for the register method
      *
-     * @param Validator $validator The validator instance
-     * @return Validator
+     * @param \Cake\Validation\Validator $validator The validator instance
+     * @return \Cake\Validation\Validator
      */
     public function validationRegister(Validator $validator)
     {
@@ -627,7 +626,7 @@ class UsersTable extends UserBaseTable
      * - Requires the current user password
      * - The new password MUST NOT match the current user password
      *
-     * @param User|EntityInterface $user The user entity
+     * @param \User\Model\Entity\User|\User\Model\Table\EntityInterface $user The user entity
      * @param array $data User data
      * @return bool
      */
@@ -637,7 +636,7 @@ class UsersTable extends UserBaseTable
         $user->setAccess('password1', true);
         $user->setAccess('password2', true);
 
-        /** @var User $user */
+        /** @var \User\Model\Entity\User $user */
         $user = $this->patchEntity($user, $data, ['validate' => 'changePassword']);
         if ($user->getErrors()) {
             return false;
@@ -675,14 +674,14 @@ class UsersTable extends UserBaseTable
         unset($user->password2);
         #unset($user->password); // hide password
 
-        return ($saved) ? true : false;
+        return $saved ? true : false;
     }
 
     /**
      * Validation rules to change password
      *
-     * @param Validator $validator The validator instance
-     * @return Validator
+     * @param \Cake\Validation\Validator $validator The validator instance
+     * @return \Cake\Validation\Validator
      */
     public function validationChangePassword(Validator $validator)
     {
@@ -697,13 +696,13 @@ class UsersTable extends UserBaseTable
     /**
      * Reset user password
      *
-     * @param User $user The user entity
+     * @param \User\Model\Entity\User $user The user entity
      * @param array $data User data
      * @return bool
      */
     public function resetPassword(User $user, array $data)
     {
-        $resetCode = (isset($data['password_reset_code'])) ? $data['password_reset_code'] : null;
+        $resetCode = $data['password_reset_code'] ?? null;
         if (!$resetCode) {
             throw new PasswordResetException(__d('user', 'Password reset code missing'));
         }
@@ -750,8 +749,8 @@ class UsersTable extends UserBaseTable
     /**
      * Validation rules to reset password
      *
-     * @param Validator $validator The validator instance
-     * @return Validator
+     * @param \Cake\Validation\Validator $validator The validator instance
+     * @return \Cake\Validation\Validator
      */
     public function validationResetPassword(Validator $validator)
     {
@@ -959,8 +958,8 @@ class UsersTable extends UserBaseTable
     /**
      * Validation rules to reset password
      *
-     * @param Validator $validator The validator instance
-     * @return Validator
+     * @param \Cake\Validation\Validator $validator The validator instance
+     * @return \Cake\Validation\Validator
      */
     public function validationActivate(Validator $validator)
     {
@@ -984,8 +983,8 @@ class UsersTable extends UserBaseTable
      */
     public function activate(array $data = [], $dispatchEvent = true)
     {
-        $email = (isset($data['email'])) ? strtolower(trim($data['email'])) : null;
-        $code = (isset($data['email_verification_code'])) ? trim($data['email_verification_code']) : null;
+        $email = isset($data['email']) ? strtolower(trim($data['email'])) : null;
+        $code = isset($data['email_verification_code']) ? trim($data['email_verification_code']) : null;
         $user = $this->find()->where(['email' => $email])->contain([])->first();
 
         if (!$user || strcmp(strtoupper($user->get('email_verification_code')), strtoupper($code)) !== 0) {
@@ -1007,10 +1006,10 @@ class UsersTable extends UserBaseTable
     /**
      * Forgot password
      *
-     * @param User $user The user entity
+     * @param \User\Model\Entity\User $user The user entity
      * @param array $data User data
      * @param bool $dispatchEvent If True, trigger custom events (Default: True)
-     * @return bool|mixed|User
+     * @return bool|mixed|\User\Model\Entity\User
      */
     public function forgotPassword(User $user, array $data = [], $dispatchEvent = true)
     {
@@ -1032,9 +1031,9 @@ class UsersTable extends UserBaseTable
     /**
      * Mark user deleted
      *
-     * @param User $user The user entity
+     * @param \User\Model\Entity\User $user The user entity
      * @param bool $dispatchEvent If True, trigger custom events (Default: True)
-     * @return bool|mixed|User
+     * @return bool|mixed|\User\Model\Entity\User
      */
     public function markDeleted(User $user, $dispatchEvent = true)
     {
@@ -1058,9 +1057,9 @@ class UsersTable extends UserBaseTable
     /**
      * Reset user marked as deleted
      *
-     * @param User $user The user entity
+     * @param \User\Model\Entity\User $user The user entity
      * @param bool $dispatchEvent If True, trigger custom events (Default: True)
-     * @return bool|mixed|User
+     * @return bool|mixed|\User\Model\Entity\User
      */
     public function resetDeleted(User $user, $dispatchEvent = true)
     {
@@ -1084,8 +1083,8 @@ class UsersTable extends UserBaseTable
     /**
      * Resend email verification code
      *
-     * @param User $user The user entity
-     * @return bool|mixed|User
+     * @param \User\Model\Entity\User $user The user entity
+     * @return bool|mixed|\User\Model\Entity\User
      */
     public function resendVerificationCode(User $user)
     {
@@ -1114,7 +1113,7 @@ class UsersTable extends UserBaseTable
     /**
      * Generate email verification url from User entity
      *
-     * @param User $user The user entity
+     * @param \User\Model\Entity\User $user The user entity
      * @return string Full URL
      */
     public static function buildEmailVerificationUrl(User $user)
@@ -1129,7 +1128,7 @@ class UsersTable extends UserBaseTable
     /**
      * Generate password reset url from User entity
      *
-     * @param User $user The user entity
+     * @param \User\Model\Entity\User $user The user entity
      * @return string Full URL
      */
     public static function buildPasswordResetUrl(User $user)

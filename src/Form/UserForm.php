@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace User\Form;
 
@@ -8,7 +9,6 @@ use User\Model\Entity\User;
 
 abstract class UserForm extends Form
 {
-
     /**
      * @var \User\Model\Table\UsersTable
      */
@@ -20,9 +20,9 @@ abstract class UserForm extends Form
     public $user;
 
     /**
-     * @param null|User $user The user entity
+     * @param null|\User\Model\Entity\User $user The user entity
      */
-    public function __construct(User $user = null)
+    public function __construct(?User $user = null)
     {
         $this->Users = TableRegistry::getTableLocator()->get('User.Users');
         if ($user === null) {
@@ -34,7 +34,7 @@ abstract class UserForm extends Form
     /**
      * Get user entity object
      *
-     * @return User
+     * @return \User\Model\Entity\User
      */
     public function getUser()
     {

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace User\Controller\Admin;
 
 use App\Controller\Admin\AppController as BaseAdminController;
@@ -10,5 +12,4 @@ use App\Controller\Admin\AppController as BaseAdminController;
  */
 class AppController extends BaseAdminController
 {
-
 }

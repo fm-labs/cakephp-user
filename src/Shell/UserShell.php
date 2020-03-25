@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace User\Shell;
 
@@ -70,7 +71,7 @@ class UserShell extends Shell
             }
 
             $password = $pass1;
-        };
+        }
 
         $data = [
             'superuser' => false,

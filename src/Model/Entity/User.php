@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace User\Model\Entity;
 
-use Cake\Auth\AbstractPasswordHasher;
 use Cake\ORM\Entity;
 
 /**
@@ -115,7 +116,7 @@ class User extends Entity
      */
     protected function _getIsRoot()
     {
-        return ($this->username === 'root');
+        return $this->username === 'root';
     }
 
     /**
@@ -123,7 +124,7 @@ class User extends Entity
      */
     protected function _getIsSuperuser()
     {
-        return ($this->superuser || $this->username === 'root');
+        return $this->superuser || $this->username === 'root';
     }
 
     /**
@@ -152,10 +153,10 @@ class User extends Entity
     }
 
     /**
-     * @return AbstractPasswordHasher
+     * @return \Cake\Auth\AbstractPasswordHasher
      */
     public function getPasswordHasher()
     {
-        return (new static::$passwordHasherClass());
+        return new static::$passwordHasherClass();
     }
 }

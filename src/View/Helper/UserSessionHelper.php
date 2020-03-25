@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace User\View\Helper;
 
@@ -20,7 +21,7 @@ class UserSessionHelper extends Helper
     ];
 
     /**
-     * @param Event $event The event object
+     * @param \Cake\Event\Event $event The event object
      * @return void
      */
     public function beforeLayout(Event $event)

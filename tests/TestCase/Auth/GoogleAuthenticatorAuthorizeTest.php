@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace User\Test\TestCase\Auth;
 
 use Cake\Controller\ComponentRegistry;

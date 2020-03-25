@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace User\Test\TestCase\View\Helper;
 
 use Cake\TestSuite\TestCase;
@@ -10,7 +12,6 @@ use User\View\Helper\UserAgentHelper;
  */
 class UserAgentHelperTest extends TestCase
 {
-
     /**
      * Test subject
      *

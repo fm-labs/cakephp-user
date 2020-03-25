@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace User\Service;
 
@@ -49,7 +50,7 @@ class UserMailerService implements EventListenerInterface
     }
 
     /**
-     * @param Event $event The event object
+     * @param \Cake\Event\Event $event The event object
      * @return void
      */
     public function onRegister(Event $event)
@@ -58,7 +59,7 @@ class UserMailerService implements EventListenerInterface
     }
 
     /**
-     * @param Event $event The event object
+     * @param \Cake\Event\Event $event The event object
      * @return void
      */
     public function onActivate(Event $event)
@@ -67,7 +68,7 @@ class UserMailerService implements EventListenerInterface
     }
 
     /**
-     * @param Event $event The event object
+     * @param \Cake\Event\Event $event The event object
      * @return void
      */
     public function onLogin(Event $event)
@@ -76,7 +77,7 @@ class UserMailerService implements EventListenerInterface
     }
 
     /**
-     * @param Event $event The event object
+     * @param \Cake\Event\Event $event The event object
      * @return void
      */
     public function onPasswordForgotten(Event $event)
@@ -85,7 +86,7 @@ class UserMailerService implements EventListenerInterface
     }
 
     /**
-     * @param Event $event The event object
+     * @param \Cake\Event\Event $event The event object
      * @return void
      */
     public function onPasswordReset(Event $event)

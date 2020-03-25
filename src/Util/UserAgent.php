@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace User\Util;
 
@@ -251,7 +252,7 @@ class UserAgent
         ];
 
         return array_filter($data, function ($val) {
-            return ($val && $val != 'UNK') ? true : false;
+            return $val && $val != 'UNK' ? true : false;
         });
     }
 
@@ -265,6 +266,6 @@ class UserAgent
             'smartphone' => 'phone',
         ];
 
-        return (isset($map[$val])) ? $map[$val] : $val;
+        return $map[$val] ?? $val;
     }
 }

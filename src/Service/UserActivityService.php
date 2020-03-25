@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace User\Service;
 
@@ -24,12 +25,12 @@ class UserActivityService implements EventListenerInterface
     }
 
     /**
-     * @param Event $event The event object
+     * @param \Cake\Event\Event $event The event object
      * @return void
      */
     public function userActivity(Event $event)
     {
-        /* @var \Cake\ORM\Table $Table */
+        /** @var \Cake\ORM\Table $Table */
         $Table = $event->getSubject();
         $activity = $this->Activities->newEntity([
             'type' => 'user',
@@ -44,12 +45,12 @@ class UserActivityService implements EventListenerInterface
     }
 
     /**
-     * @param Event $event The event object
+     * @param \Cake\Event\Event $event The event object
      * @return void
      */
     public function authActivity(Event $event)
     {
-        /* @var \User\Controller\Component\AuthComponent $auth */
+        /** @var \User\Controller\Component\AuthComponent $auth */
         $Auth = $event->getSubject();
         $activity = $this->Activities->newEntity([
             'type' => 'auth',

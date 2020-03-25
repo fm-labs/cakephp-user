@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace User\Service;
 
@@ -14,13 +15,13 @@ use Cake\Log\Log;
 class UserPasswordService implements EventListenerInterface
 {
     /**
-     * @param Event $event The event object
+     * @param \Cake\Event\Event $event The event object
      * @return void
      */
     public function onLogin(Event $event)
     {
         // rehash password, if needed
-        /* @var \User\Controller\Component\AuthComponent $Auth */
+        /** @var \User\Controller\Component\AuthComponent $Auth */
         $Auth = $event->getSubject();
         if ($Auth->user() && $Auth->authenticationProvider()->needsPasswordRehash()) {
             $user = $Auth->Users->get($Auth->user('id'));

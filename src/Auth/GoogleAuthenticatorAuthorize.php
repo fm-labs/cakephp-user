@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace User\Auth;
 
@@ -16,7 +17,7 @@ class GoogleAuthenticatorAuthorize extends BaseAuthorize
     /**
      * Constructor
      *
-     * @param ComponentRegistry $registry Component registry
+     * @param \Cake\Controller\ComponentRegistry $registry Component registry
      * @param array $config Adapter configuration
      */
     public function __construct(ComponentRegistry $registry, array $config = [])

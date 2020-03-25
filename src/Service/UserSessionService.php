@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace User\Service;
 
@@ -35,7 +36,7 @@ class UserSessionService implements EventListenerInterface
     }
 
     /**
-     * @param Event $event The event object
+     * @param \Cake\Event\Event $event The event object
      * @return void
      */
     public function sessionCreate(Event $event)
@@ -67,12 +68,12 @@ class UserSessionService implements EventListenerInterface
     }
 
     /**
-     * @param Event $event The event object
+     * @param \Cake\Event\Event $event The event object
      * @return void
      */
     public function sessionExtend(Event $event)
     {
-        /* @var \User\Model\Entity\UserSession $userSession */
+        /** @var \User\Model\Entity\UserSession $userSession */
         $userSession = $this->UserSessions->findBySessionid($event->getData('sessionid'))->first();
         if (!$userSession) {
             return;
@@ -91,12 +92,12 @@ class UserSessionService implements EventListenerInterface
     }
 
     /**
-     * @param Event $event The event object
+     * @param \Cake\Event\Event $event The event object
      * @return void
      */
     public function sessionDestroy(Event $event)
     {
-        /* @var \User\Model\Entity\UserSession $userSession */
+        /** @var \User\Model\Entity\UserSession $userSession */
         $userSession = $this->UserSessions->findBySessionid($event->getData('sessionid'))->first();
         if (!$userSession) {
             return;

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace User\Test\TestCase\View\Cell;
 
 use Cake\TestSuite\TestCase;
@@ -9,7 +11,6 @@ use User\View\Cell\UserSessionsCell;
  */
 class UserSessionsCellTest extends TestCase
 {
-
     /**
      * Request mock
      *

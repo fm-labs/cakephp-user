@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace User\Mailer;
 
@@ -30,10 +31,10 @@ trait UserMailerAwareTrait
 
     /**
      * Get mailer instance
-     * @param Email $email The email object
-     * @return \Cake\Mailer\Mailer|UserMailer
+     * @param \Cake\Mailer\Email $email The email object
+     * @return \Cake\Mailer\Mailer|\User\Mailer\UserMailer
      */
-    public function getUserMailer(Email $email = null)
+    public function getUserMailer(?Email $email = null)
     {
         $localizedEmailClass = '\\Banana\\Mailer\\LocalizedEmail';
         if ($email === null && class_exists($localizedEmailClass)) {

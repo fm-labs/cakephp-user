@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace User\Model\Table;
 
 use Cake\Database\Schema\TableSchema as Schema;
@@ -23,7 +25,6 @@ use Cake\Validation\Validator;
  */
 class UserSessionsTable extends Table
 {
-
     /**
      * Initialize method
      *

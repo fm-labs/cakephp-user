@@ -1,24 +1,23 @@
 <?php
+declare(strict_types=1);
+
 namespace User\Controller;
 
 use Cake\Core\Configure;
-use Cake\Event\Event;
 use Cake\Form\Form;
-use Cake\Log\Log;
 use Cake\Http\Exception\InternalErrorException;
-use Cake\Http\Response;
+use Cake\Log\Log;
 use Cake\Routing\Router;
 use User\Exception\AuthException;
 use User\Exception\PasswordResetException;
 use User\Form\PasswordForgottenForm;
-use User\Model\Entity\User;
 use User\Model\Table\UsersTable;
 
 /**
  * Class RegistrationController
  *
  * @package User\Controller
- * @property UsersTable $Users
+ * @property \User\Model\Table\UsersTable $Users
  */
 class UserController extends AppController
 {
@@ -53,7 +52,7 @@ class UserController extends AppController
             $this->UserSession->ignoreActions(['checkAuth']);
         }
 
-        $layout = (Configure::read('User.layout')) ?: null; //'User.user';
+        $layout = Configure::read('User.layout') ?: null; //'User.user';
         $this->viewBuilder()->setLayout($layout);
     }
 
@@ -131,7 +130,7 @@ class UserController extends AppController
      * Register method
      * No authentication required
      *
-     * @return void|null|Response Redirects on successful add, renders view otherwise.
+     * @return void|null|\Cake\Http\Response Redirects on successful add, renders view otherwise.
      */
     public function register()
     {
@@ -171,7 +170,7 @@ class UserController extends AppController
                     //$this->request->getSession()->delete('User.Signup');
                     $this->Flash->success(__d('user', 'An activation email has been sent to your email address!'), ['key' => 'auth']);
                     $redirect = $this->Auth->getConfig('registerRedirect');
-                    $redirect = ($redirect) ?: ['_name' => 'user:login'];
+                    $redirect = $redirect ?: ['_name' => 'user:login'];
                     $this->redirect($redirect);
                 } else {
                     $this->Flash->error(__d('user', 'Please fill all required fields'), ['key' => 'auth']);
@@ -236,7 +235,7 @@ class UserController extends AppController
             return;
         }
 
-        /* @var User $user */
+        /** @var \User\Model\Entity\User $user */
         $user = $this->Users->newEntity();
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Users->activate($this->request->getData())) {
@@ -246,9 +245,9 @@ class UserController extends AppController
                 $this->Flash->error(__d('user', 'Account activation failed'), ['key' => 'auth']);
             }
         } else {
-            $user->email = ($this->request->getQuery('m'))
+            $user->email = $this->request->getQuery('m')
                 ? base64_decode($this->request->getQuery('m')) : null;
-            $user->email_verification_code = ($this->request->getQuery('c'))
+            $user->email_verification_code = $this->request->getQuery('c')
                 ? base64_decode($this->request->getQuery('c')) : null;
 
             // auto-activation
@@ -282,7 +281,7 @@ class UserController extends AppController
             return;
         }
 
-        /* @var User $user */
+        /** @var \User\Model\Entity\User $user */
         $user = $this->Users->newEntity();
         if ($this->request->is('post') || $this->request->is('put')) {
             $email = trim($this->request->getData('email'));
@@ -307,7 +306,7 @@ class UserController extends AppController
                 $this->Flash->error(__d('user', 'Please fill all required fields'), ['key' => 'auth']);
             }
         } else {
-            $user->email = ($this->request->getQuery('m'))
+            $user->email = $this->request->getQuery('m')
                 ? base64_decode($this->request->getQuery('m')) : null;
         }
         $this->set('user', $user);
@@ -384,7 +383,7 @@ class UserController extends AppController
                 throw new PasswordResetException(__d('user', "Password reset code missing"));
             }
 
-            /* @var User $user */
+            /** @var \User\Model\Entity\User $user */
             $user = $this->Users->find()
                 ->where($query)
                 ->first();

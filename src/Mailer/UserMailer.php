@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace User\Mailer;
 
 use Cake\Core\Configure;
@@ -22,9 +24,9 @@ class UserMailer extends Mailer
     protected $_user;
 
     /**
-     * @param Email|null $email Email object
+     * @param \Cake\Mailer\Email|null $email Email object
      */
-    public function __construct(Email $email = null)
+    public function __construct(?Email $email = null)
     {
         parent::__construct($email);
 
@@ -36,7 +38,7 @@ class UserMailer extends Mailer
     /**
      * Sets the active user for emailing
      *
-     * @param User $user The user entity
+     * @param \User\Model\Entity\User $user The user entity
      * @return void
      */
     protected function _setUser(User $user)
@@ -48,7 +50,7 @@ class UserMailer extends Mailer
 
         if (method_exists($this->_email, 'locale')) {
             //$this->locale($user->locale);
-            $locale = ($user->locale) ?: I18n::getLocale();
+            $locale = $user->locale ?: I18n::getLocale();
             $this->_email->locale($locale);
         }
     }
@@ -68,7 +70,7 @@ class UserMailer extends Mailer
      * Reads configurations from config key `User.Email.[PROFILE]`
      *
      * @param null|string|array $profile Email profile
-     * @return $this|Email
+     * @return $this|\Cake\Mailer\Email
      */
     public function setProfile($profile)
     {
@@ -84,7 +86,7 @@ class UserMailer extends Mailer
     /**
      * User registration email
      *
-     * @param User $user The user entity
+     * @param \User\Model\Entity\User $user The user entity
      * @return $this
      */
     public function userRegistration(User $user)
@@ -104,7 +106,7 @@ class UserMailer extends Mailer
     /**
      * User activation email
      *
-     * @param User $user The user entity
+     * @param \User\Model\Entity\User $user The user entity
      * @return $this
      */
     public function userActivation(User $user)
@@ -118,7 +120,7 @@ class UserMailer extends Mailer
     /**
      * User login email
      *
-     * @param User $user The user entity
+     * @param \User\Model\Entity\User $user The user entity
      * @return $this
      */
     public function newLogin(User $user)
@@ -132,7 +134,7 @@ class UserMailer extends Mailer
     /**
      * Password forgotten email with password reset link
      *
-     * @param User $user The user entity
+     * @param \User\Model\Entity\User $user The user entity
      * @return $this
      */
     public function passwordForgotten(User $user)
@@ -152,7 +154,7 @@ class UserMailer extends Mailer
     /**
      * Password reset notification email
      *
-     * @param User $user The user entity
+     * @param \User\Model\Entity\User $user The user entity
      * @return $this
      */
     public function passwordReset(User $user)

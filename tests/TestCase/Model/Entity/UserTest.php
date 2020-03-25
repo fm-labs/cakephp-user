@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace User\Test\TestCase\Model\Entity;
 
 use Cake\TestSuite\TestCase;
@@ -9,7 +11,6 @@ use User\Model\Entity\User;
  */
 class UserTest extends TestCase
 {
-
     /**
      * Test subject
      *

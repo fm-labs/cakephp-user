@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace User\Controller\Component;
 
@@ -43,7 +44,7 @@ class UserSessionComponent extends Component
     }
 
     /**
-     * @param Event $event The event object
+     * @param \Cake\Event\Event $event The event object
      * @return \Cake\Http\Response|null
      */
     public function beforeFilter(\Cake\Event\EventInterface $event)
@@ -52,7 +53,7 @@ class UserSessionComponent extends Component
     }
 
     /**
-     * @param Event $event The event object
+     * @param \Cake\Event\Event $event The event object
      * @return \Cake\Http\Response|null
      */
     public function startup(\Cake\Event\EventInterface $event)
@@ -77,7 +78,7 @@ class UserSessionComponent extends Component
     /**
      * Check user session
      *
-     * @param Event $event The event object
+     * @param \Cake\Event\Event $event The event object
      * @return \Cake\Http\Response|null|void
      */
     public function checkSession(Event $event)
@@ -96,7 +97,7 @@ class UserSessionComponent extends Component
             return null;
         }
 
-        /* @var \Cake\Controller\Controller $controller */
+        /** @var \Cake\Controller\Controller $controller */
         $controller = $event->getSubject();
         $userSession = $this->userSession();
 
@@ -184,12 +185,12 @@ class UserSessionComponent extends Component
             'sessionid' => $sessionId,
             'sessiontoken' => $this->_createToken($sessionId),
             'timestamp' => time(),
-            'expires' => ($this->_config['maxLifetimeSec'] > 0) ? time() + $this->_config['maxLifetimeSec'] : null,
+            'expires' => $this->_config['maxLifetimeSec'] > 0 ? time() + $this->_config['maxLifetimeSec'] : null,
             'client_ip' => $this->getController()->getRequest()->clientIp(),
             'user_agent' => $this->getController()->getRequest()->getHeaderLine('User-Agent'),
         ];
 
-        /** @var Event $event */
+        /** @var \Cake\Event\Event $event */
         $event = $this->getController()->dispatchEvent('User.Session.create', $userSession, $this);
         $this->setUserSession($event->getData());
     }
@@ -259,7 +260,7 @@ class UserSessionComponent extends Component
 
         $userSession['expires'] = time() + $this->_config['maxLifetimeSec'];
 
-        /** @var Event $event */
+        /** @var \Cake\Event\Event $event */
         $event = $this->getController()->dispatchEvent('User.Session.extend', $userSession, $this);
         $this->setUserSession($event->getData());
 
@@ -311,10 +312,10 @@ class UserSessionComponent extends Component
 
         $data = [
             't' => time(),
-            'l' => ($this->Auth->user('id')) ? 1 : 0,
+            'l' => $this->Auth->user('id') ? 1 : 0,
             'lt' => $this->getConfig('maxLifetimeSec'),
             'e' => $userSession['expires'],
-            'efmt' => ($userSession['expires']) ? date(DATE_ATOM, $userSession['expires']) : 0,
+            'efmt' => $userSession['expires'] ? date(DATE_ATOM, $userSession['expires']) : 0,
         ];
 
         return $data;
@@ -347,7 +348,7 @@ class UserSessionComponent extends Component
             $this->Auth->flash(__d('user', 'Session timed out'));
 
             return $controller->redirect($this->Auth->getConfig('loginAction'));
-        };
+        }
 
         return $controller->getResponse()
             ->withStatus(403);

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace User\Test\TestCase\Model\Table;
 
 use Cake\Auth\DefaultPasswordHasher;
@@ -15,9 +17,8 @@ use User\Model\Table\UsersTable;
  */
 class UsersTableTest extends TestCase
 {
-
-    const TEST_PASS1 = "r0s3BuD$%";
-    const TEST_PASS2 = "Ba23Jump_?";
+    public const TEST_PASS1 = "r0s3BuD$%";
+    public const TEST_PASS2 = "Ba23Jump_?";
 
     /**
      * Fixtures

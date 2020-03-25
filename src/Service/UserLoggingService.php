@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace User\Service;
 
@@ -14,7 +15,7 @@ use Cake\Log\Log;
 class UserLoggingService implements EventListenerInterface
 {
     /**
-     * @param Event $event The event object
+     * @param \Cake\Event\Event $event The event object
      * @return void
      */
     public function logEvent(Event $event)
