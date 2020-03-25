@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace User\Model\Table;
 
-use Cake\Database\Schema\TableSchema as Schema;
 use Cake\Database\Schema\TableSchemaInterface;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
