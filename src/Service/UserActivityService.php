@@ -34,7 +34,7 @@ class UserActivityService implements EventListenerInterface
         $activity = $this->Activities->newEntity([
             'type' => 'user',
             'model' => $Table->getRegistryAlias(),
-            'foreign_key' => (isset($event->getData('user'))) ? $event->getData('user')['id'] : null,
+            'foreign_key' => $event->getData('user')['id'] ?? null,
             'name' => $event->getName(),
         ]);
 
@@ -54,7 +54,7 @@ class UserActivityService implements EventListenerInterface
         $activity = $this->Activities->newEntity([
             'type' => 'auth',
             'model' => $Auth->Users->registryAlias(),
-            'foreign_key' => (isset($event->getData('user'))) ? $event->getData('user')['id'] : null,
+            'foreign_key' => $event->getData('user')['id'] ?? null,
             'name' => $event->getName(),
         ]);
 
