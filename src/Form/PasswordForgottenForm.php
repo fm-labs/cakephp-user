@@ -12,7 +12,7 @@ class PasswordForgottenForm extends UserForm
     /**
      * {@inheritDoc}
      */
-    protected function _buildSchema(Schema $schema)
+    protected function _buildSchema(Schema $schema): Schema
     {
         $schema->addField('username', []);
 
@@ -39,7 +39,7 @@ class PasswordForgottenForm extends UserForm
     /**
      * {@inheritDoc}
      */
-    public function execute(array $data)
+    public function execute(array $data): bool
     {
         if (!$this->validate($data)) {
             return false;
@@ -51,7 +51,7 @@ class PasswordForgottenForm extends UserForm
     /**
      * {@inheritDoc}
      */
-    protected function _execute(array $data)
+    protected function _execute(array $data): bool
     {
         $user = $this->Users->findByUsername($data['username'])->first();
         if (!$user) {

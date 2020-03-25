@@ -14,7 +14,7 @@ class UserRegisterForm extends UserForm
     /**
      * {@inheritDoc}
      */
-    protected function _buildSchema(Schema $schema)
+    protected function _buildSchema(Schema $schema): Schema
     {
         $schema->addField('email', $this->Users->getSchema()->getColumn('email'));
         $schema->addField('password1', [] /*$this->Users->getSchema()->getColumn('password1')*/);
@@ -83,7 +83,7 @@ class UserRegisterForm extends UserForm
     /**
      * {@inheritDoc}
      */
-    public function execute(array $data)
+    public function execute(array $data): bool
     {
         if (UsersTable::$emailAsUsername && isset($data['email'])) {
             $data['username'] = $data['email'];
@@ -99,7 +99,7 @@ class UserRegisterForm extends UserForm
     /**
      * {@inheritDoc}
      */
-    protected function _execute(array $data)
+    protected function _execute(array $data): bool
     {
         // reset the validator
         $this->Users->setValidator('register', $this->Users->validationRegister(new Validator()));

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace User\Model\Table;
 
 use Cake\Database\Schema\TableSchema as Schema;
+use Cake\Database\Schema\TableSchemaInterface;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -51,11 +52,11 @@ class UserSessionsTable extends Table
     /**
      * {@inheritDoc}
      */
-    protected function _initializeSchema(Schema $table)
+    protected function _initializeSchema(TableSchemaInterface $schema): TableSchemaInterface
     {
-        $table->setColumnType('geo_location', 'json');
+        $schema->setColumnType('geo_location', 'json');
 
-        return $table;
+        return $schema;
     }
 
     /**

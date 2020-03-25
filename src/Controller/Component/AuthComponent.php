@@ -7,6 +7,7 @@ use Cake\Controller\Component\AuthComponent as CakeAuthComponent;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\Http\Response;
 use Cake\Log\Log;
 use User\Exception\AuthException;
 
@@ -104,7 +105,7 @@ class AuthComponent extends CakeAuthComponent
                     throw new AuthException($event->getData('error'), $event->getData('user'));
                 }
 
-                if ($event->result === false || $event->isStopped()) {
+                if ($event->getResult() === false || $event->isStopped()) {
                     throw new AuthException(__d('user', 'Login failed'), $event->getData('user'));
                 }
 
@@ -146,7 +147,7 @@ class AuthComponent extends CakeAuthComponent
      *
      * @return string Redirect url
      */
-    public function logout()
+    public function logout(): string
     {
         $event = new Event('User.Auth.logout', $this, [
             'user' => $this->user(),
@@ -174,7 +175,7 @@ class AuthComponent extends CakeAuthComponent
     /**
      * {@inheritDoc}
      */
-    protected function _unauthenticated(Controller $controller)
+    protected function _unauthenticated(Controller $controller): ?Response
     {
         $response = parent::_unauthenticated($controller);
 

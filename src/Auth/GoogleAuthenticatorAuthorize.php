@@ -32,7 +32,7 @@ class GoogleAuthenticatorAuthorize extends BaseAuthorize
      * @param \Cake\Http\ServerRequest $request Request instance.
      * @return bool
      */
-    public function authorize($user, Request $request)
+    public function authorize($user, Request $request): bool
     {
         if ($user['gauth_enabled'] == false) {
             return true;
