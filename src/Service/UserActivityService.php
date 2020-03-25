@@ -33,7 +33,7 @@ class UserActivityService implements EventListenerInterface
         $Table = $event->getSubject();
         $activity = $this->Activities->newEntity([
             'type' => 'user',
-            'model' => $Table->registryAlias(),
+            'model' => $Table->getRegistryAlias(),
             'foreign_key' => (isset($event->getData('user'))) ? $event->getData('user')['id'] : null,
             'name' => $event->getName(),
         ]);

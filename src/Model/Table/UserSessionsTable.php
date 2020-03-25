@@ -67,31 +67,31 @@ class UserSessionsTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
 
         $validator
-            ->allowEmpty('login_provider');
+            ->allowEmptyString('login_provider');
 
         $validator
-            ->allowEmpty('client_ip');
+            ->allowEmptyString('client_ip');
 
         $validator
-            ->allowEmpty('geo_location');
+            ->allowEmptyString('geo_location');
 
         $validator
-            ->allowEmpty('sessionid');
+            ->allowEmptyString('sessionid');
 
         $validator
-            ->allowEmpty('sessiontoken');
+            ->allowEmptyString('sessiontoken');
 
         $validator
             //->dateTime('timestamp')
             ->requirePresence('timestamp', 'create')
-            ->notEmpty('timestamp');
+            ->notEmptyString('timestamp');
 
         $validator
             //->dateTime('expires')
-            ->allowEmpty('expires');
+            ->allowEmptyString('expires');
 
         return $validator;
     }

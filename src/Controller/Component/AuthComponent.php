@@ -30,7 +30,7 @@ class AuthComponent extends CakeAuthComponent
     public function __construct(ComponentRegistry $registry, array $config = [])
     {
         // Inject additional config values
-        $this->_defaultConfig += ['userModel' => null];
+        $this->_defaultConfig += ['table()' => null];
 
         parent::__construct($registry, $config);
     }
@@ -43,8 +43,8 @@ class AuthComponent extends CakeAuthComponent
         parent::initialize($config);
 
         // user model
-        if (!$this->getConfig('userModel')) {
-            $this->setConfig('userModel', 'User.Users');
+        if (!$this->getConfig('table()')) {
+            $this->setConfig('table()', 'User.Users');
         }
 
         // default login action
@@ -55,7 +55,7 @@ class AuthComponent extends CakeAuthComponent
         // default authenticate
         if (!$this->getConfig('authenticate')) {
             $this->setConfig('authenticate', [
-                self::ALL => ['userModel' => $this->getConfig('userModel'), 'finder' => 'authUser'],
+                self::ALL => ['table()' => $this->getConfig('table()'), 'finder' => 'authUser'],
                 'Form' => [/*'className' => 'User.Form'*/],
             ]);
         }
@@ -166,20 +166,10 @@ class AuthComponent extends CakeAuthComponent
     public function table()
     {
         if (!$this->Users) {
-            $this->Users = $this->getController()->loadModel($this->getConfig('userModel'));
+            $this->Users = $this->getController()->loadModel($this->getConfig('table()'));
         }
 
         return $this->Users;
-    }
-
-    /**
-     * @return UsersTable
-     * @deprecated Use table() method instead
-     * @codeCoverageIgnore
-     */
-    public function userModel()
-    {
-        return $this->table();
     }
 
     /**
@@ -192,7 +182,7 @@ class AuthComponent extends CakeAuthComponent
         // do not store redirectUrl for json/xml/flash/requested/ajax requests
         // this extends the core behaviour, where this applies only to ajax requests
         if ($this->request->is(['ajax', 'json', 'xml', 'flash', 'requested'])) {
-            if ($response->location() == null) {
+            if ($response->getHeaderLine('Location') == null) {
                 //$response->statusCode(403);
                 $this->storage()->redirectUrl(false);
             }

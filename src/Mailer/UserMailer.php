@@ -29,7 +29,7 @@ class UserMailer extends Mailer
         parent::__construct($email);
 
         if (Configure::check('User.Mailer.profile')) {
-            $this->profile(Configure::read('User.Mailer.profile'));
+            $this->setProfile(Configure::read('User.Mailer.profile'));
         }
     }
 
@@ -60,7 +60,7 @@ class UserMailer extends Mailer
      */
     protected function _setProfile($profile)
     {
-        $this->profile($profile);
+        $this->setProfile($profile);
     }
 
     /**
@@ -70,17 +70,13 @@ class UserMailer extends Mailer
      * @param null|string|array $profile Email profile
      * @return $this|Email
      */
-    public function profile($profile = null)
+    public function setProfile($profile)
     {
-        if ($profile === null) {
-            return $this->_email->profile();
-        }
-
         if (is_string($profile) && Configure::check('User.Email.' . $profile)) {
             $profile = Configure::read('User.Email.' . $profile);
         }
 
-        $this->_email->profile($profile);
+        $this->_email->setProfile($profile);
 
         return $this;
     }
@@ -93,7 +89,7 @@ class UserMailer extends Mailer
      */
     public function userRegistration(User $user)
     {
-        $this->profile(__FUNCTION__);
+        $this->setProfile(__FUNCTION__);
         $this->_setUser($user);
 
         $verificationUrl = UsersTable::buildEmailVerificationUrl($user);
@@ -113,7 +109,7 @@ class UserMailer extends Mailer
      */
     public function userActivation(User $user)
     {
-        $this->profile(__FUNCTION__);
+        $this->setProfile(__FUNCTION__);
         $this->_setUser($user);
 
         return $this;
@@ -127,7 +123,7 @@ class UserMailer extends Mailer
      */
     public function newLogin(User $user)
     {
-        $this->profile(__FUNCTION__);
+        $this->setProfile(__FUNCTION__);
         $this->_setUser($user);
 
         return $this;

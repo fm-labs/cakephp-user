@@ -192,7 +192,7 @@ class UserController extends AppController
     public function registerGroup()
     {
         if ($this->request->is(['put', 'post'])) {
-            $grpPass = $this->request->data('group_pass');
+            $grpPass = $this->request->getData('group_pass');
             $grpPass = trim($grpPass);
             if (!$grpPass) {
                 $this->Flash->error(__d('user', 'No password entered'), ['key' => 'auth']);
@@ -285,7 +285,7 @@ class UserController extends AppController
         /* @var User $user */
         $user = $this->Users->newEntity();
         if ($this->request->is('post') || $this->request->is('put')) {
-            $email = trim($this->request->data('email'));
+            $email = trim($this->request->getData('email'));
             if (!$email) {
                 $this->Flash->error(__d('user', 'Please enter an email address'), ['key' => 'auth']);
 

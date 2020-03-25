@@ -16,7 +16,7 @@ class UserShell extends Shell
     {
         $parser = parent::getOptionParser();
         $parser
-            ->description(__d('user', "Manage user"))
+            ->setDescription(__d('user', "Manage user"))
             ->addSubcommand('add', [
                 'help' => 'Add user',
             ])
@@ -82,7 +82,7 @@ class UserShell extends Shell
         ];
 
         $user = $this->Users->newEntity();
-        $user->accessible(array_keys($data), true);
+        $user->setAccess(array_keys($data), true);
         $user = $this->Users->patchEntity($user, $data);
 
         if (!$this->Users->save($user)) {

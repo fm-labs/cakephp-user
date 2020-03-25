@@ -206,16 +206,16 @@ class UsersController extends AppController
         $emailTypes = array_keys((array)Configure::read('User.Email'));
         $emailTypes = array_combine($emailTypes, $emailTypes);
 
-        $defaultLang = I18n::defaultLocale();
+        $defaultLang = I18n::getDefaultLocale();
         $availableLangs = array_keys((array)Configure::read('Multilang.Locales'));
 
         $user = $this->Users->get($id);
         if ($this->request->is('post')) {
-            $emailType = $this->request->data('email_type');
+            $emailType = $this->request->getData('email_type');
             if (array_key_exists($emailType, $emailTypes)) {
                 $mailer = $this->getUserMailer();
 
-                if ($this->request->data('debug_only')) {
+                if ($this->request->getData('debug_only')) {
                     $this->Flash->info('Debug Only');
 
                     if (Plugin::isLoaded('Mailman')) {

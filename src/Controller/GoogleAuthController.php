@@ -72,7 +72,7 @@ class GoogleAuthController extends AppController
         }
 
         if ($this->request->is(['put', 'post'])) {
-            $code = $this->request->data('code');
+            $code = $this->request->getData('code');
             if (!$code) {
                 $this->Flash->error("Code missing");
             } elseif ($this->_checkGoogleAuth($user, $code)) {
@@ -114,7 +114,7 @@ class GoogleAuthController extends AppController
         }
 
         if ($this->request->is(['put', 'post'])) {
-            $code = $this->request->data('code');
+            $code = $this->request->getData('code');
             if (!$code) {
                 $this->Flash->error("Code missing");
             } elseif ($this->_checkGoogleAuth($user, $code)) {
@@ -155,7 +155,7 @@ class GoogleAuthController extends AppController
         }
 
         if ($this->request->is(['put', 'post'])) {
-            $code = $this->request->data('code');
+            $code = $this->request->getData('code');
             if (!$code) {
                 $this->Flash->error("Code missing");
             } elseif ($this->_checkGoogleAuth($user, $code)) {
@@ -185,7 +185,7 @@ class GoogleAuthController extends AppController
     {
         $googleAuthenticator = new \Dolondro\GoogleAuthenticator\GoogleAuthenticator();
         $secretKey = $user->gauth_secret;
-        $code = $this->request->data('code');
+        $code = $this->request->getData('code');
 
         return $googleAuthenticator->authenticate($secretKey, $code);
     }
@@ -195,8 +195,8 @@ class GoogleAuthController extends AppController
     {
         if ($this->request->is(['post'])) {
             $googleAuthenticator = new \Dolondro\GoogleAuthenticator\GoogleAuthenticator();
-            $secretKey = $this->request->data('secretKey');
-            $code = $this->request->data('code');
+            $secretKey = $this->request->getData('secretKey');
+            $code = $this->request->getData('code');
             if ($googleAuthenticator->authenticate($secretKey, $code)) {
                 $this->Flash->success("Valid");
             } else {

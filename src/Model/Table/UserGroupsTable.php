@@ -46,10 +46,10 @@ class UserGroupsTable extends UserBaseTable
     {
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
-            ->allowEmpty('id', 'create')
+            ->allowEmptyString('id', 'create')
             ->requirePresence('name', 'create')
-            ->notEmpty('name')
-            ->allowEmpty('password');
+            ->notEmptyString('name')
+            ->allowEmptyString('password');
 
         return $validator;
     }

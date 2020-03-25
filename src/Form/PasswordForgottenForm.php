@@ -30,7 +30,7 @@ class PasswordForgottenForm extends UserForm
             ]);
         }
 
-        $validator->notEmpty('username');
+        $validator->notEmptyString('username');
 
         return $validator;
     }

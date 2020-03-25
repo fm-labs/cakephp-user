@@ -32,7 +32,7 @@ class UserRegisterForm extends UserForm
     protected function _buildValidator(Validator $validator)
     {
         $validator = $this->Users->getValidator('register');
-        $validator->provider('form', $this);
+        $validator->setProvider('form', $this);
 
         if (Configure::read('User.Recaptcha.enabled')) {
             $validator = $this->validationRecaptcha($validator);
@@ -49,7 +49,7 @@ class UserRegisterForm extends UserForm
     {
         $validator
             ->requirePresence('g-recaptcha-response')
-            ->notEmpty('g-recaptcha-response', __d('user', 'Are you human?'))
+            ->notEmptyString('g-recaptcha-response', __d('user', 'Are you human?'))
             ->add('g-recaptcha-response', 'recaptcha', [
                 'rule' => 'checkRecaptcha',
                 'provider' => 'form',
