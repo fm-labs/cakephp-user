@@ -172,7 +172,7 @@ class Plugin extends BasePlugin
             $routes->fallbacks('DashedRoute');
         });
 
-        $routes->scope('/admin/user', ['prefix' => 'admin', 'plugin' => 'User'], function ($routes) {
+        $routes->scope('/admin/user', ['prefix' => 'Admin', 'plugin' => 'User'], function ($routes) {
             $routes->fallbacks(DashedRoute::class);
         });
     }
