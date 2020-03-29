@@ -181,7 +181,7 @@ class AuthComponent extends CakeAuthComponent
 
         // do not store redirectUrl for json/xml/flash/requested/ajax requests
         // this extends the core behaviour, where this applies only to ajax requests
-        if ($this->request->is(['ajax', 'json', 'xml', 'flash', 'requested'])) {
+        if ($this->getController()->getRequest()->is(['ajax', 'json', 'xml', 'flash', 'requested'])) {
             if ($response->getHeaderLine('Location') == null) {
                 //$response->statusCode(403);
                 $this->storage()->redirectUrl(false);
