@@ -19,7 +19,7 @@ class GroupsUsersFixture extends TestFixture
      *
      * @var array
      */
-    // @codingStandardsIgnoreStart
+    // phpcs::disable
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
         'user_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
@@ -32,7 +32,7 @@ class GroupsUsersFixture extends TestFixture
             'collation' => 'utf8_general_ci'
         ],
     ];
-    // @codingStandardsIgnoreEnd
+    // phpcs::enable
     /**
      * Init method
      *

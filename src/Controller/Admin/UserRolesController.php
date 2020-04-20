@@ -55,7 +55,7 @@ class UserRolesController extends AppController
      */
     public function add()
     {
-        $role = $this->Roles->newEntity();
+        $role = $this->Roles->newEmptyEntity();
         if ($this->request->is('post')) {
             $role = $this->Roles->patchEntity($role, $this->request->getData());
             if ($this->Roles->save($role)) {

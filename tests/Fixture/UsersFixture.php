@@ -21,7 +21,7 @@ class UsersFixture extends TestFixture
      *
      * @var array
      */
-    // @codingStandardsIgnoreStart
+    // phpcs::disable
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
         'superuser' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null],
@@ -71,7 +71,7 @@ class UsersFixture extends TestFixture
             'collation' => 'utf8_general_ci'
         ],
     ];
-    // @codingStandardsIgnoreEnd
+    // phpcs::enable
 
     /**
      * Records

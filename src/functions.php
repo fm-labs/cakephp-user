@@ -4,7 +4,7 @@ declare(strict_types=1);
 // http://php.net/manual/en/function.random-int.php
 // Simple backported function 'random_int', from "s rotondo90 at gmail com".
 // It works for PHP >= 5.1
-// @codingStandardsIgnoreStart
+// phpcs::disable
 if (!function_exists('random_int')) {
     function random_int($min, $max) {
         if (!function_exists('mcrypt_create_iv')) {
@@ -51,4 +51,4 @@ if (!function_exists('random_int')) {
         return $result + $min;
     }
 }
-// @codingStandardsIgnoreEnd
+// phpcs::enable

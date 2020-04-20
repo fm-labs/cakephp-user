@@ -98,7 +98,7 @@ class UserController extends AppController
             $this->Auth->flash(__('Login unavailable'));
         }
 
-        $user = $this->Users->newEntity();
+        $user = $this->Users->newEmptyEntity();
         $this->set('user', $user);
     }
 
@@ -236,7 +236,7 @@ class UserController extends AppController
         }
 
         /** @var \User\Model\Entity\User $user */
-        $user = $this->Users->newEntity();
+        $user = $this->Users->newEmptyEntity();
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Users->activate($this->request->getData())) {
                 $this->Flash->success(__d('user', 'Your account has been activated. You can login now.'), ['key' => 'auth']);
@@ -282,7 +282,7 @@ class UserController extends AppController
         }
 
         /** @var \User\Model\Entity\User $user */
-        $user = $this->Users->newEntity();
+        $user = $this->Users->newEmptyEntity();
         if ($this->request->is('post') || $this->request->is('put')) {
             $email = trim($this->request->getData('email'));
             if (!$email) {

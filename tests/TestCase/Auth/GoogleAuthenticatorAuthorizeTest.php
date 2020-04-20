@@ -7,6 +7,7 @@ use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
 use Cake\Http\ServerRequest as Request;
 use Cake\TestSuite\TestCase;
+use Laminas\Diactoros\Uri;
 use User\Auth\GoogleAuthenticatorAuthorize;
 
 class GoogleAuthenticatorAuthorizeTest extends TestCase
@@ -53,9 +54,8 @@ class GoogleAuthenticatorAuthorizeTest extends TestCase
     public function testAuthorizeFailure()
     {
         $user = ['gauth_enabled' => true];
-        $request = new Request([
-            'url' => '/user',
-        ]);
+        $request = (new Request())
+            ->withUri(new Uri('/user'));
         $this->assertFalse($this->auth->authorize($user, $request));
     }
 
@@ -67,7 +67,8 @@ class GoogleAuthenticatorAuthorizeTest extends TestCase
     public function testAuthorizeDisabled()
     {
         $user = ['gauth_enabled' => false];
-        $request = new Request('/posts/index');
+        $request = (new Request())
+            ->withUri(new Uri('/posts/index'));
 
         $this->assertTrue($this->auth->authorize($user, $request));
     }
@@ -80,16 +81,21 @@ class GoogleAuthenticatorAuthorizeTest extends TestCase
     public function testAuthorizeController()
     {
         $user = ['gauth_enabled' => true];
-        $request = new Request([
-            'url' => '/user/google-auth',
-            'params' => [
-                'plugin' => 'User',
-                'controller' => 'GoogleAuth',
-                'action' => 'index',
-                '_ext' => null,
-                'pass' => [],
-            ],
-        ]);
+//        $request = new Request([
+//            'url' => '/user/google-auth',
+//            'params' => [
+//                'plugin' => 'User',
+//                'controller' => 'GoogleAuth',
+//                'action' => 'index',
+//                '_ext' => null,
+//                'pass' => [],
+//            ],
+//        ]);
+        $request = (new Request())
+            ->withUri(new Uri('/user/google-auth'))
+            ->withParam('plugin', 'User')
+            ->withParam('controller', 'GoogleAuth')
+            ->withParam('action', 'index');
         $this->assertTrue($this->auth->authorize($user, $request));
     }
 
@@ -122,7 +128,8 @@ class GoogleAuthenticatorAuthorizeTest extends TestCase
     public function testAuthorizeSuccess()
     {
         $user = ['gauth_enabled' => true];
-        $request = new Request('/posts/index');
+        $request = (new Request())
+            ->withUri(new Uri('/posts/index'));
         $request->getSession()->write('Auth.GoogleAuth.verified', true);
 
         $this->assertTrue($this->auth->authorize($user, $request));

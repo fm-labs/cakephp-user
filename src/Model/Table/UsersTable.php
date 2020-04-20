@@ -495,7 +495,7 @@ class UsersTable extends UserBaseTable
             'email_verification_required' => false,
         ];
 
-        $user = $this->newEntity();
+        $user = $this->newEmptyEntity();
         $user->setAccess(array_keys($data), true);
         $this->patchEntity($user, $data);
 
@@ -517,7 +517,7 @@ class UsersTable extends UserBaseTable
     public function register(array $data, $dispatchEvent = true)
     {
         /** @var \User\Model\Entity\User $user */
-        $user = $this->newEntity();
+        $user = $this->newEmptyEntity();
         $user->setAccess('*', false);
         $user->setAccess(['username', 'name', 'first_name', 'last_name', 'email', 'locale', 'timezone', 'currency'], true);
         $user->setAccess(['password1', 'password2'], true);
@@ -1155,7 +1155,7 @@ class UsersTable extends UserBaseTable
      * @return string
      *
      */
-    // @codingStandardsIgnoreStart
+    // phpcs::disable
     public static function random_str($length, $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
     {
         $str = '';
@@ -1166,5 +1166,5 @@ class UsersTable extends UserBaseTable
 
         return $str;
     }
-    // @codingStandardsIgnoreEnd
+    // phpcs::enable
 }

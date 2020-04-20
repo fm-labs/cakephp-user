@@ -3,12 +3,13 @@ declare(strict_types=1);
 
 namespace User;
 
-use Banana\Plugin\BasePlugin;
+use Cake\Core\BasePlugin;
 use Cake\Core\Configure;
 use Cake\Core\PluginApplicationInterface;
 use Cake\Event\EventManager;
 use Cake\Log\Log;
 use Cake\Routing\Route\DashedRoute;
+use Cake\Routing\Router;
 use User\Service\UserAuthService;
 use User\Service\UserLoggingService;
 use User\Service\UserMailerService;
@@ -118,7 +119,7 @@ class Plugin extends BasePlugin
      */
     public function routes(\Cake\Routing\RouteBuilder $routes): void
     {
-        $routes->plugin('User', [], function ($routes) {
+        Router::plugin('User', [], function ($routes) {
             $routes->connect(
                 '/login',
                 ['controller' => 'User', 'action' => 'login'],

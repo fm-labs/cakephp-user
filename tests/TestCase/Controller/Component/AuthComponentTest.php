@@ -35,16 +35,16 @@ class AuthComponentTest extends TestCase
     {
         parent::setUp();
         // Setup our component and fake test controller
-        $request = new Request();
-        $response = new Response();
-        $this->controller = $this->getMockBuilder('Cake\Controller\Controller')
-            ->setConstructorArgs([$request, $response])
-            ->setMethods(null)
-            ->getMock();
-        $registry = new ComponentRegistry($this->controller);
-        $this->Auth = new AuthComponent($registry);
-        $event = new Event('Controller.startup', $this->controller);
-        $this->Auth->startup($event);
+//        $request = new Request();
+//        $response = new Response();
+//        $this->controller = $this->getMockBuilder('Cake\Controller\Controller')
+//            ->setConstructorArgs([$request, $response])
+//            ->setMethods(null)
+//            ->getMock();
+//        $registry = new ComponentRegistry($this->controller);
+//        $this->Auth = new AuthComponent($registry);
+//        $event = new Event('Controller.startup', $this->controller);
+//        $this->Auth->startup($event);
     }
 
     /**

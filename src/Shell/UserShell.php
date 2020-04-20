@@ -83,7 +83,7 @@ class UserShell extends Shell
             'email_verification_required' => false,
         ];
 
-        $user = $this->Users->newEntity();
+        $user = $this->Users->newEmptyEntity();
         $user->setAccess(array_keys($data), true);
         $user = $this->Users->patchEntity($user, $data);
 

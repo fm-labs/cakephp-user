@@ -149,7 +149,7 @@ class User extends Entity
             return $password;
         }
 
-        return $this->getPasswordHasher()->hash($password);
+        return $this->getPasswordHasher()->hash((string)$password);
     }
 
     /**
