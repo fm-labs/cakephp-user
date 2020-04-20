@@ -6,12 +6,14 @@ declare(strict_types=1);
 // It works for PHP >= 5.1
 // phpcs::disable
 if (!function_exists('random_int')) {
-    function random_int($min, $max) {
+    function random_int($min, $max)
+    {
         if (!function_exists('mcrypt_create_iv')) {
             trigger_error(
                 'mcrypt must be loaded for random_int to work',
                 E_USER_WARNING
             );
+
             return null;
         }
 
@@ -23,6 +25,7 @@ if (!function_exists('random_int')) {
 
         if ($min > $max) {
             trigger_error('$max can\'t be lesser than $min', E_USER_WARNING);
+
             return null;
         }
 
@@ -33,7 +36,7 @@ if (!function_exists('random_int')) {
             ++$bits;
         }
 
-        $bytes = (int)max(ceil($bits/8), 1);
+        $bytes = (int)max(ceil($bits / 8), 1);
         $bitmask = pow(2, $bits) - 1;
 
         if ($bitmask >= PHP_INT_MAX) {
@@ -42,10 +45,10 @@ if (!function_exists('random_int')) {
 
         do {
             $result = hexdec(
-                    bin2hex(
-                        mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM)
-                    )
-                ) & $bitmask;
+                bin2hex(
+                    mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM)
+                )
+            ) & $bitmask;
         } while ($result > $range);
 
         return $result + $min;

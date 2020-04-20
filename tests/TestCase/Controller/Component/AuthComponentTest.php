@@ -4,13 +4,8 @@ declare(strict_types=1);
 namespace User\Test\TestCase\Controller\Component;
 
 use Cake\Auth\FormAuthenticate;
-use Cake\Controller\ComponentRegistry;
-use Cake\Event\Event;
-use Cake\Http\Response;
-use Cake\Http\ServerRequest as Request;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
-use User\Controller\Component\AuthComponent;
 
 /**
  * User\Controller\Component\AuthComponent Test Case

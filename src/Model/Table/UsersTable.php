@@ -1156,6 +1156,7 @@ class UsersTable extends UserBaseTable
      *
      */
     // phpcs::disable
+
     public static function random_str($length, $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
     {
         $str = '';
@@ -1166,5 +1167,6 @@ class UsersTable extends UserBaseTable
 
         return $str;
     }
+
     // phpcs::enable
 }
