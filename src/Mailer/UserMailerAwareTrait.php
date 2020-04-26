@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace User\Mailer;
 
-use Cake\Mailer\Email;
+use Cake\Mailer\Mailer;
 use Cake\Mailer\MailerAwareTrait;
 
 trait UserMailerAwareTrait
@@ -22,7 +22,7 @@ trait UserMailerAwareTrait
      * @param string $className Name of mailer class
      * @return $this
      */
-    public function setUserMailer($className)
+    public function setUserMailerClass($className)
     {
         $this->_mailerClass = $className;
 
@@ -31,16 +31,11 @@ trait UserMailerAwareTrait
 
     /**
      * Get mailer instance
-     * @param \Cake\Mailer\Email $email The email object
+     * @param array|null $config
      * @return \Cake\Mailer\Mailer|\User\Mailer\UserMailer
      */
-    public function getUserMailer(?Email $email = null)
+    public function getUserMailer(?array $config = null): Mailer
     {
-        $localizedEmailClass = '\\Banana\\Mailer\\LocalizedEmail';
-        if ($email === null && class_exists($localizedEmailClass)) {
-            $email = new $localizedEmailClass();
-        }
-
-        return $this->getMailer($this->_mailerClass, $email);
+        return $this->getMailer($this->_mailerClass, $config);
     }
 }

@@ -51,7 +51,7 @@ class UserMailer extends Mailer
         if (method_exists($this->_email, 'locale')) {
             //$this->locale($user->locale);
             $locale = $user->locale ?: I18n::getLocale();
-            $this->_email->locale($locale);
+            $this->setLocale($locale);
         }
     }
 
