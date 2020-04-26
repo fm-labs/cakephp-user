@@ -25,6 +25,8 @@ class UserController extends AppController
      */
     public $modelClass = "User.Users";
 
+    public $captchaActions = ['login', 'register'];
+
     /**
      * {@inheritDoc}
      */
@@ -32,7 +34,10 @@ class UserController extends AppController
     {
         parent::initialize();
 
-        $this->loadComponent('Authentication.Authentication');
+        if ($this->components()->has('Authentication')) {
+            $this->components()->unload('Authentication');
+        }
+        $this->loadComponent('User.Auth');
         $this->loadComponent('Flash');
 
         //@todo Enable UserSession component
@@ -57,86 +62,68 @@ class UserController extends AppController
             $this->UserSession->ignoreActions(['checkAuth']);
         }
 
-        //$layout = Configure::read('User.layout') ?: 'User.user';
-        //$this->viewBuilder()->setLayout($layout);
+        $layout = Configure::read('User.layout') ?: 'User.user';
+        $this->viewBuilder()->setLayout($layout);
     }
 
-    /**
-     * Login method
-     * No authentication required
-     *
-     * @return void
-     */
-    public function login()
-    {
-        //if (Configure::read('User.Login.layout')) {
-        //    $this->viewBuilder()->setLayout(Configure::read('User.Login.layout'));
-        //}
-
-        if ($this->request->getQuery('goto')) {
-            //@TODO Check if goto URL is within app scope and/or use a token
-            $this->request->getSession()->write('Auth.redirect', urldecode($this->request->getQuery('goto')));
-        } elseif (!$this->request->getSession()->check('Auth.redirect')) {
-            $referer = $this->referer();
-            if ($referer && Router::normalize($referer) != Router::normalize(['action' => __FUNCTION__])) {
-                //debug("set referer to " . Router::normalize($referer));
-                //$this->request->getSession()->write('Auth.redirect', $referer);
-            }
-        }
-
-        try {
-            if (Configure::read('User.Login.disabled') == true) {
-                throw new AuthException(__d('user', 'Sorry, but login is currently disabled.'));
-            }
-
-            $authUser = $this->Auth->login();
-            if ($authUser) {
-                $redirectUrl = $this->Auth->redirectUrl();
-                if ($redirectUrl) {
-                    $this->redirect($redirectUrl);
-                }
-            }
-        } catch (AuthException $ex) {
-            $this->Auth->flash($ex->getMessage());
-        } catch (\Exception $ex) {
-            debug($ex->getMessage());
-            $this->Auth->flash(__('Login unavailable'));
-            throw $ex;
-        }
-
-        $user = $this->Users->newEmptyEntity();
-        $this->set('user', $user);
-    }
-
-    /**
-     * Logout method
-     *
-     * @return void
-     */
-    public function logout()
-    {
-        $this->Flash->success(__d('user', 'You are logged out now!'), ['key' => 'auth']);
-        $redirectUrl = $this->Auth->logout();
-        $this->redirect($redirectUrl);
-    }
-
-    /**
-     * @param null|string $key Identity data key
-     * @return \Authentication\IdentityInterface|mixed|null
-     */
-    protected function _getUser($key = null)
-    {
-        $identity = $this->Authentication->getIdentity();
-        if (!$identity) {
-            return null;
-        }
-
-        if ($key !== null) {
-            return $this->Authentication->getIdentityData($key);
-        }
-
-        return $identity;
-    }
+//    /**
+//     * Login method
+//     * No authentication required
+//     *
+//     * @return void
+//     */
+//    public function login()
+//    {
+//        if (Configure::read('User.Login.layout')) {
+//            $this->viewBuilder()->setLayout(Configure::read('User.Login.layout'));
+//        }
+//
+//        if ($this->request->getQuery('goto')) {
+//            //@TODO Check if goto URL is within app scope and/or use a token
+//            $this->request->getSession()->write('Auth.redirect', urldecode($this->request->getQuery('goto')));
+//        } elseif (!$this->request->getSession()->check('Auth.redirect')) {
+//            $referer = $this->referer();
+//            if ($referer && Router::normalize($referer) != Router::normalize(['action' => __FUNCTION__])) {
+//                //debug("set referer to " . Router::normalize($referer));
+//                //$this->request->getSession()->write('Auth.redirect', $referer);
+//            }
+//        }
+//
+//        try {
+//            if (Configure::read('User.Login.disabled') == true) {
+//                throw new AuthException(__d('user', 'Sorry, but login is currently disabled.'));
+//            }
+//
+//            $authUser = $this->Auth->login();
+//            if ($authUser) {
+//                $redirectUrl = $this->Auth->redirectUrl();
+//                if ($redirectUrl) {
+//                    $this->redirect($redirectUrl);
+//                }
+//            }
+//        } catch (AuthException $ex) {
+//            $this->Auth->flash($ex->getMessage());
+//        } catch (\Exception $ex) {
+//            debug($ex->getMessage());
+//            $this->Auth->flash(__('Login unavailable'));
+//            throw $ex;
+//        }
+//
+//        $user = $this->Users->newEmptyEntity();
+//        $this->set('user', $user);
+//    }
+//
+//    /**
+//     * Logout method
+//     *
+//     * @return void
+//     */
+//    public function logout()
+//    {
+//        $this->Flash->success(__d('user', 'You are logged out now!'), ['key' => 'auth']);
+//        $redirectUrl = $this->Auth->logout();
+//        $this->redirect($redirectUrl);
+//    }
 
     /**
      * Index method
@@ -146,7 +133,7 @@ class UserController extends AppController
      */
     public function index()
     {
-        $user = $this->Users->get($this->_getUser('id'));
+        $user = $this->Users->get($this->Auth->user('id'));
         $this->set('user', $user);
     }
 
@@ -158,7 +145,7 @@ class UserController extends AppController
      */
     public function register()
     {
-        if ($this->_getUser('id')) {
+        if ($this->Auth->user('id')) {
             return $this->redirect('/');
         }
 
@@ -192,10 +179,7 @@ class UserController extends AppController
                 $user = $form->execute($data);
                 if ($user && $user->id) {
                     //$this->request->getSession()->delete('User.Signup');
-                    $this->Flash->success(
-                        __d('user', 'An activation email has been sent to your email address!'),
-                        ['key' => 'auth']
-                    );
+                    $this->Flash->success(__d('user', 'An activation email has been sent to your email address!'), ['key' => 'auth']);
                     $redirect = $this->Auth->getConfig('registerRedirect');
                     $redirect = $redirect ?: ['_name' => 'user:login'];
                     $this->redirect($redirect);
@@ -256,7 +240,7 @@ class UserController extends AppController
      */
     public function activate()
     {
-        if ($this->_getUser()) {
+        if ($this->Auth->user()) {
             $this->redirect(['action' => 'index']);
 
             return;
@@ -302,7 +286,7 @@ class UserController extends AppController
      */
     public function activateResend()
     {
-        if ($this->_getUser()) {
+        if ($this->Auth->user()) {
             $this->redirect(['action' => 'index']);
 
             return;
@@ -348,7 +332,7 @@ class UserController extends AppController
      */
     public function passwordForgotten()
     {
-        if ($this->_getUser()) {
+        if ($this->Auth->user()) {
             $this->redirect(['action' => 'index']);
 
             return;
@@ -392,7 +376,7 @@ class UserController extends AppController
      */
     public function passwordReset()
     {
-        if ($this->_getUser()) {
+        if ($this->Auth->user()) {
             return $this->redirect(['action' => 'index']);
         }
 
@@ -446,7 +430,7 @@ class UserController extends AppController
      */
     public function passwordChange()
     {
-        $user = $this->Users->get($this->_getUser('id'));
+        $user = $this->Users->get($this->Auth->user('id'));
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Users->changePassword($user, $this->request->getData())) {
                 $this->Flash->success(__d('user', 'Your password has been changed.'), ['key' => 'auth']);

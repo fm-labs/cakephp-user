@@ -111,6 +111,6 @@ class UserRegisterForm extends UserForm
             return false;
         }
 
-        return $user;
+        return true;
     }
 }

@@ -9,10 +9,10 @@ $this->Breadcrumbs->add(__d('user', 'Account Registration'));
 $this->Html->meta('robots', 'noindex,nofollow', ['block' => true]);
 
 $this->assign('title', __d('user', 'Registration'));
+$form = $this->get('form');
 ?>
 <div id="user-registration-form">
     <?= $this->Form->create($form); ?>
-    <?php debug($form->errors()); ?>
     <?= $this->Form->control(
         'first_name',
         ['label' => __d('user', 'First name'), 'placeholder' => __d('user', 'Firstname')]

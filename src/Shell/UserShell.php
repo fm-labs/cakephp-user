@@ -46,17 +46,16 @@ class UserShell extends Shell
 
         debug($this->params);
 
-        $email = $this->getParam('email');
-        $password = $this->getParam('password');
+        $email = $this->param('email');
+        $password = $this->param('password');
 
         $this->loadModel('User.Users');
 
-        while (strlen($email) < 1) {
+        while (!$email) {
             $email = trim($this->in("Enter email address: "));
-            $strlen = strlen($email);
         }
 
-        while (strlen($password) < 1) {
+        while (!$password) {
             $pass1 = trim($this->in("Enter password for user: "));
             if (strlen($pass1) < 1) {
                 $this->out("Please enter a password");

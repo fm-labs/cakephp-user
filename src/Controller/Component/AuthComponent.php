@@ -16,6 +16,7 @@ use User\Exception\AuthException;
  *
  * @package User\Controller\Component
  * @property \Cake\Controller\Component\FlashComponent $Flash
+ * @deprecated Use the cakephp/authentication and cakephp/authorization plugins instead.
  */
 class AuthComponent extends CakeAuthComponent
 {
@@ -30,7 +31,7 @@ class AuthComponent extends CakeAuthComponent
     public function __construct(ComponentRegistry $registry, array $config = [])
     {
         // Inject additional config values
-        $this->_defaultConfig += ['table()' => null];
+        $this->_defaultConfig += ['userModel' => null];
 
         parent::__construct($registry, $config);
     }
@@ -43,8 +44,8 @@ class AuthComponent extends CakeAuthComponent
         parent::initialize($config);
 
         // user model
-        if (!$this->getConfig('table()')) {
-            $this->setConfig('table()', 'User.Users');
+        if (!$this->getConfig('userModel')) {
+            $this->setConfig('userModel', 'User.Users');
         }
 
         // default login action
@@ -55,8 +56,8 @@ class AuthComponent extends CakeAuthComponent
         // default authenticate
         if (!$this->getConfig('authenticate')) {
             $this->setConfig('authenticate', [
-                self::ALL => ['table()' => $this->getConfig('table()'), 'finder' => 'authUser'],
-                'Form' => [/*'className' => 'User.Form'*/],
+                self::ALL => ['userModel' => $this->getConfig('userModel'), 'finder' => 'authUser'],
+                'Form' => ['userModel' => $this->getConfig('userModel')],
             ]);
         }
 
@@ -133,8 +134,10 @@ class AuthComponent extends CakeAuthComponent
             ]);
             $this->getEventManager()->dispatch($event);
         } catch (\Exception $ex) {
+            debug($ex->getMessage());
             $this->setUser(null);
             Log::error('AuthComponent: ' . $ex->getMessage(), ['user']);
+            throw $ex;
         } finally {
         }
 
@@ -166,7 +169,7 @@ class AuthComponent extends CakeAuthComponent
     public function table()
     {
         if (!$this->Users) {
-            $this->Users = $this->getController()->loadModel($this->getConfig('table()'));
+            $this->Users = $this->getController()->loadModel($this->getConfig('userModel'));
         }
 
         return $this->Users;
