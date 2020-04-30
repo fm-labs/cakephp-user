@@ -19,8 +19,8 @@ class UserSessionsController extends AppController
      * @var array
      */
     public $actions = [
-        'index' => 'Backend.Index',
-        'view' => 'Backend.View',
-        'delete' => 'Backend.Delete',
+        'index' => 'Admin.Index',
+        'view' => 'Admin.View',
+        'delete' => 'Admin.Delete',
     ];
 }

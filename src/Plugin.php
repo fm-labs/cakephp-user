@@ -13,7 +13,7 @@ use Cake\Core\PluginApplicationInterface;
 use Cake\Event\EventManager;
 use Cake\Http\MiddlewareQueue;
 use Cake\Log\Log;
-use Cake\Routing\Route\DashedRoute;
+use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Psr\Http\Message\ServerRequestInterface;
 use User\Service\UserAuthService;
@@ -77,13 +77,17 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     /**
      * {@inheritDoc}
      */
+    public function initialize(): void
+    {
+        include 'functions.php';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function bootstrap(PluginApplicationInterface $app): void
     {
         parent::bootstrap($app);
-
-        $app->addPlugin('Authentication');
-
-        include 'functions.php';
 
         /**
          * Logs
@@ -101,6 +105,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
         /**
          * Authentication
          */
+        $app->addPlugin('Authentication');
         EventManager::instance()->on(new UserAuthService());
         EventManager::instance()->on(new UserPasswordService());
         //EventManager::instance()->on(new UserSessionService());
@@ -124,14 +129,6 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
         }
 
         /**
-         * Administration
-         */
-        if (\Cake\Core\Plugin::isLoaded('Backend')) {
-            EventManager::instance()->on(new Admin());
-            //\Backend\Backend::register($this->getName, UserBackend::class);
-        }
-
-        /**
          * Settings
          */
         if (\Cake\Core\Plugin::isLoaded('Settings')) {
@@ -150,14 +147,21 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
             EventManager::instance()->on(new GoogleAuthenticatorService());
         }
         */
+
+        /**
+         * Administration
+         */
+        if (\Cake\Core\Plugin::isLoaded('Admin')) {
+            \Admin\Admin::addPlugin(new \User\Admin());
+        }
     }
 
     /**
      * {@inheritDoc}
      */
-    public function routes(\Cake\Routing\RouteBuilder $routes): void
+    public function routes(RouteBuilder $routes): void
     {
-        Router::plugin('User', [], function ($routes) {
+        $routes->plugin('User', [], function ($routes) {
             $routes->connect(
                 '/login',
                 ['controller' => 'Auth', 'action' => 'login'],
@@ -222,10 +226,6 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
             //$routes->connect('/:controller');
             $routes->fallbacks('DashedRoute');
         });
-
-        $routes->scope('/admin/user', ['prefix' => 'Admin', 'plugin' => 'User'], function ($routes) {
-            $routes->fallbacks(DashedRoute::class);
-        });
     }
 
     /**
@@ -236,14 +236,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
      */
     public function middleware(MiddlewareQueue $middlewareQueue): MiddlewareQueue
     {
-        // Various other middlewares for error handling, routing etc. added here.
-
-        // Create an authentication middleware object
         $authentication = new AuthenticationMiddleware($this);
-
-        // Add the middleware to the middleware queue.
-        // Authentication should be added *after* RoutingMiddleware.
-        // So that subdirectory information and routes are loaded.
         $middlewareQueue->add($authentication);
 
         return $middlewareQueue;

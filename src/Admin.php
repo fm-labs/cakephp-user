@@ -3,11 +3,22 @@ declare(strict_types=1);
 
 namespace User;
 
+use Admin\Core\BaseAdminPlugin;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
+use Cake\Routing\Route\DashedRoute;
+use Cake\Routing\RouteBuilder;
 
-class Admin implements EventListenerInterface
+class Admin extends BaseAdminPlugin implements EventListenerInterface
 {
+    /**
+     * {@inheritDoc}
+     */
+    public function routes(RouteBuilder $routes): void
+    {
+        $routes->fallbacks(DashedRoute::class);
+    }
+
     /**
      * Returns a list of events this object is implementing. When the class is registered
      * in an event manager, each individual method will be associated with the respective event.
@@ -20,7 +31,7 @@ class Admin implements EventListenerInterface
     {
         return [
             'Settings.build' => 'settings',
-            'Backend.Menu.build.admin_primary' => ['callable' => 'buildMenu', 'priority' => 99 ],
+            'Admin.Menu.build.admin_primary' => ['callable' => 'buildMenu', 'priority' => 99 ],
         ];
     }
 
@@ -35,10 +46,11 @@ class Admin implements EventListenerInterface
     }
 
     /**
-     * @param \Cake\Event\Event $event The event object
+     * @param \Cake\Event\Event $event The event.
+     * @param \Cupcake\Menu\Menu $menu The menu.
      * @return void
      */
-    public function buildMenu(Event $event, \Banana\Menu\Menu $menu)
+    public function buildMenu(Event $event, \Cupcake\Menu\Menu $menu): void
     {
         $menu->addItem([
             'title' => __d('user', 'Users'),

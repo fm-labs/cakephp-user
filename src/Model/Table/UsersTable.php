@@ -96,8 +96,8 @@ class UsersTable extends UserBaseTable
             'className' => 'User.UserGroups',
         ]);
 
-        if (Plugin::isLoaded('Banana')) {
-            $this->addBehavior('Banana.Attributes');
+        if (Plugin::isLoaded('Cupcake')) {
+            $this->addBehavior('Cupcake.Attributes');
         }
 
         if (Plugin::isLoaded('Search')) {
@@ -501,7 +501,7 @@ class UsersTable extends UserBaseTable
 
         //@TODO Add validation
         if ($this->save($user)) {
-            Log::info('User \'root\' added with ID ' . $user->id, ['backend', 'user']);
+            Log::info('User \'root\' added with ID ' . $user->id, ['admin', 'user']);
         }
 
         return $user;
