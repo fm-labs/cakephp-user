@@ -12,7 +12,7 @@ use Cake\Routing\RouteBuilder;
 class Admin extends BaseAdminPlugin implements EventListenerInterface
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function routes(RouteBuilder $routes): void
     {
@@ -47,10 +47,10 @@ class Admin extends BaseAdminPlugin implements EventListenerInterface
 
     /**
      * @param \Cake\Event\Event $event The event.
-     * @param \Cupcake\Menu\Menu $menu The menu.
+     * @param \Cupcake\Menu\MenuItemCollection $menu The menu.
      * @return void
      */
-    public function buildMenu(Event $event, \Cupcake\Menu\Menu $menu): void
+    public function buildMenu(Event $event, \Cupcake\Menu\MenuItemCollection $menu): void
     {
         $menu->addItem([
             'title' => __d('user', 'Users'),

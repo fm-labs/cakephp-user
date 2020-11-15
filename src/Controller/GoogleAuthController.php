@@ -10,7 +10,7 @@ use User\Model\Entity\User;
 class GoogleAuthController extends AppController
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function beforeFilter(\Cake\Event\EventInterface $event)
     {
@@ -20,7 +20,7 @@ class GoogleAuthController extends AppController
             throw new ServiceUnavailableException();
         }
 
-        //$this->Auth->allow(['test']);
+        //$this->Authentication->allowUnauthenticated(['test']);
 
         if (Configure::read('User.layout')) {
             $this->viewBuilder()->setLayout(Configure::read('User.layout'));
@@ -177,6 +177,7 @@ class GoogleAuthController extends AppController
 
     /**
      * Autheticate user with google authenticator code
+     *
      * @param \User\Model\Entity\User $user The user entity
      * @param string $code Google authenticator code
      * @return bool|\User\Model\Entity\User

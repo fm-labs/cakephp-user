@@ -7,6 +7,7 @@ use Cake\Core\Configure;
 use Cake\Form\Form;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\Log\Log;
+use User\Exception\AuthException;
 use User\Exception\PasswordResetException;
 use User\Form\PasswordForgottenForm;
 use User\Model\Table\UsersTable;
@@ -25,8 +26,15 @@ class UserController extends AppController
      */
     public $modelClass = "User.Users";
 
+    public $config = [
+        'loginDisabled' => false,
+        'loginRedirectUrl' => '/',
+        'logoutRedirectUrl' => ['_name' => 'user:login'],
+        'registerRedirectUrl' => ['_name' => 'user:login'],
+    ];
+
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function initialize(): void
     {
@@ -42,82 +50,20 @@ class UserController extends AppController
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function beforeFilter(\Cake\Event\EventInterface $event)
     {
         parent::beforeFilter($event);
 
         $this->Authentication->allowUnauthenticated([
-            'login', 'register', 'registerGroup', 'activate', 'activateResend',
+            'login', 'logout', 'register', 'registerGroup', 'activate', 'activateResend',
             'passwordForgotten', 'passwordSent', 'passwordReset', 'passwordChanged',
         ]);
 
         if ($this->components()->has('UserSession')) {
-            $this->UserSession->ignoreActions(['checkAuth']);
+            $this->UserSession->ignoreActions(['session']);
         }
-
-        //$layout = Configure::read('User.layout') ?: 'User.user';
-        //$this->viewBuilder()->setLayout($layout);
-    }
-
-    /**
-     * Login method
-     * No authentication required
-     *
-     * @return void
-     */
-    public function login()
-    {
-        //if (Configure::read('User.Login.layout')) {
-        //    $this->viewBuilder()->setLayout(Configure::read('User.Login.layout'));
-        //}
-
-        if ($this->request->getQuery('goto')) {
-            //@TODO Check if goto URL is within app scope and/or use a token
-            $this->request->getSession()->write('Auth.redirect', urldecode($this->request->getQuery('goto')));
-        } elseif (!$this->request->getSession()->check('Auth.redirect')) {
-            $referer = $this->referer();
-            if ($referer && Router::normalize($referer) != Router::normalize(['action' => __FUNCTION__])) {
-                //debug("set referer to " . Router::normalize($referer));
-                //$this->request->getSession()->write('Auth.redirect', $referer);
-            }
-        }
-
-        try {
-            if (Configure::read('User.Login.disabled') == true) {
-                throw new AuthException(__d('user', 'Sorry, but login is currently disabled.'));
-            }
-
-            $authUser = $this->Auth->login();
-            if ($authUser) {
-                $redirectUrl = $this->Auth->redirectUrl();
-                if ($redirectUrl) {
-                    $this->redirect($redirectUrl);
-                }
-            }
-        } catch (AuthException $ex) {
-            $this->Auth->flash($ex->getMessage());
-        } catch (\Exception $ex) {
-            debug($ex->getMessage());
-            $this->Auth->flash(__('Login unavailable'));
-            throw $ex;
-        }
-
-        $user = $this->Users->newEmptyEntity();
-        $this->set('user', $user);
-    }
-
-    /**
-     * Logout method
-     *
-     * @return void
-     */
-    public function logout()
-    {
-        $this->Flash->success(__d('user', 'You are logged out now!'), ['key' => 'auth']);
-        $redirectUrl = $this->Auth->logout();
-        $this->redirect($redirectUrl);
     }
 
     /**
@@ -136,6 +82,58 @@ class UserController extends AppController
         }
 
         return $identity;
+    }
+
+    /**
+     * Login method.
+     *
+     * @return \Cake\Http\Response|null
+     * @throws \Exception
+     */
+    public function login(): ?\Cake\Http\Response
+    {
+        try {
+            if (Configure::read('User.Login.disabled') == true) {
+                throw new AuthException(__d('user', 'Sorry, but login is currently disabled.'));
+            }
+
+            $result = $this->Authentication->getResult();
+            // If the user is logged in send them away.
+            if ($result->isValid()) {
+                $target = $this->Authentication->getLoginRedirect() ?? $this->config['loginRedirectUrl'];
+                $this->Flash->success("Login successful");
+
+                return $this->redirect($target);
+            }
+            if ($this->request->is('post') && !$result->isValid()) {
+                $this->Flash->error('Invalid username or password');
+            }
+        } catch (AuthException $ex) {
+            $this->Flash->error($ex->getMessage());
+        } catch (\Exception $ex) {
+            $this->Flash->error(__('Login unavailable'));
+            if (Configure::read('debug')) {
+                throw $ex;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Logout method.
+     *
+     * @return \Cake\Http\Response|null
+     */
+    public function logout(): ?\Cake\Http\Response
+    {
+        $redirectUrl = $this->Authentication->logout();
+        if (!$redirectUrl) {
+            $redirectUrl = $this->config['logoutRedirectUrl'] ?? ['_name' => 'user:login'];
+        }
+        $this->Flash->success(__d('user', 'You are logged out now!'), ['key' => 'auth']);
+
+        return $this->redirect($redirectUrl);
     }
 
     /**
@@ -196,8 +194,7 @@ class UserController extends AppController
                         __d('user', 'An activation email has been sent to your email address!'),
                         ['key' => 'auth']
                     );
-                    $redirect = $this->Auth->getConfig('registerRedirect');
-                    $redirect = $redirect ?: ['_name' => 'user:login'];
+                    $redirect = $this->config['registerRedirectUrl'] ?? ['_name' => 'user:login'];
                     $this->redirect($redirect);
                 } else {
                     $this->Flash->error(__d('user', 'Please fill all required fields'), ['key' => 'auth']);

@@ -9,6 +9,7 @@ use App\Controller\AppController as BaseAppController;
  * Class AppController
  *
  * @package User\Controller
+ * @property \Authentication\Controller\Component\AuthenticationComponent $Authentication
  * @property \User\Controller\Component\AuthComponent $Auth
  * @property \User\Controller\Component\UserSessionComponent $UserSession
  * @property \User\Model\Table\UsersTable $Users
@@ -16,8 +17,7 @@ use App\Controller\AppController as BaseAppController;
 class AppController extends BaseAppController
 {
     /**
-     * {@inheritDoc}
-     * @throws \Exception
+     * @inheritDoc
      */
     public function initialize(): void
     {

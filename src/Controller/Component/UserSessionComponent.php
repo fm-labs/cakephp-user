@@ -341,7 +341,7 @@ class UserSessionComponent extends Component
     protected function _expired(Controller $controller)
     {
         $this->destroy();
-        $this->Auth->logout();
+        $this->Authentication->logout();
         $this->Auth->storage()->redirectUrl(false);
 
         if (!$controller->getRequest()->is('ajax')) {

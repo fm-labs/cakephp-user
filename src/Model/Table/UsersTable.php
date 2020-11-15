@@ -699,6 +699,7 @@ class UsersTable extends UserBaseTable
      * @param \User\Model\Entity\User $user The user entity
      * @param array $data User data
      * @return bool
+     * @throws \User\Exception\PasswordResetException
      */
     public function resetPassword(User $user, array $data)
     {
@@ -742,6 +743,32 @@ class UsersTable extends UserBaseTable
 
         // dispatch event
         $event = $this->getEventManager()->dispatch(new Event('User.Model.User.passwordReset', $this, compact('user')));
+
+        return $user;
+    }
+
+    /**
+     * Set user password
+     *
+     * @param \User\Model\Entity\User $user The user entity
+     * @param array $data User data
+     * @return bool
+     * @throws \User\Exception\PasswordResetException
+     */
+    public function setPassword(User $user, array $data)
+    {
+        $user->setAccess('*', false);
+        $user->setAccess('password1', true);
+        $user->setAccess('password2', true);
+        $user = $this->patchEntity($user, $data, ['validate' => 'newPassword']);
+        if ($user->getErrors()) {
+            return $user;
+        }
+
+        $user->password = $data['password1'];
+        if (!$this->save($user)) {
+            throw new \RuntimeException("Record UPDATE failed: User:" . $user->id);
+        }
 
         return $user;
     }
@@ -936,6 +963,7 @@ class UsersTable extends UserBaseTable
 
     /**
      * Password Verification Validation Rule
+     *
      * @param mixed $value Check value
      * @param mixed $context Check context
      * @return bool
@@ -1148,15 +1176,12 @@ class UsersTable extends UserBaseTable
      * For PHP 5.x, depends on https://github.com/paragonie/random_compat
      *
      * @see http://stackoverflow.com/questions/4356289/php-random-string-generator
-     *
-     * @param int $length      How many characters do we want?
+     * @param int $length How many characters do we want?
      * @param string $keyspace A string of all possible characters
      *                         to select from
      * @return string
-     *
+     * @throws \Exception
      */
-    // phpcs::disable
-
     public static function random_str($length, $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
     {
         $str = '';
@@ -1167,6 +1192,4 @@ class UsersTable extends UserBaseTable
 
         return $str;
     }
-
-    // phpcs::enable
 }

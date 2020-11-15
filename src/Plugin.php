@@ -13,8 +13,8 @@ use Cake\Core\PluginApplicationInterface;
 use Cake\Event\EventManager;
 use Cake\Http\MiddlewareQueue;
 use Cake\Log\Log;
+use Cake\Routing\Middleware\RoutingMiddleware;
 use Cake\Routing\RouteBuilder;
-use Cake\Routing\Router;
 use Psr\Http\Message\ServerRequestInterface;
 use User\Service\UserAuthService;
 use User\Service\UserLoggingService;
@@ -37,45 +37,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     public $consoleEnabled = true;
 
     /**
-     * Returns a service provider instance.
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request Request
-     * @return \Authentication\AuthenticationServiceInterface
-     */
-    public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
-    {
-        $service = new AuthenticationService();
-        $service->setConfig([
-            'unauthenticatedRedirect' => '/user/login',
-            'queryParam' => 'redirect',
-        ]);
-
-        $fields = [
-            'username' => 'username',
-            'password' => 'password',
-        ];
-
-        // Load the authenticators, you want session first
-        $service->loadAuthenticator('Authentication.Session');
-        $service->loadAuthenticator('Authentication.Form', [
-            'fields' => $fields,
-            'loginUrl' => '/user/login',
-        ]);
-
-        // Load identifiers
-        $service->loadIdentifier('Authentication.Password', [
-            'resolver' => [
-                'className' => 'Authentication.Orm',
-                'userModel' => 'User.Users',
-            ],
-            'fields' => $fields,
-        ]);
-
-        return $service;
-    }
-
-    /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function initialize(): void
     {
@@ -83,7 +45,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function bootstrap(PluginApplicationInterface $app): void
     {
@@ -106,8 +68,8 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
          * Authentication
          */
         $app->addPlugin('Authentication');
-        EventManager::instance()->on(new UserAuthService());
-        EventManager::instance()->on(new UserPasswordService());
+        //EventManager::instance()->on(new UserAuthService());
+        //EventManager::instance()->on(new UserPasswordService());
         //EventManager::instance()->on(new UserSessionService());
 
 
@@ -157,19 +119,19 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function routes(RouteBuilder $routes): void
     {
         $routes->plugin('User', [], function ($routes) {
             $routes->connect(
                 '/login',
-                ['controller' => 'Auth', 'action' => 'login'],
+                ['controller' => 'User', 'action' => 'login'],
                 ['_name' => 'user:login']
             );
             $routes->connect(
                 '/logout',
-                ['controller' => 'Auth', 'action' => 'logout'],
+                ['controller' => 'User', 'action' => 'logout'],
                 ['_name' => 'user:logout']
             );
             $routes->connect(
@@ -211,18 +173,6 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
                 ['_name' => 'user:profile']
             );
 
-            // LEGACY ROUTES
-            $routes->connect(
-                '/xlogin',
-                ['controller' => 'User', 'action' => 'login'],
-                ['_name' => 'user:x:login']
-            );
-            $routes->connect(
-                '/xlogout',
-                ['controller' => 'User', 'action' => 'logout'],
-                ['_name' => 'user:x:logout']
-            );
-
             //$routes->connect('/:controller');
             $routes->fallbacks('DashedRoute');
         });
@@ -237,8 +187,46 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     public function middleware(MiddlewareQueue $middlewareQueue): MiddlewareQueue
     {
         $authentication = new AuthenticationMiddleware($this);
-        $middlewareQueue->add($authentication);
+        $middlewareQueue->insertBefore(RoutingMiddleware::class, $authentication);
 
         return $middlewareQueue;
+    }
+
+    /**
+     * Returns a service provider instance.
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request Request
+     * @return \Authentication\AuthenticationServiceInterface
+     */
+    public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
+    {
+        $service = new AuthenticationService();
+        $service->setConfig([
+            'unauthenticatedRedirect' => '/user/login',
+            'queryParam' => 'redirect',
+        ]);
+
+        $fields = [
+            'username' => 'username',
+            'password' => 'password',
+        ];
+
+        // Load the authenticators, you want session first
+        $service->loadAuthenticator('Authentication.Session');
+        $service->loadAuthenticator('Authentication.Form', [
+            'fields' => $fields,
+            //'loginUrl' => '/user/login',
+        ]);
+
+        // Load identifiers
+        $service->loadIdentifier('Authentication.Password', [
+            'resolver' => [
+                'className' => 'Authentication.Orm',
+                'userModel' => 'User.Users',
+            ],
+            'fields' => $fields,
+        ]);
+
+        return $service;
     }
 }

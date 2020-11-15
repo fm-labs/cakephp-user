@@ -3,73 +3,119 @@ declare(strict_types=1);
 
 namespace User\Controller\Component;
 
-use Cake\Controller\Component\AuthComponent as CakeAuthComponent;
+use Cake\Controller\Component;
 use Cake\Controller\ComponentRegistry;
-use Cake\Controller\Controller;
 use Cake\Event\Event;
-use Cake\Http\Response;
+use Cake\Event\EventManagerInterface;
 use Cake\Log\Log;
 use User\Exception\AuthException;
 
 /**
  * Class AuthComponent
  *
+ * A shim component for mapping the old CakePHP AuthComponent to the new standalone AuthenticationComponent
+ *
  * @package User\Controller\Component
+ * @property \Authentication\Controller\Component\AuthenticationComponent $Authentication
  * @property \Cake\Controller\Component\FlashComponent $Flash
  * @deprecated Use the cakephp/authentication and cakephp/authorization plugins instead.
  */
-class AuthComponent extends CakeAuthComponent
+class AuthComponent extends Component
 {
     /**
      * @var \User\Model\Table\UsersTable
      */
     public $Users;
 
+    public $components = ['Authentication.Authentication', 'Flash'];
+
+    protected $_defaultConfig = [
+        'loginAction' => null,
+    ];
+
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function __construct(ComponentRegistry $registry, array $config = [])
     {
-        // Inject additional config values
-        $this->_defaultConfig += ['userModel' => null];
-
         parent::__construct($registry, $config);
     }
 
     /**
-     * {@inheritDoc}
+     * @param array $config Component config
+     * @return void
+     * @throws \Exception
      */
     public function initialize(array $config): void
     {
         parent::initialize($config);
 
-        // user model
-        if (!$this->getConfig('userModel')) {
-            $this->setConfig('userModel', 'User.Users');
-        }
+        $this->getController()->loadComponent('Authentication.Authentication');
+        $this->getController()->loadComponent('Flash');
 
         // default login action
         if (!$this->getConfig('loginAction')) {
             $this->setConfig('loginAction', ['plugin' => 'User', 'controller' => 'User', 'action' => 'login']);
         }
 
-        // default authenticate
-        if (!$this->getConfig('authenticate')) {
-            $this->setConfig('authenticate', [
-                self::ALL => ['userModel' => $this->getConfig('userModel'), 'finder' => 'authUser'],
-                'Form' => ['userModel' => $this->getConfig('userModel')],
-            ]);
+    }
+
+    /**
+     * @return \Cake\Event\EventManagerInterface
+     */
+    public function getEventManager(): EventManagerInterface
+    {
+        return $this->getController()->getEventManager();
+    }
+
+    /**
+     * @param string[] $actions List of allowed actions
+     * @return void
+     */
+    public function allow($actions = []): void
+    {
+        $this->Authentication->addUnauthenticatedActions($actions);
+    }
+
+    /**
+     * @param string $msg Flash message
+     * @return void
+     */
+    public function flash($msg): void
+    {
+        $this->Flash->error($msg, ['key' => 'auth']);
+    }
+
+    /**
+     * @param null|string $key Identity data key
+     * @return \Authentication\IdentityInterface|mixed|null
+     */
+    public function user($key = null)
+    {
+        $identity = $this->Authentication->getIdentity();
+        if (!$identity) {
+            return null;
         }
 
-        // default authorize
-        if (!$this->getConfig('authorize')) {
-            //$this->setConfig('authorize', [
-            //    'Controller'
-            //]);
+        if ($key !== null) {
+            return $this->Authentication->getIdentityData($key);
         }
 
-        // load user model
-        $this->table();
+        return $identity;
+    }
+
+    /**
+     * @param \ArrayAccess $user The identity data.
+     * @return void
+     */
+    public function setUser($user): void
+    {
+        if ($user === null) {
+            $this->Authentication->logout();
+
+            return;
+        }
+        $this->Authentication->setIdentity($user);
     }
 
     /**
@@ -91,17 +137,21 @@ class AuthComponent extends CakeAuthComponent
         $request = $this->getController()->getRequest();
         $user = null;
         try {
-            // attempt to identify user (any request method)
-            $user = $this->identify();
+            $result = $this->Authentication->getResult();
+            if ($this->getController()->getRequest()->is('post') && !$result->isValid()) {
+                throw new AuthException('Invalid username or password');
+            }
+
+            $user = $this->Authentication->getIdentity();
             if ($user) {
                 $event = new Event('User.Auth.beforeLogin', $this, [
                     'user' => $user,
                     'request' => $request,
                 ]);
                 $event = $this->getEventManager()->dispatch($event);
-                if ($event->getData('redirect')) {
-                    $this->storage()->redirectUrl($event->getData('redirect'));
-                }
+//                if ($event->getData('redirect')) {
+//                    $this->storage()->redirectUrl($event->getData('redirect'));
+//                }
                 if ($event->getData('error')) {
                     throw new AuthException($event->getData('error'), $event->getData('user'));
                 }
@@ -138,7 +188,6 @@ class AuthComponent extends CakeAuthComponent
             $this->setUser(null);
             Log::error('AuthComponent: ' . $ex->getMessage(), ['user']);
             throw $ex;
-        } finally {
         }
 
         return $user;
@@ -158,39 +207,14 @@ class AuthComponent extends CakeAuthComponent
         ]);
         $this->getEventManager()->dispatch($event);
 
-        return parent::logout();
+        return $this->Authentication->logout();
     }
 
     /**
-     * Get user table instance
-     *
-     * @return \User\Model\Table\UsersTable
+     * @return string|null
      */
-    public function table()
+    public function redirectUrl()
     {
-        if (!$this->Users) {
-            $this->Users = $this->getController()->loadModel($this->getConfig('userModel'));
-        }
-
-        return $this->Users;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function _unauthenticated(Controller $controller): ?Response
-    {
-        $response = parent::_unauthenticated($controller);
-
-        // do not store redirectUrl for json/xml/flash/requested/ajax requests
-        // this extends the core behaviour, where this applies only to ajax requests
-        if ($this->getController()->getRequest()->is(['ajax', 'json', 'xml', 'flash', 'requested'])) {
-            if ($response->getHeaderLine('Location') == null) {
-                //$response->statusCode(403);
-                $this->storage()->redirectUrl(false);
-            }
-        }
-
-        return $response;
+        return $this->Authentication->getLoginRedirect();
     }
 }

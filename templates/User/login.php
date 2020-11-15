@@ -1,16 +1,9 @@
 <?php
 $this->extend('base');
-// breadcrumbs
-$this->loadHelper('Breadcrumbs');
-$this->Breadcrumbs->add(__d('user','Login'), ['_name' => 'user:login']);
-
-// no robots
-$this->Html->meta('robots', 'noindex,nofollow', ['block' => true]);
-
-$this->assign('title', __d('user','Login'));
+//$this->setLayout('user');
 ?>
 <div id="user-login-form" class="user-form">
-    <?= $this->Form->create($user); ?>
+    <?= $this->Form->create(null); ?>
     <?= $this->Form->control('username', ['placeholder' => __d('user', 'Type your email here'), 'label' => __d('user', 'Email')]); ?>
     <?= $this->Form->control('password', ['type' => 'password', 'placeholder' => __d('user', 'Type your password here'), 'label' => __d('user', 'Password')]); ?>
     <?= $this->Form->button(__d('user', 'Login'), ['class' => 'btn btn-primary']); ?>

@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace User\Model\Entity;
 
+use Authentication\IdentityInterface;
+use Authorization\AuthorizationServiceInterface;
+use Authorization\Policy\ResultInterface;
 use Cake\ORM\Entity;
 
 /**
@@ -45,8 +48,9 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\Time $modified
  *
  * @property \User\Model\Entity\UserGroup $group
+ * @property \Authorization\AuthorizationServiceInterface $authorization
  */
-class User extends Entity
+class User extends Entity implements IdentityInterface//, \Authorization\IdentityInterface
 {
     /**
      * @var string
@@ -110,6 +114,56 @@ class User extends Entity
     protected $_hidden = [
         'password',
     ];
+
+    /**
+     * @inheritDoc
+     */
+    public function getIdentifier()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getOriginalData()
+    {
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function can($action, $resource): bool
+    {
+        return $this->authorization->can($this, $action, $resource);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function canResult($action, $resource): ResultInterface
+    {
+        return $this->authorization->canResult($this, $action, $resource);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function applyScope($action, $resource)
+    {
+        return $this->authorization->applyScope($this, $action, $resource);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setAuthorization(AuthorizationServiceInterface $service)
+    {
+        $this->authorization = $service;
+
+        return $this;
+    }
 
     /**
      * @return bool

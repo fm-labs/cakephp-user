@@ -13,6 +13,7 @@ use User\Mailer\UserMailerAwareTrait;
  * Users Controller
  *
  * @property \User\Model\Table\UsersTable $Users
+ * @property \Admin\Controller\Component\ActionComponent $Action
  */
 class UsersController extends AppController
 {
@@ -30,7 +31,7 @@ class UsersController extends AppController
     ];
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function initialize(): void
     {
@@ -47,6 +48,8 @@ class UsersController extends AppController
             'label' => __d('user', 'Emails'),
             'attrs' => ['data-icon' => 'envelope-o'],
             'scope' => ['form', 'table']]);
+
+        $this->loadComponent('User.Auth');
     }
 
     /**
@@ -143,6 +146,7 @@ class UsersController extends AppController
 
     /**
      * Change password of current user
+     *
      * @param null $userId User ID
      * @return \Cake\Http\Response|void
      */
@@ -171,6 +175,7 @@ class UsersController extends AppController
 
     /**
      * Change password of current user
+     *
      * @param null $userId User ID
      * @return \Cake\Http\Response|void
      */
@@ -187,7 +192,7 @@ class UsersController extends AppController
 
         $user = $this->Users->get($userId);
         if ($this->request->is('post') || $this->request->is('put')) {
-            if ($this->Users->resetPassword($user, $this->request->getData())) {
+            if ($this->Users->setPassword($user, $this->request->getData())) {
                 $this->Flash->success(__d('user', 'Your password has been changed.'));
                 $this->redirect(['action' => 'index']);
             } else {
@@ -220,11 +225,14 @@ class UsersController extends AppController
                 if ($this->request->getData('debug_only')) {
                     $this->Flash->info('Debug Only');
 
+                    /*
                     if (Plugin::isLoaded('Mailman')) {
-                        $mailer->transport(new \Mailman\Mailer\Transport\MailmanTransport(['originalClassName' => 'Debug']));
+                        $mailerConfig = ['originalClassName' => 'Debug'];
+                        $mailer->transport(new \Mailman\Mailer\Transport\MailmanTransport($mailerConfig));
                     } else {
                         $mailer->transport(new DebugTransport());
                     }
+                    */
                 }
                 $result = $mailer->send($emailType, [$user]);
                 $this->set('result', $result);
