@@ -30,19 +30,8 @@ class Admin extends BaseAdminPlugin implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            'Settings.build' => 'settings',
             'Admin.Menu.build.admin_primary' => ['callable' => 'buildMenu', 'priority' => 99 ],
         ];
-    }
-
-    /**
-     * @param \Cake\Event\Event $event The event object
-     * @param \Settings\SettingsManager $settings The settings manager object
-     * @return void
-     */
-    public function settings(Event $event, $settings)
-    {
-        $settings->load('User.settings');
     }
 
     /**

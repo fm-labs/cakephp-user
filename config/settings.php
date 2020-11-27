@@ -1,37 +1,40 @@
 <?php
 return [
     'Settings' => [
-        'User.Auth' => [
-            'settings' => [
+        'User' => [
+            'groups' => [
+                'User.Auth' => [],
+                'User.Signup' => [],
+                'User.Captcha' => [],
+            ],
+            'schema' => [
                 'User.Login.disabled' => [
+                    'group' => 'User.Auth',
                     'type' => 'boolean',
                     'default' => false,
                 ],
                 'User.EventLogger.enabled' => [
+                    'group' => 'User.Auth',
                     'type' => 'boolean',
                     'default' => false,
                 ],
-            ],
-        ],
-        'User.Signup' => [
-            'settings' => [
                 'User.Signup.disabled' => [
+                    'group' => 'User.Signup',
                     'type' => 'boolean',
                     'default' => false,
                 ],
                 'User.Signup.groupAuth' => [
+                    'group' => 'User.Signup',
                     'type' => 'boolean',
                     'default' => false,
                 ],
                 'User.Signup.verifyEmail' => [
+                    'group' => 'User.Signup',
                     'type' => 'boolean',
                     'default' => false,
                 ],
-            ],
-        ],
-        'User.Captcha' => [
-            'settings' => [
                 'User.Recaptcha.enabled' => [
+                    'group' => 'User.Captcha',
                     'type' => 'boolean',
                     'default' => false,
                 ],

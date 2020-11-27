@@ -58,6 +58,10 @@ class AuthComponent extends Component
             $this->setConfig('loginAction', ['plugin' => 'User', 'controller' => 'User', 'action' => 'login']);
         }
 
+        // auto-configure Authentication component
+        if (isset($this->getController()->allowUnauthenticated) && is_array($this->getController()->allowUnauthenticated)) {
+            $this->Authentication->allowUnauthenticated($this->getController()->allowUnauthenticated);
+        }
     }
 
     /**

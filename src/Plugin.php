@@ -94,10 +94,6 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
          * Settings
          */
         if (\Cake\Core\Plugin::isLoaded('Settings')) {
-            //EventManager::instance()->on(new Settings());
-            \Settings\SettingsManager::register($this->getName(), function (\Settings\SettingsManager $settings) {
-                $settings->load('User.settings');
-            });
         }
 
         /*
