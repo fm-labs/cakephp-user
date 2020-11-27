@@ -25,7 +25,6 @@
         "cakephp/authorization": "^2.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.5",
         "fm-labs/cakephp-devtools": "dev-master"
     },
     "autoload": {
