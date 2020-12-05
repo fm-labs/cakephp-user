@@ -554,7 +554,7 @@ class UsersTable extends UserBaseTable
         // Name
         // @TODO first_name and last_name properties are deprecated
         if (isset($data['first_name']) && isset($data['last_name'])) {
-            $data['name'] = sprintf("%s %s", $data['first_name'], $data['last_name']);
+            $data['name'] = sprintf('%s %s', $data['first_name'], $data['last_name']);
         }
         if (!isset($data['name']) && isset($data['username'])) {
             $data['name'] = $data['username'];
@@ -733,7 +733,7 @@ class UsersTable extends UserBaseTable
         $user->password_reset_expiry_timestamp = null;
 
         if (!$this->save($user)) {
-            throw new \RuntimeException("Record UPDATE failed: User:" . $user->id);
+            throw new \RuntimeException('Record UPDATE failed: User:' . $user->id);
         }
 
         // cleanup
@@ -767,7 +767,7 @@ class UsersTable extends UserBaseTable
 
         $user->password = $data['password1'];
         if (!$this->save($user)) {
-            throw new \RuntimeException("Record UPDATE failed: User:" . $user->id);
+            throw new \RuntimeException('Record UPDATE failed: User:' . $user->id);
         }
 
         return $user;
@@ -842,11 +842,11 @@ class UsersTable extends UserBaseTable
         }
 
         if ($options['numbers'] > 0) {
-            if (preg_match_all("#([0-9])#", $value) < $options['numbers']) {
+            if (preg_match_all('#([0-9])#', $value) < $options['numbers']) {
                 return __dn(
                     'user',
-                    "Password must include at least one number!",
-                    "Password must include at least {0} numbers!",
+                    'Password must include at least one number!',
+                    'Password must include at least {0} numbers!',
                     $options['numbers'],
                     $options['numbers']
                 );
@@ -854,12 +854,12 @@ class UsersTable extends UserBaseTable
         }
 
         if ($options['lowercase'] > 0) {
-            if (preg_match_all("#([a-z])#", $value) < $options['lowercase']) {
+            if (preg_match_all('#([a-z])#', $value) < $options['lowercase']) {
                 //return __d('user', "Password must include at least {0} lowercase letters!", $options['lowercase']);
                 return __dn(
                     'user',
-                    "Password must include at least one lowercase letter!",
-                    "Password must include at least {0} lowercase letters!",
+                    'Password must include at least one lowercase letter!',
+                    'Password must include at least {0} lowercase letters!',
                     $options['lowercase'],
                     $options['lowercase']
                 );
@@ -867,12 +867,12 @@ class UsersTable extends UserBaseTable
         }
 
         if ($options['uppercase'] > 0) {
-            if (preg_match_all("#([A-Z])#", $value) < $options['uppercase']) {
+            if (preg_match_all('#([A-Z])#', $value) < $options['uppercase']) {
                 //return __d('user', "Password must include at least {0} UPPERCASE letters!", $options['uppercase']);
                 return __dn(
                     'user',
-                    "Password must include at least one UPPERCASE letter!",
-                    "Password must include at least {0} UPPERCASE letters!",
+                    'Password must include at least one UPPERCASE letter!',
+                    'Password must include at least {0} UPPERCASE letters!',
                     $options['uppercase'],
                     $options['uppercase']
                 );
@@ -880,12 +880,12 @@ class UsersTable extends UserBaseTable
         }
 
         if ($options['special'] > 0) {
-            if (preg_match_all("#([" . preg_quote($options['allowedSpecialChars'], "#") . "])#", $value) < $options['special']) {
+            if (preg_match_all('#([' . preg_quote($options['allowedSpecialChars'], '#') . '])#', $value) < $options['special']) {
                 //return __d('user', "Password must include at least {0} special characters! ({1})", $options['special'], $options['allowedSpecialChars']);
                 return __dn(
                     'user',
-                    "Password must include at least one special character! Allowed characters: {1}",
-                    "Password must include at least {0} special characters! Allowed characters: {1}",
+                    'Password must include at least one special character! Allowed characters: {1}',
+                    'Password must include at least {0} special characters! Allowed characters: {1}',
                     $options['special'],
                     $options['special'],
                     $options['allowedSpecialChars']
@@ -1046,7 +1046,7 @@ class UsersTable extends UserBaseTable
         $user->password_reset_expiry_timestamp = time() + self::$passwordResetExpiry; // 24h
 
         if (!$this->save($user)) {
-            throw new \RuntimeException("UsersTable::forgotPassword: Record UPDATE failed: User:" . $user->id);
+            throw new \RuntimeException('UsersTable::forgotPassword: Record UPDATE failed: User:' . $user->id);
         }
 
         if ($dispatchEvent === true) {
@@ -1072,7 +1072,7 @@ class UsersTable extends UserBaseTable
         $user->block_datetime = new Time();
 
         if (!$this->save($user)) {
-            throw new \RuntimeException("UsersTable::markDeleted: Record UPDATE failed: User:" . $user->id);
+            throw new \RuntimeException('UsersTable::markDeleted: Record UPDATE failed: User:' . $user->id);
         }
 
         if ($dispatchEvent === true) {
@@ -1098,7 +1098,7 @@ class UsersTable extends UserBaseTable
         $user->block_datetime = null;
 
         if (!$this->save($user)) {
-            throw new \RuntimeException("UsersTable::resetDeleted: Record UPDATE failed: User:" . $user->id);
+            throw new \RuntimeException('UsersTable::resetDeleted: Record UPDATE failed: User:' . $user->id);
         }
 
         if ($dispatchEvent === true) {
