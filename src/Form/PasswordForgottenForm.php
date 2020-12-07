@@ -10,7 +10,7 @@ use User\Model\Table\UsersTable;
 class PasswordForgottenForm extends UserForm
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected function _buildSchema(Schema $schema): Schema
     {
@@ -20,7 +20,7 @@ class PasswordForgottenForm extends UserForm
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected function _buildValidator(Validator $validator)
     {
@@ -37,7 +37,7 @@ class PasswordForgottenForm extends UserForm
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function execute(array $data): bool
     {
@@ -49,11 +49,11 @@ class PasswordForgottenForm extends UserForm
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected function _execute(array $data): bool
     {
-        $user = $this->Users->findByUsername($data['username'])->first();
+        $this->user = $user = $this->Users->findByUsername($data['username'])->first();
         if (!$user) {
             // if user not found we fake success to prevent user scanning
             //return true;
@@ -80,6 +80,6 @@ class PasswordForgottenForm extends UserForm
             return false;
         }
 
-        return $user;
+        return true;
     }
 }

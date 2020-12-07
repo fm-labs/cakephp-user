@@ -15,6 +15,7 @@ use Cake\Http\MiddlewareQueue;
 use Cake\Log\Log;
 use Cake\Routing\Middleware\RoutingMiddleware;
 use Cake\Routing\RouteBuilder;
+use Phinx\Config\Config;
 use Psr\Http\Message\ServerRequestInterface;
 use User\Service\UserAuthService;
 use User\Service\UserLoggingService;
@@ -28,22 +29,6 @@ use User\Service\UserPasswordService;
  */
 class Plugin extends BasePlugin implements AuthenticationServiceProviderInterface
 {
-    public $bootstrapEnabled = true;
-
-    public $routesEnabled = true;
-
-    public $middlewareEnabled = true;
-
-    public $consoleEnabled = true;
-
-    /**
-     * @inheritDoc
-     */
-    public function initialize(): void
-    {
-        include 'functions.php';
-    }
-
     /**
      * @inheritDoc
      */
@@ -68,7 +53,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
          * Authentication
          */
         $app->addPlugin('Authentication');
-        //EventManager::instance()->on(new UserAuthService());
+        EventManager::instance()->on(new UserAuthService());
         //EventManager::instance()->on(new UserPasswordService());
         //EventManager::instance()->on(new UserSessionService());
 
@@ -87,14 +72,14 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
          * Logging
          */
         if (Configure::read('User.Logging.enabled') == true) {
-            EventManager::instance()->on(new UserLoggingService(Configure::read('User.Logging')));
+            EventManager::instance()->on(new UserLoggingService());
         }
 
         /**
          * Settings
-         */
         if (\Cake\Core\Plugin::isLoaded('Settings')) {
         }
+        */
 
         /*
         if ($app->getPlugins()->has('Activity')) {
@@ -122,54 +107,49 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
         $routes->plugin('User', [], function ($routes) {
             $routes->connect(
                 '/login',
-                ['controller' => 'User', 'action' => 'login'],
+                ['controller' => 'Auth', 'action' => 'login'],
                 ['_name' => 'user:login']
             );
             $routes->connect(
                 '/logout',
-                ['controller' => 'User', 'action' => 'logout'],
+                ['controller' => 'Auth', 'action' => 'logout'],
                 ['_name' => 'user:logout']
             );
             $routes->connect(
                 '/register',
-                ['controller' => 'User', 'action' => 'register'],
+                ['controller' => 'Signup', 'action' => 'register'],
                 ['_name' => 'user:register']
             );
             $routes->connect(
                 '/activate',
-                ['controller' => 'User', 'action' => 'activate'],
+                ['controller' => 'Signup', 'action' => 'activate'],
                 ['_name' => 'user:activate']
             );
             $routes->connect(
                 '/password-forgotten',
-                ['controller' => 'User', 'action' => 'passwordForgotten'],
+                ['controller' => 'Recovery', 'action' => 'passwordForgotten'],
                 ['_name' => 'user:passwordforgotten']
             );
             $routes->connect(
                 '/password-reset',
-                ['controller' => 'User', 'action' => 'passwordReset'],
+                ['controller' => 'Recovery', 'action' => 'passwordReset'],
                 ['_name' => 'user:passwordreset']
             );
             $routes->connect(
                 '/password-change',
-                ['controller' => 'User', 'action' => 'passwordChange'],
+                ['controller' => 'Recovery', 'action' => 'passwordChange'],
                 ['_name' => 'user:passwordchange']
             );
             $routes->connect(
                 '/session',
-                ['controller' => 'User', 'action' => 'session'],
+                ['controller' => 'Auth', 'action' => 'session'],
                 ['_name' => 'user:checkauth']
             );
-            //$routes->connect('/:action',
-            //    $base
-            //);
             $routes->connect(
                 '/',
                 ['controller' => 'User', 'action' => 'index'],
                 ['_name' => 'user:profile']
             );
-
-            //$routes->connect('/:controller');
             $routes->fallbacks('DashedRoute');
         });
     }
@@ -209,19 +189,22 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
 
         // Load the authenticators, you want session first
         $service->loadAuthenticator('Authentication.Session');
-        $service->loadAuthenticator('Authentication.Form', [
-            'fields' => $fields,
-            //'loginUrl' => '/user/login',
-        ]);
 
-        // Load identifiers
-        $service->loadIdentifier('Authentication.Password', [
-            'resolver' => [
-                'className' => 'Authentication.Orm',
-                'userModel' => 'User.Users',
-            ],
-            'fields' => $fields,
-        ]);
+        if (Configure::read('User.Login.disabled') != true) {
+            $service->loadAuthenticator('Authentication.Form', [
+                'fields' => $fields,
+                //'loginUrl' => '/user/login',
+            ]);
+
+            // Load identifiers
+            $service->loadIdentifier('Authentication.Password', [
+                'resolver' => [
+                    'className' => 'Authentication.Orm',
+                    'userModel' => 'User.Users',
+                ],
+                'fields' => $fields,
+            ]);
+        }
 
         return $service;
     }

@@ -32,7 +32,7 @@ class UserSessionComponent extends Component
     ];
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function initialize(array $config): void
     {
@@ -214,7 +214,7 @@ class UserSessionComponent extends Component
 
         if ($userSession['sessionid'] != $this->getController()->getRequest()->getSession()->id()) {
             Log::alert(
-                "SessionID mismatch! Possible Hijacking attempt. IP: " . $this->getController()->getRequest()->clientIp(),
+                'SessionID mismatch! Possible Hijacking attempt. IP: ' . $this->getController()->getRequest()->clientIp(),
                 ['auth', 'user']
             );
 
@@ -223,7 +223,7 @@ class UserSessionComponent extends Component
 
         if ($userSession['client_ip'] != $this->getController()->getRequest()->clientIp()) {
             Log::alert(
-                "ClientIP mismatch! Possible Hijacking attempt. IP: " . $this->getController()->getRequest()->clientIp(),
+                'ClientIP mismatch! Possible Hijacking attempt. IP: ' . $this->getController()->getRequest()->clientIp(),
                 ['auth', 'user']
             );
 
@@ -232,7 +232,7 @@ class UserSessionComponent extends Component
 
         if ($userSession['user_agent'] != $this->getController()->getRequest()->getHeaderLine('User-Agent')) {
             Log::alert(
-                "User agent mismatch! Possible Hijacking attempt. IP: " . $this->getController()->getRequest()->clientIp(),
+                'User agent mismatch! Possible Hijacking attempt. IP: ' . $this->getController()->getRequest()->clientIp(),
                 ['auth', 'user']
             );
 

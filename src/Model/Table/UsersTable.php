@@ -880,7 +880,8 @@ class UsersTable extends UserBaseTable
         }
 
         if ($options['special'] > 0) {
-            if (preg_match_all('#([' . preg_quote($options['allowedSpecialChars'], '#') . '])#', $value) < $options['special']) {
+            $pattern = '#([' . preg_quote($options['allowedSpecialChars'], '#') . '])#';
+            if (preg_match_all($pattern, $value) < $options['special']) {
                 //return __d('user', "Password must include at least {0} special characters! ({1})", $options['special'], $options['allowedSpecialChars']);
                 return __dn(
                     'user',
@@ -1006,7 +1007,7 @@ class UsersTable extends UserBaseTable
      *
      * @param array $data User data
      * @param bool $dispatchEvent If True, trigger custom events (Default: True)
-     * @return bool
+     * @return \User\Model\Entity\User|\Cake\Datasource\EntityInterface|bool
      * @todo Refactor with Form
      */
     public function activate(array $data = [], $dispatchEvent = true)
@@ -1117,7 +1118,8 @@ class UsersTable extends UserBaseTable
     public function resendVerificationCode(User $user)
     {
         //@TODO Check if the verification code has expired. If so, create new verification code.
-        $event = $this->getEventManager()->dispatch(new Event('User.Model.User.activationResend', $this, compact('user')));
+        $event = $this->getEventManager()
+            ->dispatch(new Event('User.Model.User.activationResend', $this, compact('user')));
 
         if ($event->getResult() === false) {
             return false;

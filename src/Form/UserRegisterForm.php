@@ -12,7 +12,7 @@ use User\Model\Table\UsersTable;
 class UserRegisterForm extends UserForm
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected function _buildSchema(Schema $schema): Schema
     {
@@ -28,7 +28,7 @@ class UserRegisterForm extends UserForm
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected function _buildValidator(Validator $validator)
     {
@@ -81,7 +81,7 @@ class UserRegisterForm extends UserForm
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function execute(array $data): bool
     {
@@ -97,7 +97,7 @@ class UserRegisterForm extends UserForm
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected function _execute(array $data): bool
     {

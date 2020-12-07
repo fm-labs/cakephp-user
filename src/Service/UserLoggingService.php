@@ -20,12 +20,10 @@ class UserLoggingService implements EventListenerInterface
      */
     public function logEvent(Event $event)
     {
-        $user = null;
-        if ($event->getData('user')) {
-            Log::info(sprintf("[User:%s] %s", $event->getName(), $event->getData('user')['username']), ['user']);
-        } else {
-            Log::info(sprintf("[User:%s]", $event->getName()), ['user']);
-        }
+        $eventName = $event->getName();
+        $user = $event->getData('user');
+        $userName = $user ? $user['username'] : '';
+        Log::info(sprintf('[User:%s] %s', $eventName, $userName), ['user']);
     }
 
     /**
@@ -34,6 +32,8 @@ class UserLoggingService implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
+            'Authentication.afterIdentify' => 'logEvent',
+            'Authentication.logout' => 'logEvent',
             'User.Model.User.passwordForgotten' => 'logEvent',
             'User.Model.User.passwordReset' => 'logEvent',
             'User.Model.User.register' => 'logEvent',

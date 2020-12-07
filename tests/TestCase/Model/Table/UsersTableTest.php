@@ -17,8 +17,8 @@ use User\Model\Table\UsersTable;
  */
 class UsersTableTest extends TestCase
 {
-    public const TEST_PASS1 = "r0s3BuD$%";
-    public const TEST_PASS2 = "Ba23Jump_?";
+    public const TEST_PASS1 = 'r0s3BuD$%';
+    public const TEST_PASS2 = 'Ba23Jump_?';
 
     /**
      * Fixtures
@@ -432,7 +432,12 @@ class UsersTableTest extends TestCase
      */
     public function testChangePassword()
     {
-        $user = $this->Users->register(['username' => 'test1', 'email' => 'test1@example.org', 'password1' => self::TEST_PASS1, 'password2' => self::TEST_PASS1]);
+        $user = $this->Users->register([
+            'username' => 'test1',
+            'email' => 'test1@example.org',
+            'password1' => self::TEST_PASS1,
+            'password2' => self::TEST_PASS1,
+        ]);
         $this->assertNotEmpty($user->id);
 
         // test with new password same as current password
@@ -452,7 +457,7 @@ class UsersTableTest extends TestCase
         $this->assertNotEmpty($user->getError('password0'));
         $this->assertNotEmpty($user->getError('password0')['_empty']);
 
-        // test with bad new password
+        // test with bad old password
         $this->assertFalse($this->Users->changePassword(
             $user,
             ['password0' => '2short', 'password1' => self::TEST_PASS2, 'password2' => self::TEST_PASS2]

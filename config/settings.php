@@ -3,6 +3,7 @@ return [
     'Settings' => [
         'User' => [
             'groups' => [
+                'User.Services' => [],
                 'User.Auth' => [],
                 'User.Signup' => [],
                 'User.Captcha' => [],
@@ -35,6 +36,16 @@ return [
                 ],
                 'User.Recaptcha.enabled' => [
                     'group' => 'User.Captcha',
+                    'type' => 'boolean',
+                    'default' => false,
+                ],
+                'User.Logging.enabled' => [
+                    'group' => 'User.Services',
+                    'type' => 'boolean',
+                    'default' => false,
+                ],
+                'User.Mailer.enabled' => [
+                    'group' => 'User.Services',
                     'type' => 'boolean',
                     'default' => false,
                 ],

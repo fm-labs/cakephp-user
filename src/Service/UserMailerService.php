@@ -13,6 +13,7 @@ use User\Mailer\UserMailerAwareTrait;
  * Class UserMailerService
  *
  * @package User\Event
+ * @todo Merge with UserMailer class
  */
 class UserMailerService implements EventListenerInterface
 {

@@ -7,7 +7,14 @@ use Cake\Core\Configure;
 use Cake\Http\Exception\ServiceUnavailableException;
 use User\Model\Entity\User;
 
-class GoogleAuthController extends AppController
+/**
+ * Class GoogleOtpController
+ *
+ * One-time-password authentication with Google Authenticator.
+ *
+ * @package User\Controller
+ */
+class GoogleOtpController extends AppController
 {
     /**
      * @inheritDoc
@@ -67,14 +74,14 @@ class GoogleAuthController extends AppController
         if (!$user->gauth_secret) {
             $user = $this->Auth->userModel()->setGoogleAuthSecret($user, null);
             if (!$user) {
-                throw new \RuntimeException("Setup failed");
+                throw new \RuntimeException('Setup failed');
             }
         }
 
         if ($this->request->is(['put', 'post'])) {
             $code = $this->request->getData('code');
             if (!$code) {
-                $this->Flash->error("Code missing");
+                $this->Flash->error('Code missing');
             } elseif ($this->_checkGoogleAuth($user, $code)) {
                 if ($this->Auth->userModel()->enableGoogleAuth($user)) {
                     // update user in session
@@ -82,13 +89,13 @@ class GoogleAuthController extends AppController
                     //$authUser['gauth_enabled'] = true;
                     //$this->Auth->setUser($authUser);
 
-                    $this->Flash->success("2-Factor-Auth has been enabled");
+                    $this->Flash->success('2-Factor-Auth has been enabled');
                     $this->redirect(['action' => 'index']);
                 } else {
-                    $this->Flash->error("Operation failed");
+                    $this->Flash->error('Operation failed');
                 }
             } else {
-                $this->Flash->error("Verification failed");
+                $this->Flash->error('Verification failed');
             }
         }
 
@@ -116,10 +123,10 @@ class GoogleAuthController extends AppController
         if ($this->request->is(['put', 'post'])) {
             $code = $this->request->getData('code');
             if (!$code) {
-                $this->Flash->error("Code missing");
+                $this->Flash->error('Code missing');
             } elseif ($this->_checkGoogleAuth($user, $code)) {
                 if ($this->Auth->userModel()->disableGoogleAuth($user)) {
-                    $this->Flash->success("2-Factor-Auth has been disabled");
+                    $this->Flash->success('2-Factor-Auth has been disabled');
 
                     // update user in session
                     //$authUser = $this->Auth->user();
@@ -129,10 +136,10 @@ class GoogleAuthController extends AppController
                     //$this->request->getSession()->delete('Auth.GoogleAuth');
                     $this->redirect(['action' => 'index']);
                 } else {
-                    $this->Flash->error("Operation failed");
+                    $this->Flash->error('Operation failed');
                 }
             } else {
-                $this->Flash->error("Verification failed");
+                $this->Flash->error('Verification failed');
             }
 
             $this->redirect($this->Auth->redirectUrl());
@@ -157,7 +164,7 @@ class GoogleAuthController extends AppController
         if ($this->request->is(['put', 'post'])) {
             $code = $this->request->getData('code');
             if (!$code) {
-                $this->Flash->error("Code missing");
+                $this->Flash->error('Code missing');
             } elseif ($this->_checkGoogleAuth($user, $code)) {
                 //$this->Flash->success("Verification successful");
                 $this->request->getSession()->write('Auth.GoogleAuth', [
@@ -168,7 +175,7 @@ class GoogleAuthController extends AppController
 
                 $this->redirect($this->Auth->redirectUrl());
             } else {
-                $this->Flash->error("Verification failed");
+                $this->Flash->error('Verification failed');
             }
         }
 

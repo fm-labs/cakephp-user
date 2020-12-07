@@ -3,12 +3,11 @@ declare(strict_types=1);
 
 namespace User\Service;
 
-use Cake\Event\Event;
+use Cake\Event\EventInterface;
 use Cake\Event\EventListenerInterface;
-use Cake\Event\EventManager;
-use Cake\Http\ServerRequest as Request;
 use Cake\I18n\Time;
 use Cake\Log\Log;
+use Cake\ORM\TableRegistry;
 
 /**
  * Class UserAuthService
@@ -18,71 +17,64 @@ use Cake\Log\Log;
 class UserAuthService implements EventListenerInterface
 {
     /**
-     * @param \Cake\Event\Event $event The event object
-     * @return array|void
+     * @param \Cake\Event\EventInterface $event The event object
+     * @return void
+    // @todo Refactor with separate Fail2ban-like service
      */
-    public function beforeLogin(Event $event)
+    public function onLoginError(EventInterface $event)
     {
-        $user = $event->getData('user') ?: [];
+        /** @var \Cake\Controller\Controller $controller */
+        $controller = $event->getSubject();
+        $request = $controller->getRequest();
+        $username = $request->getData('username');
+        $clientIp = $request->clientIp();
 
-        if (empty($user)) {
-            $event->setData([
-                'redirect' => ['_name' => 'user:login'],
-            ]);
+        if ($username) {
+            Log::warning(sprintf('User %s failed to login', $username), ['user']);
+            $Users = TableRegistry::getTableLocator()->get('User.Users');
+            $user = $Users->findByUsername($username)->first();
+            if ($user) {
+                $user->login_failure_count++;
+                $user->login_failure_datetime = new Time();
 
-            return false;
-        }
+                if (!$Users->save($user)) {
+                    Log::error('Failed to update user with login info', ['user']);
+                }
 
-        if (isset($user['is_deleted']) && $user['is_deleted'] == true) {
-            $event->setData([
-                'user' => null,
-                'error' => __d('user', 'This account has been deleted'),
-                'redirect' => ['_name' => 'user:login'],
-            ]);
-
-            return false;
-        }
-
-        if (isset($user['block_enabled']) && $user['block_enabled'] == true) {
-            $event->setData([
-                'error' => __d('user', 'This account has been blocked'),
-                'redirect' => ['_name' => 'user:login'],
-            ]);
-
-            return false;
-        }
-
-        if (isset($user['login_enabled']) && $user['login_enabled'] != true) {
-            $event->setData([
-                'error' => __d('user', 'Login to this account is not enabled'),
-                'redirect' => ['_name' => 'user:login'],
-            ]);
-
-            return false;
-        }
-
-        if ($user['email_verification_required'] && !$user['email_verified']) {
-            $event->setData([
-                'error' => __d('user', 'Your account has not been verified yet'),
-                'redirect' => ['_name' => 'user:activate'],
-            ]);
-
-            return false;
+                //if ($user->login_failure_count > MAX_LOGIN_FAILURES) {
+                //    @todo Block login for clientip and username for X minutes (e.g. via NetFilter plugin)
+                //}
+            }
         }
     }
 
-    /**
-     * @param \Cake\Event\Event $event The event object
-     * @return array|void
-     */
-    public function afterLogin(Event $event)
+    public function afterIdentify(EventInterface $event): void
     {
-        $request = $event->getData('request');
-        $user = $event->getData('user');
-        if ($user && isset($user['id'])) {
+        /** @var \User\Model\Entity\User|\Authentication\IdentityInterface $user */
+        $user = $event->getData('identity');
+        /** @var \Authentication\AuthenticationServiceProviderInterface $provider */
+        $provider = $event->getData('provider');
+        ///** @var \Authentication\AuthenticationServiceInterface $service */
+        //$service = $event->getData('service');
+        /** @var \Cake\Controller\Controller $controller */
+        $controller = $event->getSubject();
+
+        if (!$user || !$provider) {
+            return;
+        }
+
+        $isSuperUser = $user->get('is_superuser');
+        $role = $isSuperUser ? 'admin' : 'normal';
+        Log::info(sprintf('User[%s] %s is logging in', $role, $user->id), ['user']);
+
+        // store login attempt in users db table
+        // @todo Refactor with separate LoginHistory/SessionHistory service
+        try {
+            $request = $controller->getRequest();
             $clientIp = $clientHostname = null;
-            if ($request instanceof Request) {
+            if ($request instanceof \Cake\Http\ServerRequest) {
                 $clientIp = $request->clientIp();
+                // @todo Lookup client hostname
                 //$clientHostname = null;
             }
             $data = [
@@ -92,41 +84,59 @@ class UserAuthService implements EventListenerInterface
                 'login_failure_count' => 0, // reset login failure counter
             ];
 
+            $Users = TableRegistry::getTableLocator()->get('User.Users');
             /** @var \User\Model\Entity\User $entity */
-            $entity = $event->getSubject()->Users->get($user['id']);
+            $entity = $Users->get($user->getIdentifier(), ['contain' => []]);
             $entity->setAccess(array_keys($data), true);
-            $entity = $event->getSubject()->Users->patchEntity($entity, $data);
-            if (!$event->getSubject()->Users->save($entity)) {
-                Log::error("Failed to update user login info", ['user']);
+            $entity = $Users->patchEntity($entity, $data);
+            if (!$Users->save($entity)) {
+                Log::error('Failed to update user login info', ['user']);
             }
+        } catch (\Exception $ex) {
+            Log::critical(sprintf('User %s: Failed to save login attempt', $user->getIdentifier()), ['user']);
+        }
 
-            EventManager::instance()->dispatch(new Event('User.Model.User.newLogin', $event->getSubject()->Users, [
-                'user' => $entity,
-                'data' => $data,
-            ]));
+        // skip additional identification checks for super-users
+        if ($isSuperUser) {
+            return;
+        }
+
+        // logout helper
+        $doLogout = function (?string $errMsg = null) use ($controller) {
+            if ($errMsg) {
+                $controller->components()->get('Flash')->error($errMsg, ['key' => 'auth']);
+            }
+            $controller->components()->get('Authentication')->logout();
+        };
+        // redirect helper
+        $doRedirect = function ($url, ?string $errMsg = null) use ($controller) {
+            if ($errMsg) {
+                $controller->components()->get('Flash')->error($errMsg, ['key' => 'auth']);
+            }
+            $controller->redirect($url);
+        };
+
+        if ($user->get('is_deleted')) {
+            $doLogout(__d('user', 'This account has been deleted'));
+        }
+        if ($user->get('block_enabled')) {
+            $doLogout(__d('user', 'This account has been blocked'));
+        }
+        if (!$user->get('login_enabled')) {
+            $doLogout(__d('user', 'Login to this account is not enabled'));
+        }
+        //@todo Move to separate EmailVerification service
+        if ($user->get('email_verification_required') == true && $user->get('email_verified') == false) {
+            $doRedirect(['_name' => 'user:activate'], __d('user', 'Your account has not been verified yet'));
         }
     }
 
     /**
-     * @param \Cake\Event\Event $event The event object
+     * @param \Cake\Event\EventInterface $event Event object
      * @return void
      */
-    public function onLoginError(Event $event)
+    public function onLogout(EventInterface $event): void
     {
-        $request = $event->getData('request');
-        $data = $request->getData();
-
-        if (isset($data['username'])) {
-            $user = $event->getSubject()->Users->findByUsername($data['username'])->first();
-            if ($user) {
-                $user->login_failure_count++;
-                $user->login_failure_datetime = new Time();
-
-                if (!$event->getSubject()->Users->save($user)) {
-                    Log::error("Failed to update user with login info", ['user']);
-                }
-            }
-        }
     }
 
     /**
@@ -135,8 +145,8 @@ class UserAuthService implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            'User.Auth.beforeLogin' => 'beforeLogin',
-            'User.Auth.login' => 'afterLogin',
+            'Authentication.afterIdentify' => 'afterIdentify',
+            'Authentication.logout' => 'onLogout',
             'User.Auth.error' => 'onLoginError',
         ];
     }

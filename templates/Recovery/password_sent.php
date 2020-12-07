@@ -6,7 +6,7 @@
     <?= $this->Html->link(__('Go to login'), ['_name' => 'user:login']); ?>
 </div>
 <?php
-$this->extend('base');
+//$this->extend('base');
 // breadcrumbs
 $this->loadHelper('Breadcrumbs');
 $this->Breadcrumbs->add(__d('user','Login'), ['_name' => 'user:login']);

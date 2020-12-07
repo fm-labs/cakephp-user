@@ -18,7 +18,6 @@ use User\Exception\AuthException;
  * @package User\Controller\Component
  * @property \Authentication\Controller\Component\AuthenticationComponent $Authentication
  * @property \Cake\Controller\Component\FlashComponent $Flash
- * @deprecated Use the cakephp/authentication and cakephp/authorization plugins instead.
  */
 class AuthComponent extends Component
 {
@@ -27,7 +26,7 @@ class AuthComponent extends Component
      */
     public $Users;
 
-    public $components = ['Authentication.Authentication', 'Flash'];
+    public $components = [/*'Authentication.Authentication', */'Flash'];
 
     protected $_defaultConfig = [
         'loginAction' => null,
@@ -50,8 +49,8 @@ class AuthComponent extends Component
     {
         parent::initialize($config);
 
-        $this->getController()->loadComponent('Authentication.Authentication');
-        $this->getController()->loadComponent('Flash');
+        //$this->getController()->loadComponent('Authentication.Authentication');
+        //$this->getController()->loadComponent('Flash');
 
         // default login action
         if (!$this->getConfig('loginAction')) {
@@ -59,9 +58,11 @@ class AuthComponent extends Component
         }
 
         // auto-configure Authentication component
+        /*
         if (isset($this->getController()->allowUnauthenticated) && is_array($this->getController()->allowUnauthenticated)) {
             $this->Authentication->allowUnauthenticated($this->getController()->allowUnauthenticated);
         }
+        */
     }
 
     /**
@@ -78,7 +79,7 @@ class AuthComponent extends Component
      */
     public function allow($actions = []): void
     {
-        $this->Authentication->addUnauthenticatedActions($actions);
+        //$this->Authentication->addUnauthenticatedActions($actions);
     }
 
     /**
@@ -96,6 +97,7 @@ class AuthComponent extends Component
      */
     public function user($key = null)
     {
+        /*
         $identity = $this->Authentication->getIdentity();
         if (!$identity) {
             return null;
@@ -106,6 +108,8 @@ class AuthComponent extends Component
         }
 
         return $identity;
+        */
+        return null;
     }
 
     /**
@@ -114,12 +118,14 @@ class AuthComponent extends Component
      */
     public function setUser($user): void
     {
+        /*
         if ($user === null) {
             $this->Authentication->logout();
 
             return;
         }
         $this->Authentication->setIdentity($user);
+        */
     }
 
     /**
@@ -141,6 +147,7 @@ class AuthComponent extends Component
         $request = $this->getController()->getRequest();
         $user = null;
         try {
+            /*
             $result = $this->Authentication->getResult();
             if ($this->getController()->getRequest()->is('post') && !$result->isValid()) {
                 throw new AuthException('Invalid username or password');
@@ -178,6 +185,7 @@ class AuthComponent extends Component
             } elseif ($request->is('post')) {
                 throw new AuthException(__d('user', 'Login failed'), $request->getData());
             }
+            */
         } catch (AuthException $ex) {
             $this->setUser(null);
             $this->flash($ex->getMessage());

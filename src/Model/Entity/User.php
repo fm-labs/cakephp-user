@@ -131,39 +131,39 @@ class User extends Entity implements IdentityInterface//, \Authorization\Identit
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function can($action, $resource): bool
-    {
-        return $this->authorization->can($this, $action, $resource);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function canResult($action, $resource): ResultInterface
-    {
-        return $this->authorization->canResult($this, $action, $resource);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function applyScope($action, $resource)
-    {
-        return $this->authorization->applyScope($this, $action, $resource);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setAuthorization(AuthorizationServiceInterface $service)
-    {
-        $this->authorization = $service;
-
-        return $this;
-    }
+//    /**
+//     * @inheritDoc
+//     */
+//    public function can($action, $resource): bool
+//    {
+//        return $this->authorization->can($this, $action, $resource);
+//    }
+//
+//    /**
+//     * @inheritDoc
+//     */
+//    public function canResult($action, $resource): ResultInterface
+//    {
+//        return $this->authorization->canResult($this, $action, $resource);
+//    }
+//
+//    /**
+//     * @inheritDoc
+//     */
+//    public function applyScope($action, $resource)
+//    {
+//        return $this->authorization->applyScope($this, $action, $resource);
+//    }
+//
+//    /**
+//     * @inheritDoc
+//     */
+//    public function setAuthorization(AuthorizationServiceInterface $service)
+//    {
+//        $this->authorization = $service;
+//
+//        return $this;
+//    }
 
     /**
      * @return bool
