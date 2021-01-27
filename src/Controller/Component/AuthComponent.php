@@ -26,10 +26,10 @@ class AuthComponent extends Component
      */
     public $Users;
 
-    public $components = [/*'Authentication.Authentication', */'Flash'];
+    public $components = ['Flash'];
 
     protected $_defaultConfig = [
-        'loginAction' => null,
+        'logoutRedirect' => null,
     ];
 
     /**
@@ -49,28 +49,20 @@ class AuthComponent extends Component
     {
         parent::initialize($config);
 
-        //$this->getController()->loadComponent('Authentication.Authentication');
-        //$this->getController()->loadComponent('Flash');
+        $this->Flash = $this->_registry->load('Flash');
 
-        // default login action
-        if (!$this->getConfig('loginAction')) {
-            $this->setConfig('loginAction', ['plugin' => 'User', 'controller' => 'User', 'action' => 'login']);
-        }
+        // load & configure Authentication plugin
+        $this->Authentication = $this->_registry->load('Authentication.Authentication', [
+            'logoutRedirect' => $this->getConfig('logoutRedirect'),
+        ]);
 
         // auto-configure Authentication component
-        /*
-        if (isset($this->getController()->allowUnauthenticated) && is_array($this->getController()->allowUnauthenticated)) {
-            $this->Authentication->allowUnauthenticated($this->getController()->allowUnauthenticated);
+        if (
+            isset($this->getController()->allowUnauthenticated)
+            && is_array($this->getController()->allowUnauthenticated)
+        ) {
+            $this->Authentication->allowUnauthenticated((array)$this->getController()->allowUnauthenticated);
         }
-        */
-    }
-
-    /**
-     * @return \Cake\Event\EventManagerInterface
-     */
-    public function getEventManager(): EventManagerInterface
-    {
-        return $this->getController()->getEventManager();
     }
 
     /**
@@ -79,7 +71,7 @@ class AuthComponent extends Component
      */
     public function allow($actions = []): void
     {
-        //$this->Authentication->addUnauthenticatedActions($actions);
+        $this->Authentication->addUnauthenticatedActions($actions);
     }
 
     /**
@@ -97,7 +89,6 @@ class AuthComponent extends Component
      */
     public function user($key = null)
     {
-        /*
         $identity = $this->Authentication->getIdentity();
         if (!$identity) {
             return null;
@@ -108,8 +99,6 @@ class AuthComponent extends Component
         }
 
         return $identity;
-        */
-        return null;
     }
 
     /**
@@ -118,14 +107,41 @@ class AuthComponent extends Component
      */
     public function setUser($user): void
     {
+        $this->Authentication->setIdentity($user);
         /*
         if ($user === null) {
             $this->Authentication->logout();
 
             return;
         }
-        $this->Authentication->setIdentity($user);
         */
+    }
+
+    /**
+     * Logout method.
+     * Dispatches event 'User.Auth.logout'.
+     *
+     * @return null|string Logout redirect url
+     */
+    public function logout(): ?string
+    {
+        /*
+        $event = new Event('User.Auth.logout', $this, [
+            'user' => $this->user(),
+            'request' => $this->getController()->getRequest(), // @deprecated This is redundant, as the request object can be accessed from the event subject
+        ]);
+        $this->getEventManager()->dispatch($event);
+        */
+
+        return $this->Authentication->logout();
+    }
+
+    /**
+     * @return null|string Login redirect url
+     */
+    public function redirectUrl(): ?string
+    {
+        return $this->Authentication->getLoginRedirect();
     }
 
     /**
@@ -136,7 +152,6 @@ class AuthComponent extends Component
      *
      * @throws \Exception
      * @return array|null User data or NULL if login failed
-     */
     public function login()
     {
         // check if user is already authenticated
@@ -147,7 +162,6 @@ class AuthComponent extends Component
         $request = $this->getController()->getRequest();
         $user = null;
         try {
-            /*
             $result = $this->Authentication->getResult();
             if ($this->getController()->getRequest()->is('post') && !$result->isValid()) {
                 throw new AuthException('Invalid username or password');
@@ -185,7 +199,6 @@ class AuthComponent extends Component
             } elseif ($request->is('post')) {
                 throw new AuthException(__d('user', 'Login failed'), $request->getData());
             }
-            */
         } catch (AuthException $ex) {
             $this->setUser(null);
             $this->flash($ex->getMessage());
@@ -204,29 +217,13 @@ class AuthComponent extends Component
 
         return $user;
     }
+     */
 
     /**
-     * Logout method.
-     * Dispatches event 'User.Auth.logout'.
-     *
-     * @return string Redirect url
+     * @return \Cake\Event\EventManagerInterface
      */
-    public function logout(): string
-    {
-        $event = new Event('User.Auth.logout', $this, [
-            'user' => $this->user(),
-            'request' => $this->getController()->getRequest(), // @deprecated This is redundant, as the request object can be accessed from the event subject
-        ]);
-        $this->getEventManager()->dispatch($event);
-
-        return $this->Authentication->logout();
-    }
-
-    /**
-     * @return string|null
-     */
-    public function redirectUrl()
-    {
-        return $this->Authentication->getLoginRedirect();
-    }
+//    public function getEventManager(): EventManagerInterface
+//    {
+//        return $this->getController()->getEventManager();
+//    }
 }

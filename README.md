@@ -12,37 +12,43 @@ composer require fm-labs/cakephp-user
 
 ## Features
 
-* Extended AuthComponent for handling auth procedure
-* User Registration
-* User Registration with Group password
+* User Login (requires cakephp/authentication)
+* User Signup
+* User Signup with group password (User requires a password for registration)
 * User Email verification
 * User Password reset
-* User Password forgotten (by sending a reset link)
+* User Password forgotten (sends a reset link to user)
 * User Password change
-* User Password policy
+* User Password policy (force strong passwords)
 * Email Domain black-/whitelisting
-* Email as Username
-* Email service to send templated emails on model- and auth events
-* Localized User Emails
-* Login failure counter
-* User Logger
-* GoogleAuthenticator support as Authorization provider (2FA)
-* GoogleRecaptcha support for registration form
+* Email-address-as-Username
+* Email templates (supports localized email templates)
+* Email mailer
+* Basic Auth protection (login failure counter)
+* Logging of authentication events
+* Two-factor-authentication with Google Authenticator (One-Time-Password)
+* GoogleRecaptcha support in login- and registration forms
+* AuthComponent for handling common auth tasks
+* User Login History (Auth provider, IP, Device, Geo)
+* User Login Security
+  - Trusted devices
+  - GeoBlocking
+  - TwoFactorAuth  
 
 ## Configuration
 
 Key                                     | Default       | Overrideable by Settings
 ---                                     | ---           | --- 
-User.layout                             | null          | no
+User.layout                             | null          | yes
 User.EventLogger.enabled                | false         | yes
-User.Mailer.enabled                     | false         | no
+User.Mailer.enabled                     | false         | yes
 User.Mailer.className                   | null          | no
-User.Login.layout                       | null          | no
+User.Login.layout                       | null          | yes
 User.Login.disabled                     | false         | yes
-User.Signup.groupAuth                   | false         | no
+User.Signup.groupAuth                   | false         | yes
 User.Signup.disabled                    | false         | yes
-User.Signup.verifyEmail                 | false         | no
-User.Signup.disableEmailVerification    | false         | no
+User.Signup.verifyEmail                 | false         | yes
+User.Signup.disableEmailVerification    | false         | yes
 User.Signup.formClass                   | null          | no
 User.Mailer.profile                     | ''            | no
 User.Blacklist                          | []            | no

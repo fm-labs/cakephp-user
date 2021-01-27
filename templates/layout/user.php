@@ -22,7 +22,7 @@
         <?= $this->Flash->render('auth'); ?>
         <?= $this->fetch('flash') ?>
     </div>
-    <main id="content">
+    <main id="main" class="container">
         <?= $this->fetch('content') ?>
     </main>
     <footer>

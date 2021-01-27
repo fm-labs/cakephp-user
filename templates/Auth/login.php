@@ -1,6 +1,5 @@
 <?php
-//$this->extend('User./base');
-//$this->setLayout('user');
+$this->extend('User./base');
 ?>
 <div id="user-login-form" class="user-form">
     <?= $this->Form->create(null); ?>
