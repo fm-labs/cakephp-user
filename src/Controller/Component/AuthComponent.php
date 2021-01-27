@@ -29,7 +29,7 @@ class AuthComponent extends Component
     public $components = ['Flash'];
 
     protected $_defaultConfig = [
-        'logoutRedirect' => null,
+        'logoutRedirect' => false,
     ];
 
     /**
