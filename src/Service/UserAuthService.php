@@ -16,6 +16,14 @@ use Cake\ORM\TableRegistry;
  */
 class UserAuthService implements EventListenerInterface
 {
+
+//    public function onViewInitialize(EventInterface $event)
+//    {
+//        /** @var \Cake\View\View $view */
+//        $view = $event->getSubject();
+//        $view->loadHelper('User.Auth');
+//    }
+
     /**
      * @param \Cake\Event\EventInterface $event The event object
      * @return void
@@ -148,6 +156,7 @@ class UserAuthService implements EventListenerInterface
             'Authentication.afterIdentify' => 'afterIdentify',
             'Authentication.logout' => 'onLogout',
             'User.Auth.error' => 'onLoginError',
+            //'View.initialize' => 'onViewInitialize'
         ];
     }
 }

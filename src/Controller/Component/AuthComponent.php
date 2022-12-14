@@ -26,11 +26,21 @@ class AuthComponent extends Component
      */
     public $Users;
 
-    public $components = ['Flash'];
+    //public $components = ['Flash'];
 
     protected $_defaultConfig = [
         'logoutRedirect' => false,
     ];
+
+    /**
+     * @var \Cake\Controller\Component\FlashComponent
+     */
+    public $Flash;
+
+    /**
+     * @var \Authentication\Controller\Component\AuthenticationComponent
+     */
+    public $Authentication;
 
     /**
      * @inheritDoc
@@ -49,10 +59,8 @@ class AuthComponent extends Component
     {
         parent::initialize($config);
 
-        $this->Flash = $this->_registry->load('Flash');
-
-        // load & configure Authentication plugin
-        $this->Authentication = $this->_registry->load('Authentication.Authentication', [
+        $this->Flash = $this->getController()->components()->load('Flash');
+        $this->Authentication = $this->getController()->components()->load('Authentication.Authentication', [
             'logoutRedirect' => $this->getConfig('logoutRedirect'),
         ]);
 
@@ -69,7 +77,7 @@ class AuthComponent extends Component
      * @param string[] $actions List of allowed actions
      * @return void
      */
-    public function allow($actions = []): void
+    public function allow(array $actions = []): void
     {
         $this->Authentication->addUnauthenticatedActions($actions);
     }
