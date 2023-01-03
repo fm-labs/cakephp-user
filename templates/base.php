@@ -1,5 +1,7 @@
 <?php
-$this->setLayout('user');
+//$layout = 'user'
+//$layout = \Cake\Core\Configure::read('User.layout');
+//$this->setLayout('user');
 ?>
 <div class="user-view view">
     <?= $this->Flash->render('auth'); ?>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace User\Controller;
 
 use App\Controller\AppController as BaseAppController;
+use Cake\Core\Configure;
 use Cake\Utility\Hash;
 
 /**
@@ -28,6 +29,9 @@ class AppController extends BaseAppController
         $this->loadComponent('Authentication.Authentication');
         $this->loadComponent('Flash');
 
+        # Apply User layout from configuration
+        $this->viewBuilder()->setLayout(Configure::read('User.layout'));
+
         //@todo Enable UserSession component
         //if (!$this->components()->has('UserSession')) {
         //    $this->loadComponent('User.UserSession', (array)Configure::read('User.UserSession'));
@@ -38,6 +42,8 @@ class AppController extends BaseAppController
     /**
      * @param null|string $key Identity data key
      * @return \Authentication\IdentityInterface|mixed|null
+     * @deprecated Use AuthenticationComponent instead
+     * @todo Use AuthenticationComponent instead
      */
     protected function _getUser($key = null)
     {

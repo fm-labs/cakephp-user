@@ -20,7 +20,7 @@ $this->extend('User./base');
 
     <hr/>
     <?php if (\Cake\Core\Configure::read('User.Signup.verifyEmail')) : ?>
-        <?= $this->Html->link(__d('user', 'Activate account'), ['action' => 'activate']); ?>
+        <?= $this->Html->link(__d('user', 'Activate account'), ['_name' => 'user:activate']); ?>
         <br/>
     <?php endif; ?>
     <?= $this->Html->link(__d('user', 'Forgot password?'), ['_name' => 'user:passwordforgotten']); ?>

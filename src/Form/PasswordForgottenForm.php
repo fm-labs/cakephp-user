@@ -39,7 +39,7 @@ class PasswordForgottenForm extends UserForm
     /**
      * @inheritDoc
      */
-    public function execute(array $data): bool
+    public function execute(array $data, array $options = []): bool
     {
         if (!$this->validate($data)) {
             return false;

@@ -61,7 +61,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
         /**
          * Mailer support
          */
-        if (Configure::read('User.Mailer.enabled') == true) {
+        if (Configure::read('User.Mailer.enabled')) {
             if (!Configure::check('User.Email')) {
                 Configure::load('User.emails');
             }
@@ -71,7 +71,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
         /**
          * Logging
          */
-        if (Configure::read('User.Logging.enabled') == true) {
+        if (Configure::read('User.Logging.enabled')) {
             EventManager::instance()->on(new UserLoggingService());
         }
 

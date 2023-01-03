@@ -16,6 +16,9 @@ class SignupController extends AppController
     {
         parent::beforeFilter($event);
 
+        // @todo Replace hardcoded user model with configured model name
+        $this->Users = $this->getTableLocator()->get("User.Users");
+
         $this->Authentication->allowUnauthenticated([
             'register', 'registerGroup', 'activate', 'activateResend',
         ]);
@@ -184,6 +187,7 @@ class SignupController extends AppController
         }
 
         $this->set('user', $user);
+        return null;
     }
 
     /**
@@ -231,5 +235,6 @@ class SignupController extends AppController
             $this->Flash->error(__d('user', 'Please fill all required fields'), ['key' => 'auth']);
             $this->set('user', $user);
         }
+        return null;
     }
 }

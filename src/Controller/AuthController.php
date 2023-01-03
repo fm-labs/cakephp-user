@@ -33,26 +33,21 @@ class AuthController extends AppController
     public function initialize(): void
     {
         parent::initialize();
-
+        # Allow login method for unauthenticated users
         $this->Authentication->allowUnauthenticated(['login']);
-
-        //@todo Enable UserSession component
-        //if (!$this->components()->has('UserSession')) {
-        //    $this->loadComponent('User.UserSession', (array)Configure::read('User.UserSession'));
-        //}
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function beforeFilter(\Cake\Event\EventInterface $event)
-    {
-        parent::beforeFilter($event);
-
-        //if ($this->components()->has('UserSession')) {
-        //    $this->UserSession->ignoreActions(['session']);
-        //}
-    }
+//    /**
+//     * @inheritDoc
+//     */
+//    public function beforeFilter(\Cake\Event\EventInterface $event)
+//    {
+//        parent::beforeFilter($event);
+//
+//        //if ($this->components()->has('UserSession')) {
+//        //    $this->UserSession->ignoreActions(['session']);
+//        //}
+//    }
 
     /**
      * Login method.
@@ -63,27 +58,33 @@ class AuthController extends AppController
     public function login(): ?\Cake\Http\Response
     {
         try {
-            if (Configure::read('User.Login.disabled') == true) {
+            if (Configure::read('User.Login.disabled')) {
                 throw new AuthException(__d('user', 'Sorry, but login is currently disabled.'));
             }
 
+            if (Configure::read('User.Login.layout')) {
+                $this->viewBuilder()->setLayout(Configure::read('User.Login.layout'));
+            }
+
             $result = $this->Authentication->getResult();
+            if ($this->request->is(['put', 'post']) && !$result->isValid()) {
+                throw new AuthException(__('Invalid credentials'));
+            }
+
             // If the user is logged in send them away.
             if ($result->isValid()) {
-                print_r($result->getData());
+                //print_r($result->getData());
                 $target = $this->Authentication->getLoginRedirect() ?? $this->config['loginRedirectUrl'];
                 $this->Flash->success('Login successful', ['key' => 'auth']);
                 return $this->redirect($target);
             }
-            if ($this->request->is('post') && !$result->isValid()) {
-                $this->Flash->error(__('Invalid credentials'), ['key' => 'auth']);
-            }
+
         } catch (AuthException $ex) {
             $this->Flash->error($ex->getMessage(), ['key' => 'auth']);
         } catch (\Exception $ex) {
             $this->Flash->error(__('Login unavailable'), ['key' => 'auth']);
             if (Configure::read('debug')) {
-                throw $ex;
+                $this->Flash->error($ex->getMessage(), ['key' => 'auth']);
             }
         }
 
@@ -107,7 +108,7 @@ class AuthController extends AppController
     }
 
     /**
-     * Return client session info in JSON format
+     * @todo Return client session info in JSON format
      *
      * @return void
      */

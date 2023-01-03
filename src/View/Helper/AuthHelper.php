@@ -28,14 +28,19 @@ class AuthHelper extends Helper
     }
 
     /**
-     * Get the current user object or a property of the object.
+     * Convenience wrapper for getUser().
      *
-     * @param $key
-     * @return array|mixed|null
+     * @see getUser()
      */
     public function user($key = null) {
         return $this->getUser($key);
     }
+
+    /**
+     * Get the current user object or property by key of the user object
+     * @param $key
+     * @return array|mixed|null
+     */
     public function getUser($key = null) {
         $lookupKey = $this->getConfig('sessionKey');
         if ($key !== null) {
@@ -50,7 +55,6 @@ class AuthHelper extends Helper
      * @return bool
      */
     public function isAuthenticated(): bool {
-        $lookupKey = $this->getConfig('sessionKey') . ".id";
-        return $this->getView()->getRequest()->getSession()->read($lookupKey);
+        return $this->check('id');
     }
 }
