@@ -75,7 +75,7 @@ class AuthController extends AppController
             if ($result->isValid()) {
                 //print_r($result->getData());
                 $target = $this->Authentication->getLoginRedirect() ?? $this->config['loginRedirectUrl'];
-                $this->Flash->success('Login successful', ['key' => 'auth']);
+                $this->Flash->success(__('Login successful'), ['key' => 'auth']);
                 return $this->redirect($target);
             }
 
