@@ -127,17 +127,17 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
             );
             $routes->connect(
                 '/password-forgotten',
-                ['controller' => 'Recovery', 'action' => 'passwordForgotten'],
+                ['controller' => 'Password', 'action' => 'passwordForgotten'],
                 ['_name' => 'user:passwordforgotten']
             );
             $routes->connect(
                 '/password-reset',
-                ['controller' => 'Recovery', 'action' => 'passwordReset'],
+                ['controller' => 'Password', 'action' => 'passwordReset'],
                 ['_name' => 'user:passwordreset']
             );
             $routes->connect(
                 '/password-change',
-                ['controller' => 'Recovery', 'action' => 'passwordChange'],
+                ['controller' => 'Password', 'action' => 'passwordChange'],
                 ['_name' => 'user:passwordchange']
             );
             $routes->connect(

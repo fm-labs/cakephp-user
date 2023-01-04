@@ -6,6 +6,8 @@ return [
     'User.Mailer.profile' => 'default',
     'User.Mailer.mailerClass' => 'User.User',
 
+    //'User.profileUrl' => null,
+
     //'User.layout' => 'User.auth',
     //'User.Login.disabled' => false,
     //'User.Login.layout' => null,

@@ -1,5 +1,5 @@
 <?php
-$this->extend('base');
+//$this->extend('base');
 // breadcrumbs
 $this->loadHelper('Breadcrumbs');
 $this->Breadcrumbs->add(__d('user', 'My Account'));
