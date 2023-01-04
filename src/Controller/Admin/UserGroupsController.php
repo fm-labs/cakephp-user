@@ -26,18 +26,6 @@ class UserGroupsController extends AppController
         'delete' => 'Admin.Delete',
     ];
 
-    public function index()
-    {
-    }
-
-    public function add()
-    {
-    }
-
-    public function edit()
-    {
-    }
-
     /**
      * View method
      *
@@ -46,14 +34,12 @@ class UserGroupsController extends AppController
     public function view()
     {
         $this->set('entityOptions', ['contain' => ['Users']]);
-        $this->set('related', ['Users']);
-        /*
         $this->set('related', ['Users' => [
-            'fields' => ['id', 'superuser', 'first_name', 'last_name', 'username', 'email', 'login_enabled'],
-            'rowActions' => [
-                [__('Details'), ['controller' => 'Users', 'action' => 'view', ':id']],
-            ],
+            'fields' => ['id', 'group_id', 'superuser', 'first_name', 'last_name', 'username', 'email', 'login_enabled'],
+//            'rowActions' => [
+//                [__('Details'), ['controller' => 'Users', 'action' => 'view', ':id']],
+//            ],
         ]]);
-        */
+        $this->Action->execute();
     }
 }
