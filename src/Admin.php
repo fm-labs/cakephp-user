@@ -30,7 +30,7 @@ class Admin extends BaseAdminPlugin implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            'Admin.Menu.build.admin_primary' => ['callable' => 'buildMenu', 'priority' => 99 ],
+            'Admin.Menu.build.admin_system' => ['callable' => 'buildAdminSystemMenu', 'priority' => 999 ],
         ];
     }
 
@@ -39,24 +39,24 @@ class Admin extends BaseAdminPlugin implements EventListenerInterface
      * @param \Cupcake\Menu\MenuItemCollection $menu The menu.
      * @return void
      */
-    public function buildMenu(Event $event, \Cupcake\Menu\MenuItemCollection $menu): void
+    public function buildAdminSystemMenu(Event $event, \Cupcake\Menu\MenuItemCollection $menu): void
     {
         $menu->addItem([
             'title' => __d('user', 'Users'),
             'url' => ['plugin' => 'User', 'controller' => 'Users', 'action' => 'index'],
             'data-icon' => 'users',
-            'children' => [
-                'users' => [
-                    'title' => __d('user', 'Users'),
-                    'url' => ['plugin' => 'User', 'controller' => 'Users', 'action' => 'index'],
-                    'data-icon' => 'users',
-                ],
-                'user_groups' => [
-                    'title' => __d('user', 'User Groups'),
-                    'url' => ['plugin' => 'User', 'controller' => 'UserGroups', 'action' => 'index'],
-                    'data-icon' => 'users',
-                ],
-            ],
+//            'children' => [
+//                'users' => [
+//                    'title' => __d('user', 'Users'),
+//                    'url' => ['plugin' => 'User', 'controller' => 'Users', 'action' => 'index'],
+//                    'data-icon' => 'users',
+//                ],
+//                'user_groups' => [
+//                    'title' => __d('user', 'User Groups'),
+//                    'url' => ['plugin' => 'User', 'controller' => 'UserGroups', 'action' => 'index'],
+//                    'data-icon' => 'users',
+//                ],
+//            ],
         ]);
     }
 }
