@@ -1,10 +1,10 @@
 <?php
 return [
-    'User.Logging.enabled' => false,
+    //'User.Logging.enabled' => false,
 
-    'User.Mailer.enabled' => false,
-    'User.Mailer.profile' => 'default',
-    'User.Mailer.mailerClass' => 'User.User',
+    //'User.Mailer.enabled' => false,
+    //'User.Mailer.profile' => 'default',
+    //'User.Mailer.mailerClass' => 'User.User',
 
     //'User.profileUrl' => null,
 
@@ -18,8 +18,8 @@ return [
     //'User.PasswordReset.redirectUrl' => null,
     //'User.Blacklist.enabled' => false,
 
-    'User.Recaptcha.enabled' => false,
+    //'User.Recaptcha.enabled' => false,
 
     // Auth component config
-    'User.Auth' => [],
+    //'User.Auth' => [],
 ];

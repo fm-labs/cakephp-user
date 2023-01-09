@@ -26,5 +26,5 @@ $this->extend('User./base');
     <?= $this->Html->link(__d('user', 'Forgot password?'), ['_name' => 'user:passwordforgotten']); ?>
     <br />
     <hr />
-    <?= $this->Html->link(__d('user', 'Back to the website'), '/'); ?>
+    <?= $this->Html->link(__d('user', 'Back to website'), '/'); ?>
 </div>

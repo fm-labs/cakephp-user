@@ -36,6 +36,8 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     {
         parent::bootstrap($app);
 
+        Configure::load('User.user');
+
         /**
          * Logs
          */
