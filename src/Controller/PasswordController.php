@@ -33,6 +33,8 @@ class PasswordController extends AppController
         $this->Authentication->allowUnauthenticated([
             'passwordForgotten', 'passwordSent', 'passwordReset',
         ]);
+
+        $this->viewBuilder()->setLayout(Configure::read('User.layout'));
     }
 
     /**

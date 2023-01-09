@@ -22,6 +22,8 @@ class SignupController extends AppController
         $this->Authentication->allowUnauthenticated([
             'register', 'registerGroup', 'activate', 'activateResend',
         ]);
+
+        $this->viewBuilder()->setLayout(Configure::read('User.layout'));
     }
 
     /**

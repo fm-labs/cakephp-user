@@ -21,11 +21,34 @@ $this->assign('title', __d('user','Verify your email address'));
     </div>
 
     <?= $this->Form->create($user, ['context' => ['validator' => 'activate']]); ?>
-    <?= $this->Form->control('email', ['type' => 'text', 'required' => true]); ?>
-    <?= $this->Form->control('email_verification_code'); ?>
-    <div class="text-right">
-        <?= $this->Form->button(__d('user','Continue'), ['class' => 'btn btn-primary']); ?>
+
+
+    <div class="form-floating">
+        <?= $this->Form->text('email', [
+            'class' => 'form-control mb-3',
+            'required' => true,
+            'type' => "text",
+            'placeholder' => __d('user', 'yourname@example.org'),
+        ]); ?>
+        <?= $this->Form->label('username', __('Email')); ?>
     </div>
-    <?= $this->Form->end(); ?>
+    <div class="form-floating">
+        <?= $this->Form->text('email_verification_code', [
+            'class' => 'form-control mb-3',
+            'required' => true,
+            'type' => "text"
+        ]); ?>
+        <?= $this->Form->label('email_verification_code', __('Verification Code')); ?>
+    </div>
+
+    <?= $this->Form->button(
+        __d('user', 'Verify'), [
+        'class' => 'w-100 btn btn-lg btn-primary',
+    ]); ?>
+
     <hr />
+
+    <?= $this->Html->link(__d('user', 'Cancel'), ['_name' => 'user:login'], ['class' => 'btn']); ?>
+    <?= $this->Form->end(); ?>
+
 </div>
