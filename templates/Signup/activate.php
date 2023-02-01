@@ -28,9 +28,9 @@ $this->assign('title', __d('user','Verify your email address'));
             'class' => 'form-control mb-3',
             'required' => true,
             'type' => "text",
-            'placeholder' => __d('user', 'yourname@example.org'),
+            //'placeholder' => 'yourname@example.org',
         ]); ?>
-        <?= $this->Form->label('username', __('Email')); ?>
+        <?= $this->Form->label('email', __('Email')); ?>
     </div>
     <div class="form-floating">
         <?= $this->Form->text('email_verification_code', [
