@@ -36,7 +36,13 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     {
         parent::bootstrap($app);
 
+        /**
+         * Configuration / Settings
+         */
         Configure::load('User.user');
+        if (\Cake\Core\Plugin::isLoaded('Settings')) {
+            Configure::load('User', 'settings');
+        }
 
         /**
          * Logs
@@ -76,12 +82,6 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
         if (Configure::read('User.Logging.enabled')) {
             EventManager::instance()->on(new UserLoggingService());
         }
-
-        /**
-         * Settings
-        if (\Cake\Core\Plugin::isLoaded('Settings')) {
-        }
-        */
 
         /*
         if ($app->getPlugins()->has('Activity')) {
