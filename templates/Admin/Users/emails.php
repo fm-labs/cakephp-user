@@ -2,8 +2,8 @@
 <div class="index">
 
     <p>
-        <?= $this->Html->link(__('Back'), ['controller' => 'Dashboard', 'action' => 'users']); ?> |
-        <?= $this->Html->link(__('Edit User'), ['controller' => 'Users', 'action' => 'edit', $user->id]); ?>
+        <?= $this->Html->link(__d('user', 'Back'), ['controller' => 'Dashboard', 'action' => 'users']); ?> |
+        <?= $this->Html->link(__d('user', 'Edit User'), ['controller' => 'Users', 'action' => 'edit', $user->id]); ?>
     </p>
 
     <?= $this->Form->create(null); ?>

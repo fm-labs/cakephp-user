@@ -1,5 +1,5 @@
 <?php $this->extend('Backend./Base/form'); ?>
-<?php $this->assign('heading', __('Add {0}', __('User'))); ?>
+<?php $this->assign('heading', __d('user', 'Add {0}', __d('user', 'User'))); ?>
 <div class="form">
     <?= $this->Form->create($entity); ?>
         <?php

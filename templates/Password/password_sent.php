@@ -13,9 +13,9 @@ $this->assign('title', __d('user','Password sent'));
 <div id="user-password-forgotten-sent" class="user-form">
     <div class="view">
         <div class="alert alert-success">
-            <?= __('Password sent'); ?>
+            <?= __d('user', 'Password sent'); ?>
         </div>
 
-        <?= $this->Html->link(__('Go to login'), ['_name' => 'user:login']); ?>
+        <?= $this->Html->link(__d('user', 'Go to login'), ['_name' => 'user:login']); ?>
     </div>
 </div>

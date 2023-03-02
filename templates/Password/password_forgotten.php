@@ -19,7 +19,7 @@ $this->assign('title', __d('user', 'Password forgotten?'));
             'type' => "text",
             'placeholder' => __d('user', 'yourname@example.org'),
         ]); ?>
-        <?= $this->Form->label('username', __('Email')); ?>
+        <?= $this->Form->label('username', __d('user', 'Email')); ?>
 
     </div>
 

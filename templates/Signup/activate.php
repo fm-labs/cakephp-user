@@ -30,7 +30,7 @@ $this->assign('title', __d('user','Verify your email address'));
             'type' => "text",
             //'placeholder' => 'yourname@example.org',
         ]); ?>
-        <?= $this->Form->label('email', __('Email')); ?>
+        <?= $this->Form->label('email', __d('user', 'Email')); ?>
     </div>
     <div class="form-floating">
         <?= $this->Form->text('email_verification_code', [
@@ -38,7 +38,7 @@ $this->assign('title', __d('user','Verify your email address'));
             'required' => true,
             'type' => "text"
         ]); ?>
-        <?= $this->Form->label('email_verification_code', __('Verification Code')); ?>
+        <?= $this->Form->label('email_verification_code', __d('user', 'Verification Code')); ?>
     </div>
 
     <?= $this->Form->button(

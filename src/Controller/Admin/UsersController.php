@@ -87,7 +87,7 @@ class UsersController extends AppController
         $this->set('filter', false);
         $this->set('toolbar.actions', [
             [
-                __('View User Groups'),
+                __d('user', 'View User Groups'),
                 ['plugin' => 'User', 'controller' => 'UserGroups', 'action' => 'index'],
                 ['data-icon' => 'users']
             ]

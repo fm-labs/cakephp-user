@@ -19,7 +19,7 @@ $this->assign('title', __d('user','Resend verification code'));
             'required' => true,
             'placeholder' => 'name@example.org',
             'label' => 'Your email address']); ?>
-        <?= $this->Form->label('email', __('Email')); ?>
+        <?= $this->Form->label('email', __d('user', 'Email')); ?>
     </div>
     <div>
         <?= $this->Form->button(__d('user','Continue'), ['class' => 'btn btn-primary']); ?>

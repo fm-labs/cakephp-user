@@ -68,21 +68,21 @@ class AuthController extends AppController
 
             $result = $this->Authentication->getResult();
             if ($this->request->is(['put', 'post']) && !$result->isValid()) {
-                throw new AuthException(__('Invalid credentials'));
+                throw new AuthException(__d('user', 'Invalid credentials'));
             }
 
             // If the user is logged in send them away.
             if ($result->isValid()) {
                 //print_r($result->getData());
                 $target = $this->Authentication->getLoginRedirect() ?? $this->config['loginRedirectUrl'];
-                $this->Flash->success(__('Login successful'), ['key' => 'auth']);
+                $this->Flash->success(__d('user', 'Login successful'), ['key' => 'auth']);
                 return $this->redirect($target);
             }
 
         } catch (AuthException $ex) {
             $this->Flash->error($ex->getMessage(), ['key' => 'auth']);
         } catch (\Exception $ex) {
-            $this->Flash->error(__('Login unavailable'), ['key' => 'auth']);
+            $this->Flash->error(__d('user', 'Login unavailable'), ['key' => 'auth']);
             if (Configure::read('debug')) {
                 $this->Flash->error($ex->getMessage(), ['key' => 'auth']);
             }

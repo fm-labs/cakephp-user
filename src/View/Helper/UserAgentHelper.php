@@ -110,7 +110,7 @@ class UserAgentHelper extends Helper
         }
 
         return $this->templater()->format('ua_' . $template, [
-            'label' => __('OS'),
+            'label' => __d('user', 'OS'),
             'icon' => $icon,
             'content' => $val,
             'attrs' => $this->templater()->formatAttributes($options),
@@ -145,7 +145,7 @@ class UserAgentHelper extends Helper
         }
 
         return $this->templater()->format('ua_' . $template, [
-            'label' => __('Device'),
+            'label' => __d('user', 'Device'),
             'icon' => $icon,
             'content' => $val,
             'attrs' => $this->templater()->formatAttributes($options),
@@ -183,7 +183,7 @@ class UserAgentHelper extends Helper
         }
 
         return $this->templater()->format('ua_' . $template, [
-            'label' => __('Model'),
+            'label' => __d('user', 'Model'),
             'icon' => $icon,
             'content' => $val,
             'attrs' => $this->templater()->formatAttributes($options),
@@ -210,7 +210,7 @@ class UserAgentHelper extends Helper
         $icon = 'android';
 
         return $this->templater()->format('ua_' . $template, [
-            'label' => __('Bot'),
+            'label' => __d('user', 'Bot'),
             'icon' => $icon,
             'content' => $val,
             'attrs' => $this->templater()->formatAttributes($options),
