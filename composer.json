@@ -54,6 +54,7 @@
     },
     "suggest": {
         "fm-labs/google-recaptcha": "Enables Google Recaptcha form verification",
+        "fm-labs/cakephp-settings": "Settings plugin for CakePHP",
         "dolondro/google-authenticator": "Enabled Two-factor-authentication with Google Authenticator",
         "piwik/device-detector": "Enables User Agents parsing to detect devices, clients, operating systems, brands and models."
     }
