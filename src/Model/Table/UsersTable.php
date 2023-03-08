@@ -8,8 +8,8 @@ use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\Event\Event;
 use Cake\Filesystem\File;
+use Cake\I18n\FrozenTime;
 use Cake\I18n\I18n;
-use Cake\I18n\Time;
 use Cake\Log\Log;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -1070,7 +1070,7 @@ class UsersTable extends UserBaseTable
         $user->login_enabled = false;
         $user->block_enabled = true;
         $user->block_reason = 'DELETED';
-        $user->block_datetime = new Time();
+        $user->block_datetime = FrozenTime::now();
 
         if (!$this->save($user)) {
             throw new \RuntimeException('UsersTable::markDeleted: Record UPDATE failed: User:' . $user->id);

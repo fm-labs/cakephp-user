@@ -5,7 +5,7 @@ namespace User\Service;
 
 use Cake\Event\EventInterface;
 use Cake\Event\EventListenerInterface;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
 
@@ -43,7 +43,7 @@ class UserAuthService implements EventListenerInterface
             $user = $Users->findByUsername($username)->first();
             if ($user) {
                 $user->login_failure_count++;
-                $user->login_failure_datetime = new Time();
+                $user->login_failure_datetime = FrozenTime::now();
 
                 if (!$Users->save($user)) {
                     Log::error('Failed to update user with login info', ['user']);
@@ -88,7 +88,7 @@ class UserAuthService implements EventListenerInterface
             $data = [
                 'login_last_login_ip' => $clientIp,
                 'login_last_login_host' => $clientHostname,
-                'login_last_login_datetime' => new Time(),
+                'login_last_login_datetime' => FrozenTime::now(),
                 'login_failure_count' => 0, // reset login failure counter
             ];
 
