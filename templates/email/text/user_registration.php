@@ -1,7 +1,3 @@
-<?php
-use Cake\Routing\Router;
-?>
-
 Hallo <?= $user->displayName; ?>,
 
 

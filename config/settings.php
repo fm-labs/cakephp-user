@@ -3,10 +3,12 @@ return [
     'Settings' => [
         'User' => [
             'groups' => [
-                'User.Services' => [],
                 'User.Auth' => [],
                 'User.Signup' => [],
+                'User.Logging' => [],
+                'User.Mailer' => [],
                 'User.Captcha' => [],
+                'User.Services' => [],
             ],
             'schema' => [
                 'User.Login.disabled' => [
@@ -40,14 +42,19 @@ return [
                     'default' => false,
                 ],
                 'User.Logging.enabled' => [
-                    'group' => 'User.Services',
+                    'group' => 'User.Logging',
                     'type' => 'boolean',
                     'default' => false,
                 ],
                 'User.Mailer.enabled' => [
-                    'group' => 'User.Services',
+                    'group' => 'User.Mailer',
                     'type' => 'boolean',
                     'default' => false,
+                ],
+                'User.Mailer.defaultProfile' => [
+                    'group' => 'User.Mailer',
+                    'type' => 'string',
+                    'default' => null,
                 ],
             ],
         ],

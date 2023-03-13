@@ -8,6 +8,8 @@ use Cake\Console\Shell;
 
 /**
  * @property \user\Model\Table\UsersTable $Users
+ * @deprecated Use UserCommand instead
+ * @todo Migrate to UserCommand
  */
 class UserShell extends Shell
 {

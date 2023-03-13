@@ -91,15 +91,15 @@ class PasswordController extends AppController
      */
     public function passwordReset(): ?\Cake\Http\Response
     {
-        if ($this->_getUser()) {
-            return $this->redirect('/');
-        }
+//        if ($this->_getUser()) {
+//            return $this->redirect('/');
+//        }
 
         $user = null;
         try {
             $query = [];
-            $query['username'] = base64_decode($this->request->getQuery('u'));
-            $query['password_reset_code'] = base64_decode($this->request->getQuery('c'));
+            $query['username'] = base64_decode($this->request->getQuery('u', ''));
+            $query['password_reset_code'] = base64_decode($this->request->getQuery('c', ''));
 
             if (!isset($query['password_reset_code'])) {
                 throw new PasswordResetException(__d('user', 'Password reset code missing'));

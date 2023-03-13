@@ -698,7 +698,7 @@ class UsersTable extends UserBaseTable
      *
      * @param \User\Model\Entity\User $user The user entity
      * @param array $data User data
-     * @return bool
+     * @return \Cake\Datasource\EntityInterface
      * @throws \User\Exception\PasswordResetException
      */
     public function resetPassword(User $user, array $data)
@@ -1149,9 +1149,11 @@ class UsersTable extends UserBaseTable
     public static function buildEmailVerificationUrl(User $user)
     {
         return Router::url([
-            'prefix' => false, 'plugin' => 'User', 'controller' => 'User', 'action' => 'activate',
-            'c' => base64_encode($user->email_verification_code),
-            'm' => base64_encode($user->email),
+            'prefix' => false, 'plugin' => 'User', 'controller' => 'Signup', 'action' => 'activate',
+            '?' => [
+                'c' => base64_encode($user->email_verification_code),
+                'm' => base64_encode($user->email),
+            ]
         ], true);
     }
 
@@ -1161,12 +1163,14 @@ class UsersTable extends UserBaseTable
      * @param \User\Model\Entity\User $user The user entity
      * @return string Full URL
      */
-    public static function buildPasswordResetUrl(User $user)
+    public static function buildPasswordResetUrl(User $user): string
     {
         return Router::url([
-            'prefix' => false, 'plugin' => 'User', 'controller' => 'User', 'action' => 'passwordReset',
-            'c' => base64_encode($user->password_reset_code),
-            'u' => base64_encode($user->username),
+            'prefix' => false, 'plugin' => 'User', 'controller' => 'Password', 'action' => 'passwordReset',
+            '?' => [
+                'c' => base64_encode($user->password_reset_code),
+                'u' => base64_encode($user->username),
+            ]
         ], true);
     }
 

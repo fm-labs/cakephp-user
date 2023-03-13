@@ -9,7 +9,7 @@ use Cake\Event\EventListenerInterface;
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 
-class Admin extends BaseAdminPlugin implements EventListenerInterface
+class UserAdmin extends BaseAdminPlugin implements EventListenerInterface
 {
     /**
      * @inheritDoc
