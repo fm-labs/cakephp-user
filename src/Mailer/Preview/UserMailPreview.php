@@ -7,16 +7,17 @@ use DebugKit\Mailer\MailPreview;
 use User\Mailer\UserMailer;
 
 /**
- * @property \User\Model\Table\UsersTable $Users
+ * UserMailPreview
  */
 class UserMailPreview extends MailPreview
 {
     protected function getPreviewUser()
     {
-        $this->Users = TableRegistry::getTableLocator()->get('User.Users');
+        /** @var \User\Model\Table\UsersTable $Users */
+        $Users = TableRegistry::getTableLocator()->get('User.Users');
         /** @var \User\Model\Entity\User $user */
         //$user = $this->Users->find()->first();
-        $user = $this->Users->newEmptyEntity();
+        $user = $Users->newEmptyEntity();
         $user->locale = "de";
         $user->username = "testuser";
         $user->email = "test@example.org";
