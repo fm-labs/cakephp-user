@@ -18,7 +18,7 @@ class UserSessionsController extends AppController
     /**
      * @var array
      */
-    public $actions = [
+    public array $actions = [
         'index' => 'Admin.Index',
         'view' => 'Admin.View',
         'delete' => 'Admin.Delete',

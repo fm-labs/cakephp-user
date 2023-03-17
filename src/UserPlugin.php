@@ -20,6 +20,7 @@ use User\Service\UserAuthService;
 use User\Service\UserLoggingService;
 use User\Service\UserMailerService;
 use User\Service\UserPasswordService;
+use User\Service\UserSessionService;
 
 /**
  * Class UserPlugin

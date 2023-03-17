@@ -5,6 +5,7 @@ namespace User;
 
 use Admin\Core\BaseAdminPlugin;
 use Cake\Event\Event;
+use Cake\Event\EventInterface;
 use Cake\Event\EventListenerInterface;
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
@@ -30,8 +31,21 @@ class UserAdmin extends BaseAdminPlugin implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
+            //'Controller.initialize' => ['callable' => 'controllerInitialize'],
             'Admin.Menu.build.admin_system' => ['callable' => 'buildAdminSystemMenu', 'priority' => 999 ],
         ];
+    }
+
+    /**
+     * @param EventInterface $event
+     * @return void
+     * @throws \Exception
+     */
+    public function controllerInitialize(EventInterface $event)
+    {
+        /** @var \Cake\Controller\Controller $controller */
+        $controller = $event->getSubject();
+        $controller->components()->load('User.UserSession');
     }
 
     /**
@@ -45,18 +59,23 @@ class UserAdmin extends BaseAdminPlugin implements EventListenerInterface
             'title' => __d('user', 'Users'),
             'url' => ['plugin' => 'User', 'controller' => 'Users', 'action' => 'index'],
             'data-icon' => 'users',
-//            'children' => [
-//                'users' => [
-//                    'title' => __d('user', 'Users'),
-//                    'url' => ['plugin' => 'User', 'controller' => 'Users', 'action' => 'index'],
-//                    'data-icon' => 'users',
-//                ],
-//                'user_groups' => [
-//                    'title' => __d('user', 'User Groups'),
-//                    'url' => ['plugin' => 'User', 'controller' => 'UserGroups', 'action' => 'index'],
-//                    'data-icon' => 'users',
-//                ],
-//            ],
+            'children' => [
+                'users' => [
+                    'title' => __d('user', 'Users'),
+                    'url' => ['plugin' => 'User', 'controller' => 'Users', 'action' => 'index'],
+                    'data-icon' => 'users',
+                ],
+                'user_groups' => [
+                    'title' => __d('user', 'User Groups'),
+                    'url' => ['plugin' => 'User', 'controller' => 'UserGroups', 'action' => 'index'],
+                    'data-icon' => 'users',
+                ],
+                'user_sessions' => [
+                    'title' => __d('user', 'User Sessions'),
+                    'url' => ['plugin' => 'User', 'controller' => 'UserSessions', 'action' => 'index'],
+                    'data-icon' => 'users',
+                ],
+            ],
         ]);
     }
 }

@@ -20,7 +20,7 @@ class UserMailerService implements EventListenerInterface
     use InstanceConfigTrait;
     use UserMailerAwareTrait;
 
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         //'enabled' => true,
         //'profile' => 'default',
         'mailerClass' => 'User.User',
@@ -40,7 +40,7 @@ class UserMailerService implements EventListenerInterface
      * @param array $args Mailer action args
      * @return void
      */
-    public function sendEmail($action, $args = [])
+    public function sendEmail(string $action, array $args = [])
     {
         try {
             $mailer = $this->getUserMailer();
@@ -54,7 +54,7 @@ class UserMailerService implements EventListenerInterface
      * @param \Cake\Event\Event $event The event object
      * @return void
      */
-    public function onRegister(Event $event)
+    public function onRegister(Event $event): void
     {
         $this->sendEmail('userRegistration', [$event->getData('user')]);
     }
@@ -63,7 +63,7 @@ class UserMailerService implements EventListenerInterface
      * @param \Cake\Event\Event $event The event object
      * @return void
      */
-    public function onActivate(Event $event)
+    public function onActivate(Event $event): void
     {
         $this->sendEmail('userActivation', [$event->getData('user')]);
     }
@@ -72,7 +72,7 @@ class UserMailerService implements EventListenerInterface
      * @param \Cake\Event\Event $event The event object
      * @return void
      */
-    public function onLogin(Event $event)
+    public function onLogin(Event $event): void
     {
         $this->sendEmail('newLogin', [$event->getData('user')]);
     }

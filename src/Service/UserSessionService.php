@@ -12,16 +12,19 @@ use Cake\ORM\TableRegistry;
 /**
  * Class UserSessionService
  *
- * @package User\Event
- * @property \User\Model\Table\UserSessionsTable $UserSessions
- * @property \GeoIp\Model\Table\GeoIpTable $GeoIp
+ * @package User\Service
  */
 class UserSessionService implements EventListenerInterface
 {
     /**
-     * @var \GeoIp\Model\Table\GeoIpTable $GeoIp
+     * @var \GeoIp\Model\Table\GeoIpTable|null $GeoIp
      */
-    public $GeoIp = null;
+    protected $GeoIp = null;
+
+    /**
+     * @var \User\Model\Table\UserSessionsTable|null
+     */
+    protected ?\Cake\ORM\Table $UserSessions = null;
 
     /**
      * Constructor
@@ -41,7 +44,7 @@ class UserSessionService implements EventListenerInterface
      */
     public function sessionCreate(Event $event)
     {
-        $data = $event->data;
+        $data = $event->getData();
 
         // Determine geo location
         if ($this->GeoIp) {
@@ -63,7 +66,7 @@ class UserSessionService implements EventListenerInterface
             Log::error('Failed to save user session: ' . json_encode($userSession->getErrors()), ['user']);
         }
 
-        $event->data = $data;
+        $event->setData($data);
         Log::debug("User session created for user with ID " . $data['user_id'], ['user']);
     }
 
@@ -81,7 +84,7 @@ class UserSessionService implements EventListenerInterface
 
         $userSession->setAccess('*', false);
         $userSession->setAccess('expires', true);
-        $userSession = $this->UserSessions->patchEntity($userSession, $event->data);
+        $userSession = $this->UserSessions->patchEntity($userSession, $event->getData());
 
         $this->UserSessions->save($userSession);
         if (!$this->UserSessions->save($userSession)) {

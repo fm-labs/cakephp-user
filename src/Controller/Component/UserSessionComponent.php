@@ -12,7 +12,7 @@ use Cake\Log\Log;
 /**
  * User Session Component class
  *
- * @property \User\Controller\Component\AuthComponent|\Cake\Controller\Component\AuthComponent $Auth
+ * @property \User\Controller\Component\AuthComponent $Auth
  * @property \Cake\Controller\Component\FlashComponent $Flash
  */
 class UserSessionComponent extends Component
@@ -20,16 +20,19 @@ class UserSessionComponent extends Component
     /**
      * @var array
      */
-    public $components = ['Auth', 'Flash'];
+    public $components = ['User.Auth', 'Flash'];
 
     /**
      * @var array
      */
     protected $_defaultConfig = [
-        'sessionKey' => 'Auth.UserSession', // Session storage key
+        'sessionKey' => 'UserSession', // Session storage key
+        'sessionCheckEvent' => 'Controller.startup',
         'maxLifetimeSec' => 3600, // max user session lifetime in seconds. should be lower then global session timeout
         'ignoreActions' => [], // skip user session validation for these controller actions
     ];
+
+    protected $_userSession = null;
 
     /**
      * @inheritDoc
@@ -45,20 +48,24 @@ class UserSessionComponent extends Component
 
     /**
      * @param \Cake\Event\Event $event The event object
-     * @return \Cake\Http\Response|null
+     * @return \Cake\Http\Response|null|void
      */
     public function beforeFilter(\Cake\Event\EventInterface $event)
     {
-        return $this->checkSession($event);
+        if ($this->getConfig('sessionCheckEvent') === 'Controller.initialize') {
+            $this->checkSession($event);
+        }
     }
 
     /**
      * @param \Cake\Event\Event $event The event object
-     * @return \Cake\Http\Response|null
+     * @return \Cake\Http\Response|null|void
      */
     public function startup(\Cake\Event\EventInterface $event)
     {
-        return $this->checkSession($event);
+        if ($this->getConfig('sessionCheckEvent') === 'Controller.startup') {
+            $this->checkSession($event);
+        }
     }
 
     /**
@@ -83,41 +90,57 @@ class UserSessionComponent extends Component
      */
     public function checkSession(Event $event)
     {
-        if ($this->Auth->getConfig('checkAuthIn') != $event->getName()) {
-            return null;
-        }
+//        if ($this->getConfig('sessionCheckEvent') != $event->getName()) {
+//            return null;
+//        }
 
-        if (!$this->Auth->user()) {
-            $this->destroy();
+//        if (!$this->Auth->user()) {
+//            $this->Flash->warning("UserSession: No user found in session");
+//            //$this->destroy();
+//
+//            return null;
+//        }
 
-            return null;
-        }
-
-        if (in_array($this->getController()->getRequest()->getParam('action'), $this->_config['ignoreActions'])) {
-            return null;
-        }
+        $this->Flash->info("Check Session");
+//        if (in_array($this->getController()->getRequest()->getParam('action'), $this->_config['ignoreActions'])) {
+//            return null;
+//        }
 
         /** @var \Cake\Controller\Controller $controller */
         $controller = $event->getSubject();
         $userSession = $this->userSession();
 
-        if ($userSession !== null) {
-            if (!$this->validateUserSession()) {
-                $event->stopPropagation();
+//        if ($userSession !== null) {
+//            if (!$this->validateUserSession()) {
+//                $event->stopPropagation();
+//
+//                return $this->_expired($controller);
+//            }
+//
+//            if (!$this->getController()->getRequest()->is(['ajax', 'requested']) && !$this->extend()) {
+//                $event->stopPropagation();
+//
+//                return $this->_expired($controller);
+//            }
+//
+//            return null;
+//        }
 
-                return $this->_expired($controller);
+        try {
+
+            if ($userSession) {
+                $this->Flash->success("USERSESSION: " . json_encode($userSession));
+                $this->validateUserSession();
+            } else {
+                $this->Flash->warning("CREATING USERSESSION");
+                $this->createUserSession();
             }
 
-            if (!$this->getController()->getRequest()->is(['ajax', 'requested']) && !$this->extend()) {
-                $event->stopPropagation();
-
-                return $this->_expired($controller);
-            }
-
-            return null;
+        } catch (\Exception $ex) {
+            $this->Flash->error($ex->getMessage());
+            Log::critical($ex->getMessage(), ['auth', 'user']);
         }
 
-        $this->createUserSession();
     }
 
     /**
@@ -149,11 +172,13 @@ class UserSessionComponent extends Component
      */
     public function userSession()
     {
-        if ($this->getController()->getRequest()->getSession()->check($this->_config['sessionKey'])) {
-            return $this->getController()->getRequest()->getSession()->read($this->_config['sessionKey']);
+        if (!$this->_userSession) {
+            $this->_userSession = $this->getController()->getRequest()
+                ->getSession()
+                ->read($this->_config['sessionKey']);
         }
 
-        return null;
+        return $this->_userSession;
     }
 
     /**
@@ -164,7 +189,9 @@ class UserSessionComponent extends Component
      */
     public function setUserSession(array $userSession)
     {
-        $this->getController()->getRequest()->getSession()->write($this->_config['sessionKey'], $userSession);
+        $this->getController()->getRequest()
+            ->getSession()
+            ->write($this->_config['sessionKey'], $userSession);
     }
 
     /**
@@ -189,6 +216,7 @@ class UserSessionComponent extends Component
             'client_ip' => $this->getController()->getRequest()->clientIp(),
             'user_agent' => $this->getController()->getRequest()->getHeaderLine('User-Agent'),
         ];
+        //$this->setUserSession($userSession);
 
         /** @var \Cake\Event\Event $event */
         $event = $this->getController()->dispatchEvent('User.Session.create', $userSession, $this);
@@ -198,48 +226,42 @@ class UserSessionComponent extends Component
     /**
      * Validate user session
      *
-     * @return bool
+     * @return void
+     * @throws \Exception
      * @TODO Trigger security events
      */
     public function validateUserSession()
     {
         $userSession = $this->userSession();
         if (!$userSession) {
-            return false;
+            throw new \LogicException(
+                'No active user session found',
+            );
         }
 
         if ($this->expiresIn() < 1) {
-            return false;
+            throw new \Exception(
+                'User Session expired',
+            );
         }
 
         if ($userSession['sessionid'] != $this->getController()->getRequest()->getSession()->id()) {
-            Log::alert(
-                'SessionID mismatch! Possible Hijacking attempt. IP: ' . $this->getController()->getRequest()->clientIp(),
-                ['auth', 'user']
+            throw new \Exception(
+                'SessionID mismatch! Possible Hijacking attempt. Expected: ' . $this->getController()->getRequest()->getSession()->id(),
             );
-
-            return false;
         }
 
         if ($userSession['client_ip'] != $this->getController()->getRequest()->clientIp()) {
-            Log::alert(
+            throw new \Exception(
                 'ClientIP mismatch! Possible Hijacking attempt. IP: ' . $this->getController()->getRequest()->clientIp(),
-                ['auth', 'user']
             );
-
-            return false;
         }
 
         if ($userSession['user_agent'] != $this->getController()->getRequest()->getHeaderLine('User-Agent')) {
-            Log::alert(
+            throw new \Exception(
                 'User agent mismatch! Possible Hijacking attempt. IP: ' . $this->getController()->getRequest()->clientIp(),
-                ['auth', 'user']
             );
-
-            return false;
         }
-
-        return true;
     }
 
     /**
@@ -340,18 +362,21 @@ class UserSessionComponent extends Component
      */
     protected function _expired(Controller $controller)
     {
-        $this->destroy();
-        $this->Authentication->logout();
-        $this->Auth->storage()->redirectUrl(false);
+        $this->Auth->flash("Session expired");
+        return null;
 
-        if (!$controller->getRequest()->is('ajax')) {
-            $this->Auth->flash(__d('user', 'Session timed out'));
-
-            return $controller->redirect($this->Auth->getConfig('loginAction'));
-        }
-
-        return $controller->getResponse()
-            ->withStatus(403);
+//        $this->destroy();
+//        $this->Authentication->logout();
+//        //$this->Auth->storage()->redirectUrl(false);
+//
+//        if (!$controller->getRequest()->is('ajax')) {
+//            $this->Auth->flash(__d('user', 'Session timed out'));
+//
+//            return $controller->redirect($this->Auth->getConfig('loginAction'));
+//        }
+//
+//        return $controller->getResponse()
+//            ->withStatus(403);
     }
 
     /**

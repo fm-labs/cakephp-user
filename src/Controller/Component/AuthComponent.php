@@ -5,10 +5,6 @@ namespace User\Controller\Component;
 
 use Cake\Controller\Component;
 use Cake\Controller\ComponentRegistry;
-use Cake\Event\Event;
-use Cake\Event\EventManagerInterface;
-use Cake\Log\Log;
-use User\Exception\AuthException;
 
 /**
  * Class AuthComponent
@@ -33,14 +29,14 @@ class AuthComponent extends Component
     ];
 
     /**
-     * @var \Cake\Controller\Component\FlashComponent
+     * @var \Cake\Controller\Component\FlashComponent|null
      */
-    public $Flash;
+    public ?Component\FlashComponent $Flash;
 
     /**
-     * @var \Authentication\Controller\Component\AuthenticationComponent
+     * @var \Authentication\Controller\Component\AuthenticationComponent|null
      */
-    public $Authentication;
+    public ?\Authentication\Controller\Component\AuthenticationComponent $Authentication;
 
     /**
      * @inheritDoc
@@ -48,6 +44,11 @@ class AuthComponent extends Component
     public function __construct(ComponentRegistry $registry, array $config = [])
     {
         parent::__construct($registry, $config);
+    }
+
+    protected function _deprecated(string $functionName)
+    {
+        deprecationWarning(sprintf("(User)AuthComponent::%s() is deprecated. Use AuthenticationComponent from cakephp/authentication package instead!", $functionName));
     }
 
     /**
@@ -71,32 +72,39 @@ class AuthComponent extends Component
         ) {
             $this->Authentication->allowUnauthenticated((array)$this->getController()->allowUnauthenticated);
         }
+
     }
 
     /**
      * @param string[] $actions List of allowed actions
      * @return void
+     * @deprecated Use Authentication::allowUnauthenticated/addUnauthenticatedActions instead.
      */
     public function allow(array $actions = []): void
     {
+        $this->_deprecated(__FUNCTION__);
         $this->Authentication->addUnauthenticatedActions($actions);
     }
 
     /**
-     * @param string $msg Flash message
+     * @param string|false $msg Flash message
      * @return void
+     * @deprecated Use Flash::error instead.
      */
     public function flash($msg): void
     {
+        $this->_deprecated(__FUNCTION__);
         $this->Flash->error($msg, ['key' => 'auth']);
     }
 
     /**
      * @param null|string $key Identity data key
      * @return \Authentication\IdentityInterface|mixed|null
+     * @deprecated Use Authentication::getIdentity()/getIdentityData() instead.
      */
-    public function user($key = null)
+    public function user(?string $key = null)
     {
+        $this->_deprecated(__FUNCTION__);
         $identity = $this->Authentication->getIdentity();
         if (!$identity) {
             return null;
@@ -110,11 +118,13 @@ class AuthComponent extends Component
     }
 
     /**
-     * @param \ArrayAccess $user The identity data.
+     * @param \ArrayAccess|null $user The identity data.
      * @return void
+     * @deprecated Use Authentication::setIdentity instead.
      */
-    public function setUser($user): void
+    public function setUser(?\ArrayAccess $user): void
     {
+        $this->_deprecated(__FUNCTION__);
         $this->Authentication->setIdentity($user);
         /*
         if ($user === null) {
@@ -130,9 +140,11 @@ class AuthComponent extends Component
      * Dispatches event 'User.Auth.logout'.
      *
      * @return null|string Logout redirect url
+     * @deprecated Use Authentication::logout instead.
      */
     public function logout(): ?string
     {
+        $this->_deprecated(__FUNCTION__);
         /*
         $event = new Event('User.Auth.logout', $this, [
             'user' => $this->user(),
@@ -146,9 +158,11 @@ class AuthComponent extends Component
 
     /**
      * @return null|string Login redirect url
+     * @deprecated Use Authentication::getLoginRedirect instead.
      */
     public function redirectUrl(): ?string
     {
+        $this->_deprecated(__FUNCTION__);
         return $this->Authentication->getLoginRedirect();
     }
 

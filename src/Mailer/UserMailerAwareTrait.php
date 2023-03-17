@@ -14,7 +14,7 @@ trait UserMailerAwareTrait
      * UserMailer class name
      * @var string
      */
-    protected $_mailerClass = 'User.User';
+    protected string $_mailerClass = 'User.User';
 
     /**
      * Set user mailer class
