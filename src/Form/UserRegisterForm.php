@@ -83,7 +83,7 @@ class UserRegisterForm extends UserForm
     /**
      * @inheritDoc
      */
-    public function execute(array $data): bool
+    public function execute(array $data, array $options = []): bool
     {
         if (UsersTable::$emailAsUsername && isset($data['email'])) {
             $data['username'] = $data['email'];

@@ -3,8 +3,8 @@
 //$layout = \Cake\Core\Configure::read('User.layout');
 //$this->setLayout('user');
 ?>
-<div class="user-view view">
+<div class="user-view view form-user w-100 m-auto text-center">
     <?= $this->Flash->render('auth'); ?>
-    <h1 class="heading"><?= $this->fetch('heading', $this->fetch('title')); ?></h1>
+    <h1 class="h3 mb-3 fw-normal"><?= $this->fetch('heading', $this->fetch('title')); ?></h1>
     <?= $this->fetch('content'); ?>
 </div>

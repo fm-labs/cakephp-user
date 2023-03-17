@@ -62,6 +62,7 @@ class UserPlugin extends BasePlugin implements AuthenticationServiceProviderInte
          * Authentication
          */
         $app->addPlugin('Authentication');
+        $app->addOptionalPlugin('GoogleRecaptcha');
         EventManager::instance()->on(new UserAuthService());
         //EventManager::instance()->on(new UserPasswordService());
         //EventManager::instance()->on(new UserSessionService());

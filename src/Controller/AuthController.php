@@ -5,6 +5,7 @@ namespace User\Controller;
 
 use Cake\Core\Configure;
 use User\Exception\AuthException;
+use User\Form\UserLoginForm;
 
 /**
  * Class AuthController
@@ -20,7 +21,10 @@ class AuthController extends AppController
      */
     public $modelClass = 'User.Users';
 
-    public $config = [
+    /**
+     * @var array
+     */
+    public array $config = [
         'loginDisabled' => false,
         'loginRedirectUrl' => '/',
         'logoutRedirectUrl' => ['_name' => 'user:login'],
@@ -57,7 +61,15 @@ class AuthController extends AppController
      */
     public function login(): ?\Cake\Http\Response
     {
+        if ($this->Authentication->getIdentity()) {
+            return $this->redirect($this->Authentication->getLoginRedirect() ?? '/');
+        }
+
+        $form = null;
         try {
+            $formClass = UserLoginForm::class;
+            $form = new $formClass($this);
+
             if (Configure::read('User.Login.disabled')) {
                 throw new AuthException(__d('user', 'Sorry, but login is currently disabled.'));
             }
@@ -66,18 +78,14 @@ class AuthController extends AppController
                 $this->viewBuilder()->setLayout(Configure::read('User.Login.layout'));
             }
 
-            $result = $this->Authentication->getResult();
-            if ($this->request->is(['put', 'post']) && !$result->isValid()) {
-                throw new AuthException(__d('user', 'Invalid credentials'));
+            if ($this->getRequest()->is(['put', 'post'])) {
+                if (!$form->execute($this->request->getData())) {
+                    //debug($form->getErrors());
+                    throw new AuthException(__d('user', 'Login failed'));
+                }
+                return $form->getResponse();
             }
 
-            // If the user is logged in send them away.
-            if ($result->isValid()) {
-                //print_r($result->getData());
-                $target = $this->Authentication->getLoginRedirect() ?? $this->config['loginRedirectUrl'];
-                $this->Flash->success(__d('user', 'Login successful'), ['key' => 'auth']);
-                return $this->redirect($target);
-            }
 
         } catch (AuthException $ex) {
             $this->Flash->error($ex->getMessage(), ['key' => 'auth']);
@@ -86,6 +94,8 @@ class AuthController extends AppController
             if (Configure::read('debug')) {
                 $this->Flash->error($ex->getMessage(), ['key' => 'auth']);
             }
+        } finally {
+            $this->set('form', $form);
         }
 
         return null;
