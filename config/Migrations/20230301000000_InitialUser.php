@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 use Migrations\AbstractMigration;
 
-class Initial extends AbstractMigration
+class InitialUser extends AbstractMigration
 {
     public $autoId = false;
 
@@ -268,9 +268,9 @@ class Initial extends AbstractMigration
             ])
             ->addColumn('timestamp', 'timestamp', [
                 'comment' => 'Timestamp of authentication',
-                'default' => 'current_timestamp()',
+                'default' => null,
                 'limit' => null,
-                'null' => false,
+                'null' => true,
             ])
             ->addColumn('expires', 'timestamp', [
                 'comment' => 'Timestamp of expiration',

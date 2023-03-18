@@ -24,7 +24,7 @@ class GroupsFixture extends TestFixture
     // phpcs::disable
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
-        'alias' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
+        //'alias' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'name' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'password' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         '_constraints' => [
@@ -45,19 +45,19 @@ class GroupsFixture extends TestFixture
     public $records = [
         [
             'id' => 1,
-            'alias' => 'root',
+            //'alias' => 'root',
             'name' => 'Root Users',
             'password' => null,
         ],
         [
             'id' => 2,
-            'alias' => 'users',
+            //'alias' => 'users',
             'name' => 'Normal Users',
             'password' => null,
         ],
         [
             'id' => 3,
-            'alias' => 'admins',
+            //'alias' => 'admins',
             'name' => 'Admin Users',
             'password' => null,
         ],
