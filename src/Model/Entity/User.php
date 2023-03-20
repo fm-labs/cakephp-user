@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace User\Model\Entity;
 
 use Authentication\IdentityInterface;
-use Authorization\AuthorizationServiceInterface;
-use Authorization\Policy\ResultInterface;
+//use Authentication\PasswordHasher\DefaultPasswordHasher;
+//use Authorization\AuthorizationServiceInterface;
+//use Authorization\Policy\ResultInterface;
+use Cake\Auth\DefaultPasswordHasher; // @todo use Authentication\PasswordHasher\DefaultPasswordHasher instead?
 use Cake\ORM\Entity;
 
 /**
@@ -49,13 +51,15 @@ use Cake\ORM\Entity;
  *
  * @property \User\Model\Entity\UserGroup $group
  * @property \Authorization\AuthorizationServiceInterface $authorization
+ *
+ * @todo Implement \Authorization\IdentityInterface
  */
 class User extends Entity implements IdentityInterface//, \Authorization\IdentityInterface
 {
     /**
      * @var string
      */
-    public static $passwordHasherClass = 'Cake\\Auth\\DefaultPasswordHasher';
+    public static string $passwordHasherClass = DefaultPasswordHasher::class;
 
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -96,6 +100,7 @@ class User extends Entity implements IdentityInterface//, \Authorization\Identit
         'groups' => false,
         'locale' => false,
         'timezone' => false,
+        'currency' => false,
         'is_deleted' => false,
     ];
 

@@ -189,6 +189,21 @@ class InitialUser extends AbstractMigration
                 'limit' => null,
                 'null' => true,
             ])
+            ->addColumn('locale', 'string', [
+                'default' => null,
+                'limit' => 10,
+                'null' => true,
+            ])
+            ->addColumn('timezone', 'string', [
+                'default' => null,
+                'limit' => 255,
+                'null' => true,
+            ])
+            ->addColumn('currency', 'string', [
+                'default' => null,
+                'limit' => 10,
+                'null' => true,
+            ])
             ->addColumn('created', 'datetime', [
                 'default' => null,
                 'limit' => null,

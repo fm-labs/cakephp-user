@@ -26,58 +26,58 @@ class UsersTable extends UserBaseTable
     /**
      * @var bool Use email as username
      */
-    public static $emailAsUsername = false;
+    public static bool $emailAsUsername = false;
 
     /**
      * @var int Minimum length of passwords
      */
-    public static $passwordMinLength = 8;
+    public static int $passwordMinLength = 8;
 
     /**
      * @var int Minimum # of lowercase characters
      */
-    public static $passwordMinLowercase = -1;
+    public static int $passwordMinLowercase = -1;
 
     /**
      * @var int Minimum # of uppercase characters
      */
-    public static $passwordMinUppercase = -1;
+    public static int $passwordMinUppercase = -1;
 
     /**
      * @var int Minimum # of special characters
      */
-    public static $passwordMinSpecialChars = -1;
+    public static int $passwordMinSpecialChars = -1;
 
     /**
      * @var int Minimum # of number characters
      */
-    public static $passwordMinNumbers = -1;
+    public static int $passwordMinNumbers = -1;
 
     /**
      * @var string Allowd special chars
      */
-    public static $passwordSpecialChars = '_-!?$%()=+[].,§';
+    public static string $passwordSpecialChars = '_-!?$%()=+[].,§';
 
     /**
      * @var int Password reset expiration expiration in seconds
      */
-    public static $passwordResetExpiry = 86400; // 24 h
+    public static int $passwordResetExpiry = 86400; // 24 h
 
     /**
      * @var int Password reset code length
      * @deprecated Use $verificationCodeLength instead
      */
-    public static $passwordResetCodeLength = 8;
+    public static int $passwordResetCodeLength = 8;
 
     /**
      * @var int Length of generated verification codes
      */
-    public static $verificationCodeLength = 8;
+    public static int $verificationCodeLength = 8;
 
     /**
      * @var array List of related models passed to the auth finder method
      */
-    public static $contains = ['UserGroups'];
+    public static array $contains = ['UserGroups'];
 
     /**
      * Initialize method
