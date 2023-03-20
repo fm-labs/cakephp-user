@@ -10,7 +10,7 @@ $this->assign('heading', __d('user', 'Please sign in'));
 <div class="form-signin ms-auto me-auto">
     <?= $this->Form->create($this->get('form'), [
         'type' => 'post',
-        'url' => ['_name' => 'user:login'],
+        //'url' => ['_name' => 'user:login'],
         'novalidate' => false,
     ]); ?>
 

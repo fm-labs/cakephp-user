@@ -87,8 +87,8 @@ class AuthController extends AppController
             if ($this->Auth->user()) {
                 //print_r($result->getData());
                 $defaultRedirect = $controller->config['loginRedirectUrl'] ?? '/';
-                $target = $this->Auth->redirectUrl() ?? $defaultRedirect;
-                $this->redirect($target);
+                $redirectUrl = $this->Auth->redirectUrl() ?? $defaultRedirect;
+                $this->redirect($redirectUrl);
             }
 
         } catch (AuthException $ex) {
