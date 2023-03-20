@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace User\Service;
+namespace User\Listener;
 
 use Cake\Core\Plugin;
 use Cake\Event\Event;
@@ -10,11 +10,12 @@ use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
 
 /**
- * Class UserSessionService
+ * Class UserSessionListener
  *
  * @package User\Service
+ * @deprecated Use UserSession component/middleware instead.
  */
-class UserSessionService implements EventListenerInterface
+class UserSessionListener implements EventListenerInterface
 {
     /**
      * @var \GeoIp\Model\Table\GeoIpTable|null $GeoIp

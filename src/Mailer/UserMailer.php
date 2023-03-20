@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace User\Mailer;
 
 use Cake\Core\Configure;
+use Cake\Event\Event;
 use Cake\I18n\I18n;
 use Cake\Mailer\Mailer;
 use User\Model\Entity\User;
@@ -219,5 +220,65 @@ class UserMailer extends Mailer
             ->setLocalizedProfile(__FUNCTION__)
         ;
         return $this;
+    }
+
+    /**
+     * @param \Cake\Event\Event $event The event object
+     * @return void
+     */
+    public function onRegister(Event $event): void
+    {
+        $this->send('userRegistration', [$event->getData('user')]);
+    }
+
+    /**
+     * @param \Cake\Event\Event $event The event object
+     * @return void
+     */
+    public function onActivate(Event $event): void
+    {
+        $this->send('userActivation', [$event->getData('user')]);
+    }
+
+    /**
+     * @param \Cake\Event\Event $event The event object
+     * @return void
+     */
+    public function onLogin(Event $event): void
+    {
+        $this->send('newLogin', [$event->getData('user')]);
+    }
+
+    /**
+     * @param \Cake\Event\Event $event The event object
+     * @return void
+     */
+    public function onPasswordForgotten(Event $event): void
+    {
+        $this->send('passwordForgotten', [$event->getData('user')]);
+    }
+
+    /**
+     * @param \Cake\Event\Event $event The event object
+     * @return void
+     */
+    public function onPasswordReset(Event $event): void
+    {
+        $this->send('passwordReset', [$event->getData('user')]);
+    }
+
+    /**
+     * @return array
+     */
+    public function implementedEvents(): array
+    {
+        return [
+            'User.Model.User.register' => 'onRegister',
+            'User.Model.User.activationResend' => 'onRegister',
+            'User.Model.User.activate' => 'onActivate',
+            'User.Model.User.passwordForgotten' => 'onPasswordForgotten',
+            'User.Model.User.passwordReset' => 'onPasswordReset',
+            'User.Model.User.newLogin' => 'onLogin',
+        ];
     }
 }

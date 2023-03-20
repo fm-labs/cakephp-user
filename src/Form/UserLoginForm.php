@@ -88,6 +88,7 @@ class UserLoginForm extends Form
 
     /**
      * @inheritDoc
+     * @throws \Exception
      */
     protected function _execute(array $data): bool
     {
@@ -95,19 +96,20 @@ class UserLoginForm extends Form
 
         /** @var \User\Controller\AuthController $controller */
         $controller =& $this->controller;
-        $result = $controller->Authentication->getResult();
-        if ($controller->getRequest()->is(['put', 'post']) && !$result->isValid()) {
-            throw new AuthException(__d('user', 'Invalid credentials'));
-        }
-
-        // If the user is logged in send them away.
-        if ($result->isValid()) {
-            //print_r($result->getData());
-            $defaultRedirect = $controller->config['loginRedirectUrl'] ?? '/';
-            $target = $controller->Authentication->getLoginRedirect() ?? $defaultRedirect;
-            $controller->Flash->success(__d('user', 'Login successful'), ['key' => 'auth']);
-            $controller->redirect($target);
-        }
+//        $result = $controller->Authentication->getResult();
+//        if ($controller->getRequest()->is(['put', 'post']) && !$result->isValid()) {
+//            throw new AuthException(__d('user', 'Invalid credentials'));
+//        }
+//
+//        // If the user is logged in send them away.
+//        if ($result->isValid()) {
+//            //print_r($result->getData());
+//            $defaultRedirect = $controller->config['loginRedirectUrl'] ?? '/';
+//            $target = $controller->Authentication->getLoginRedirect() ?? $defaultRedirect;
+//            $controller->Flash->success(__d('user', 'Login successful'), ['key' => 'auth']);
+//            $controller->redirect($target);
+//        }
+        $controller->Auth->login();
 
         return true;
     }

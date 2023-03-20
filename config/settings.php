@@ -8,12 +8,12 @@ return [
             'groups' => [
                 'User.Auth' => [],
                 'User.Signup' => [],
-                'User.Logging' => [],
-                'User.Mailer' => [],
                 'User.Captcha' => [],
-                'User.Services' => [],
+                'User.Mailer' => [],
                 'User.Password' => [],
                 'User.PasswordRecovery' => [],
+                'User.Debug' => [],
+                //'User.Services' => [],
             ],
             'schema' => [
                 'User.Login.disabled' => [
@@ -21,11 +21,8 @@ return [
                     'type' => 'boolean',
                     'default' => false,
                 ],
-                'User.EventLogger.enabled' => [
-                    'group' => 'User.Auth',
-                    'type' => 'boolean',
-                    'default' => false,
-                ],
+
+                // Signup
                 'User.Signup.disabled' => [
                     'group' => 'User.Signup',
                     'type' => 'boolean',
@@ -41,16 +38,15 @@ return [
                     'type' => 'boolean',
                     'default' => false,
                 ],
+
+                // Captcha
                 'User.Recaptcha.enabled' => [
                     'group' => 'User.Captcha',
                     'type' => 'boolean',
                     'default' => false,
                 ],
-                'User.Logging.enabled' => [
-                    'group' => 'User.Logging',
-                    'type' => 'boolean',
-                    'default' => false,
-                ],
+
+                // Mailer
                 'User.Mailer.enabled' => [
                     'group' => 'User.Mailer',
                     'type' => 'boolean',
@@ -61,6 +57,7 @@ return [
                     'type' => 'string',
                     'default' => null,
                 ],
+
                 // Password
                 'User.Password.minLength' => [
                     'group' => 'User.Password',
@@ -110,6 +107,14 @@ return [
                     'default' => UsersTable::$passwordResetExpiry,
                     'help' => __('Number of seconds after the password reset code becomes invalid')
                 ],
+
+                // Debugging
+                'User.Debug.enabled' => [
+                    'group' => 'User.Debug',
+                    'type' => 'boolean',
+                    'default' => false,
+                ],
+
             ],
         ],
     ],

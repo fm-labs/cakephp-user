@@ -12,15 +12,15 @@ use Cake\Core\Configure;
 use Cake\Core\PluginApplicationInterface;
 use Cake\Event\EventManager;
 use Cake\Http\MiddlewareQueue;
+use Cake\Log\Engine\FileLog;
 use Cake\Log\Log;
 use Cake\Routing\Middleware\RoutingMiddleware;
 use Cake\Routing\RouteBuilder;
 use Psr\Http\Message\ServerRequestInterface;
-use User\Service\UserAuthService;
-use User\Service\UserLoggingService;
-use User\Service\UserMailerService;
-use User\Service\UserPasswordService;
-use User\Service\UserSessionService;
+use User\Listener\AuthenticationListener;
+use User\Listener\GoogleAuthenticatorListener;
+use User\Listener\UserDebugListener;
+use User\Mailer\UserMailer;
 
 /**
  * Class UserPlugin
@@ -50,7 +50,7 @@ class UserPlugin extends BasePlugin implements AuthenticationServiceProviderInte
          */
         if (!Log::getConfig('user')) {
             Log::setConfig('user', [
-                'className' => 'Cake\Log\Engine\FileLog',
+                'className' => FileLog::class,
                 'path' => LOGS,
                 'file' => 'user',
                 //'levels' => ['info'],
@@ -62,9 +62,7 @@ class UserPlugin extends BasePlugin implements AuthenticationServiceProviderInte
          * Authentication
          */
         $app->addPlugin('Authentication');
-        $app->addOptionalPlugin('GoogleRecaptcha');
-        EventManager::instance()->on(new UserAuthService());
-        //EventManager::instance()->on(new UserPasswordService());
+        EventManager::instance()->on(new AuthenticationListener());
         //EventManager::instance()->on(new UserSessionService());
 
 
@@ -75,25 +73,40 @@ class UserPlugin extends BasePlugin implements AuthenticationServiceProviderInte
             if (!Configure::check('User.Email')) {
                 Configure::load('User.emails');
             }
-            EventManager::instance()->on(new UserMailerService(Configure::read('User.Mailer')));
+            //EventManager::instance()->on(new UserMailerService(Configure::read('User.Mailer')));
+            EventManager::instance()->on(new UserMailer());
         }
 
         /**
          * Logging
          */
-        if (Configure::read('User.Logging.enabled')) {
-            EventManager::instance()->on(new UserLoggingService());
+        if (Configure::read('User.Debug.enabled')) {
+            EventManager::instance()->on(new UserDebugListener());
         }
 
-        /*
-        if ($app->getPlugins()->has('Activity')) {
-            EventManager::instance()->on(new UserActivityService());
+//        /**
+//         * Activity integration
+//         */
+//        if (\Cake\Core\Plugin::isLoaded('Activity') && Configure::read('User.Activity.enabled')) {
+//            EventManager::instance()->on(new UserActivityListener());
+//        }
+
+        /**
+         * Google Recaptcha integration
+         */
+        if (Configure::read('User.Captcha.enabled')) {
+            $app->addOptionalPlugin('GoogleRecaptcha');
+            //if (\Cake\Core\Plugin::isLoaded('GoogleRecaptcha')) {
+            //    EventManager::instance()->on(new GoogleRecaptchaListener());
+            //}
         }
 
-        if ($app->getPlugins()->has('GoogleAuthenticator')) {
-            EventManager::instance()->on(new GoogleAuthenticatorService());
+        /**
+         * OTP / Google Authenticator integration
+         */
+        if (Configure::read('User.Otp.enabled')) {
+            EventManager::instance()->on(new GoogleAuthenticatorListener());
         }
-        */
 
         /**
          * Administration
@@ -194,7 +207,7 @@ class UserPlugin extends BasePlugin implements AuthenticationServiceProviderInte
         // Load the authenticators, you want session first
         $service->loadAuthenticator('Authentication.Session');
 
-        if (Configure::read('User.Login.disabled') != true) {
+        if (!Configure::read('User.Login.disabled')) {
             $service->loadAuthenticator('Authentication.Form', [
                 'fields' => $fields,
                 //'loginUrl' => '/user/login',

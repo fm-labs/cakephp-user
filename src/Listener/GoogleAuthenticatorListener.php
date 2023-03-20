@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace User\Service;
+namespace User\Listener;
 
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
@@ -11,7 +11,7 @@ use Cake\Event\EventListenerInterface;
  *
  * @package User\Event
  */
-class GoogleAuthenticatorService implements EventListenerInterface
+class GoogleAuthenticatorListener implements EventListenerInterface
 {
     /**
      * @param \Cake\Event\Event $event The event object

@@ -1,18 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace User\Service;
+namespace User\Listener;
 
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Log\Log;
+use User\Event\AuthEvent;
 
 /**
- * Class UserLoggingService
+ * Class UserDebugListener
  *
  * @package User\Event
  */
-class UserLoggingService implements EventListenerInterface
+class UserDebugListener implements EventListenerInterface
 {
     /**
      * @param \Cake\Event\Event $event The event object
@@ -21,9 +22,17 @@ class UserLoggingService implements EventListenerInterface
     public function logEvent(Event $event)
     {
         $eventName = $event->getName();
-        $user = $event->getData('user');
-        $userName = $user ? $user['username'] : '';
-        Log::info(sprintf('[User:%s] %s', $eventName, $userName), ['user']);
+
+        if ($event instanceof AuthEvent) {
+            $user = $event->getUser();
+        } else {
+            $user = $event->getData('identity');
+        }
+
+        $userId = $user['id'] ?? '';
+        $userName = $user['username'] ?? '';
+        $userEmail = $user['email'] ?? '';
+        Log::debug(sprintf('[event][%s] %s:%s (ID:%s)', $eventName, $userName, $userEmail, $userId), ['user']);
     }
 
     /**
@@ -39,6 +48,7 @@ class UserLoggingService implements EventListenerInterface
             'User.Model.User.register' => 'logEvent',
             'User.Model.User.activate' => 'logEvent',
             'User.Model.User.activationResend' => 'logEvent',
+            'User.Auth.beforeLogin' => 'logEvent',
             'User.Auth.login' => 'logEvent',
             'User.Auth.error' => 'logEvent',
             'User.Auth.logout' => 'logEvent',

@@ -41,18 +41,6 @@ class AuthController extends AppController
         $this->Authentication->allowUnauthenticated(['login']);
     }
 
-//    /**
-//     * @inheritDoc
-//     */
-//    public function beforeFilter(\Cake\Event\EventInterface $event)
-//    {
-//        parent::beforeFilter($event);
-//
-//        //if ($this->components()->has('UserSession')) {
-//        //    $this->UserSession->ignoreActions(['session']);
-//        //}
-//    }
-
     /**
      * Login method.
      *
@@ -61,15 +49,19 @@ class AuthController extends AppController
      */
     public function login(): ?\Cake\Http\Response
     {
-        if ($this->Authentication->getIdentity()) {
-            return $this->redirect($this->Authentication->getLoginRedirect() ?? '/');
-        }
+//        if ($this->Authentication->getIdentity()) {
+//            return $this->redirect($this->Authentication->getLoginRedirect() ?? '/');
+//        }
+//        if ($this->Auth->user()) {
+//            return $this->redirect($this->Auth->redirectUrl() ?? '/');
+//        }
 
         $form = null;
         try {
             $formClass = UserLoginForm::class;
             $form = new $formClass($this);
 
+            // @todo Move to AuthenticationListener::beforeLogin()
             if (Configure::read('User.Login.disabled')) {
                 throw new AuthException(__d('user', 'Sorry, but login is currently disabled.'));
             }
@@ -78,14 +70,26 @@ class AuthController extends AppController
                 $this->viewBuilder()->setLayout(Configure::read('User.Login.layout'));
             }
 
+            // perform login using the UserLoginForm
+            // @todo Refactor that we use the form only for validation
+            //       and invoke the AuthComponent::login() method here
             if ($this->getRequest()->is(['put', 'post'])) {
                 if (!$form->execute($this->request->getData())) {
                     //debug($form->getErrors());
                     throw new AuthException(__d('user', 'Login failed'));
                 }
-                return $form->getResponse();
+                $this->Flash->success(__d('user', 'Login successful'), ['key' => 'auth']);
+                //return $form->getResponse();
             }
 
+            // login redirect
+            // if user is logged in, redirect to configured login redirect url
+            if ($this->Auth->user()) {
+                //print_r($result->getData());
+                $defaultRedirect = $controller->config['loginRedirectUrl'] ?? '/';
+                $target = $this->Auth->redirectUrl() ?? $defaultRedirect;
+                $this->redirect($target);
+            }
 
         } catch (AuthException $ex) {
             $this->Flash->error($ex->getMessage(), ['key' => 'auth']);
@@ -108,7 +112,8 @@ class AuthController extends AppController
      */
     public function logout(): ?\Cake\Http\Response
     {
-        $redirectUrl = $this->Authentication->logout();
+        //$redirectUrl = $this->Authentication->logout();
+        $redirectUrl = $this->Auth->logout();
         if (!$redirectUrl) {
             $redirectUrl = $this->config['logoutRedirectUrl'] ?? ['_name' => 'user:login'];
         }
@@ -122,7 +127,7 @@ class AuthController extends AppController
      *
      * @return void
      */
-    public function session()
+    public function session(): void
     {
         $this->viewBuilder()->setClassName('Json');
         $data = $this->UserSession->extractSessionInfo();

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace User\Service;
+namespace User\Listener;
 
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
@@ -13,8 +13,9 @@ use Cake\ORM\TableRegistry;
  *
  * @package User\Event
  * @property \Activity\Model\Table\ActivitiesTable $Activities
+ * @deprecated Activity Plugin is outdated
  */
-class UserActivityService implements EventListenerInterface
+class UserActivityListener implements EventListenerInterface
 {
     /**
      * Constructor

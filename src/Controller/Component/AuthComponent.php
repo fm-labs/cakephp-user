@@ -3,8 +3,14 @@ declare(strict_types=1);
 
 namespace User\Controller\Component;
 
+use Authentication\Controller\Component\AuthenticationComponent;
 use Cake\Controller\Component;
+use Cake\Controller\Component\FlashComponent;
 use Cake\Controller\ComponentRegistry;
+use Cake\Event\EventManagerInterface;
+use Cake\Log\Log;
+use User\Event\AuthEvent;
+use User\Exception\AuthException;
 
 /**
  * Class AuthComponent
@@ -12,8 +18,9 @@ use Cake\Controller\ComponentRegistry;
  * A shim component for mapping the old CakePHP AuthComponent to the new standalone AuthenticationComponent
  *
  * @package User\Controller\Component
- * @property \Authentication\Controller\Component\AuthenticationComponent $Authentication
- * @property \Cake\Controller\Component\FlashComponent $Flash
+ * @property AuthenticationComponent $Authentication
+ * @property FlashComponent $Flash
+ * @todo Add backward-compatibility to CakePHP's legacy AuthComponent
  */
 class AuthComponent extends Component
 {
@@ -29,14 +36,14 @@ class AuthComponent extends Component
     ];
 
     /**
-     * @var \Cake\Controller\Component\FlashComponent|null
+     * @var FlashComponent|null
      */
-    public ?Component\FlashComponent $Flash;
+    public ?FlashComponent $Flash = null;
 
     /**
-     * @var \Authentication\Controller\Component\AuthenticationComponent|null
+     * @var AuthenticationComponent|null
      */
-    public ?\Authentication\Controller\Component\AuthenticationComponent $Authentication;
+    public ?AuthenticationComponent $Authentication = null;
 
     /**
      * @inheritDoc
@@ -78,12 +85,14 @@ class AuthComponent extends Component
     /**
      * @param string[] $actions List of allowed actions
      * @return void
-     * @deprecated Use Authentication::allowUnauthenticated/addUnauthenticatedActions instead.
      */
-    public function allow(array $actions = []): void
+    public function allow(array $actions = [], $merge = true): void
     {
-        $this->_deprecated(__FUNCTION__);
-        $this->Authentication->addUnauthenticatedActions($actions);
+        if ($merge) {
+            $this->Authentication->addUnauthenticatedActions($actions);
+        } else {
+            $this->Authentication->allowUnauthenticated($actions);
+        }
     }
 
     /**
@@ -100,11 +109,9 @@ class AuthComponent extends Component
     /**
      * @param null|string $key Identity data key
      * @return \Authentication\IdentityInterface|mixed|null
-     * @deprecated Use Authentication::getIdentity()/getIdentityData() instead.
      */
     public function user(?string $key = null)
     {
-        $this->_deprecated(__FUNCTION__);
         $identity = $this->Authentication->getIdentity();
         if (!$identity) {
             return null;
@@ -124,12 +131,10 @@ class AuthComponent extends Component
      */
     public function setUser(?\ArrayAccess $user): void
     {
-        $this->_deprecated(__FUNCTION__);
         $this->Authentication->setIdentity($user);
         /*
         if ($user === null) {
-            $this->Authentication->logout();
-
+            $this->logout();
             return;
         }
         */
@@ -138,31 +143,25 @@ class AuthComponent extends Component
     /**
      * Logout method.
      * Dispatches event 'User.Auth.logout'.
+     * Delegates logout to AuthenticationComponent
      *
      * @return null|string Logout redirect url
-     * @deprecated Use Authentication::logout instead.
      */
     public function logout(): ?string
     {
-        $this->_deprecated(__FUNCTION__);
-        /*
-        $event = new Event('User.Auth.logout', $this, [
+        $event = new AuthEvent('User.Auth.logout', $this, [
             'user' => $this->user(),
-            'request' => $this->getController()->getRequest(), // @deprecated This is redundant, as the request object can be accessed from the event subject
         ]);
-        $this->getEventManager()->dispatch($event);
-        */
+        $this->getController()->getEventManager()->dispatch($event);
 
         return $this->Authentication->logout();
     }
 
     /**
      * @return null|string Login redirect url
-     * @deprecated Use Authentication::getLoginRedirect instead.
      */
     public function redirectUrl(): ?string
     {
-        $this->_deprecated(__FUNCTION__);
         return $this->Authentication->getLoginRedirect();
     }
 
@@ -173,79 +172,97 @@ class AuthComponent extends Component
      * Dispatches event 'User.Auth.error' after the user has been authenticated, but login failed.
      *
      * @throws \Exception
-     * @return array|null User data or NULL if login failed
+     * @return void User data or NULL if login failed
+     */
     public function login()
     {
-        // check if user is already authenticated
-        if ($this->user()) {
-            return $this->user();
-        }
+//        // check if user is already authenticated
+//        if ($this->user()) {
+//            return $this->user();
+//        }
 
+        $controller = $this->getController();
         $request = $this->getController()->getRequest();
         $user = null;
         try {
             $result = $this->Authentication->getResult();
-            if ($this->getController()->getRequest()->is('post') && !$result->isValid()) {
+            if ($controller->getRequest()->is('post') && !$result->isValid()) {
                 throw new AuthException('Invalid username or password');
             }
 
-            $user = $this->Authentication->getIdentity();
-            if ($user) {
-                $event = new Event('User.Auth.beforeLogin', $this, [
-                    'user' => $user,
-                    'request' => $request,
-                ]);
-                $event = $this->getEventManager()->dispatch($event);
+            // authentication successful
+            // dispatch 'User.Auth.beforeLogin' event
+            if ($result->isValid()) {
+
+                //$user = $this->Authentication->getIdentity();
+                $user = $this->user();
+                if ($user) {
+                    $event = new AuthEvent('User.Auth.beforeLogin', $this, [
+                        'user' => $user,
+                    ]);
+                    $event = $this->getEventManager()->dispatch($event);
 //                if ($event->getData('redirect')) {
 //                    $this->storage()->redirectUrl($event->getData('redirect'));
 //                }
-                if ($event->getData('error')) {
-                    throw new AuthException($event->getData('error'), $event->getData('user'));
+
+                    // login fails if beforeLogin event has error data set
+                    if ($event->getData('error')) {
+                        throw new AuthException($event->getData('error'), $event->getData('user'));
+                    }
+
+                    // login fails if beforeLogin event is stopped or result is FALSE
+                    if ($event->getResult() === false || $event->isStopped()) {
+                        throw new AuthException(__d('user', 'Login aborted'), $event->getData('user'));
+                    }
+
+                    // login successful
+                    // dispatch 'User.Auth.login' event
+                    $user = $event->getData('user');
+                    $this->setUser($user);
+
+                    $event = new AuthEvent('User.Auth.login', $this, [
+                        'user' => $user,
+                    ]);
+                    $this->getEventManager()->dispatch($event);
+
+
+//                    // login redirect
+//                    //print_r($result->getData());
+//                    $defaultRedirect = $controller->config['loginRedirectUrl'] ?? '/';
+//                    $target = $this->redirectUrl() ?? $defaultRedirect;
+//                    $controller->Flash->success(__d('user', 'Login successful'), ['key' => 'auth']);
+//                    $controller->redirect($target);
+
+                } elseif ($request->is('post')) {
+                    throw new AuthException(__d('user', 'Login failed'), $user);
                 }
-
-                if ($event->getResult() === false || $event->isStopped()) {
-                    throw new AuthException(__d('user', 'Login failed'), $event->getData('user'));
-                }
-
-                // set user in session
-                $user = $event->getData('user');
-                $this->setUser($user);
-
-                $event = new Event('User.Auth.login', $this, [
-                    'user' => $user,
-                    'request' => $request,
-                ]);
-                $this->getEventManager()->dispatch($event);
-
-                return $user;
-            } elseif ($request->is('post')) {
-                throw new AuthException(__d('user', 'Login failed'), $request->getData());
             }
-        } catch (AuthException $ex) {
-            $this->setUser(null);
-            $this->flash($ex->getMessage());
 
-            $event = new Event('User.Auth.error', $this, [
-                'request' => $request,
+        } catch (AuthException $ex) {
+            //$this->setUser(null);
+            //$this->flash($ex->getMessage());
+            Log::error('AuthComponent: ' . $ex->getMessage(), ['user']);
+
+            $event = new AuthEvent('User.Auth.error', $this, [
+                'user' => $ex->getUser(),
                 'error' => $ex,
             ]);
             $this->getEventManager()->dispatch($event);
+            throw $ex;
         } catch (\Exception $ex) {
             debug($ex->getMessage());
-            $this->setUser(null);
+            //$this->setUser(null);
+            //$this->flash($ex->getMessage());
             Log::error('AuthComponent: ' . $ex->getMessage(), ['user']);
             throw $ex;
         }
-
-        return $user;
     }
-     */
 
     /**
      * @return \Cake\Event\EventManagerInterface
      */
-//    public function getEventManager(): EventManagerInterface
-//    {
-//        return $this->getController()->getEventManager();
-//    }
+    public function getEventManager(): EventManagerInterface
+    {
+        return $this->getController()->getEventManager();
+    }
 }
