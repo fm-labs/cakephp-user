@@ -73,12 +73,17 @@ class AuthComponent extends Component
         ]);
 
         // auto-configure Authentication component
-        if (
-            isset($this->getController()->allowUnauthenticated)
-            && is_array($this->getController()->allowUnauthenticated)
-        ) {
+        if (isset($this->getController()->allowUnauthenticated)) {
             $this->Authentication->allowUnauthenticated((array)$this->getController()->allowUnauthenticated);
         }
+        // @deprecated
+        if (isset($this->getController()->allowedActions)) {
+            $this->Authentication->allowUnauthenticated((array)$this->getController()->allowedActions);
+        }
+    }
+
+    public function beforeFilter()
+    {
 
     }
 
