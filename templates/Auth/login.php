@@ -4,7 +4,7 @@ use Cake\Core\Configure;
 
 $this->extend('User./base');
 
-$this->assign('title', __('Login'));
+$this->assign('title', __d('user', 'Login'));
 $this->assign('heading', __d('user', 'Please sign in'));
 ?>
 <div class="form-signin ms-auto me-auto">

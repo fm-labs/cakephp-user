@@ -71,12 +71,12 @@ class UserLoginForm extends Form
             'rule' => function ($value, array $context) {
                 $googleRecaptchaResponse = $context['data']['g-recaptcha-response'] ?? null;
                 if (!$googleRecaptchaResponse) {
-                    return __('Captcha validation failed');
+                    return __d('user', 'Captcha validation failed');
                 }
 
                 $secretKey = Configure::read('GoogleRecaptcha.secretKey', '');
                 if (!Recaptcha2::verify($secretKey, $googleRecaptchaResponse)) {
-                    return __('Google Recaptcha validation failed');
+                    return __d('user', 'Google Recaptcha validation failed');
                 }
 
                 return true;

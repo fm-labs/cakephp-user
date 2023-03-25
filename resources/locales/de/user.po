@@ -3,9 +3,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: cakephp3-user\n"
-"POT-Creation-Date: 2023-03-13 00:12+0000\n"
-"PO-Revision-Date: 2023-03-13 02:14+0100\n"
+"Project-Id-Version: cakephp-user\n"
+"POT-Creation-Date: 2023-03-25 15:25+0000\n"
+"PO-Revision-Date: 2023-03-25 16:29+0100\n"
 "Last-Translator: fm-labs <flowmotionlabs@gmail.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -14,13 +14,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Poedit 3.2.2\n"
-
-#: mnt/DATA/workspaces/php/cakephp-user/src/Admin.php:45
-#: mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/_edit.php:1
-#: mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/password_change.php:1
-#: mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/password_reset.php:1
-msgid "Users"
-msgstr "Benutzer"
 
 #: mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:62
 #: mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:88
@@ -95,31 +88,32 @@ msgstr "Etwas ist schief gegangen"
 msgid "Only root can do this"
 msgstr "Nur der ROOT Benutzer kann das machen"
 
-#: mnt/DATA/workspaces/php/cakephp-user/src/Controller/AuthController.php:62
+#: mnt/DATA/workspaces/php/cakephp-user/src/Controller/AuthController.php:66
 msgid "Sorry, but login is currently disabled."
 msgstr ""
 "Die Anmeldung ist zur Zeit nicht möglich. Bitte versuchen Sie es später "
 "nocheinmal."
 
-#: mnt/DATA/workspaces/php/cakephp-user/src/Controller/AuthController.php:71
-msgid "Invalid credentials"
-msgstr "Ungültige Zugangsdaten"
+#: mnt/DATA/workspaces/php/cakephp-user/src/Controller/AuthController.php:79
+#: mnt/DATA/workspaces/php/cakephp-user/src/Controller/Component/AuthComponent.php:242
+msgid "Login failed"
+msgstr "Anmeldung fehlgeschlagen"
 
-#: mnt/DATA/workspaces/php/cakephp-user/src/Controller/AuthController.php:78
+#: mnt/DATA/workspaces/php/cakephp-user/src/Controller/AuthController.php:81
 msgid "Login successful"
 msgstr "Die Anmeldung war erfolgreich"
 
-#: mnt/DATA/workspaces/php/cakephp-user/src/Controller/AuthController.php:85
+#: mnt/DATA/workspaces/php/cakephp-user/src/Controller/AuthController.php:97
 msgid "Login unavailable"
 msgstr "Anmeldung nicht verfügbar"
 
-#: mnt/DATA/workspaces/php/cakephp-user/src/Controller/AuthController.php:105
+#: mnt/DATA/workspaces/php/cakephp-user/src/Controller/AuthController.php:120
 msgid "You are logged out now!"
 msgstr "Sie sind nun abgemeldet!"
 
-#: mnt/DATA/workspaces/php/cakephp-user/src/Controller/Component/UserSessionComponent.php:348
-msgid "Session timed out"
-msgstr "Sitzung abgelaufen"
+#: mnt/DATA/workspaces/php/cakephp-user/src/Controller/Component/AuthComponent.php:220
+msgid "Login aborted"
+msgstr "Anmeldung abgebrochen"
 
 #: mnt/DATA/workspaces/php/cakephp-user/src/Controller/PasswordController.php:58
 msgid ""
@@ -203,6 +197,14 @@ msgstr "Benutzer nicht gefunden"
 msgid "Deleted user"
 msgstr "Benutzer gelöscht"
 
+#: mnt/DATA/workspaces/php/cakephp-user/src/Form/UserLoginForm.php:74
+msgid "Captcha validation failed"
+msgstr "Captcha Validierung fehlgeschlagen"
+
+#: mnt/DATA/workspaces/php/cakephp-user/src/Form/UserLoginForm.php:79
+msgid "Google Recaptcha validation failed"
+msgstr "Google Recaptcha Validierung fehlgeschlagen"
+
 #: mnt/DATA/workspaces/php/cakephp-user/src/Form/UserRegisterForm.php:53
 msgid "Are you human?"
 msgstr "Sind Sie ein Mensch?"
@@ -220,6 +222,22 @@ msgid "Unable to verify reCAPTCHA. Please try again later"
 msgstr ""
 "Captcha konnte nicht überprüft werden. Bitte versuchen Sie es später "
 "nocheinmal"
+
+#: mnt/DATA/workspaces/php/cakephp-user/src/Listener/AuthenticationListener.php:231
+msgid "This account has been deleted"
+msgstr "Dieses Konto wurde gelöscht"
+
+#: mnt/DATA/workspaces/php/cakephp-user/src/Listener/AuthenticationListener.php:234
+msgid "This account has been blocked"
+msgstr "Dieses Konto ist gesperrt"
+
+#: mnt/DATA/workspaces/php/cakephp-user/src/Listener/AuthenticationListener.php:237
+msgid "Login to this account is not enabled"
+msgstr "Anmeldung nicht möglich"
+
+#: mnt/DATA/workspaces/php/cakephp-user/src/Listener/AuthenticationListener.php:241
+msgid "Your account has not been verified yet"
+msgstr "Ihr Konto wurde noch nicht verifiziert"
 
 #: mnt/DATA/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:148
 msgid "This username is already in use"
@@ -303,25 +321,25 @@ msgstr[0] ""
 msgstr[1] ""
 "Passwort muss mindestens {0} Sonderzeichen enthalten! Erlaubte Zeichen: {1}"
 
-#: mnt/DATA/workspaces/php/cakephp-user/src/Service/UserAuthService.php:128
-msgid "This account has been deleted"
-msgstr "Dieses Konto wurde gelöscht"
-
-#: mnt/DATA/workspaces/php/cakephp-user/src/Service/UserAuthService.php:131
-msgid "This account has been blocked"
-msgstr "Dieses Konto ist gesperrt"
-
-#: mnt/DATA/workspaces/php/cakephp-user/src/Service/UserAuthService.php:134
-msgid "Login to this account is not enabled"
-msgstr "Anmeldung nicht möglich"
-
-#: mnt/DATA/workspaces/php/cakephp-user/src/Service/UserAuthService.php:138
-msgid "Your account has not been verified yet"
-msgstr "Ihr Konto wurde noch nicht verifiziert"
-
-#: mnt/DATA/workspaces/php/cakephp-user/src/Shell/UserShell.php:21
+#: mnt/DATA/workspaces/php/cakephp-user/src/Shell/UserShell.php:23
 msgid "Manage user"
 msgstr "Benutzer verwalten"
+
+#: mnt/DATA/workspaces/php/cakephp-user/src/UserAdmin.php:59
+#: mnt/DATA/workspaces/php/cakephp-user/src/UserAdmin.php:64
+#: mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/_edit.php:1
+#: mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/password_change.php:1
+#: mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/password_reset.php:1
+msgid "Users"
+msgstr "Benutzer"
+
+#: mnt/DATA/workspaces/php/cakephp-user/src/UserAdmin.php:69
+msgid "User Groups"
+msgstr "Benutzergruppen"
+
+#: mnt/DATA/workspaces/php/cakephp-user/src/UserAdmin.php:74
+msgid "User Sessions"
+msgstr "Benutzersitzungen"
 
 #: mnt/DATA/workspaces/php/cakephp-user/src/View/Helper/UserAgentHelper.php:113
 msgid "OS"
@@ -423,27 +441,6 @@ msgid "Update password now"
 msgstr "Passwort jetzt ändern"
 
 #: mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:7
-msgid "Type your email here"
-msgstr "Email"
-
-#: mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:8
-#: mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_forgotten.php:22
-#: mnt/DATA/workspaces/php/cakephp-user/templates/Signup/activate.php:33
-#: mnt/DATA/workspaces/php/cakephp-user/templates/Signup/activate_resend.php:22
-#: mnt/DATA/workspaces/php/cakephp-user/templates/Signup/register.php:26
-msgid "Email"
-msgstr "Email"
-
-#: mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:11
-msgid "Type your password here"
-msgstr "Passwort"
-
-#: mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:12
-#: mnt/DATA/workspaces/php/cakephp-user/templates/Signup/register.php:30
-msgid "Password"
-msgstr "Passwort"
-
-#: mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:13
 #: mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_forgotten.php:5
 #: mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_reset.php:5
 #: mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_sent.php:5
@@ -453,20 +450,53 @@ msgstr "Passwort"
 msgid "Login"
 msgstr "Anmelden"
 
-#: mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:17
-#: mnt/DATA/workspaces/php/cakephp-user/templates/Signup/register.php:36
-msgid "Signup"
-msgstr "Registrieren"
+#: mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:8
+msgid "Please sign in"
+msgstr "Bitte melden Sie sich an"
 
-#: mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:23
+#: mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:22
+#: mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_forgotten.php:20
+msgid "yourname@example.org"
+msgstr "ihrname@example.org"
+
+#: mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:24
+#: mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_forgotten.php:22
+#: mnt/DATA/workspaces/php/cakephp-user/templates/Signup/activate.php:33
+#: mnt/DATA/workspaces/php/cakephp-user/templates/Signup/activate_resend.php:22
+#: mnt/DATA/workspaces/php/cakephp-user/templates/Signup/register.php:26
+msgid "Email"
+msgstr "Email"
+
+#: mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:32
+msgid "Type your password here"
+msgstr "Passwort"
+
+#: mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:33
+#: mnt/DATA/workspaces/php/cakephp-user/templates/Signup/register.php:30
+msgid "Password"
+msgstr "Passwort"
+
+#: mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:42
+msgid "Remember me"
+msgstr "An mich erinnern"
+
+#: mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:59
+msgid "Sign in"
+msgstr "Anmelden"
+
+#: mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:67
+msgid "Create account"
+msgstr "Konto erstellen"
+
+#: mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:76
 msgid "Activate account"
 msgstr "Konto aktivieren"
 
-#: mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:26
+#: mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:79
 msgid "Forgot password?"
 msgstr "Passwort vergessen?"
 
-#: mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:29
+#: mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:82
 msgid "Back to website"
 msgstr "Zurück zur Webseite"
 
@@ -593,10 +623,6 @@ msgstr "Passwort wiederherstellen"
 msgid "Password forgotten?"
 msgstr "Passwort vergessen?"
 
-#: mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_forgotten.php:20
-msgid "yourname@example.org"
-msgstr "ihrname@example.org"
-
 #: mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_reset.php:6
 msgid "Reset account password"
 msgstr "Passwort zurücksetzten"
@@ -686,6 +712,10 @@ msgstr "Nachname"
 msgid "Lastname"
 msgstr "Nachname"
 
+#: mnt/DATA/workspaces/php/cakephp-user/templates/Signup/register.php:36
+msgid "Signup"
+msgstr "Registrieren"
+
 #: mnt/DATA/workspaces/php/cakephp-user/templates/Signup/register.php:37
 msgid "I'm already registered"
 msgstr "Ich bin bereits registriert"
@@ -698,6 +728,15 @@ msgstr "Mein Konto"
 #: mnt/DATA/workspaces/php/cakephp-user/templates/User/index.php:21
 msgid "Logout"
 msgstr "Abmelden"
+
+#~ msgid "Invalid credentials"
+#~ msgstr "Ungültige Zugangsdaten"
+
+#~ msgid "Session timed out"
+#~ msgstr "Sitzung abgelaufen"
+
+#~ msgid "Type your email here"
+#~ msgstr "Email"
 
 #~ msgid "Password contains illegal characters"
 #~ msgstr "Das Passwort enthält ungültige Zeichen"
