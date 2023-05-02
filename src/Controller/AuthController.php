@@ -58,8 +58,10 @@ class AuthController extends AppController
 
         $form = null;
         try {
-            $formClass = UserLoginForm::class;
-            $form = new $formClass($this);
+            //$formClass = UserLoginForm::class;
+            //$form = new $formClass($this);
+            $form = new UserLoginForm();
+            $form->setController($this);
 
             // @todo Move to AuthenticationListener::beforeLogin()
             if (Configure::read('User.Login.disabled')) {

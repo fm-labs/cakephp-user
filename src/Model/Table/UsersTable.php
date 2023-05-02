@@ -741,9 +741,6 @@ class UsersTable extends UserBaseTable
         unset($user->password2);
         unset($user->password); // hide password
 
-        // dispatch event
-        $event = $this->getEventManager()->dispatch(new Event('User.Model.User.passwordReset', $this, compact('user')));
-
         return $user;
     }
 
@@ -1006,11 +1003,10 @@ class UsersTable extends UserBaseTable
      * Activate user
      *
      * @param array $data User data
-     * @param bool $dispatchEvent If True, trigger custom events (Default: True)
      * @return \User\Model\Entity\User|\Cake\Datasource\EntityInterface|bool
      * @todo Refactor with Form
      */
-    public function activate(array $data = [], $dispatchEvent = true)
+    public function activate(array $data = [])
     {
         $email = isset($data['email']) ? strtolower(trim($data['email'])) : null;
         $code = isset($data['email_verification_code']) ? trim($data['email_verification_code']) : null;
@@ -1022,10 +1018,6 @@ class UsersTable extends UserBaseTable
 
         $user->email_verified = true;
         if ($this->save($user)) {
-            if ($dispatchEvent === true) {
-                $this->getEventManager()->dispatch(new Event('User.Model.User.activate', $this, compact('user')));
-            }
-
             return $user;
         }
 
@@ -1110,16 +1102,9 @@ class UsersTable extends UserBaseTable
      * @param \User\Model\Entity\User $user The user entity
      * @return bool|mixed|\User\Model\Entity\User
      */
-    public function resendVerificationCode(User $user)
+    public function updateEmailVerificationCode(User $user)
     {
         //@TODO Check if the verification code has expired. If so, create new verification code.
-        $event = $this->getEventManager()
-            ->dispatch(new Event('User.Model.User.activationResend', $this, compact('user')));
-
-        if ($event->getResult() === false) {
-            return false;
-        }
-
         return $user;
     }
 

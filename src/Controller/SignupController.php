@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace User\Controller;
 
 use Cake\Core\Configure;
+use Cake\Event\Event;
 use Cake\Form\Form;
 use Cake\Http\Exception\InternalErrorException;
+use User\Form\UserRegisterForm;
 
 class SignupController extends AppController
 {
@@ -31,7 +33,7 @@ class SignupController extends AppController
      */
     protected function _buildSignupForm(): Form
     {
-        $formClass = Configure::read('User.Signup.formClass', '\\User\\Form\\UserRegisterForm');
+        $formClass = Configure::read('User.Signup.formClass', UserRegisterForm::class);
         if (!class_exists($formClass)) {
             throw new InternalErrorException("Class not found: $formClass");
         }
@@ -51,14 +53,14 @@ class SignupController extends AppController
      */
     public function register()
     {
-        # send logged in users away
+        # send logged-in users away
         if ($this->_getUser('id')) {
             return $this->redirect('/');
         }
 
         # force group auth
         if (
-            Configure::read('User.Signup.groupAuth') == true
+            Configure::read('User.Signup.groupAuth')
             && !$this->request->getSession()->read('User.Signup.group_id')
         ) {
             return $this->redirect(['action' => 'registerGroup']);
@@ -69,7 +71,7 @@ class SignupController extends AppController
         $this->set('form', $form);
 
         # check if signup is disabled
-        if (Configure::read('User.Signup.disabled') == true) {
+        if (Configure::read('User.Signup.disabled')) {
             $this->Flash->error(__d('user', 'Sorry, but user registration is currently disabled.'), ['key' => 'auth']);
 
             return;
@@ -78,7 +80,7 @@ class SignupController extends AppController
         # process signup form
         if ($this->request->is('post')) {
             $data = $this->request->getData();
-            if (Configure::read('User.Signup.groupAuth') == true) {
+            if (Configure::read('User.Signup.groupAuth')) {
                 $data['group_id'] = $this->request->getSession()->read('User.Signup.group_id');
             }
 
@@ -158,31 +160,35 @@ class SignupController extends AppController
 
         // auto-activation
         if ($user->email && $user->email_verification_code) {
-            if (
-                $this->Users->activate([
-                    'email' => $user->email,
-                    'email_verification_code' => $user->email_verification_code,
-                    ])
-            ) {
+            $_user = $this->Users->activate([
+                'email' => $user->email,
+                'email_verification_code' => $user->email_verification_code,
+            ]);
+            if ($_user) {
+                $this->getEventManager()->dispatch(new Event('User.Signup.afterActivate', $this, ['user' =>  $_user]));
+
                 $this->Flash->success(
                     __d('user', 'Your account has been activated. You can login now.'),
                     ['key' => 'auth']
                 );
 
-                return $this->redirect(['_name' => 'user:login', 'm' => base64_encode($user->email) ]);
+                return $this->redirect(['_name' => 'user:login', '?' =>  ['m' => base64_encode($_user->email), 'ref' => 'activate'] ]);
             }
 
             $this->Flash->error(__d('user', 'Account activation failed'), ['key' => 'auth']);
         }
 
         if ($this->request->is('post') || $this->request->is('put')) {
-            if ($this->Users->activate($this->request->getData())) {
+            $_user = $this->Users->activate($this->request->getData());
+            if ($_user) {
+                $this->getEventManager()->dispatch(new Event('User.Signup.afterActivate', $this, ['user' =>  $_user]));
+
                 $this->Flash->success(
                     __d('user', 'Your account has been activated. You can login now.'),
                     ['key' => 'auth']
                 );
 
-                return $this->redirect(['_name' => 'user:login', 'm' => base64_encode($user->email) ]);
+                return $this->redirect(['_name' => 'user:login', '?' =>  ['m' => base64_encode($_user->email), 'ref' => 'activate'] ]);
             }
 
             $this->Flash->error(__d('user', 'Account activation failed'), ['key' => 'auth']);
@@ -224,14 +230,18 @@ class SignupController extends AppController
                 return null;
             }
 
-            $user = $this->Users->resendVerificationCode($user);
+            $user = $this->Users->updateEmailVerificationCode($user);
             if ($user && !$user->getErrors()) {
+                $this->getEventManager()
+                    ->dispatch(new Event('User.Signup.registrationResend', $this, compact('user')));
+
                 $this->Flash->success(
                     __d('user', 'An activation email has been sent to {0}', $user->email),
                     ['key' => 'auth']
                 );
 
-                return $this->redirect(['action' => 'activate', 'm' => base64_encode($user->email)]);
+                return $this->redirect(['_name' => 'user:login', '?' =>  ['m' => base64_encode($user->email), 'ref' => 'activateResend'] ]);
+                //return $this->redirect(['action' => 'activate', 'm' => base64_encode($user->email)]);
             }
 
             $this->Flash->error(__d('user', 'Please fill all required fields'), ['key' => 'auth']);

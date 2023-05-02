@@ -72,10 +72,10 @@ class UserActivityListener implements EventListenerInterface
     {
         return [
             'User.Password.forgotten' => 'userActivity',
-            'User.Model.User.passwordReset' => 'userActivity',
+            'User.Password.reset' => 'userActivity',
             'User.Model.User.register' => 'userActivity',
-            'User.Model.User.activate' => 'userActivity',
-            'User.Model.User.activationResend' => 'userActivity',
+            'User.Signup.afterActivate' => 'userActivity',
+            'User.Signup.registrationResend' => 'userActivity',
             'User.Auth.login' => 'authActivity',
             'User.Auth.logout' => 'authActivity',
         ];

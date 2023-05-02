@@ -15,17 +15,13 @@ use User\Exception\AuthException;
 /**
  * UserLogin Form.
  */
-class UserLoginForm extends Form
+class UserLoginForm extends UserForm
 {
-    /**
-     * @var Controller
-     */
-    protected Controller $controller;
+    use GoogleRecaptchaFormTrait;
 
-    public function __construct(Controller $controller, ?EventManager $eventManager = null)
+    public function __construct(?EventManager $eventManager = null)
     {
-        parent::__construct($eventManager);
-        $this->controller = $controller;
+        parent::__construct(null, $eventManager);
     }
 
     /**
@@ -43,13 +39,7 @@ class UserLoginForm extends Form
         $schema->addField('password', [
             'required' => true
         ]);
-
-        $schema->addField('captcha', [
-            'required' => false
-        ]);
-        $schema->addField('g-recaptcha-response', [
-            'required' => false
-        ]);
+        $schema = $this->_buildRecaptchaSchema($schema);
         return $schema;
     }
 
@@ -67,22 +57,7 @@ class UserLoginForm extends Form
         $validator
             ->notEmptyString('password');
 
-        $validator->add('captcha', 'valid_recaptcha2', [
-            'rule' => function ($value, array $context) {
-                $googleRecaptchaResponse = $context['data']['g-recaptcha-response'] ?? null;
-                if (!$googleRecaptchaResponse) {
-                    return __d('user', 'Captcha validation failed');
-                }
-
-                $secretKey = Configure::read('GoogleRecaptcha.secretKey', '');
-                if (!Recaptcha2::verify($secretKey, $googleRecaptchaResponse)) {
-                    return __d('user', 'Google Recaptcha validation failed');
-                }
-
-                return true;
-            }
-        ]);
-
+        $validator = $this->validationRecaptcha($validator);
         return $validator;
     }
 
@@ -112,10 +87,5 @@ class UserLoginForm extends Form
         $controller->Auth->login();
 
         return true;
-    }
-
-    public function getResponse(): \Cake\Http\Response|null
-    {
-        return null;
     }
 }

@@ -4,15 +4,13 @@ No worries, just click the link below (or copy and paste the url into the addres
 
 ---
 
+
 <?= $resetUrl; ?>
 
-
----
 
 This link is valid for 24 hours.
 
 
-YOUR PASSWORD-RESET-CODE:
+---
 
-<?= $user->password_reset_code; ?>
 

@@ -8,6 +8,7 @@ use Cake\Event\Event;
 use Cake\I18n\I18n;
 use Cake\Log\Log;
 use Cake\Mailer\Mailer;
+use Cake\Routing\Router;
 use User\Model\Entity\User;
 use User\Model\Table\UsersTable;
 
@@ -150,11 +151,12 @@ class UserMailer extends Mailer
         if (!$verificationUrl) {
             throw new \InvalidArgumentException('UserMailer::userRegistration: Verification url missing');
         }
+        $loginUrl = Router::url(['_name' => 'user:login'], true);
 
         $this
             ->setUser($user)
             ->setLocalizedProfile(__FUNCTION__)
-            ->setViewVars(compact('verificationUrl'))
+            ->setViewVars(compact('verificationUrl', 'loginUrl'))
             ;
         return $this;
     }
@@ -277,10 +279,10 @@ class UserMailer extends Mailer
     {
         return [
             'User.Model.User.register' => 'onRegister',
-            'User.Model.User.activationResend' => 'onRegister',
-            'User.Model.User.activate' => 'onActivate',
+            'User.Signup.registrationResend' => 'onRegister',
+            'User.Signup.afterActivate' => 'onActivate',
             'User.Password.forgotten' => 'onPasswordForgotten',
-            'User.Model.User.passwordReset' => 'onPasswordReset',
+            'User.Password.reset' => 'onPasswordReset',
             'User.Model.User.newLogin' => 'onLogin',
         ];
     }

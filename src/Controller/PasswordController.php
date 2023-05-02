@@ -115,6 +115,8 @@ class PasswordController extends AppController
             if ($this->request->is(['post', 'put'])) {
                 $user = $this->Users->resetPassword($user, $this->request->getData());
                 if ($user && !$user->getErrors()) {
+                    $event = $this->getEventManager()->dispatch(new Event('User.Password.reset', $this, compact('user')));
+
                     $this->Flash->success(__d('user', 'You can now login with your new password'), ['key' => 'auth']);
 
                     return $this->redirect(['_name' => 'user:login', 'u' => base64_encode($user->username)]);

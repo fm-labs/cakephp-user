@@ -11,6 +11,8 @@ use User\Model\Table\UsersTable;
 
 class UserRegisterForm extends UserForm
 {
+    use GoogleRecaptchaFormTrait;
+
     /**
      * @inheritDoc
      */
@@ -19,10 +21,7 @@ class UserRegisterForm extends UserForm
         $schema->addField('email', $this->Users->getSchema()->getColumn('email'));
         $schema->addField('password1', [] /*$this->Users->getSchema()->getColumn('password1')*/);
         $schema->addField('password2', [] /*$this->Users->getSchema()->getColumn('password2')*/);
-
-        if (Configure::read('User.Recaptcha.enabled')) {
-            $schema->addField('g-recaptcha-response', []);
-        }
+        $schema = $this->_buildRecaptchaSchema($schema);
 
         return $schema;
     }
@@ -34,50 +33,9 @@ class UserRegisterForm extends UserForm
     {
         $validator = $this->Users->getValidator('register');
         $validator->setProvider('form', $this);
-
-        if (Configure::read('User.Recaptcha.enabled')) {
-            $validator = $this->validationRecaptcha($validator);
-        }
+        $validator = $this->validationRecaptcha($validator);
 
         return $validator;
-    }
-
-    /**
-     * @param \Cake\Validation\Validator $validator The validator instance
-     * @return \Cake\Validation\Validator
-     */
-    protected function validationRecaptcha(Validator $validator)
-    {
-        $validator
-            ->requirePresence('g-recaptcha-response')
-            ->notEmptyString('g-recaptcha-response', __d('user', 'Are you human?'))
-            ->add('g-recaptcha-response', 'recaptcha', [
-                'rule' => 'checkRecaptcha',
-                'provider' => 'form',
-                'message' => __d('user', 'Invalid captcha'),
-            ]);
-
-        return $validator;
-    }
-
-    /**
-     * Google Recaptcha Validation Rule
-     *
-     * @param mixed $value Check value
-     * @param mixed $context Check context
-     * @return bool|string
-     */
-    public function checkRecaptcha($value, $context)
-    {
-        try {
-            if (!Recaptcha2::verify(Configure::read('GoogleRecaptcha.secretKey'), $value)) {
-                return __d('user', 'Captcha verification failed');
-            }
-        } catch (\Exception $ex) {
-            return __d('user', 'Unable to verify reCAPTCHA. Please try again later');
-        }
-
-        return true;
     }
 
     /**

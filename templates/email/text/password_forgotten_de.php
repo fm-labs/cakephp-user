@@ -16,7 +16,3 @@ Der Link ist 24h gültig.
 
 ---
 
-
-IHR PASSWORT-WIEDERHERSTELLUNGS-CODE:
-
-<?= $user->password_reset_code; ?>
