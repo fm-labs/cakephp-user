@@ -11,6 +11,16 @@ $this->Html->meta('robots', 'noindex,nofollow', ['block' => true]);
 $this->assign('title', __d('user','Reset your password'));
 ?>
 <div id="user-password-reset-form" class="user-form">
+
+    <div class="alert alert-info">
+        <?= __d('user', 'A password reset code has been sent to your email. Please check your inbox.'); ?>
+        <br />
+        <small>
+            <?= $this->Html->link(__d('user', 'Request new password reset code'), ['action' => 'passwordForgotten']); ?>
+        </small>
+    </div>
+
+
     <?= $this->Form->create($user); ?>
     <?= $this->Form->control('username', [
         'label' => __d('user','Username'),
@@ -18,7 +28,7 @@ $this->assign('title', __d('user','Reset your password'));
         'required' => true
     ]); ?>
     <?= $this->Form->control('password_reset_code', [
-        'label' => __d('user','Password reset code received via email'),
+        'label' => __d('user','Password reset code'),
         'placeholder' => '',
         'required' => true,
         'autocomplete' => 'off'

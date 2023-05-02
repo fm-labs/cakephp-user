@@ -1,6 +1,6 @@
 You forgot your password?
 
-No worries, just click the link below (or copy and paste the url into your browser) and choose a new password.
+No worries, just click the link below (or copy and paste the url into the addressbar of your browser) to reset your password.
 
 ---
 
@@ -10,3 +10,9 @@ No worries, just click the link below (or copy and paste the url into your brows
 ---
 
 This link is valid for 24 hours.
+
+
+YOUR PASSWORD-RESET-CODE:
+
+<?= $user->password_reset_code; ?>
+

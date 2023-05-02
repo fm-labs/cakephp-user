@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace User\Controller;
 
 use Cake\Core\Configure;
+use Cake\Event\Event;
 use Cake\Log\Log;
 use User\Exception\PasswordResetException;
 use User\Form\PasswordForgottenForm;
@@ -59,8 +60,11 @@ class PasswordController extends AppController
                     ['key' => 'auth']
                 );
 
+                $user = $form->getUser();
+                $this->getEventManager()
+                    ->dispatch(new Event('User.Password.forgotten', $this, compact('user')));
+
                 if (Configure::read('debug')) {
-                    $user = $form->getUser();
                     $this->Flash->set(UsersTable::buildPasswordResetUrl($user), ['key' => 'auth']);
                 }
 
@@ -129,6 +133,7 @@ class PasswordController extends AppController
         }
 
         $this->set('user', $user);
+        return null;
     }
 
 

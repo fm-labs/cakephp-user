@@ -3,6 +3,8 @@
 namespace User\Event;
 
 /**
+ * An event emitted by the AuthComponent (= subject)
+ *
  * @method getSubject(): \User\Controller\Component\AuthComponent
  */
 class AuthEvent extends \Cake\Event\Event

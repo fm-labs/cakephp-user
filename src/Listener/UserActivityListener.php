@@ -71,7 +71,7 @@ class UserActivityListener implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            'User.Model.User.passwordForgotten' => 'userActivity',
+            'User.Password.forgotten' => 'userActivity',
             'User.Model.User.passwordReset' => 'userActivity',
             'User.Model.User.register' => 'userActivity',
             'User.Model.User.activate' => 'userActivity',

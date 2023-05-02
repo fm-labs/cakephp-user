@@ -7,6 +7,7 @@ use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Log\Log;
 use User\Event\AuthEvent;
+use User\Form\UserForm;
 
 /**
  * Class UserDebugListener
@@ -15,6 +16,10 @@ use User\Event\AuthEvent;
  */
 class UserDebugListener implements EventListenerInterface
 {
+    public function __construct()
+    {
+    }
+
     /**
      * @param \Cake\Event\Event $event The event object
      * @return void
@@ -25,6 +30,8 @@ class UserDebugListener implements EventListenerInterface
 
         if ($event instanceof AuthEvent) {
             $user = $event->getUser();
+        } elseif ($event->getSubject() instanceof UserForm) {
+            $user = $event->getSubject()->getUser();
         } else {
             $user = $event->getData('identity');
         }
@@ -43,7 +50,7 @@ class UserDebugListener implements EventListenerInterface
         return [
             'Authentication.afterIdentify' => 'logEvent',
             'Authentication.logout' => 'logEvent',
-            'User.Model.User.passwordForgotten' => 'logEvent',
+            'User.Password.forgotten' => 'logEvent',
             'User.Model.User.passwordReset' => 'logEvent',
             'User.Model.User.register' => 'logEvent',
             'User.Model.User.activate' => 'logEvent',

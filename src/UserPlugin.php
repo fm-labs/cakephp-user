@@ -73,6 +73,8 @@ class UserPlugin extends BasePlugin implements AuthenticationServiceProviderInte
             if (!Configure::check('User.Email')) {
                 Configure::load('User.emails');
             }
+            // Make sure Mailman plugin is loaded before UserMailer is instantiated
+            $app->addOptionalPlugin("Mailman");
             //EventManager::instance()->on(new UserMailerService(Configure::read('User.Mailer')));
             EventManager::instance()->on(new UserMailer());
         }

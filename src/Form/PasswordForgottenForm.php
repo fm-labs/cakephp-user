@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace User\Form;
 
+use Cake\Event\Event;
 use Cake\Form\Schema;
 use Cake\Validation\Validator;
 use User\Model\Table\UsersTable;
@@ -69,7 +70,7 @@ class PasswordForgottenForm extends UserForm
             return false;
         }
 
-        $user = $this->Users->forgotPassword($user);
+        $user = $this->Users->updatePasswordResetCode($user);
         if (!$user) {
             return false;
         }
@@ -80,6 +81,7 @@ class PasswordForgottenForm extends UserForm
             return false;
         }
 
+        $this->user = $user;
         return true;
     }
 }

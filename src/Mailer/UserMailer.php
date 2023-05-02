@@ -6,6 +6,7 @@ namespace User\Mailer;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\I18n\I18n;
+use Cake\Log\Log;
 use Cake\Mailer\Mailer;
 use User\Model\Entity\User;
 use User\Model\Table\UsersTable;
@@ -34,11 +35,10 @@ class UserMailer extends Mailer
     {
         parent::__construct(Configure::read('User.Mailer.profile', null));
 
+        // load localized email configurations
         Configure::load('User.emails');
         $this->_profiles = Configure::consume('User.Email', []);
-
-        $this->_locale = I18n::getDefaultLocale();
-        //$this->_locale = I18n::getLocale();
+        $this->_locale = I18n::getLocale();
     }
 
     /**
@@ -279,7 +279,7 @@ class UserMailer extends Mailer
             'User.Model.User.register' => 'onRegister',
             'User.Model.User.activationResend' => 'onRegister',
             'User.Model.User.activate' => 'onActivate',
-            'User.Model.User.passwordForgotten' => 'onPasswordForgotten',
+            'User.Password.forgotten' => 'onPasswordForgotten',
             'User.Model.User.passwordReset' => 'onPasswordReset',
             'User.Model.User.newLogin' => 'onLogin',
         ];

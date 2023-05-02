@@ -1033,25 +1033,20 @@ class UsersTable extends UserBaseTable
     }
 
     /**
-     * Forgot password
+     * Update password reset code
      *
      * @param \User\Model\Entity\User $user The user entity
-     * @param array $data User data
-     * @param bool $dispatchEvent If True, trigger custom events (Default: True)
-     * @return bool|mixed|\User\Model\Entity\User
+     * @return \User\Model\Entity\User
+     * @throws \RuntimeException
      */
-    public function forgotPassword(User $user, array $data = [], $dispatchEvent = true)
+    public function updatePasswordResetCode(User $user): User
     {
         // generate new reset codes
         $user->password_reset_code = self::generateRandomVerificationCode(self::$verificationCodeLength);
         $user->password_reset_expiry_timestamp = time() + self::$passwordResetExpiry; // 24h
 
         if (!$this->save($user)) {
-            throw new \RuntimeException('UsersTable::forgotPassword: Record UPDATE failed: User:' . $user->id);
-        }
-
-        if ($dispatchEvent === true) {
-            $this->getEventManager()->dispatch(new Event('User.Model.User.passwordForgotten', $this, compact('user')));
+            throw new \RuntimeException('UsersTable::updateResetCode FAILED for User with ID ' . $user->id);
         }
 
         return $user;
