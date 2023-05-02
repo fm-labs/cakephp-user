@@ -9,6 +9,7 @@ $this->Breadcrumbs->add(__d('user', 'Password recovery'));
 $this->Html->meta('robots', 'noindex,nofollow', ['block' => true]);
 
 $this->assign('title', __d('user', 'Password forgotten?'));
+
 ?>
 <div id="user-password-forgotten-form" class="user-form">
     <?= $this->Form->create($form); ?>

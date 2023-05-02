@@ -31,7 +31,7 @@ class PasswordController extends AppController
         parent::beforeFilter($event);
 
         $this->Authentication->allowUnauthenticated([
-            'passwordForgotten', 'passwordSent', 'passwordReset',
+            'passwordForgotten', 'passwordReset',
         ]);
 
         $this->viewBuilder()->setLayout(Configure::read('User.layout'));
@@ -64,23 +64,20 @@ class PasswordController extends AppController
                     $this->Flash->set(UsersTable::buildPasswordResetUrl($user), ['key' => 'auth']);
                 }
 
-                return $this->redirect(['action' => 'passwordSent']);
+                return $this->redirect(['_name' => 'user:login']);
             }
 
-            $this->Flash->error(__d('user', 'Please fill all required fields'), ['key' => 'auth']);
+            $errors = $form->getErrors();
+            if (!empty($errors) && isset($errors['username'])) {
+                $this->Flash->error($errors['username'][0], ['key' => 'auth']);
+            } else {
+                $this->Flash->error(__d('user', 'Something went wrong. Please try again.'), ['key' => 'auth']);
+            }
         }
 
         $this->set('form', $form);
     }
 
-    /**
-     * Password forgotten default success action
-     *
-     * @return void
-     */
-    public function passwordSent()
-    {
-    }
 
     /**
      * Password reset method
@@ -146,9 +143,9 @@ class PasswordController extends AppController
         $user = $this->Users->get($this->_getUser('id'));
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Users->changePassword($user, $this->request->getData())) {
-                $this->Flash->success(__d('user', 'Your password has been changed.'), ['key' => 'auth']);
-
-                return $this->redirect(['action' => 'passwordChanged']);
+                $this->Flash->success(__d('user', 'Your password has been changed. Please login with your new password.'), ['key' => 'auth']);
+                $this->Auth->logout();
+                return $this->redirect(['_name' => 'user:login']);
             }
 
             $this->Flash->error(__d('user', 'Please fill all required fields'), ['key' => 'auth']);
@@ -157,14 +154,4 @@ class PasswordController extends AppController
         $this->render('password_change');
         return null;
     }
-
-    /**
-     * Password changed success action
-     *
-     * @return void
-     */
-    public function passwordChanged()
-    {
-    }
-
 }

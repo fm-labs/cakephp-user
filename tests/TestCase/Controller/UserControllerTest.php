@@ -124,16 +124,6 @@ class UserControllerTest extends TestCase
     }
 
     /**
-     * Test passwordSent method
-     *
-     * @return void
-     */
-    public function testPasswordSent()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
      * Test passwordReset method
      *
      * @return void
@@ -149,16 +139,6 @@ class UserControllerTest extends TestCase
      * @return void
      */
     public function testPasswordChange()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test passwordChanged method
-     *
-     * @return void
-     */
-    public function testPasswordChanged()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

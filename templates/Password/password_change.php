@@ -1,5 +1,5 @@
 <?php
-//$this->extend('base');
+$this->extend('User./base');
 // breadcrumbs
 $this->loadHelper('Breadcrumbs');
 $this->Breadcrumbs->add(__d('user','My account'), ['_name' => 'user:profile']);
@@ -8,7 +8,7 @@ $this->Breadcrumbs->add(__d('user','Change password'));
 // no robots
 $this->Html->meta('robots', 'noindex,nofollow', ['block' => true]);
 
-$this->assign('title', __d('user','Set a new password'));
+$this->assign('title', __d('user','Change password'));
 ?>
 <div id="user-password-change-form" class="user-form">
     <?= $this->Form->create($user); ?>

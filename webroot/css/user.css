@@ -10,7 +10,7 @@ body.layout-user {
   display: flex;
   padding-top: 40px;
   padding-bottom: 40px;
-  max-width: 360px;
+  max-width: 400px;
 }
 
 .form-signin {

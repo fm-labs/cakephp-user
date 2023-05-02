@@ -107,8 +107,11 @@ class UserMailer extends Mailer
      */
     protected function setLocalizedProfile($config): UserMailer
     {
-         if (is_string($config) && Configure::check('User.Email.' . $config)) {
-            $config = Configure::read('User.Email.' . $config);
+//        if (is_string($config) && Configure::check('User.Email.' . $config)) {
+//            $config = Configure::read('User.Email.' . $config);
+//        }
+         if (is_string($config) && isset($this->_profiles[$config])) {
+            $config = $this->_profiles[$config];
          }
 
          $localConfigs = [];
