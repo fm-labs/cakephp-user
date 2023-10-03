@@ -105,7 +105,7 @@ class UsersController extends AppController
     {
         $this->set('fields.access', '*');
         $this->set('fields.blacklist', [
-            'password',
+            //'password',
             'email_verification_expiry_timestamp', 'password_expiry_timestamp', 'password_change_timestamp',
             'password_reset_expiry_timestamp', 'login_last_login_datetime', 'login_failure_datetime',
             'login_last_login_ip', 'login_last_login_host',

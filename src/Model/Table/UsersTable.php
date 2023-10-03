@@ -96,9 +96,9 @@ class UsersTable extends UserBaseTable
             'className' => 'User.UserGroups',
         ]);
 
-        if (Plugin::isLoaded('Cupcake')) {
-            $this->addBehavior('Cupcake.Attributes');
-        }
+//        if (Plugin::isLoaded('Cupcake')) {
+//            $this->addBehavior('Cupcake.Attributes');
+//        }
 
         if (Plugin::isLoaded('Search')) {
             $this->addBehavior('Search.Search');
@@ -289,7 +289,7 @@ class UsersTable extends UserBaseTable
      */
     public function add(array $data)
     {
-        $user = $this->newEntity(null);
+        $user = $this->newEmptyEntity();
         $user->setAccess('*', true);
         $user->setAccess(['password1', 'password2'], true);
         $user->setAccess('password', false);
