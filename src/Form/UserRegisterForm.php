@@ -68,6 +68,7 @@ class UserRegisterForm extends UserForm
 
             return false;
         }
+        $this->user = $user;
 
         return true;
     }

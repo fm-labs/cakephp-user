@@ -29,9 +29,9 @@ class SignupController extends AppController
     }
 
     /**
-     * @return \Cake\Form\Form
+     * @return \User\Form\UserRegisterForm
      */
-    protected function _buildSignupForm(): Form
+    protected function _buildSignupForm(): UserRegisterForm
     {
         $formClass = Configure::read('User.Signup.formClass', UserRegisterForm::class);
         if (!class_exists($formClass)) {
@@ -85,7 +85,8 @@ class SignupController extends AppController
             }
 
             //$user = $this->Users->register($data);
-            $user = $form->execute($data);
+            $form->execute($data);
+            $user = $form->getUser();
             $this->set('user', $user);
             if (!$user || !$user->id) {
                 $this->Flash->error(__d('user', 'Please fill all required fields'), ['key' => 'auth']);
@@ -98,7 +99,7 @@ class SignupController extends AppController
                 __d('user', 'An activation email has been sent to your email address!'),
                 ['key' => 'auth']
             );
-            $redirect = $this->config['registerRedirectUrl'] ?? ['_name' => 'user:login'];
+            $redirect = Configure::read('User.Signup.redirectUrl') ?? ['_name' => 'user:login'];
             $this->redirect($redirect);
         }
     }

@@ -20,8 +20,10 @@ $this->assign('title', __d('user','Registration'));
             'label' => 'Zugangspasswort',
             'help' => 'Bitte geben Sie das Zugangspasswort für die Registrierung ein'
     ]); ?>
-    <div class="text-end">
-        <?= $this->Form->button(__d('user','Continue'), ['class' => 'btn btn-primary']); ?>
+    <div class="my-3">
+        <?= $this->Form->button(
+                __d('user','Continue'),
+                ['class' => 'btn btn-lg btn-primary w-100']); ?>
     </div>
     <hr />
     <?= $this->Html->link(__d('user', 'Cancel'), ['_name' => 'user:login'], ['class' => 'btn']); ?>

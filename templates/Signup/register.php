@@ -33,8 +33,16 @@ $form = $this->get('form');
         'password2',
         ['type' => 'password', 'required' => true, 'label' => __d('user', 'Repeat password')]
     ); ?>
-    <?= $this->Form->button(__d('user', 'Signup'), ['class' => 'btn btn-primary']); ?>
-    <?= $this->Html->link(__d('user', 'I\'m already registered'), ['_name' => 'user:login'], ['class' => 'btn']); ?>
+
+    <div class="my-3">
+        <?= $this->Form->button(__d('user', 'Signup'),
+            ['class' => 'btn btn-lg btn-primary w-100']); ?>
+    </div>
+    <div class="mb-2">
+        <?= $this->Html->link(__d('user', 'I\'m already registered'),
+            ['_name' => 'user:login'],
+            ['class' => 'btn btn-secondary-outline w-100']); ?>
+    </div>
     <?= $this->Form->end(); ?>
     <hr />
 </div>
