@@ -63,7 +63,7 @@ class UserAdmin extends BaseAdminPlugin implements EventListenerInterface
                 'users' => [
                     'title' => __d('user', 'Users'),
                     'url' => ['plugin' => 'User', 'controller' => 'Users', 'action' => 'index'],
-                    'data-icon' => 'users',
+                    'data-icon' => 'user',
                 ],
                 'user_groups' => [
                     'title' => __d('user', 'User Groups'),
@@ -73,7 +73,7 @@ class UserAdmin extends BaseAdminPlugin implements EventListenerInterface
                 'user_sessions' => [
                     'title' => __d('user', 'User Sessions'),
                     'url' => ['plugin' => 'User', 'controller' => 'UserSessions', 'action' => 'index'],
-                    'data-icon' => 'users',
+                    'data-icon' => 'user-secret',
                 ],
             ],
         ]);

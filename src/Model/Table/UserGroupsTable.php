@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace User\Model\Table;
 
+use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 
 /**
@@ -44,10 +45,19 @@ class UserGroupsTable extends UserBaseTable
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
             ->allowEmptyString('id', 'create')
+
             ->requirePresence('name', 'create')
             ->notEmptyString('name')
+
             ->allowEmptyString('password');
 
         return $validator;
+    }
+
+    public function buildRules(RulesChecker $rules): RulesChecker
+    {
+        $rules = parent::buildRules($rules);
+        $rules->add($rules->isUnique(['name']));
+        return $rules;
     }
 }

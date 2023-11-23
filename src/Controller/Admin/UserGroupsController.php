@@ -26,6 +26,18 @@ class UserGroupsController extends AppController
         'delete' => 'Admin.Delete',
     ];
 
+    public function index() {
+        $this->Action->execute();
+    }
+
+    public function add() {
+        $this->Action->execute();
+    }
+
+    public function edit() {
+        $this->Action->execute();
+    }
+
     /**
      * View method
      *

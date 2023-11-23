@@ -19,6 +19,8 @@ class UsersController extends AppController
 {
     use UserMailerAwareTrait;
 
+    public $defaultTable = "User.Users";
+
     /**
      * @var array
      */
