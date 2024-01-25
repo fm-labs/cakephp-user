@@ -497,13 +497,16 @@ class UsersTable extends UserBaseTable
 
         $user = $this->newEmptyEntity();
         $user->setAccess(array_keys($data), true);
-        $this->patchEntity($user, $data);
+        $user = $this->patchEntity($user, $data, ['validate' => false]);
 
         //@TODO Add validation
-        if ($this->save($user)) {
-            Log::info('User \'root\' added with ID ' . $user->id, ['admin', 'user']);
+        if (!$this->save($user)) {
+            Log::error('Failed to add \'root\' user ' . $user->id, ['admin', 'user']);
+            debug($user->getErrors());
+            return false;
         }
 
+        Log::info('User \'root\' added with ID ' . $user->id, ['admin', 'user']);
         return $user;
     }
 

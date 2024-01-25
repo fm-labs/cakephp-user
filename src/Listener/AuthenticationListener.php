@@ -117,8 +117,12 @@ class AuthenticationListener implements EventListenerInterface
      * @param \User\Event\AuthEvent $event The event object
      * @return void
      */
-    public function onLoginError(AuthEvent $event)
+    public function onLoginError(\Cake\Event\Event $event)
     {
+        if (!($event instanceof AuthEvent)) {
+            return;
+        }
+
         $controller = $event->getController();
         $request = $controller->getRequest();
         $user = $event->getUser();
