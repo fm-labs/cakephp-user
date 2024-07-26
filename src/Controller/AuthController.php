@@ -37,6 +37,7 @@ class AuthController extends AppController
     public function initialize(): void
     {
         parent::initialize();
+        $this->loadComponent('User.Auth');
         # Allow login method for unauthenticated users
         $this->Authentication->allowUnauthenticated(['login']);
     }

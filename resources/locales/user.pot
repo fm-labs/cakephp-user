@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-03-25 15:25+0000\n"
+"POT-Creation-Date: 2024-07-26 15:20+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,695 +14,668 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:62
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:88
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserRolesController.php:62
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserRolesController.php:88
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:62
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:88
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UserRolesController.php:62
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UserRolesController.php:88
 msgid "The {0} has been saved."
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:62
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:66
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:88
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:92
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:111
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:113
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:62
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:66
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:88
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:92
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:111
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:113
 msgid "permission"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:66
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:92
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserRolesController.php:66
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserRolesController.php:92
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:66
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:92
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UserRolesController.php:66
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UserRolesController.php:92
 msgid "The {0} could not be saved. Please, try again."
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:111
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserRolesController.php:111
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:111
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UserRolesController.php:111
 msgid "The {0} has been deleted."
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:113
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserRolesController.php:113
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UserPermissionsController.php:113
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UserRolesController.php:113
 msgid "The {0} could not be deleted. Please, try again."
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserRolesController.php:62
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserRolesController.php:66
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserRolesController.php:88
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserRolesController.php:92
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserRolesController.php:111
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UserRolesController.php:113
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UserRolesController.php:62
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UserRolesController.php:66
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UserRolesController.php:88
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UserRolesController.php:92
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UserRolesController.php:111
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UserRolesController.php:113
 msgid "role"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UsersController.php:44
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UsersController.php:46
 msgid "Set password"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UsersController.php:48
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UsersController.php:50
 msgid "Emails"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UsersController.php:90
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UsersController.php:92
 msgid "View User Groups"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UsersController.php:166
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UsersController.php:170
 msgid "You are not allowed to do this"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UsersController.php:174
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UsersController.php:203
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/PasswordController.php:149
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UsersController.php:178
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UsersController.php:207
 msgid "Your password has been changed."
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UsersController.php:177
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UsersController.php:206
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UsersController.php:181
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UsersController.php:210
 msgid "Ups, something went wrong"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Admin/UsersController.php:195
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Admin/UsersController.php:199
 msgid "Only root can do this"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/AuthController.php:66
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/AuthController.php:69
 msgid "Sorry, but login is currently disabled."
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/AuthController.php:79
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Component/AuthComponent.php:242
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/AuthController.php:82
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Component/AuthComponent.php:242
 msgid "Login failed"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/AuthController.php:81
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/AuthController.php:84
 msgid "Login successful"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/AuthController.php:97
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/AuthController.php:100
 msgid "Login unavailable"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/AuthController.php:120
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/AuthController.php:123
 msgid "You are logged out now!"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/Component/AuthComponent.php:220
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/Component/AuthComponent.php:220
 msgid "Login aborted"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/PasswordController.php:58
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/PasswordController.php:59
 msgid "Password recovery info has been sent to you via email. Please check your inbox."
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/PasswordController.php:70
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/PasswordController.php:121
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/PasswordController.php:154
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/SignupController.php:89
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/SignupController.php:237
-msgid "Please fill all required fields"
-msgstr ""
-
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/PasswordController.php:105
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:708
-msgid "Password reset code missing"
-msgstr ""
-
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/PasswordController.php:117
-msgid "You can now login with your new password"
-msgstr ""
-
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/PasswordController.php:129
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/PasswordController.php:78
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/PasswordController.php:132
 msgid "Something went wrong. Please try again."
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/SignupController.php:73
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/PasswordController.php:106
+#: ./Users/phil/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:711
+msgid "Password reset code missing"
+msgstr ""
+
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/PasswordController.php:120
+msgid "You can now login with your new password"
+msgstr ""
+
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/PasswordController.php:124
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/PasswordController.php:158
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/SignupController.php:92
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/SignupController.php:248
+msgid "Please fill all required fields"
+msgstr ""
+
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/PasswordController.php:153
+msgid "Your password has been changed. Please login with your new password."
+msgstr ""
+
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/SignupController.php:75
 msgid "Sorry, but user registration is currently disabled."
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/SignupController.php:96
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/SignupController.php:99
 msgid "An activation email has been sent to your email address!"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/SignupController.php:115
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/SignupController.php:118
 msgid "No password entered"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/SignupController.php:126
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:323
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/SignupController.php:129
+#: ./Users/phil/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:323
 msgid "Invalid password"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/SignupController.php:168
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/SignupController.php:181
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/SignupController.php:172
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/SignupController.php:188
 msgid "Your account has been activated. You can login now."
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/SignupController.php:175
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/SignupController.php:188
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/SignupController.php:179
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/SignupController.php:195
 msgid "Account activation failed"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/SignupController.php:215
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/SignupController.php:222
 msgid "Please enter an email address"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/SignupController.php:222
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/SignupController.php:229
 msgid "No user with such email address"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Controller/SignupController.php:230
+#: ./Users/phil/workspaces/php/cakephp-user/src/Controller/SignupController.php:240
 msgid "An activation email has been sent to {0}"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Form/PasswordForgottenForm.php:30
-msgid "This is not a valid email address"
-msgstr ""
-
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Form/PasswordForgottenForm.php:61
-msgid "User not found"
-msgstr ""
-
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Form/PasswordForgottenForm.php:67
-msgid "Deleted user"
-msgstr ""
-
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Form/UserLoginForm.php:74
+#: ./Users/phil/workspaces/php/cakephp-user/src/Form/GoogleRecaptchaFormTrait.php:36
 msgid "Captcha validation failed"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Form/UserLoginForm.php:79
-msgid "Google Recaptcha validation failed"
-msgstr ""
-
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Form/UserRegisterForm.php:53
-msgid "Are you human?"
-msgstr ""
-
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Form/UserRegisterForm.php:57
-msgid "Invalid captcha"
-msgstr ""
-
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Form/UserRegisterForm.php:74
+#: ./Users/phil/workspaces/php/cakephp-user/src/Form/GoogleRecaptchaFormTrait.php:41
 msgid "Captcha verification failed"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Form/UserRegisterForm.php:77
-msgid "Unable to verify reCAPTCHA. Please try again later"
+#: ./Users/phil/workspaces/php/cakephp-user/src/Form/PasswordForgottenForm.php:31
+msgid "This is not a valid email address"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Listener/AuthenticationListener.php:231
+#: ./Users/phil/workspaces/php/cakephp-user/src/Form/PasswordForgottenForm.php:62
+msgid "User not found"
+msgstr ""
+
+#: ./Users/phil/workspaces/php/cakephp-user/src/Form/PasswordForgottenForm.php:68
+msgid "Deleted user"
+msgstr ""
+
+#: ./Users/phil/workspaces/php/cakephp-user/src/Listener/AuthenticationListener.php:235
 msgid "This account has been deleted"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Listener/AuthenticationListener.php:234
+#: ./Users/phil/workspaces/php/cakephp-user/src/Listener/AuthenticationListener.php:238
 msgid "This account has been blocked"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Listener/AuthenticationListener.php:237
+#: ./Users/phil/workspaces/php/cakephp-user/src/Listener/AuthenticationListener.php:241
 msgid "Login to this account is not enabled"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Listener/AuthenticationListener.php:241
+#: ./Users/phil/workspaces/php/cakephp-user/src/Listener/AuthenticationListener.php:245
 msgid "Your account has not been verified yet"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:148
+#: ./Users/phil/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:148
 msgid "This username is already in use"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:149
+#: ./Users/phil/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:149
 msgid "This email address is already in use"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:328
+#: ./Users/phil/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:328
 msgid "Weak password"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:336
+#: ./Users/phil/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:336
 msgid "Passwords do not match"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:353
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:379
+#: ./Users/phil/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:353
+#: ./Users/phil/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:379
 msgid "The provided email address is invalid"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:647
+#: ./Users/phil/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:650
 msgid "This is not your current password"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:658
+#: ./Users/phil/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:661
 msgid "This is your current password. Please create a new one!"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:712
+#: ./Users/phil/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:715
 msgid "Password reset code has expired"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:716
+#: ./Users/phil/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:719
 msgid "Password reset code is invalid"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:802
+#: ./Users/phil/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:802
 msgid "Password can not be the same as your username"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:836
+#: ./Users/phil/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:836
 msgid "Password too short. Minimum {0} characters"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:841
+#: ./Users/phil/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:841
 msgid "Only letters, numbers and {0} are valid"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:959
+#: ./Users/phil/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:959
 msgid "Email or Domain not allowed"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:846
+#: ./Users/phil/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:846
 msgid "Password must include at least one number!"
 msgid_plural "Password must include at least {0} numbers!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:859
+#: ./Users/phil/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:859
 msgid "Password must include at least one lowercase letter!"
 msgid_plural "Password must include at least {0} lowercase letters!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:872
+#: ./Users/phil/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:872
 msgid "Password must include at least one UPPERCASE letter!"
 msgid_plural "Password must include at least {0} UPPERCASE letters!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:886
+#: ./Users/phil/workspaces/php/cakephp-user/src/Model/Table/UsersTable.php:886
 msgid "Password must include at least one special character! Allowed characters: {1}"
 msgid_plural "Password must include at least {0} special characters! Allowed characters: {1}"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/Shell/UserShell.php:23
+#: ./Users/phil/workspaces/php/cakephp-user/src/Shell/UserShell.php:23
 msgid "Manage user"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/UserAdmin.php:59
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/UserAdmin.php:64
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/_edit.php:1
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/password_change.php:1
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/password_reset.php:1
+#: ./Users/phil/workspaces/php/cakephp-user/src/UserAdmin.php:59
+#: ./Users/phil/workspaces/php/cakephp-user/src/UserAdmin.php:64
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Admin/Users/_edit.php:1
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Admin/Users/password_change.php:1
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Admin/Users/password_reset.php:1
 msgid "Users"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/UserAdmin.php:69
+#: ./Users/phil/workspaces/php/cakephp-user/src/UserAdmin.php:69
 msgid "User Groups"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/UserAdmin.php:74
+#: ./Users/phil/workspaces/php/cakephp-user/src/UserAdmin.php:74
 msgid "User Sessions"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/View/Helper/UserAgentHelper.php:113
+#: ./Users/phil/workspaces/php/cakephp-user/src/View/Helper/UserAgentHelper.php:113
 msgid "OS"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/View/Helper/UserAgentHelper.php:148
+#: ./Users/phil/workspaces/php/cakephp-user/src/View/Helper/UserAgentHelper.php:148
 msgid "Device"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/View/Helper/UserAgentHelper.php:186
+#: ./Users/phil/workspaces/php/cakephp-user/src/View/Helper/UserAgentHelper.php:186
 msgid "Model"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/src/View/Helper/UserAgentHelper.php:213
+#: ./Users/phil/workspaces/php/cakephp-user/src/View/Helper/UserAgentHelper.php:213
 msgid "Bot"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/_edit.php:2
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Admin/Users/_edit.php:2
 msgid "Edit {0}"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/_edit.php:2
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/add.php:2
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Admin/Users/_edit.php:2
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Admin/Users/add.php:2
 msgid "User"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/_edit.php:36
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Admin/Users/_edit.php:36
 msgid "Submit"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/add.php:2
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Admin/Users/add.php:2
 msgid "Add {0}"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/add.php:11
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Admin/Users/add.php:11
 msgid "Add"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/emails.php:5
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Admin/Users/emails.php:5
 msgid "Back"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/emails.php:6
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Admin/Users/emails.php:6
 msgid "Edit User"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/password_change.php:2
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Admin/Users/password_change.php:2
 msgid "Change my password"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/password_change.php:3
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/password_change.php:8
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_change.php:6
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/User/index.php:20
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Admin/Users/password_change.php:3
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Admin/Users/password_change.php:8
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Password/password_change.php:6
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Password/password_change.php:11
+#: ./Users/phil/workspaces/php/cakephp-user/templates/User/index.php:20
 msgid "Change password"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/password_change.php:4
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/password_reset.php:3
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Admin/Users/password_change.php:4
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Admin/Users/password_reset.php:3
 msgid "Back to user"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/password_change.php:12
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_change.php:16
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Admin/Users/password_change.php:12
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Password/password_change.php:16
 msgid "Current password"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/password_change.php:17
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/password_reset.php:10
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_change.php:21
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_reset.php:27
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Admin/Users/password_change.php:17
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Admin/Users/password_reset.php:10
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Password/password_change.php:21
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Password/password_reset.php:30
 msgid "New password"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/password_change.php:22
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/password_reset.php:16
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_change.php:26
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_reset.php:33
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/register.php:34
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Admin/Users/password_change.php:22
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Admin/Users/password_reset.php:16
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Password/password_change.php:26
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Password/password_reset.php:36
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/register.php:34
 msgid "Repeat password"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/password_change.php:28
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Admin/Users/password_change.php:28
 msgid "Change password now"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/password_reset.php:2
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_forgotten.php:27
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_reset.php:38
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Admin/Users/password_reset.php:2
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Password/password_forgotten.php:28
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Password/password_reset.php:41
 msgid "Reset password"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/password_reset.php:7
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Admin/Users/password_reset.php:7
 msgid "Set a new password for user {0} (ID: {1})"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Admin/Users/password_reset.php:21
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Admin/Users/password_reset.php:21
 msgid "Update password now"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:7
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_forgotten.php:5
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_reset.php:5
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_sent.php:5
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/activate.php:5
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/register.php:5
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/register_group.php:6
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Auth/login.php:7
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Password/password_forgotten.php:5
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Password/password_reset.php:5
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/activate.php:5
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/register.php:5
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/register_group.php:6
 msgid "Login"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:8
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Auth/login.php:8
 msgid "Please sign in"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:22
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_forgotten.php:20
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Auth/login.php:22
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Password/password_forgotten.php:21
 msgid "yourname@example.org"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:24
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_forgotten.php:22
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/activate.php:33
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/activate_resend.php:22
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/register.php:26
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Auth/login.php:24
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Password/password_forgotten.php:23
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/activate.php:33
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/activate_resend.php:22
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/register.php:26
 msgid "Email"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:32
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Auth/login.php:32
 msgid "Type your password here"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:33
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/register.php:30
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Auth/login.php:33
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/register.php:30
 msgid "Password"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:42
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Auth/login.php:42
 msgid "Remember me"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:59
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Auth/login.php:59
 msgid "Sign in"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:67
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Auth/login.php:67
 msgid "Create account"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:76
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Auth/login.php:76
 msgid "Activate account"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:79
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Auth/login.php:79
 msgid "Forgot password?"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Auth/login.php:82
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Auth/login.php:82
 msgid "Back to website"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/disable.php:5
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/index.php:5
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/setup.php:5
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/test.php:5
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/disable.php:5
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/index.php:5
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/setup.php:5
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/test.php:5
 msgid "2-Factor Authentication"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/disable.php:10
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/disable.php:10
 msgid "Disable 2-Factor Auth"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/disable.php:15
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/disable.php:15
 msgid "Please confirm that you want to DISABLE the 2-Factor-Authentication."
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/disable.php:21
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/disable.php:21
 msgid "Yes, I want to disable 2-Factor-Auth"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/index.php:10
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/index.php:10
 msgid "2-Factor-Auth"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/index.php:16
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/index.php:16
 msgid "You have 2-Factor-Authentication enabled!"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/index.php:20
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/index.php:20
 msgid "Disable"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/index.php:25
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/index.php:25
 msgid "2-Factor-Authentication is currently DISABLED"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/index.php:28
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/index.php:28
 msgid "Setup"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/setup.php:10
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/setup.php:10
 msgid "Setup 2-Factor Authentication"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/setup.php:15
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/setup.php:15
 msgid "Download Google Authenticator app for your smartphone"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/setup.php:18
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/setup.php:18
 msgid "Open Google Authenticator app and scan QR code"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/setup.php:25
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/setup.php:25
 msgid "Failed to render QR image"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/setup.php:30
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/setup.php:30
 msgid "Enter the code shown in the Google Authenticator app"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/setup.php:35
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/verify.php:16
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/setup.php:35
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/verify.php:16
 msgid "Enter code here"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/setup.php:36
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/setup.php:36
 msgid "Enable"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/test.php:10
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/verify.php:10
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/test.php:10
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/verify.php:10
 msgid "Google Authentication"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/test.php:16
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/test.php:16
 msgid "Authentication Code"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/test.php:17
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/test.php:17
 msgid "Authenticate"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/verify.php:5
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/verify.php:5
 msgid "Security Check"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/GoogleAuth/verify.php:17
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/activate.php:45
+#: ./Users/phil/workspaces/php/cakephp-user/templates/GoogleAuth/verify.php:17
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/activate.php:45
 msgid "Verify"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_change.php:5
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Password/password_change.php:5
 msgid "My account"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_change.php:11
-msgid "Set a new password"
-msgstr ""
-
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_change.php:30
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Password/password_change.php:30
 msgid "Update my password"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_change.php:31
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_forgotten.php:31
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_reset.php:39
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/activate.php:51
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/activate_resend.php:28
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/register_group.php:27
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Password/password_change.php:31
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Password/password_forgotten.php:32
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Password/password_reset.php:42
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/activate.php:51
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/activate_resend.php:28
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/register_group.php:29
 msgid "Cancel"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_forgotten.php:6
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_sent.php:6
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Password/password_forgotten.php:6
 msgid "Password recovery"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_forgotten.php:11
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Password/password_forgotten.php:11
 msgid "Password forgotten?"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_reset.php:6
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Password/password_reset.php:6
 msgid "Reset account password"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_reset.php:11
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Password/password_reset.php:11
 msgid "Reset your password"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_reset.php:16
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Password/password_reset.php:17
 msgid "Username"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_reset.php:17
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Password/password_reset.php:18
 msgid "Enter username or email"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_reset.php:21
-msgid "Password reset code received via email"
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Password/password_reset.php:23
+msgid "Password reset code"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_sent.php:11
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_sent.php:16
-msgid "Password sent"
-msgstr ""
-
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Password/password_sent.php:19
-msgid "Go to login"
-msgstr ""
-
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/activate.php:6
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/activate_resend.php:5
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/activate.php:6
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/activate_resend.php:5
 msgid "Account Verification"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/activate.php:11
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/activate.php:11
 msgid "Verify your email address"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/activate.php:16
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/activate.php:16
 msgid "An activation code has been sent to your email upon registration. Please check your inbox."
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/activate.php:19
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/activate.php:19
 msgid "Resend activation email"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/activate.php:41
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/activate.php:41
 msgid "Verification Code"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/activate_resend.php:10
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/activate_resend.php:10
 msgid "Resend verification code"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/activate_resend.php:25
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/register_group.php:24
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/activate_resend.php:25
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/register_group.php:25
 msgid "Continue"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/register.php:6
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/register_group.php:7
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/register.php:6
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/register_group.php:7
 msgid "Account Registration"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/register.php:11
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/register_group.php:12
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/register.php:11
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/register_group.php:12
 msgid "Registration"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/register.php:18
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/register.php:18
 msgid "First name"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/register.php:18
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/register.php:18
 msgid "Firstname"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/register.php:22
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/register.php:22
 msgid "Last name"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/register.php:22
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/register.php:22
 msgid "Lastname"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/register.php:36
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/register.php:38
 msgid "Signup"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/Signup/register.php:37
+#: ./Users/phil/workspaces/php/cakephp-user/templates/Signup/register.php:42
 msgid "I'm already registered"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/User/index.php:5
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/User/index.php:10
+#: ./Users/phil/workspaces/php/cakephp-user/templates/User/index.php:5
+#: ./Users/phil/workspaces/php/cakephp-user/templates/User/index.php:10
 msgid "My Account"
 msgstr ""
 
-#: ./mnt/DATA/workspaces/php/cakephp-user/templates/User/index.php:21
+#: ./Users/phil/workspaces/php/cakephp-user/templates/User/index.php:21
 msgid "Logout"
 msgstr ""
 

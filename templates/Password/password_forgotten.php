@@ -14,7 +14,7 @@ $this->assign('title', __d('user', 'Password forgotten?'));
 <div id="user-password-forgotten-form" class="user-form">
     <?= $this->Form->create($form); ?>
 
-    <div class="form-floating">
+    <div class="form-group form-floating">
         <?= $this->Form->text('username', [
             'class' => 'form-control mb-3',
             'type' => "text",

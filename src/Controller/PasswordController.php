@@ -65,7 +65,7 @@ class PasswordController extends AppController
                     ->dispatch(new Event('User.Password.forgotten', $this, compact('user')));
 
                 if (Configure::read('debug')) {
-                    $this->Flash->set(UsersTable::buildPasswordResetUrl($user), ['key' => 'auth']);
+                    $this->Flash->info(UsersTable::buildPasswordResetUrl($user), ['key' => 'auth']);
                 }
 
                 return $this->redirect(['_name' => 'user:login']);

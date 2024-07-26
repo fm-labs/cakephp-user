@@ -105,15 +105,17 @@ class UsersController extends AppController
      */
     public function add()
     {
-        $this->set('fields.access', '*');
-        $this->set('fields.blacklist', [
+        $action = $this->Action->getAction('add');
+        $action->setConfig('allowAccess', '*');
+        $action->setConfig('exclude', [
             //'password',
             'email_verification_expiry_timestamp', 'password_expiry_timestamp', 'password_change_timestamp',
             'password_reset_expiry_timestamp', 'login_last_login_datetime', 'login_failure_datetime',
             'login_last_login_ip', 'login_last_login_host',
             'block_datetime', 'gauth_last_verify_datetime',
         ]);
-        $this->Action->execute();
+        return $this->Action->dispatch($action);
+        //$this->Action->execute();
     }
 
     /**

@@ -196,6 +196,25 @@ class UserPlugin extends BasePlugin implements AuthenticationServiceProviderInte
     public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
     {
         $service = new AuthenticationService();
+
+        $path = $request->getUri()->getPath();
+        $contentType = $request->getHeaderLine('Content-Type');
+
+        // @todo: This is a hack, we need to find a better way to determine the login redirect
+        if (str_starts_with($path, '/api') || str_contains($contentType, 'application/json')) {
+            // disable auth redirect for api requests
+            $service->setConfig([
+                'unauthenticatedRedirect' => null,
+                'queryParam' => null,
+            ]);
+
+            //@todo: add Token authenticator
+            //@todo: add JWT authenticator
+            $service->loadAuthenticator('Authentication.Session');
+            return $service; // return early
+        }
+
+        // default redirect to login page
         $service->setConfig([
             'unauthenticatedRedirect' => '/user/login',
             'queryParam' => 'redirect',
