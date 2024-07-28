@@ -711,7 +711,7 @@ class UsersTable extends UserBaseTable
             throw new PasswordResetException(__d('user', 'Password reset code missing'));
         }
 
-        if ($user->password_reset_expiry_timestamp && Chronos::now()->gt($user->password_reset_expiry_timestamp)) {
+        if ($user->password_reset_expiry_timestamp && Chronos::now()->greaterThan($user->password_reset_expiry_timestamp)) {
             throw new PasswordResetException(__d('user', 'Password reset code has expired'));
         }
 

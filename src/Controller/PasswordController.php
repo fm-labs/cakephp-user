@@ -5,7 +5,10 @@ namespace User\Controller;
 
 use Cake\Core\Configure;
 use Cake\Event\Event;
+use Cake\Event\EventInterface;
+use Cake\Http\Response;
 use Cake\Log\Log;
+use Exception;
 use User\Exception\PasswordResetException;
 use User\Form\PasswordForgottenForm;
 use User\Model\Table\UsersTable;
@@ -27,7 +30,7 @@ class PasswordController extends AppController
     /**
      * @inheritDoc
      */
-    public function beforeFilter(\Cake\Event\EventInterface $event)
+    public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
 
@@ -43,9 +46,9 @@ class PasswordController extends AppController
      * Creates a new password reset code and sends email with password reset link
      * No authentication required
      *
-     * @return \Cake\Http\Response
+     * @return \Cake\Http\Response|null
      */
-    public function passwordForgotten()
+    public function passwordForgotten(): ?Response
     {
         if ($this->_getUser()) {
             return $this->redirect('/');
@@ -55,42 +58,54 @@ class PasswordController extends AppController
 
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($form->execute($this->request->getData())) {
+                $user = $form->getUser();
+
+                try {
+                    $this->getEventManager()
+                        ->dispatch(new Event('User.Password.forgotten', $this, compact('user')));
+
+                } catch(\Exception $ex) {
+                    $this->Flash->error('An error occured:' . $ex->getMessage(), //@todo handle exception
+                        ['key' => 'auth']
+                    );
+                }
+
                 $this->Flash->success(
                     __d('user', 'Password recovery info has been sent to you via email. Please check your inbox.'),
                     ['key' => 'auth']
                 );
 
-                $user = $form->getUser();
-                $this->getEventManager()
-                    ->dispatch(new Event('User.Password.forgotten', $this, compact('user')));
-
                 if (Configure::read('debug')) {
                     $this->Flash->info(UsersTable::buildPasswordResetUrl($user), ['key' => 'auth']);
                 }
 
-                return $this->redirect(['_name' => 'user:login']);
+                //return $this->redirect(['_name' => 'user:login']);
             }
 
             $errors = $form->getErrors();
-            if (!empty($errors) && isset($errors['username'])) {
-                $this->Flash->error($errors['username'][0], ['key' => 'auth']);
-            } else {
-                $this->Flash->error(__d('user', 'Something went wrong. Please try again.'), ['key' => 'auth']);
+            if (!empty($errors)) {
+                if (!empty($errors) && isset($errors['username'])) {
+                    $this->Flash->error($errors['username'][0], ['key' => 'auth']);
+                } else {
+                    $this->Flash->error(__d('user', 'Something went wrong. Please try again.'), ['key' => 'auth']);
+                }
             }
+
         }
 
         $this->set('form', $form);
-    }
 
+        return null;
+    }
 
     /**
      * Password reset method
      * User can assign new password with username and a password reset code
      * No authentication required
      *
-     * @return void|\Cake\Http\Response
+     * @return \Cake\Http\Response|void
      */
-    public function passwordReset(): ?\Cake\Http\Response
+    public function passwordReset(): ?Response
     {
 //        if ($this->_getUser()) {
 //            return $this->redirect('/');
@@ -127,7 +142,7 @@ class PasswordController extends AppController
             $this->Flash->error($ex->getMessage(), ['key' => 'auth']);
 
             return $this->redirect(['_name' => 'user:login']);
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             Log::error('UsersController::resetPassword: ' . $ex->getMessage(), ['user']);
             $this->Flash->error(__d('user', 'Something went wrong. Please try again.'), ['key' => 'auth']);
 
@@ -135,23 +150,27 @@ class PasswordController extends AppController
         }
 
         $this->set('user', $user);
+
         return null;
     }
-
 
     /**
      * Passsword change method
      *
      * @return \Cake\Http\Response
      */
-    public function passwordChange(): ?\Cake\Http\Response
+    public function passwordChange(): ?Response
     {
         /** @var \User\Model\Entity\User $user */
         $user = $this->Users->get($this->_getUser('id'));
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Users->changePassword($user, $this->request->getData())) {
-                $this->Flash->success(__d('user', 'Your password has been changed. Please login with your new password.'), ['key' => 'auth']);
+                $this->Flash->success(
+                    __d('user', 'Your password has been changed. Please login with your new password.'),
+                    ['key' => 'auth']
+                );
                 $this->Auth->logout();
+
                 return $this->redirect(['_name' => 'user:login']);
             }
 
@@ -159,6 +178,7 @@ class PasswordController extends AppController
         }
         $this->set('user', $user);
         $this->render('password_change');
+
         return null;
     }
 }

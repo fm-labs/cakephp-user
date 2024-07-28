@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace User\Form;
 
-use Cake\Event\Event;
 use Cake\Form\Schema;
 use Cake\Validation\Validator;
 use User\Model\Table\UsersTable;
@@ -23,10 +22,10 @@ class PasswordForgottenForm extends UserForm
     /**
      * @inheritDoc
      */
-    protected function _buildValidator(Validator $validator)
+    public function validationDefault(Validator $validator): Validator
     {
         if (UsersTable::$emailAsUsername) {
-            $validator->add('username', 'email', [
+            $validator->add('username', 'username_as_email', [
                 'rule' => ['email', false],
                 'message' => __d('user', 'This is not a valid email address'),
             ]);
@@ -56,7 +55,7 @@ class PasswordForgottenForm extends UserForm
     {
         $this->user = $user = $this->Users->findByUsername($data['username'])->first();
         if (!$user) {
-            // if user not found we fake success to prevent user scanning
+            // @todo if user not found we fake success to prevent user scanning
             //return true;
 
             $this->_errors = ['username' => [__d('user', 'User not found')]];
@@ -82,6 +81,7 @@ class PasswordForgottenForm extends UserForm
         }
 
         $this->user = $user;
+
         return true;
     }
 }

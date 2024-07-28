@@ -4,13 +4,6 @@ declare(strict_types=1);
 namespace User\Controller;
 
 use Cake\Core\Configure;
-use Cake\Form\Form;
-use Cake\Http\Exception\InternalErrorException;
-use Cake\Log\Log;
-use User\Exception\AuthException;
-use User\Exception\PasswordResetException;
-use User\Form\PasswordForgottenForm;
-use User\Model\Table\UsersTable;
 
 /**
  * Class RegistrationController
