@@ -56,41 +56,44 @@ class PasswordController extends AppController
 
         $form = new PasswordForgottenForm();
 
-        if ($this->request->is('post') || $this->request->is('put')) {
-            if ($form->execute($this->request->getData())) {
-                $user = $form->getUser();
+        try {
+            if ($this->request->is('post') || $this->request->is('put')) {
+                if ($form->execute($this->request->getData())) {
+                    $user = $form->getUser();
 
-                try {
-                    $this->getEventManager()
-                        ->dispatch(new Event('User.Password.forgotten', $this, compact('user')));
+                        $this->getEventManager()
+                            ->dispatch(new Event('User.Password.forgotten', $this, compact('user')));
 
-                } catch(\Exception $ex) {
-                    $this->Flash->error('An error occured:' . $ex->getMessage(), //@todo handle exception
+
+                    $this->Flash->success(
+                        __d('user', 'Password recovery info has been sent to you via email. Please check your inbox.'),
                         ['key' => 'auth']
                     );
+
+                    if (Configure::read('debug')) {
+                        $this->Flash->info(UsersTable::buildPasswordResetUrl($user), ['key' => 'auth']);
+                    }
+
+                    //return $this->redirect(['_name' => 'user:login']);
                 }
 
-                $this->Flash->success(
-                    __d('user', 'Password recovery info has been sent to you via email. Please check your inbox.'),
-                    ['key' => 'auth']
-                );
-
-                if (Configure::read('debug')) {
-                    $this->Flash->info(UsersTable::buildPasswordResetUrl($user), ['key' => 'auth']);
+                $errors = $form->getErrors();
+                if (!empty($errors)) {
+                    if (isset($errors['username'])) {
+                        $firstErrKey = array_key_first($errors['username']);
+                        $this->Flash->error(($errors['username'][$firstErrKey]),
+                            ['key' => 'auth']);
+                    } else {
+                        $this->Flash->error(__d('user', 'Something went wrong. Please try again.'),
+                            ['key' => 'auth']);
+                    }
                 }
 
-                //return $this->redirect(['_name' => 'user:login']);
             }
-
-            $errors = $form->getErrors();
-            if (!empty($errors)) {
-                if (!empty($errors) && isset($errors['username'])) {
-                    $this->Flash->error($errors['username'][0], ['key' => 'auth']);
-                } else {
-                    $this->Flash->error(__d('user', 'Something went wrong. Please try again.'), ['key' => 'auth']);
-                }
-            }
-
+        } catch(\Exception $ex) {
+            $this->Flash->error('An error occurred:' . $ex->getMessage(), //@todo handle exception
+                ['key' => 'auth']
+            );
         }
 
         $this->set('form', $form);

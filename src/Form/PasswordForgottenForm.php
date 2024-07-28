@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace User\Form;
 
+use Cake\Core\Configure;
 use Cake\Form\Schema;
 use Cake\Validation\Validator;
 use User\Model\Table\UsersTable;
@@ -55,33 +56,39 @@ class PasswordForgottenForm extends UserForm
     {
         $this->user = $user = $this->Users->findByUsername($data['username'])->first();
         if (!$user) {
-            // @todo if user not found we fake success to prevent user scanning
-            //return true;
-
-            $this->_errors = ['username' => [__d('user', 'User not found')]];
-
-            return false;
+            // if user not found or invalid, we fake success to prevent user scanning
+            if (Configure::read('debug')) {
+                $this->_errors = ['username' => [__d('user', 'User not found')]];
+                return false;
+            } else {
+                $this->_errors = ['username' => [__d('user', 'Invalid user')]];
+                return false;
+                //return true;
+            }
         }
 
         if ($user->is_deleted) {
-            $this->_errors = ['username' => [__d('user', 'Deleted user')]];
-
-            return false;
+            if (Configure::read('debug')) {
+                $this->_errors = ['username' => [__d('user', 'Deleted user')]];
+                return false;
+            } else {
+                $this->_errors = ['username' => [__d('user', 'Invalid user')]];
+                return false;
+                //return true;
+            }
         }
 
         $user = $this->Users->updatePasswordResetCode($user);
         if (!$user) {
-            return false;
+            throw new \Exception('Failed to issue password reset code');
         }
 
         if ($user->getErrors()) {
             $this->_errors = $user->getErrors();
-
             return false;
         }
 
         $this->user = $user;
-
         return true;
     }
 }
