@@ -32,14 +32,16 @@ class UserDebugListener implements EventListenerInterface
             $user = $event->getUser();
         } elseif ($event->getSubject() instanceof UserForm) {
             $user = $event->getSubject()->getUser();
-        } else {
+        } elseif ($event->getData('identity')) {
             $user = $event->getData('identity');
+        } else {
+            $user = $event->getData('user');
         }
 
         $userId = $user['id'] ?? '';
         $userName = $user['username'] ?? '';
         $userEmail = $user['email'] ?? '';
-        Log::debug(sprintf('[event][%s] %s:%s (ID:%s)', $eventName, $userName, $userEmail, $userId), ['user']);
+        Log::debug(sprintf('[UserDebugListener][%s] %s:%s (ID:%s)', $eventName, $userName, $userEmail, $userId), ['user']);
     }
 
     /**
