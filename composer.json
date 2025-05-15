@@ -19,9 +19,9 @@
     },
     "require": {
         "php": ">=8.2",
-        "cakephp/cakephp": "^5",
-        "cakephp/authentication": "^3.2.4",
-        "cakephp/authorization": "^3.4.1"
+        "cakephp/cakephp": "5.0.11",
+        "cakephp/authentication": "^3",
+        "cakephp/authorization": "^3"
     },
     "require-dev": {
         "fm-labs/cakephp-devtools": "^5"
