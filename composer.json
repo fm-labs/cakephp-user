@@ -10,7 +10,6 @@
         {
             "name": "fm-labs",
             "email": "flowmotionlabs@gmail.com",
-            "homepage": "https://www.flowmotion-labs.com",
             "role": "Developer"
         }
     ],
@@ -19,13 +18,13 @@
         "source": "https://github.com/fm-labs/cakephp-user"
     },
     "require": {
-        "php": ">=8.0",
-        "cakephp/cakephp": "^4.4",
-        "cakephp/authentication": "^2.0",
-        "cakephp/authorization": "^2.0"
+        "php": ">=8.2",
+        "cakephp/cakephp": "^5",
+        "cakephp/authentication": "^3.2.4",
+        "cakephp/authorization": "^3.4.1"
     },
     "require-dev": {
-        "fm-labs/cakephp-devtools": "dev-master"
+        "fm-labs/cakephp-devtools": "^5"
     },
     "autoload": {
         "psr-4": {
@@ -57,5 +56,10 @@
         "fm-labs/cakephp-settings": "Settings plugin for CakePHP",
         "dolondro/google-authenticator": "Enabled Two-factor-authentication with Google Authenticator",
         "matomo-org/device-detector": "Enables User Agents parsing to detect devices, clients, operating systems, brands and models."
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }

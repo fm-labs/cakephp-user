@@ -8,6 +8,9 @@ The recommended way to install composer packages is:
 
 ```
 composer require fm-labs/cakephp-user
+
+#For CakePHP 4.x:
+composer require fm-labs/cakephp-user:^4
 ```
 
 ## Features
@@ -33,12 +36,12 @@ composer require fm-labs/cakephp-user
 * User Login Security
   - Trusted devices
   - GeoBlocking
-  - TwoFactorAuth  
+  - TwoFactorAuth
 
 ## Configuration
 
 Key                                     | Default       | Overrideable by Settings
----                                     | ---           | --- 
+---                                     | ---           | ---
 User.layout                             | null          | yes
 User.EventLogger.enabled                | false         | yes
 User.Mailer.enabled                     | false         | yes
