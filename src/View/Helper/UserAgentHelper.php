@@ -19,7 +19,7 @@ class UserAgentHelper extends Helper
      *
      * @var array
      */
-    protected $_defaultConfig = [];
+    protected array $_defaultConfig = [];
 
     /**
      * @var \User\Util\UserAgent

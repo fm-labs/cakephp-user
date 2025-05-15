@@ -12,6 +12,7 @@ trait UserMailerAwareTrait
 
     /**
      * UserMailer class name
+     *
      * @var string
      */
     protected string $_mailerClass = 'User.User';
@@ -22,7 +23,7 @@ trait UserMailerAwareTrait
      * @param string $className Name of mailer class
      * @return $this
      */
-    public function setUserMailerClass($className)
+    public function setUserMailerClass(string $className)
     {
         $this->_mailerClass = $className;
 
@@ -31,6 +32,7 @@ trait UserMailerAwareTrait
 
     /**
      * Get mailer instance
+     *
      * @param array|null $config
      * @return \Cake\Mailer\Mailer|\User\Mailer\UserMailer
      */

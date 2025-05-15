@@ -10,12 +10,12 @@ namespace User\Controller\Admin;
  */
 class UserPermissionsController extends AppController
 {
-    public $modelClass = "User.Permissions";
+    public ?string $defaultTable = 'User.Permissions';
 
     /**
      * @var array
      */
-    public $actions = [
+    public array $actions = [
         'index' => 'User.Index',
         'view' => 'User.View',
         'edit' => 'User.Edit',
@@ -39,19 +39,19 @@ class UserPermissionsController extends AppController
      * @return void
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view(?string $id = null)
     {
         $permission = $this->Permissions->get($id, [
             'contain' => [],
         ]);
         $this->set('permission', $permission);
-        $this->set('_serialize', ['permission']);
+        $this->viewBuilder()->setOption('serialize', ['permission']);
     }
 
     /**
      * Add method
      *
-     * @return void|\Cake\Http\Response Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|void Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
@@ -67,17 +67,17 @@ class UserPermissionsController extends AppController
             }
         }
         $this->set(compact('permission'));
-        $this->set('_serialize', ['permission']);
+        $this->viewBuilder()->setOption('serialize', ['permission']);
     }
 
     /**
      * Edit method
      *
      * @param string|null $id Permission id.
-     * @return void|\Cake\Http\Response Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit(?string $id = null)
     {
         $permission = $this->Permissions->get($id, [
             'contain' => [],
@@ -93,7 +93,7 @@ class UserPermissionsController extends AppController
             }
         }
         $this->set(compact('permission'));
-        $this->set('_serialize', ['permission']);
+        $this->viewBuilder()->setOption('serialize', ['permission']);
     }
 
     /**
@@ -103,7 +103,7 @@ class UserPermissionsController extends AppController
      * @return \Cake\Http\Response Redirects to index.
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete(?string $id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
         $permission = $this->Permissions->get($id);

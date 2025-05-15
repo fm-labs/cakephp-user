@@ -3,23 +3,25 @@ declare(strict_types=1);
 
 namespace User\Exception;
 
+use Authentication\Identity;
+
 class AuthException extends UserException
 {
     /**
-     * @var array|null|\Authentication\Identity Auth user data. Might be empty
+     * @var \Authentication\Identity|array|null  Auth user data. Might be empty
      */
-    protected $_user;
+    protected array|Identity|null $_user = null;
 
     /**
      * @var mixed|null
      */
-    protected $_redirectUrl;
+    protected mixed $_redirectUrl = null;
 
     /**
      * @param string $message Exception message
      * @param array $user Auth user data
      */
-    public function __construct(string $message = "", $user = null, $redirectUrl = null)
+    public function __construct(string $message = '', ?array $user = null, $redirectUrl = null)
     {
         $this->_user = $user;
         $this->_redirectUrl = $redirectUrl;
@@ -30,7 +32,7 @@ class AuthException extends UserException
      * @return array Auth user data
      * @deprecated Use getUser() instead.
      */
-    public function user()
+    public function user(): array
     {
         return $this->_user;
     }

@@ -25,7 +25,7 @@ class PasswordController extends AppController
     /**
      * @var string
      */
-    public $modelClass = 'User.Users';
+    public ?string $defaultTable = 'User.Users';
 
     /**
      * @inheritDoc
@@ -64,7 +64,6 @@ class PasswordController extends AppController
                         $this->getEventManager()
                             ->dispatch(new Event('User.Password.forgotten', $this, compact('user')));
 
-
                     $this->Flash->success(
                         __d('user', 'Password recovery info has been sent to you via email. Please check your inbox.'),
                         ['key' => 'auth']
@@ -81,17 +80,21 @@ class PasswordController extends AppController
                 if (!empty($errors)) {
                     if (isset($errors['username'])) {
                         $firstErrKey = array_key_first($errors['username']);
-                        $this->Flash->error(($errors['username'][$firstErrKey]),
-                            ['key' => 'auth']);
+                        $this->Flash->error(
+                            $errors['username'][$firstErrKey],
+                            ['key' => 'auth']
+                        );
                     } else {
-                        $this->Flash->error(__d('user', 'Something went wrong. Please try again.'),
-                            ['key' => 'auth']);
+                        $this->Flash->error(
+                            __d('user', 'Something went wrong. Please try again.'),
+                            ['key' => 'auth']
+                        );
                     }
                 }
-
             }
-        } catch(\Exception $ex) {
-            $this->Flash->error('An error occurred:' . $ex->getMessage(), //@todo handle exception
+        } catch (Exception $ex) {
+            $this->Flash->error(
+                'An error occurred:' . $ex->getMessage(), //@todo handle exception
                 ['key' => 'auth']
             );
         }

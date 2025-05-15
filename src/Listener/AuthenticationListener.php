@@ -3,11 +3,15 @@ declare(strict_types=1);
 
 namespace User\Listener;
 
+use Authentication\IdentityInterface;
+use Cake\Event\Event;
 use Cake\Event\EventInterface;
 use Cake\Event\EventListenerInterface;
-use Cake\I18n\FrozenTime;
+use Cake\Http\ServerRequest;
+use Cake\I18n\DateTime;
 use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
+use Exception;
 use User\Event\AuthEvent;
 use User\Exception\AuthException;
 
@@ -65,14 +69,18 @@ class AuthenticationListener implements EventListenerInterface
             return;
         }
 
-        Log::info(sprintf('[login] User %s:%s (ID %s) just logged in',
-            $user->get('username'), $user->get('email'), $user->getIdentifier()), ['user']);
+        Log::info(sprintf(
+            '[login] User %s:%s (ID %s) just logged in',
+            $user->get('username'),
+            $user->get('email'),
+            $user->getIdentifier()
+        ), ['user']);
 
         // store login attempt in users db table
         try {
             $request = $controller->getRequest();
             $this->storeLoginAttempt($user, $request);
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             Log::error(sprintf('User %s: Failed to save login attempt', $user->getIdentifier()), ['user']);
         }
 
@@ -87,6 +95,7 @@ class AuthenticationListener implements EventListenerInterface
             $redirectUrl = $ex->getRedirectUrl();
             if ($redirectUrl) {
                 $controller->redirect($redirectUrl);
+
                 return;
             }
 
@@ -95,6 +104,7 @@ class AuthenticationListener implements EventListenerInterface
             $Auth = $controller->components()->get('Auth');
             if ($Auth) {
                 $Auth->logout();
+
                 return;
             }
 
@@ -102,13 +112,14 @@ class AuthenticationListener implements EventListenerInterface
             /** @var \Authentication\Controller\Component\AuthenticationComponent $Authentication */
             $Authentication = $controller->components()->get('Authentication');
             $Authentication->logout();
+
             return;
         }
 
         // @todo rehash password if needed
         try {
             $this->rehashPassword();
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             Log::error(sprintf('User %s: Failed to rehash password', $user->getIdentifier()), ['user']);
         }
     }
@@ -117,7 +128,7 @@ class AuthenticationListener implements EventListenerInterface
      * @param \User\Event\AuthEvent $event The event object
      * @return void
      */
-    public function onLoginError(\Cake\Event\Event $event)
+    public function onLoginError(Event $event): void
     {
         if (!($event instanceof AuthEvent)) {
             return;
@@ -133,8 +144,14 @@ class AuthenticationListener implements EventListenerInterface
         $userEmail = $user['email'] ?? '';
         $clientIp = $request->clientIp();
 
-        Log::warning(sprintf('[login:error] User %s:%s (ID:%s) failed to login from IP %s: %s',
-            $userName, $userEmail, $userId, $clientIp, $error), ['user']);
+        Log::warning(sprintf(
+            '[login:error] User %s:%s (ID:%s) failed to login from IP %s: %s',
+            $userName,
+            $userEmail,
+            $userId,
+            $clientIp,
+            $error
+        ), ['user']);
 
         if ($userName) {
             //Log::warning(sprintf('User %s failed to login', $userName), ['user']);
@@ -142,7 +159,7 @@ class AuthenticationListener implements EventListenerInterface
             $user = $Users->findByUsername($userName)->first();
             if ($user) {
                 $user->login_failure_count++;
-                $user->login_failure_datetime = FrozenTime::now();
+                $user->login_failure_datetime = DateTime::now();
 
                 if (!$Users->save($user)) {
                     Log::error('Failed to update user with login info', ['user']);
@@ -162,9 +179,12 @@ class AuthenticationListener implements EventListenerInterface
     public function onLogout(AuthEvent $event): void
     {
         $user = $event->getUser();
-        Log::info(sprintf('[logout] User %s:%s (ID %s) is logging out',
-            $user->get('username'), $user->get('email'), $user->getIdentifier()), ['user']);
-
+        Log::info(sprintf(
+            '[logout] User %s:%s (ID %s) is logging out',
+            $user->get('username'),
+            $user->get('email'),
+            $user->getIdentifier()
+        ), ['user']);
     }
 
     /**
@@ -182,15 +202,16 @@ class AuthenticationListener implements EventListenerInterface
         /** @var \Cake\Controller\Controller $controller */
         $controller = $event->getSubject();
 
-        Log::info(sprintf("[auth:login] Identification successful"));
+        Log::info(sprintf('[auth:login] Identification successful'));
     }
 
     /**
      * @param \Cake\Event\EventInterface $event The event object
      * @return void
      */
-    public function onAuthLogout(EventInterface $event): void {
-        Log::info(sprintf("[auth:logout] Logout successful"));
+    public function onAuthLogout(EventInterface $event): void
+    {
+        Log::info(sprintf('[auth:logout] Logout successful'));
     }
 
     /**
@@ -198,7 +219,7 @@ class AuthenticationListener implements EventListenerInterface
      * @param \Cake\Http\ServerRequest $request
      * @return void
      */
-    protected function storeLoginAttempt(\Authentication\IdentityInterface $user, \Cake\Http\ServerRequest $request): void
+    protected function storeLoginAttempt(IdentityInterface $user, ServerRequest $request): void
     {
         // @todo Lookup client hostname
         $clientIp = $clientHostname = null;
@@ -206,13 +227,13 @@ class AuthenticationListener implements EventListenerInterface
         $data = [
             'login_last_login_ip' => $clientIp,
             'login_last_login_host' => $clientHostname,
-            'login_last_login_datetime' => FrozenTime::now(),
+            'login_last_login_datetime' => DateTime::now(),
             'login_failure_count' => 0, // reset login failure counter
         ];
 
         $Users = TableRegistry::getTableLocator()->get('User.Users');
         /** @var \User\Model\Entity\User $entity */
-        $entity = $Users->get($user->getIdentifier(), ['contain' => []]);
+        $entity = $Users->get($user->getIdentifier(), contain: []);
         $entity->setAccess(array_keys($data), true);
         $entity = $Users->patchEntity($entity, $data);
         if (!$Users->save($entity)) {
@@ -221,9 +242,9 @@ class AuthenticationListener implements EventListenerInterface
     }
 
     /**
-     * @throws AuthException
+     * @throws \User\Exception\AuthException
      */
-    protected function validateLogin(\Authentication\IdentityInterface $user): void
+    protected function validateLogin(IdentityInterface $user): void
     {
         // skip additional identification checks for super-users
         $isSuperUser = $user->get('is_superuser');
@@ -246,7 +267,7 @@ class AuthenticationListener implements EventListenerInterface
         }
     }
 
-    protected function rehashPassword()
+    protected function rehashPassword(): void
     {
         //@todo Implement rehashPassword() method
 //        // Assuming you are using the `Password` identifier.
@@ -264,5 +285,4 @@ class AuthenticationListener implements EventListenerInterface
 //        $view = $event->getSubject();
 //        $view->loadHelper('User.Auth');
 //    }
-
 }

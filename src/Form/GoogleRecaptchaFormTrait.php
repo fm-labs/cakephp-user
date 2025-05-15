@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace User\Form;
 
@@ -13,12 +14,13 @@ trait GoogleRecaptchaFormTrait
     {
         if (Configure::read('User.Recaptcha.enabled')) {
             $schema->addField('captcha', [
-                'required' => false
+                'required' => false,
             ]);
             $schema->addField('g-recaptcha-response', [
-                'required' => false
+                'required' => false,
             ]);
         }
+
         return $schema;
     }
 
@@ -42,7 +44,7 @@ trait GoogleRecaptchaFormTrait
                     }
 
                     return true;
-                }
+                },
             ]);
         }
 
@@ -86,5 +88,4 @@ trait GoogleRecaptchaFormTrait
 //
 //        return true;
 //    }
-
 }

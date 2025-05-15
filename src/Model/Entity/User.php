@@ -3,11 +3,15 @@ declare(strict_types=1);
 
 namespace User\Model\Entity;
 
+use ArrayAccess;
 use Authentication\IdentityInterface;
+//use Cake\Auth\AbstractPasswordHasher;
 //use Authentication\PasswordHasher\DefaultPasswordHasher;
 //use Authorization\AuthorizationServiceInterface;
 //use Authorization\Policy\ResultInterface;
-use Cake\Auth\DefaultPasswordHasher; // @todo use Authentication\PasswordHasher\DefaultPasswordHasher instead?
+//use Cake\Auth\DefaultPasswordHasher;
+use Authentication\PasswordHasher\AbstractPasswordHasher;
+use Authentication\PasswordHasher\DefaultPasswordHasher;
 use Cake\ORM\Entity;
 
 /**
@@ -51,7 +55,6 @@ use Cake\ORM\Entity;
  *
  * @property \User\Model\Entity\UserGroup $group
  * @property \Authorization\AuthorizationServiceInterface $authorization
- *
  * @todo Implement \Authorization\IdentityInterface
  */
 class User extends Entity implements IdentityInterface//, \Authorization\IdentityInterface
@@ -66,7 +69,7 @@ class User extends Entity implements IdentityInterface//, \Authorization\Identit
      *
      * @var array
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'id' => false,
         'superuser' => false,
         'name' => false,
@@ -107,7 +110,7 @@ class User extends Entity implements IdentityInterface//, \Authorization\Identit
     /**
      * @var array
      */
-    protected $_virtual = [
+    protected array $_virtual = [
         'display_name',
         'is_root',
         'is_superuser',
@@ -116,14 +119,14 @@ class User extends Entity implements IdentityInterface//, \Authorization\Identit
     /**
      * @var array
      */
-    protected $_hidden = [
+    protected array $_hidden = [
         'password',
     ];
 
     /**
      * @inheritDoc
      */
-    public function getIdentifier()
+    public function getIdentifier(): int|array|string|null
     {
         return $this->id;
     }
@@ -131,7 +134,7 @@ class User extends Entity implements IdentityInterface//, \Authorization\Identit
     /**
      * @inheritDoc
      */
-    public function getOriginalData()
+    public function getOriginalData(): ArrayAccess|array
     {
         return $this;
     }
@@ -173,7 +176,7 @@ class User extends Entity implements IdentityInterface//, \Authorization\Identit
     /**
      * @return bool
      */
-    protected function _getIsRoot()
+    protected function _getIsRoot(): bool
     {
         return $this->username === 'root';
     }
@@ -181,15 +184,15 @@ class User extends Entity implements IdentityInterface//, \Authorization\Identit
     /**
      * @return bool
      */
-    protected function _getIsSuperuser()
+    protected function _getIsSuperuser(): bool
     {
         return $this->superuser || $this->username === 'root';
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
-    protected function _getDisplayName()
+    protected function _getDisplayName(): ?string
     {
         if ($this->name) {
             return $this->name;
@@ -202,7 +205,7 @@ class User extends Entity implements IdentityInterface//, \Authorization\Identit
      * @param string $password Password value
      * @return string
      */
-    protected function _setPassword($password)
+    protected function _setPassword(string $password): string
     {
         if (self::$passwordHasherClass === false) {
             return $password;
@@ -212,9 +215,9 @@ class User extends Entity implements IdentityInterface//, \Authorization\Identit
     }
 
     /**
-     * @return \Cake\Auth\AbstractPasswordHasher
+     * @return \Authentication\PasswordHasher\AbstractPasswordHasher
      */
-    public function getPasswordHasher()
+    public function getPasswordHasher(): AbstractPasswordHasher
     {
         return new static::$passwordHasherClass();
     }

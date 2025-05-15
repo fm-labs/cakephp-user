@@ -5,8 +5,10 @@ namespace User\Controller;
 
 use Cake\Core\Configure;
 use Cake\Event\Event;
+use Cake\Event\EventInterface;
 use Cake\Form\Form;
 use Cake\Http\Exception\InternalErrorException;
+use Cake\Http\Response;
 use User\Form\UserRegisterForm;
 
 class SignupController extends AppController
@@ -14,12 +16,12 @@ class SignupController extends AppController
     /**
      * @inheritDoc
      */
-    public function beforeFilter(\Cake\Event\EventInterface $event)
+    public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
 
         // @todo Replace hardcoded user model with configured model name
-        $this->Users = $this->getTableLocator()->get("User.Users");
+        $this->Users = $this->getTableLocator()->get('User.Users');
 
         $this->Authentication->allowUnauthenticated([
             'register', 'registerGroup', 'activate', 'activateResend',
@@ -49,7 +51,7 @@ class SignupController extends AppController
      * Register method
      * No authentication required
      *
-     * @return void|null|\Cake\Http\Response Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
      */
     public function register()
     {
@@ -145,7 +147,7 @@ class SignupController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
-    public function activate(): ?\Cake\Http\Response
+    public function activate(): ?Response
     {
         // send logged in users away
         if ($this->_getUser()) {
@@ -172,7 +174,6 @@ class SignupController extends AppController
                     __d('user', 'Your account has been activated. You can login now.'),
                     ['key' => 'auth']
                 );
-
                 return $this->redirect(['_name' => 'user:login', '?' =>  ['m' => base64_encode($_user->email), 'ref' => 'activate'] ]);
             }
 
@@ -188,7 +189,6 @@ class SignupController extends AppController
                     __d('user', 'Your account has been activated. You can login now.'),
                     ['key' => 'auth']
                 );
-
                 return $this->redirect(['_name' => 'user:login', '?' =>  ['m' => base64_encode($_user->email), 'ref' => 'activate'] ]);
             }
 
@@ -196,6 +196,7 @@ class SignupController extends AppController
         }
 
         $this->set('user', $user);
+
         return null;
     }
 
@@ -204,7 +205,7 @@ class SignupController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
-    public function activateResend(): ?\Cake\Http\Response
+    public function activateResend(): ?Response
     {
         // send logged in users away
         if ($this->_getUser()) {
@@ -248,6 +249,7 @@ class SignupController extends AppController
             $this->Flash->error(__d('user', 'Please fill all required fields'), ['key' => 'auth']);
             $this->set('user', $user);
         }
+
         return null;
     }
 }

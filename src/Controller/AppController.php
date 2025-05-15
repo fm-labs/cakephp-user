@@ -18,7 +18,6 @@ use Cake\Utility\Hash;
  */
 class AppController extends BaseAppController
 {
-
     /**
      * @inheritDoc
      */
@@ -38,14 +37,13 @@ class AppController extends BaseAppController
         //}
     }
 
-
     /**
-     * @param null|string $key Identity data key
+     * @param string|null $key Identity data key
      * @return \Authentication\IdentityInterface|mixed|null
      * @deprecated Use AuthenticationComponent instead
      * @todo Use AuthenticationComponent instead
      */
-    protected function _getUser($key = null)
+    protected function _getUser(?string $key = null)
     {
         $identity = $this->getRequest()->getAttribute('identity');
         //$identity = $this->Authentication->getIdentity();

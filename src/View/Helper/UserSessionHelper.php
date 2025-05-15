@@ -12,9 +12,9 @@ use Cake\View\Helper;
  */
 class UserSessionHelper extends Helper
 {
-    public $helpers = ['Html'];
+    public array $helpers = ['Html'];
 
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'sessionKey' => 'Auth.UserSession',
         'checkUrl' => ['_name' => 'user:checkauth'],
         'loginUrl' => ['_name' => 'user:login'],

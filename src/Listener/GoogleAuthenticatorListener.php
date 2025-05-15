@@ -17,7 +17,7 @@ class GoogleAuthenticatorListener implements EventListenerInterface
      * @param \Cake\Event\Event $event The event object
      * @return void
      */
-    public function onLogout(Event $event)
+    public function onLogout(Event $event): void
     {
         $event->getSubject()->request->getSession()->delete('Auth.GoogleAuth');
     }

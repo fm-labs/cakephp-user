@@ -106,26 +106,26 @@ return [
                     'group' => 'User.Password.Recovery',
                     'type' => 'boolean',
                     'default' => true,
-                    'help' => __d('user', 'Enable password recovery feature')
+                    'help' => __d('user', 'Enable password recovery feature'),
                 ],
 
                 'User.Password.resetCodeLength' => [
                     'group' => 'User.Password.Recovery',
                     'type' => 'number',
                     'default' => UsersTable::$passwordResetCodeLength,
-                    'help' => __d('user', 'Length of the password reset code (Deprecated)')
+                    'help' => __d('user', 'Length of the password reset code (Deprecated)'),
                 ],
                 'User.Password.verificationCodeLength' => [
                     'group' => 'User.Password.Recovery',
                     'type' => 'number',
                     'default' => UsersTable::$verificationCodeLength,
-                    'help' => __d('user', 'Length of the password reset code')
+                    'help' => __d('user', 'Length of the password reset code'),
                 ],
                 'User.Password.resetExpiry' => [
                     'group' => 'User.Password.Recovery',
                     'type' => 'number',
                     'default' => UsersTable::$passwordResetExpiry,
-                    'help' => __d('user', 'Number of seconds after the password reset code becomes invalid')
+                    'help' => __d('user', 'Number of seconds after the password reset code becomes invalid'),
                 ],
 
                 // Debugging

@@ -40,7 +40,7 @@ class UserGroupsTable extends UserBaseTable
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
-    public function validationDefault(Validator $validator): \Cake\Validation\Validator
+    public function validationDefault(Validator $validator): Validator
     {
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
@@ -58,6 +58,7 @@ class UserGroupsTable extends UserBaseTable
     {
         $rules = parent::buildRules($rules);
         $rules->add($rules->isUnique(['name']));
+
         return $rules;
     }
 }

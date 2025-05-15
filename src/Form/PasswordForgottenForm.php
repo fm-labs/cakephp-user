@@ -6,6 +6,7 @@ namespace User\Form;
 use Cake\Core\Configure;
 use Cake\Form\Schema;
 use Cake\Validation\Validator;
+use Exception;
 use User\Model\Table\UsersTable;
 
 class PasswordForgottenForm extends UserForm
@@ -59,9 +60,11 @@ class PasswordForgottenForm extends UserForm
             // if user not found or invalid, we fake success to prevent user scanning
             if (Configure::read('debug')) {
                 $this->_errors = ['username' => [__d('user', 'User not found')]];
+
                 return false;
             } else {
                 $this->_errors = ['username' => [__d('user', 'Invalid user')]];
+
                 return false;
                 //return true;
             }
@@ -70,9 +73,11 @@ class PasswordForgottenForm extends UserForm
         if ($user->is_deleted) {
             if (Configure::read('debug')) {
                 $this->_errors = ['username' => [__d('user', 'Deleted user')]];
+
                 return false;
             } else {
                 $this->_errors = ['username' => [__d('user', 'Invalid user')]];
+
                 return false;
                 //return true;
             }
@@ -80,15 +85,17 @@ class PasswordForgottenForm extends UserForm
 
         $user = $this->Users->updatePasswordResetCode($user);
         if (!$user) {
-            throw new \Exception('Failed to issue password reset code');
+            throw new Exception('Failed to issue password reset code');
         }
 
         if ($user->getErrors()) {
             $this->_errors = $user->getErrors();
+
             return false;
         }
 
         $this->user = $user;
+
         return true;
     }
 }

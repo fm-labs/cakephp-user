@@ -3,14 +3,9 @@ declare(strict_types=1);
 
 namespace User\Form;
 
-use Cake\Controller\Controller;
-use Cake\Core\Configure;
 use Cake\Event\EventManager;
-use Cake\Form\Form;
 use Cake\Form\Schema;
 use Cake\Validation\Validator;
-use GoogleRecaptcha\Lib\Recaptcha2;
-use User\Exception\AuthException;
 
 /**
  * UserLogin Form.
@@ -33,13 +28,14 @@ class UserLoginForm extends UserForm
     protected function _buildSchema(Schema $schema): Schema
     {
         $schema->addField('username', [
-            'required' => true
+            'required' => true,
         ]);
 
         $schema->addField('password', [
-            'required' => true
+            'required' => true,
         ]);
         $schema = $this->_buildRecaptchaSchema($schema);
+
         return $schema;
     }
 
@@ -58,6 +54,7 @@ class UserLoginForm extends UserForm
             ->notEmptyString('password');
 
         $validator = $this->validationRecaptcha($validator);
+
         return $validator;
     }
 

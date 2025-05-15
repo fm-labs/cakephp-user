@@ -18,7 +18,7 @@ class UserSessionsCell extends Cell
      *
      * @var array
      */
-    protected $_validCellOptions = [];
+    protected array $_validCellOptions = [];
 
     /**
      * Default display method.

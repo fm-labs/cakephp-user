@@ -6,15 +6,19 @@ namespace User\Model\Table;
 use Cake\Chronos\Chronos;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
+use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\Filesystem\File;
-use Cake\I18n\FrozenTime;
+use Cake\I18n\DateTime;
 use Cake\I18n\I18n;
 use Cake\Log\Log;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\Routing\Router;
 use Cake\Validation\Validator;
+use Dolondro\GoogleAuthenticator\Secret;
+use Dolondro\GoogleAuthenticator\SecretFactory;
+use RuntimeException;
 use User\Exception\PasswordResetException;
 use User\Model\Entity\User;
 
@@ -143,7 +147,7 @@ class UsersTable extends UserBaseTable
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
-    public function buildRules(RulesChecker $rules): \Cake\ORM\RulesChecker
+    public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->isUnique(['username'], __d('user', 'This username is already in use')));
         $rules->add($rules->isUnique(['email'], __d('user', 'This email address is already in use')));
@@ -160,7 +164,7 @@ class UsersTable extends UserBaseTable
      * @return \Cake\ORM\Query
      * @todo Exclude superusers from frontend user authentication (or make it optional)
      */
-    public function findAuthUser(Query $query, array $options)
+    public function findAuthUser(Query $query, array $options): Query
     {
         $query
             //->where(['Users.login_enabled' => true])
@@ -174,7 +178,7 @@ class UsersTable extends UserBaseTable
      * @param array $options Finder options
      * @return \Cake\ORM\Query
      */
-    public function findByUsername($username, array $options = [])
+    public function findByUsername(string $username, array $options = []): Query
     {
         return $this->find('all', $options)->where(['username' => $username]);
     }
@@ -185,7 +189,7 @@ class UsersTable extends UserBaseTable
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
-    public function validationDefault(Validator $validator): \Cake\Validation\Validator
+    public function validationDefault(Validator $validator): Validator
     {
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
@@ -269,7 +273,7 @@ class UsersTable extends UserBaseTable
      * @param \Cake\Validation\Validator $validator The validator instance
      * @return \Cake\Validation\Validator
      */
-    public function validationLogin(Validator $validator)
+    public function validationLogin(Validator $validator): Validator
     {
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
@@ -287,7 +291,7 @@ class UsersTable extends UserBaseTable
      * @param array $data User data
      * @return \User\Model\Entity\User
      */
-    public function add(array $data)
+    public function add(array $data): User
     {
         $user = $this->newEmptyEntity();
         $user->setAccess('*', true);
@@ -312,7 +316,7 @@ class UsersTable extends UserBaseTable
      * @param \Cake\Validation\Validator $validator The validator instance
      * @return \Cake\Validation\Validator
      */
-    protected function validationNewPassword(Validator $validator)
+    protected function validationNewPassword(Validator $validator): Validator
     {
         $validator
             ->requirePresence('password1', 'create')
@@ -343,7 +347,7 @@ class UsersTable extends UserBaseTable
      * @param \Cake\Validation\Validator $validator The validator instance
      * @return \Cake\Validation\Validator
      */
-    protected function validationEmail(Validator $validator)
+    protected function validationEmail(Validator $validator): Validator
     {
         $validator
             ->requirePresence('email', 'create')
@@ -365,7 +369,7 @@ class UsersTable extends UserBaseTable
      * @param \Cake\Validation\Validator $validator The validator instance
      * @return \Cake\Validation\Validator
      */
-    protected function validationUsername(Validator $validator)
+    protected function validationUsername(Validator $validator): Validator
     {
         $validator
             ->requirePresence('username', 'create')
@@ -392,7 +396,7 @@ class UsersTable extends UserBaseTable
      * @param \Cake\Validation\Validator $validator The validator instance
      * @return \Cake\Validation\Validator
      */
-    public function validationAdd(Validator $validator)
+    public function validationAdd(Validator $validator): Validator
     {
         $validator = $this->validationDefault($validator);
         $validator = $this->validationNewPassword($validator);
@@ -404,13 +408,13 @@ class UsersTable extends UserBaseTable
 
     /**
      * @param \User\Model\Entity\User $user The user entity
-     * @param null|string $secretKey Secret key for Google authenticator
+     * @param string|null $secretKey Secret key for Google authenticator
      * @return \User\Model\Entity\User
      */
-    public function setGoogleAuthSecret(User $user, $secretKey = null)
+    public function setGoogleAuthSecret(User $user, ?string $secretKey = null): User
     {
         if ($secretKey === null) {
-            $secretFactory = new \Dolondro\GoogleAuthenticator\SecretFactory();
+            $secretFactory = new SecretFactory();
             $secret = $secretFactory->create(Configure::read('GoogleAuthenticator.issuer'), $user->username);
             $secretKey = $secret->getSecretKey();
         }
@@ -422,15 +426,15 @@ class UsersTable extends UserBaseTable
 
     /**
      * @param \User\Model\Entity\User $user The user entity
-     * @return \Dolondro\GoogleAuthenticator\Secret
+     * @return \Dolondro\GoogleAuthenticator\Secret|null
      */
-    public function getGoogleAuthSecret(User $user)
+    public function getGoogleAuthSecret(User $user): Secret|null
     {
         if (!$user->gauth_secret) {
             return null;
         }
 
-        $secret = new \Dolondro\GoogleAuthenticator\Secret(
+        $secret = new Secret(
             Configure::read('GoogleAuthenticator.issuer'),
             $user->username,
             $user->gauth_secret
@@ -443,7 +447,7 @@ class UsersTable extends UserBaseTable
      * @param \User\Model\Entity\User $user The user entity
      * @return \User\Model\Entity\User
      */
-    public function enableGoogleAuth(User $user)
+    public function enableGoogleAuth(User $user): User
     {
         /*
         $secret = $this->getGoogleAuthSecret($user);
@@ -462,7 +466,7 @@ class UsersTable extends UserBaseTable
      * @param \User\Model\Entity\User $user The user entity
      * @return \User\Model\Entity\User
      */
-    public function disableGoogleAuth(User $user)
+    public function disableGoogleAuth(User $user): User
     {
         $user->gauth_enabled = false;
         //$user->gauth_secret = "";
@@ -475,9 +479,9 @@ class UsersTable extends UserBaseTable
      *
      * @param string $email User email address
      * @param string $password User password
-     * @return bool|\User\Model\Entity\User
+     * @return \User\Model\Entity\User|bool
      */
-    public function createRootUser($email, $password)
+    public function createRootUser(string $email, string $password): bool|User
     {
         // check if there is already a root user
         if ($this->find()->where(['id' => 1])->first()) {
@@ -503,10 +507,12 @@ class UsersTable extends UserBaseTable
         if (!$this->save($user)) {
             Log::error('Failed to add \'root\' user ' . $user->id, ['admin', 'user']);
             debug($user->getErrors());
+
             return false;
         }
 
         Log::info('User \'root\' added with ID ' . $user->id, ['admin', 'user']);
+
         return $user;
     }
 
@@ -517,7 +523,7 @@ class UsersTable extends UserBaseTable
      * @param bool $dispatchEvent If True, trigger custom events (Default: True)
      * @return \User\Model\Entity\User
      */
-    public function register(array $data, $dispatchEvent = true)
+    public function register(array $data, bool $dispatchEvent = true): User
     {
         /** @var \User\Model\Entity\User $user */
         $user = $this->newEmptyEntity();
@@ -567,7 +573,7 @@ class UsersTable extends UserBaseTable
         $user->email_verified = false;
         $user->email_verification_required = !(bool)Configure::read('User.Signup.disableEmailVerification');
         $user->email_verification_code = self::generateRandomVerificationCode(self::$verificationCodeLength);
-        $user->email_verification_expiry_timestamp = time() + DAY; // @TODO Read expiry offset from config
+        $user->email_verification_expiry_timestamp = time() + 60 * 60 * 24; // @TODO Read expiry offset from config
 
         // Locale
         if (!isset($data['locale'])) {
@@ -615,7 +621,7 @@ class UsersTable extends UserBaseTable
      * @param \Cake\Validation\Validator $validator The validator instance
      * @return \Cake\Validation\Validator
      */
-    public function validationRegister(Validator $validator)
+    public function validationRegister(Validator $validator): Validator
     {
         $this->validationAdd($validator);
         $validator
@@ -633,7 +639,7 @@ class UsersTable extends UserBaseTable
      * @param array $data User data
      * @return bool
      */
-    public function changePassword(User &$user, array $data)
+    public function changePassword(User &$user, array $data): bool
     {
         $user->setAccess('password0', true);
         $user->setAccess('password1', true);
@@ -686,7 +692,7 @@ class UsersTable extends UserBaseTable
      * @param \Cake\Validation\Validator $validator The validator instance
      * @return \Cake\Validation\Validator
      */
-    public function validationChangePassword(Validator $validator)
+    public function validationChangePassword(Validator $validator): Validator
     {
         $validator = $this->validationNewPassword($validator);
         $validator
@@ -704,7 +710,7 @@ class UsersTable extends UserBaseTable
      * @return \Cake\Datasource\EntityInterface
      * @throws \User\Exception\PasswordResetException
      */
-    public function resetPassword(User $user, array $data)
+    public function resetPassword(User $user, array $data): EntityInterface
     {
         $resetCode = $data['password_reset_code'] ?? null;
         if (!$resetCode) {
@@ -736,7 +742,7 @@ class UsersTable extends UserBaseTable
         $user->password_reset_expiry_timestamp = null;
 
         if (!$this->save($user)) {
-            throw new \RuntimeException('Record UPDATE failed: User:' . $user->id);
+            throw new RuntimeException('Record UPDATE failed: User:' . $user->id);
         }
 
         // cleanup
@@ -752,10 +758,10 @@ class UsersTable extends UserBaseTable
      *
      * @param \User\Model\Entity\User $user The user entity
      * @param array $data User data
-     * @return bool
+     * @return EntityInterface
      * @throws \User\Exception\PasswordResetException
      */
-    public function setPassword(User $user, array $data)
+    public function setPassword(User $user, array $data): EntityInterface
     {
         $user->setAccess('*', false);
         $user->setAccess('password1', true);
@@ -767,7 +773,7 @@ class UsersTable extends UserBaseTable
 
         $user->password = $data['password1'];
         if (!$this->save($user)) {
-            throw new \RuntimeException('Record UPDATE failed: User:' . $user->id);
+            throw new RuntimeException('Record UPDATE failed: User:' . $user->id);
         }
 
         return $user;
@@ -779,7 +785,7 @@ class UsersTable extends UserBaseTable
      * @param \Cake\Validation\Validator $validator The validator instance
      * @return \Cake\Validation\Validator
      */
-    public function validationResetPassword(Validator $validator)
+    public function validationResetPassword(Validator $validator): Validator
     {
         $validator = $this->validationNewPassword($validator);
 
@@ -791,9 +797,9 @@ class UsersTable extends UserBaseTable
      *
      * @param mixed $value Check value
      * @param mixed $context Check context
-     * @return bool|string
+     * @return string|bool
      */
-    public function checkNewPassword1($value, $context)
+    public function checkNewPassword1(mixed $value, mixed $context): bool|string
     {
         $value = trim($value);
 
@@ -811,9 +817,9 @@ class UsersTable extends UserBaseTable
      * @param mixed $value Check value
      * @param array $options Check options
      * @param mixed $context Check context
-     * @return bool|string
+     * @return string|bool
      */
-    public function checkPasswordComplexity($value, $options = [], $context = null)
+    public function checkPasswordComplexity(mixed $value, array $options = [], mixed $context = null): bool|string
     {
         if (func_num_args() == 2) {
             $context = $options;
@@ -903,9 +909,9 @@ class UsersTable extends UserBaseTable
      * @param mixed $value Check value
      * @param array $options Check options
      * @param mixed $context Check context
-     * @return bool|string
+     * @return string|bool
      */
-    public function checkEmailBlacklist($value, $options = [], $context = null)
+    public function checkEmailBlacklist(mixed $value, array $options = [], mixed $context = null): bool|string
     {
         if (func_num_args() == 2) {
             $context = $options;
@@ -969,7 +975,7 @@ class UsersTable extends UserBaseTable
      * @param mixed $context Check context
      * @return bool
      */
-    public function checkNewPassword2($value, $context)
+    public function checkNewPassword2(mixed $value, mixed $context): bool
     {
         $value = trim($value);
 
@@ -990,7 +996,7 @@ class UsersTable extends UserBaseTable
      * @param \Cake\Validation\Validator $validator The validator instance
      * @return \Cake\Validation\Validator
      */
-    public function validationActivate(Validator $validator)
+    public function validationActivate(Validator $validator): Validator
     {
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
@@ -1009,7 +1015,7 @@ class UsersTable extends UserBaseTable
      * @return \User\Model\Entity\User|\Cake\Datasource\EntityInterface|bool
      * @todo Refactor with Form
      */
-    public function activate(array $data = [])
+    public function activate(array $data = []): User|EntityInterface|bool
     {
         $email = isset($data['email']) ? strtolower(trim($data['email'])) : null;
         $code = isset($data['email_verification_code']) ? trim($data['email_verification_code']) : null;
@@ -1041,7 +1047,7 @@ class UsersTable extends UserBaseTable
         $user->password_reset_expiry_timestamp = time() + self::$passwordResetExpiry; // 24h
 
         if (!$this->save($user)) {
-            throw new \RuntimeException('UsersTable::updateResetCode FAILED for User with ID ' . $user->id);
+            throw new RuntimeException('UsersTable::updateResetCode FAILED for User with ID ' . $user->id);
         }
 
         return $user;
@@ -1052,18 +1058,18 @@ class UsersTable extends UserBaseTable
      *
      * @param \User\Model\Entity\User $user The user entity
      * @param bool $dispatchEvent If True, trigger custom events (Default: True)
-     * @return bool|mixed|\User\Model\Entity\User
+     * @return \User\Model\Entity\User|mixed|bool
      */
-    public function markDeleted(User $user, $dispatchEvent = true)
+    public function markDeleted(User $user, bool $dispatchEvent = true): mixed
     {
         $user->is_deleted = true;
         $user->login_enabled = false;
         $user->block_enabled = true;
         $user->block_reason = 'DELETED';
-        $user->block_datetime = FrozenTime::now();
+        $user->block_datetime = DateTime::now();
 
         if (!$this->save($user)) {
-            throw new \RuntimeException('UsersTable::markDeleted: Record UPDATE failed: User:' . $user->id);
+            throw new RuntimeException('UsersTable::markDeleted: Record UPDATE failed: User:' . $user->id);
         }
 
         if ($dispatchEvent === true) {
@@ -1078,9 +1084,9 @@ class UsersTable extends UserBaseTable
      *
      * @param \User\Model\Entity\User $user The user entity
      * @param bool $dispatchEvent If True, trigger custom events (Default: True)
-     * @return bool|mixed|\User\Model\Entity\User
+     * @return \User\Model\Entity\User|mixed|bool
      */
-    public function resetDeleted(User $user, $dispatchEvent = true)
+    public function resetDeleted(User $user, bool $dispatchEvent = true): mixed
     {
         $user->is_deleted = false;
         $user->login_enabled = true;
@@ -1089,7 +1095,7 @@ class UsersTable extends UserBaseTable
         $user->block_datetime = null;
 
         if (!$this->save($user)) {
-            throw new \RuntimeException('UsersTable::resetDeleted: Record UPDATE failed: User:' . $user->id);
+            throw new RuntimeException('UsersTable::resetDeleted: Record UPDATE failed: User:' . $user->id);
         }
 
         if ($dispatchEvent === true) {
@@ -1103,9 +1109,9 @@ class UsersTable extends UserBaseTable
      * Resend email verification code
      *
      * @param \User\Model\Entity\User $user The user entity
-     * @return bool|mixed|\User\Model\Entity\User
+     * @return \User\Model\Entity\User|mixed|bool
      */
-    public function updateEmailVerificationCode(User $user)
+    public function updateEmailVerificationCode(User $user): mixed
     {
         //@TODO Check if the verification code has expired. If so, create new verification code.
         return $user;
@@ -1117,7 +1123,7 @@ class UsersTable extends UserBaseTable
      * @param int $length Lenth of generated string
      * @return string
      */
-    public static function generateRandomVerificationCode($length = 8)
+    public static function generateRandomVerificationCode(int $length = 8): string
     {
         //@TODO Make use of random_compat vendor lib
         return strtoupper(self::random_str($length));
@@ -1129,14 +1135,14 @@ class UsersTable extends UserBaseTable
      * @param \User\Model\Entity\User $user The user entity
      * @return string Full URL
      */
-    public static function buildEmailVerificationUrl(User $user)
+    public static function buildEmailVerificationUrl(User $user): string
     {
         return Router::url([
             'prefix' => false, 'plugin' => 'User', 'controller' => 'Signup', 'action' => 'activate',
             '?' => [
                 'c' => base64_encode($user->email_verification_code),
                 'm' => base64_encode($user->email),
-            ]
+            ],
         ], true);
     }
 
@@ -1153,7 +1159,7 @@ class UsersTable extends UserBaseTable
             '?' => [
                 'c' => base64_encode($user->password_reset_code),
                 'u' => base64_encode($user->username),
-            ]
+            ],
         ], true);
     }
 
@@ -1171,7 +1177,7 @@ class UsersTable extends UserBaseTable
      * @return string
      * @throws \Exception
      */
-    public static function random_str($length, $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    public static function random_str(int $length, string $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'): string
     {
         $str = '';
         $max = mb_strlen($keyspace, '8bit') - 1;

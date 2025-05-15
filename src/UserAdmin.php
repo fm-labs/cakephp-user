@@ -9,6 +9,7 @@ use Cake\Event\EventInterface;
 use Cake\Event\EventListenerInterface;
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
+use Cupcake\Menu\MenuItemCollection;
 
 class UserAdmin extends BaseAdminPlugin implements EventListenerInterface
 {
@@ -37,11 +38,11 @@ class UserAdmin extends BaseAdminPlugin implements EventListenerInterface
     }
 
     /**
-     * @param EventInterface $event
+     * @param \Cake\Event\EventInterface $event
      * @return void
      * @throws \Exception
      */
-    public function controllerInitialize(EventInterface $event)
+    public function controllerInitialize(EventInterface $event): void
     {
         /** @var \Cake\Controller\Controller $controller */
         $controller = $event->getSubject();
@@ -53,7 +54,7 @@ class UserAdmin extends BaseAdminPlugin implements EventListenerInterface
      * @param \Cupcake\Menu\MenuItemCollection $menu The menu.
      * @return void
      */
-    public function buildAdminSystemMenu(Event $event, \Cupcake\Menu\MenuItemCollection $menu): void
+    public function buildAdminSystemMenu(Event $event, MenuItemCollection $menu): void
     {
         $menu->addItem([
             'title' => __d('user', 'Users'),

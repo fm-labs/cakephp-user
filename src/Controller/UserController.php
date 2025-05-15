@@ -17,7 +17,7 @@ class UserController extends AppController
     /**
      * @var string
      */
-    public $modelClass = 'User.Users';
+    public ?string $defaultTable = 'User.Users';
 
     /**
      * Index method

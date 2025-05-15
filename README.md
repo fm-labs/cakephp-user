@@ -13,6 +13,12 @@ composer require fm-labs/cakephp-user
 composer require fm-labs/cakephp-user:^4
 ```
 
+### Run migrations
+```shell
+$ ./bin/cake migrations migrate --plugin User
+```
+
+
 ## Features
 
 * User Login (requires cakephp/authentication)
@@ -40,22 +46,23 @@ composer require fm-labs/cakephp-user:^4
 
 ## Configuration
 
-Key                                     | Default       | Overrideable by Settings
----                                     | ---           | ---
-User.layout                             | null          | yes
-User.EventLogger.enabled                | false         | yes
-User.Mailer.enabled                     | false         | yes
-User.Mailer.className                   | null          | no
-User.Login.layout                       | null          | yes
-User.Login.disabled                     | false         | yes
-User.Signup.groupAuth                   | false         | yes
-User.Signup.disabled                    | false         | yes
-User.Signup.verifyEmail                 | false         | yes
-User.Signup.disableEmailVerification    | false         | yes
-User.Signup.formClass                   | null          | no
-User.Mailer.profile                     | ''            | no
-User.Blacklist                          | []            | no
-User.Recaptcha.enabled                  | false         | yes
-GoogleAuthenticator.issuer              | ''            | no
-GoogleRecaptcha.secretKey               | false         | no
-Session.timeout                         | ?             | no
+
+| Key                                  | Default | Overrideable by Settings |
+|--------------------------------------|---------|--------------------------|
+| User.layout                          | null    | yes                      |
+| User.EventLogger.enabled             | false   | yes                      |
+| User.Mailer.enabled                  | false   | yes                      |
+| User.Mailer.className                | null    | no                       |
+| User.Login.layout                    | null    | yes                      |
+| User.Login.disabled                  | false   | yes                      |
+| User.Signup.groupAuth                | false   | yes                      |
+| User.Signup.disabled                 | false   | yes                      |
+| User.Signup.verifyEmail              | false   | yes                      |
+| User.Signup.disableEmailVerification | false   | yes                      |
+| User.Signup.formClass                | null    | no                       |
+| User.Mailer.profile                  | ''      | no                       |
+| User.Blacklist                       | []      | no                       |
+| User.Recaptcha.enabled               | false   | yes                      |
+| GoogleAuthenticator.issuer           | ''      | no                       |
+| GoogleRecaptcha.secretKey            | false   | no                       |
+| Session.timeout                      | ?       | no                       |

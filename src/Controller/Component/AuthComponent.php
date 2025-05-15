@@ -3,14 +3,17 @@ declare(strict_types=1);
 
 namespace User\Controller\Component;
 
+use ArrayAccess;
 use Authentication\Controller\Component\AuthenticationComponent;
 use Cake\Controller\Component;
 use Cake\Controller\Component\FlashComponent;
 use Cake\Controller\ComponentRegistry;
 use Cake\Event\EventManagerInterface;
 use Cake\Log\Log;
+use Exception;
 use User\Event\AuthEvent;
 use User\Exception\AuthException;
+use User\Model\Table\UsersTable;
 
 /**
  * Class AuthComponent
@@ -18,8 +21,8 @@ use User\Exception\AuthException;
  * A shim component for mapping the old CakePHP AuthComponent to the new standalone AuthenticationComponent
  *
  * @package User\Controller\Component
- * @property AuthenticationComponent $Authentication
- * @property FlashComponent $Flash
+ * @property \Authentication\Controller\Component\AuthenticationComponent $Authentication
+ * @property \Cake\Controller\Component\FlashComponent $Flash
  * @todo Add backward-compatibility to CakePHP's legacy AuthComponent
  */
 class AuthComponent extends Component
@@ -27,21 +30,21 @@ class AuthComponent extends Component
     /**
      * @var \User\Model\Table\UsersTable
      */
-    public $Users;
+    public UsersTable $Users;
 
     //public $components = ['Flash'];
 
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'logoutRedirect' => false,
     ];
 
     /**
-     * @var FlashComponent|null
+     * @var \Cake\Controller\Component\FlashComponent|null
      */
     public ?FlashComponent $Flash = null;
 
     /**
-     * @var AuthenticationComponent|null
+     * @var \Authentication\Controller\Component\AuthenticationComponent|null
      */
     public ?AuthenticationComponent $Authentication = null;
 
@@ -55,7 +58,7 @@ class AuthComponent extends Component
 
     protected function _deprecated(string $functionName)
     {
-        deprecationWarning(sprintf("(User)AuthComponent::%s() is deprecated. Use AuthenticationComponent from cakephp/authentication package instead!", $functionName));
+        deprecationWarning(sprintf('(User)AuthComponent::%s() is deprecated. Use AuthenticationComponent from cakephp/authentication package instead!', $functionName));
     }
 
     /**
@@ -82,13 +85,13 @@ class AuthComponent extends Component
         }
     }
 
-    public function beforeFilter()
-    {
-
-    }
+//    public function beforeFilter()
+//    {
+//    }
 
     /**
-     * @param string[] $actions List of allowed actions
+     * @param array<string> $actions List of allowed actions
+     * @param bool $merge
      * @return void
      */
     public function allow(array $actions = [], $merge = true): void
@@ -105,14 +108,14 @@ class AuthComponent extends Component
      * @return void
      * @deprecated Use Flash::error instead.
      */
-    public function flash($msg): void
+    public function flash(string|false $msg): void
     {
         $this->_deprecated(__FUNCTION__);
         $this->Flash->error($msg, ['key' => 'auth']);
     }
 
     /**
-     * @param null|string $key Identity data key
+     * @param string|null $key Identity data key
      * @return \Authentication\IdentityInterface|mixed|null
      */
     public function user(?string $key = null)
@@ -134,7 +137,7 @@ class AuthComponent extends Component
      * @return void
      * @deprecated Use Authentication::setIdentity instead.
      */
-    public function setUser(?\ArrayAccess $user): void
+    public function setUser(?ArrayAccess $user): void
     {
         $this->Authentication->setIdentity($user);
         /*
@@ -150,7 +153,7 @@ class AuthComponent extends Component
      * Dispatches event 'User.Auth.logout'.
      * Delegates logout to AuthenticationComponent
      *
-     * @return null|string Logout redirect url
+     * @return string|null Logout redirect url
      */
     public function logout(): ?string
     {
@@ -163,7 +166,7 @@ class AuthComponent extends Component
     }
 
     /**
-     * @return null|string Login redirect url
+     * @return string|null Login redirect url
      */
     public function redirectUrl(): ?string
     {
@@ -198,7 +201,6 @@ class AuthComponent extends Component
             // authentication successful
             // dispatch 'User.Auth.beforeLogin' event
             if ($result->isValid()) {
-
                 //$user = $this->Authentication->getIdentity();
                 $user = $this->user();
                 if ($user) {
@@ -230,19 +232,16 @@ class AuthComponent extends Component
                     ]);
                     $this->getEventManager()->dispatch($event);
 
-
 //                    // login redirect
 //                    //print_r($result->getData());
 //                    $defaultRedirect = $controller->config['loginRedirectUrl'] ?? '/';
 //                    $target = $this->redirectUrl() ?? $defaultRedirect;
 //                    $controller->Flash->success(__d('user', 'Login successful'), ['key' => 'auth']);
 //                    $controller->redirect($target);
-
                 } elseif ($request->is('post')) {
                     throw new AuthException(__d('user', 'Login failed'), $user);
                 }
             }
-
         } catch (AuthException $ex) {
             //$this->setUser(null);
             //$this->flash($ex->getMessage());
@@ -254,7 +253,7 @@ class AuthComponent extends Component
             ]);
             $this->getEventManager()->dispatch($event);
             throw $ex;
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             debug($ex->getMessage());
             //$this->setUser(null);
             //$this->flash($ex->getMessage());

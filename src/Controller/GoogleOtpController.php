@@ -4,7 +4,11 @@ declare(strict_types=1);
 namespace User\Controller;
 
 use Cake\Core\Configure;
+use Cake\Event\EventInterface;
 use Cake\Http\Exception\ServiceUnavailableException;
+use Dolondro\GoogleAuthenticator\GoogleAuthenticator;
+use Dolondro\GoogleAuthenticator\QrImageGenerator\GoogleQrImageGenerator;
+use RuntimeException;
 use User\Model\Entity\User;
 
 /**
@@ -19,7 +23,7 @@ class GoogleOtpController extends AppController
     /**
      * @inheritDoc
      */
-    public function beforeFilter(\Cake\Event\EventInterface $event)
+    public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
 
@@ -48,7 +52,7 @@ class GoogleOtpController extends AppController
         }
 
         if ($user->gauth_enabled) {
-            $qrImageGenerator = new \Dolondro\GoogleAuthenticator\QrImageGenerator\GoogleQrImageGenerator();
+            $qrImageGenerator = new GoogleQrImageGenerator();
             $secret = $this->Auth->userModel()->getGoogleAuthSecret($user);
             $imgUri = $qrImageGenerator->generateUri($secret);
 
@@ -74,7 +78,7 @@ class GoogleOtpController extends AppController
         if (!$user->gauth_secret) {
             $user = $this->Auth->userModel()->setGoogleAuthSecret($user, null);
             if (!$user) {
-                throw new \RuntimeException('Setup failed');
+                throw new RuntimeException('Setup failed');
             }
         }
 
@@ -99,7 +103,7 @@ class GoogleOtpController extends AppController
             }
         }
 
-        $qrImageGenerator = new \Dolondro\GoogleAuthenticator\QrImageGenerator\GoogleQrImageGenerator();
+        $qrImageGenerator = new GoogleQrImageGenerator();
         $secret = $this->Auth->userModel()->getGoogleAuthSecret($user);
         $imgUri = $qrImageGenerator->generateUri($secret);
 
@@ -187,11 +191,11 @@ class GoogleOtpController extends AppController
      *
      * @param \User\Model\Entity\User $user The user entity
      * @param string $code Google authenticator code
-     * @return bool|\User\Model\Entity\User
+     * @return \User\Model\Entity\User|bool
      */
-    protected function _checkGoogleAuth(User $user, $code)
+    protected function _checkGoogleAuth(User $user, string $code)
     {
-        $googleAuthenticator = new \Dolondro\GoogleAuthenticator\GoogleAuthenticator();
+        $googleAuthenticator = new GoogleAuthenticator();
         $secretKey = $user->gauth_secret;
         $code = $this->request->getData('code');
 

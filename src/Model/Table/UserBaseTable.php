@@ -10,10 +10,10 @@ abstract class UserBaseTable extends Table
     /**
      * @var string Default User connection name
      */
-    public static $connectionName = 'default';
+    public static string $connectionName = 'default';
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public static function defaultConnectionName(): string
     {

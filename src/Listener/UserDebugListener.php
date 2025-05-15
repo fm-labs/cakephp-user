@@ -16,15 +16,11 @@ use User\Form\UserForm;
  */
 class UserDebugListener implements EventListenerInterface
 {
-    public function __construct()
-    {
-    }
-
     /**
      * @param \Cake\Event\Event $event The event object
      * @return void
      */
-    public function logEvent(Event $event)
+    public function logEvent(Event $event): void
     {
         $eventName = $event->getName();
 

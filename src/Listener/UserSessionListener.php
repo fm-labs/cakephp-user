@@ -7,7 +7,10 @@ use Cake\Core\Plugin;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Log\Log;
+use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
+use Exception;
+use GeoIp\Model\Table\GeoIpTable;
 
 /**
  * Class UserSessionListener
@@ -20,12 +23,12 @@ class UserSessionListener implements EventListenerInterface
     /**
      * @var \GeoIp\Model\Table\GeoIpTable|null $GeoIp
      */
-    protected $GeoIp = null;
+    protected ?GeoIpTable $GeoIp = null;
 
     /**
      * @var \User\Model\Table\UserSessionsTable|null
      */
-    protected ?\Cake\ORM\Table $UserSessions = null;
+    protected ?Table $UserSessions = null;
 
     /**
      * Constructor
@@ -43,7 +46,7 @@ class UserSessionListener implements EventListenerInterface
      * @param \Cake\Event\Event $event The event object
      * @return void
      */
-    public function sessionCreate(Event $event)
+    public function sessionCreate(Event $event): void
     {
         $data = $event->getData();
 
@@ -57,7 +60,7 @@ class UserSessionListener implements EventListenerInterface
                 if (isset($location['country_iso2'])) {
                     $data['geo_country_code'] = $location['country_iso2'];
                 }
-            } catch (\Exception $ex) {
+            } catch (Exception $ex) {
                 Log::error('UserSessionService: ' . $ex->getMessage(), ['user']);
             }
         }
@@ -68,14 +71,14 @@ class UserSessionListener implements EventListenerInterface
         }
 
         $event->setData($data);
-        Log::debug("User session created for user with ID " . $data['user_id'], ['user']);
+        Log::debug('User session created for user with ID ' . $data['user_id'], ['user']);
     }
 
     /**
      * @param \Cake\Event\Event $event The event object
      * @return void
      */
-    public function sessionExtend(Event $event)
+    public function sessionExtend(Event $event): void
     {
         /** @var \User\Model\Entity\UserSession $userSession */
         $userSession = $this->UserSessions->findBySessionid($event->getData('sessionid'))->first();
@@ -92,14 +95,14 @@ class UserSessionListener implements EventListenerInterface
             Log::error('Failed to save user session: ' . json_encode($userSession->getErrors()), ['user']);
         }
 
-        Log::debug("User session extended for user with ID " . $userSession['user_id'], ['user']);
+        Log::debug('User session extended for user with ID ' . $userSession['user_id'], ['user']);
     }
 
     /**
      * @param \Cake\Event\Event $event The event object
      * @return void
      */
-    public function sessionDestroy(Event $event)
+    public function sessionDestroy(Event $event): void
     {
         /** @var \User\Model\Entity\UserSession $userSession */
         $userSession = $this->UserSessions->findBySessionid($event->getData('sessionid'))->first();
@@ -111,7 +114,7 @@ class UserSessionListener implements EventListenerInterface
             Log::error('Failed to delete user session with ID ' . $userSession->id, ['user']);
         }
 
-        Log::debug("User session destroyed for user with ID " . $userSession['user_id']);
+        Log::debug('User session destroyed for user with ID ' . $userSession['user_id']);
     }
 
     /**

@@ -19,7 +19,7 @@ class AuthController extends AppController
     /**
      * @var string
      */
-    public $modelClass = 'User.Users';
+    public ?string $defaultTable = 'User.Users';
 
     /**
      * @var array
@@ -135,6 +135,6 @@ class AuthController extends AppController
         $this->viewBuilder()->setClassName('Json');
         $data = $this->UserSession->extractSessionInfo();
         $this->set('data', $data);
-        $this->set('_serialize', 'data');
+        $this->viewBuilder()->setOption('serialize', 'data');
     }
 }

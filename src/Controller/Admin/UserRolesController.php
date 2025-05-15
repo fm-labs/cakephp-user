@@ -10,12 +10,12 @@ namespace User\Controller\Admin;
  */
 class UserRolesController extends AppController
 {
-    public $modelClass = "User.Roles";
+    public ?string $defaultTable = 'User.Roles';
 
     /**
      * @var array
      */
-    public $actions = [
+    public array $actions = [
         'index' => 'User.Index',
         'view' => 'User.View',
         'edit' => 'User.Edit',
@@ -39,19 +39,19 @@ class UserRolesController extends AppController
      * @return void
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view(?string $id = null)
     {
         $role = $this->Roles->get($id, [
             'contain' => [],
         ]);
         $this->set('role', $role);
-        $this->set('_serialize', ['role']);
+        $this->viewBuilder()->setOption('serialize', ['role']);
     }
 
     /**
      * Add method
      *
-     * @return void|\Cake\Http\Response Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|void Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
@@ -67,17 +67,17 @@ class UserRolesController extends AppController
             }
         }
         $this->set(compact('role'));
-        $this->set('_serialize', ['role']);
+        $this->viewBuilder()->setOption('serialize', ['role']);
     }
 
     /**
      * Edit method
      *
      * @param string|null $id Role id.
-     * @return void|\Cake\Http\Response Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit(?string $id = null)
     {
         $role = $this->Roles->get($id, [
             'contain' => [],
@@ -93,17 +93,17 @@ class UserRolesController extends AppController
             }
         }
         $this->set(compact('role'));
-        $this->set('_serialize', ['role']);
+        $this->viewBuilder()->setOption('serialize', ['role']);
     }
 
     /**
      * Delete method
      *
      * @param string|null $id Role id.
-     * @return void|\Cake\Http\Response Redirects to index.
+     * @return \Cake\Http\Response|void Redirects to index.
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete(?string $id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
         $role = $this->Roles->get($id);

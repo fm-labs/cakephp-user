@@ -5,13 +5,14 @@ use Migrations\AbstractMigration;
 
 class InitialUser extends AbstractMigration
 {
-    public $autoId = false;
+    public bool $autoId = false;
 
     /**
      * Up Method.
      *
      * More information on this method is available here:
      * https://book.cakephp.org/phinx/0/en/migrations.html#the-up-method
+     *
      * @return void
      */
     public function up(): void
@@ -222,7 +223,6 @@ class InitialUser extends AbstractMigration
             )
             ->create();
 
-
         $this->table('user_sessions')
             ->addColumn('id', 'integer', [
                 'autoIncrement' => true,
@@ -304,7 +304,6 @@ class InitialUser extends AbstractMigration
                 ]
             )
             ->create();
-
     }
 
     /**
@@ -312,6 +311,7 @@ class InitialUser extends AbstractMigration
      *
      * More information on this method is available here:
      * https://book.cakephp.org/phinx/0/en/migrations.html#the-down-method
+     *
      * @return void
      */
     public function down(): void

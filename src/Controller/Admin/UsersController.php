@@ -4,9 +4,7 @@ declare(strict_types=1);
 namespace User\Controller\Admin;
 
 use Cake\Core\Configure;
-use Cake\Core\Plugin;
 use Cake\I18n\I18n;
-use Cake\Mailer\Transport\DebugTransport;
 use User\Mailer\UserMailerAwareTrait;
 
 /**
@@ -19,12 +17,12 @@ class UsersController extends AppController
 {
     use UserMailerAwareTrait;
 
-    public $defaultTable = "User.Users";
+    public ?string $defaultTable = 'User.Users';
 
     /**
      * @var array
      */
-    public $actions = [
+    public array $actions = [
         'index' => 'Admin.Index',
         'view' => 'Admin.View',
         'add' => 'Admin.Add',
@@ -91,8 +89,8 @@ class UsersController extends AppController
             [
                 __d('user', 'View User Groups'),
                 ['plugin' => 'User', 'controller' => 'UserGroups', 'action' => 'index'],
-                ['data-icon' => 'users']
-            ]
+                ['data-icon' => 'users'],
+            ],
         ]);
 
         $this->Action->execute();
@@ -114,6 +112,7 @@ class UsersController extends AppController
             'login_last_login_ip', 'login_last_login_host',
             'block_datetime', 'gauth_last_verify_datetime',
         ]);
+
         return $this->Action->dispatch($action);
         //$this->Action->execute();
     }
@@ -143,7 +142,7 @@ class UsersController extends AppController
      * @return void
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view(?string $id = null)
     {
         $this->set('related', ['UserGroups']);
         $this->set('entityOptions', ['contain' => ['UserGroups']]);
@@ -158,7 +157,7 @@ class UsersController extends AppController
     /**
      * Change password of current user
      *
-     * @param null $userId User ID
+     * @param $userId
      * @return \Cake\Http\Response|void
      */
     public function passwordChange($userId = null)
@@ -187,7 +186,7 @@ class UsersController extends AppController
     /**
      * Change password of current user
      *
-     * @param null $userId User ID
+     * @param $userId
      * @return \Cake\Http\Response|void
      */
     public function passwordReset($userId = null)
@@ -216,7 +215,7 @@ class UsersController extends AppController
     /**
      * User emails
      *
-     * @param null $id User ID
+     * @param $id
      * @return \Cake\Http\Response|void
      */
     public function emails($id = null)
@@ -250,7 +249,7 @@ class UsersController extends AppController
 
                 $this->Flash->success("Sent email of type $emailType to $user->email");
             } else {
-                $this->Flash->error("Invalid email type");
+                $this->Flash->error('Invalid email type');
             }
         }
 

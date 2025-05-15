@@ -29,7 +29,7 @@ class UserActivityListener implements EventListenerInterface
      * @param \Cake\Event\Event $event The event object
      * @return void
      */
-    public function userActivity(Event $event)
+    public function userActivity(Event $event): void
     {
         /** @var \Cake\ORM\Table $Table */
         $Table = $event->getSubject();
@@ -49,7 +49,7 @@ class UserActivityListener implements EventListenerInterface
      * @param \Cake\Event\Event $event The event object
      * @return void
      */
-    public function authActivity(Event $event)
+    public function authActivity(Event $event): void
     {
         /** @var \User\Controller\Component\AuthComponent $auth */
         $Auth = $event->getSubject();

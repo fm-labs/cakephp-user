@@ -4,30 +4,33 @@ declare(strict_types=1);
 namespace User\Form;
 
 use Cake\Controller\Controller;
+use Cake\Datasource\EntityInterface;
 use Cake\Event\EventManager;
 use Cake\Form\Form;
+use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use User\Model\Entity\User;
+use User\Model\Table\UsersTable;
 
 abstract class UserForm extends Form
 {
     /**
      * @var \User\Model\Table\UsersTable
      */
-    public \User\Model\Table\UsersTable|\Cake\ORM\Table $Users;
+    public UsersTable|Table $Users;
 
     /**
      * @var \User\Model\Entity\User|null
      */
-    public User|\Cake\Datasource\EntityInterface|null $user;
+    public User|EntityInterface|null $user;
 
     /**
-     * @var Controller|null
+     * @var \Cake\Controller\Controller|null
      */
     protected ?Controller $controller;
 
     /**
-     * @param null|\User\Model\Entity\User $user The user entity
+     * @param \User\Model\Entity\User|null $user The user entity
      */
     public function __construct(?User $user = null, ?EventManager $eventManager = null)
     {
@@ -40,7 +43,7 @@ abstract class UserForm extends Form
         $this->user = $user;
     }
 
-    public function setController(?Controller $controller)
+    public function setController(?Controller $controller): void
     {
         $this->controller = $controller;
         //$this->setEventManager($controller->getEventManager());

@@ -3,12 +3,14 @@ declare(strict_types=1);
 
 namespace User;
 
+use Admin\Admin;
 use Authentication\AuthenticationService;
 use Authentication\AuthenticationServiceInterface;
 use Authentication\AuthenticationServiceProviderInterface;
 use Authentication\Middleware\AuthenticationMiddleware;
 use Cake\Core\BasePlugin;
 use Cake\Core\Configure;
+use Cake\Core\Plugin;
 use Cake\Core\PluginApplicationInterface;
 use Cake\Event\EventManager;
 use Cake\Http\MiddlewareQueue;
@@ -41,7 +43,7 @@ class UserPlugin extends BasePlugin implements AuthenticationServiceProviderInte
          */
         Configure::load('User.user');
         Configure::load('User.emails');
-        if (\Cake\Core\Plugin::isLoaded('Settings')) {
+        if (Plugin::isLoaded('Settings')) {
             Configure::load('User', 'settings');
         }
 
@@ -74,7 +76,7 @@ class UserPlugin extends BasePlugin implements AuthenticationServiceProviderInte
                 Configure::load('User.emails');
             }
             // Make sure Mailman plugin is loaded before UserMailer is instantiated
-            $app->addOptionalPlugin("Mailman");
+            $app->addOptionalPlugin('Mailman');
             //EventManager::instance()->on(new UserMailerService(Configure::read('User.Mailer')));
             EventManager::instance()->on(new UserMailer());
         }
@@ -113,8 +115,8 @@ class UserPlugin extends BasePlugin implements AuthenticationServiceProviderInte
         /**
          * Administration
          */
-        if (\Cake\Core\Plugin::isLoaded('Admin')) {
-            \Admin\Admin::addPlugin(new \User\UserAdmin());
+        if (Plugin::isLoaded('Admin')) {
+            Admin::addPlugin(new UserAdmin());
         }
     }
 
@@ -123,7 +125,7 @@ class UserPlugin extends BasePlugin implements AuthenticationServiceProviderInte
      */
     public function routes(RouteBuilder $routes): void
     {
-        $routes->plugin('User', [], function ($routes) {
+        $routes->plugin('User', [], function ($routes): void {
             $routes->connect(
                 '/login',
                 ['controller' => 'Auth', 'action' => 'login'],
@@ -211,6 +213,7 @@ class UserPlugin extends BasePlugin implements AuthenticationServiceProviderInte
             //@todo: add Token authenticator
             //@todo: add JWT authenticator
             $service->loadAuthenticator('Authentication.Session');
+
             return $service; // return early
         }
 

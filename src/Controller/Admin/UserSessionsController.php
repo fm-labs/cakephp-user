@@ -13,7 +13,7 @@ class UserSessionsController extends AppController
     /**
      * @var string
      */
-    public $modelClass = 'User.UserSessions';
+    public string $modelClass = 'User.UserSessions';
 
     /**
      * @var array

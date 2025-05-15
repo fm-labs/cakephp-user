@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace User\Util;
 
 use Cake\Utility\Inflector;
+use DeviceDetector\DeviceDetector;
 
 /**
  * @property string $name
@@ -20,7 +21,7 @@ class UserAgent
     /**
      * @var array Parsed user agent info
      */
-    protected $_details = [
+    protected array $_details = [
         'is_bot' => null,
         'os_name' => null,
         'os_version' => null,
@@ -33,7 +34,7 @@ class UserAgent
     /**
      * @var string Raw user agent string
      */
-    protected $_ua;
+    protected string $_ua;
 
     /**
      * Constructor.
@@ -41,7 +42,7 @@ class UserAgent
      * @param string $ua User agent string
      * @param bool $useDeviceDetector If TRUE, Piwik/Matomo's DeviceDetector is used
      */
-    public function __construct($ua, $useDeviceDetector = true)
+    public function __construct(string $ua, bool $useDeviceDetector = true)
     {
         $this->_ua = $ua;
 
@@ -61,7 +62,7 @@ class UserAgent
      * @param array $parsed Parse result
      * @return void
      */
-    protected function _set($parsed)
+    protected function _set(array $parsed): void
     {
         foreach ($parsed as $k => $v) {
             // skip empty values
@@ -81,7 +82,7 @@ class UserAgent
      * @param string $key Property name
      * @return mixed
      */
-    public function __get($key)
+    public function __get(string $key): mixed
     {
         if ($key == 'name') {
             return $this->_ua;
@@ -101,7 +102,7 @@ class UserAgent
      * @param array $args Method args
      * @return mixed
      */
-    public function __call($method, $args)
+    public function __call(string $method, array $args): mixed
     {
         if (preg_match('/^([\w]+)$/', $method, $matches)) {
             $key = Inflector::underscore($matches[1]);
@@ -115,7 +116,7 @@ class UserAgent
     /**
      * @return array
      */
-    public function getDetails()
+    public function getDetails(): array
     {
         return $this->_details;
     }
@@ -126,7 +127,7 @@ class UserAgent
      * @param string $ua User agent string
      * @return array
      */
-    protected function parseSimple($ua)
+    protected function parseSimple(string $ua): array
     {
         $isBot = false;
         $osName = $osVersion = $osPlatform = null;
@@ -201,14 +202,14 @@ class UserAgent
      * @param string $ua User agent string
      * @return array
      */
-    protected function parseWithDeviceDetector($ua)
+    protected function parseWithDeviceDetector(string $ua): array
     {
         // OPTIONAL: Set version truncation to none, so full versions will be returned
         // By default only minor versions will be returned (e.g. X.Y)
         // for other options see VERSION_TRUNCATION_* constants in DeviceParserAbstract class
         //\DeviceDetector\Parser\Device\DeviceParserAbstract::setVersionTruncation(\DeviceDetector\Parser\Device\DeviceParserAbstract::VERSION_TRUNCATION_NONE);
 
-        $dd = new \DeviceDetector\DeviceDetector($ua);
+        $dd = new DeviceDetector($ua);
 
         // OPTIONAL: Set caching method
         // By default static cache is used, which works best within one php process (memory array caching)
@@ -260,7 +261,7 @@ class UserAgent
      * @param string $val Device value
      * @return string
      */
-    protected function _mapDevice($val)
+    protected function _mapDevice(string $val): string
     {
         $map = [
             'smartphone' => 'phone',

@@ -12,7 +12,6 @@ use Cake\Validation\Validator;
  * UserSessions Model
  *
  * @property \Cake\ORM\Association\BelongsTo $Users
- *
  * @method \User\Model\Entity\UserSession get($primaryKey, $options = [])
  * @method \User\Model\Entity\UserSession newEntity($data = null, array $options = [])
  * @method \User\Model\Entity\UserSession[] newEntities(array $data, array $options = [])
@@ -20,7 +19,6 @@ use Cake\Validation\Validator;
  * @method \User\Model\Entity\UserSession patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \User\Model\Entity\UserSession[] patchEntities($entities, array $data, array $options = [])
  * @method \User\Model\Entity\UserSession findOrCreate($search, callable $callback = null, $options = [])
- *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class UserSessionsTable extends Table
@@ -49,7 +47,7 @@ class UserSessionsTable extends Table
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected function _initializeSchema(TableSchemaInterface $schema): TableSchemaInterface
     {
@@ -64,7 +62,7 @@ class UserSessionsTable extends Table
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
-    public function validationDefault(Validator $validator): \Cake\Validation\Validator
+    public function validationDefault(Validator $validator): Validator
     {
         $validator
             ->integer('id')
@@ -104,7 +102,7 @@ class UserSessionsTable extends Table
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
-    public function buildRules(RulesChecker $rules): \Cake\ORM\RulesChecker
+    public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
 

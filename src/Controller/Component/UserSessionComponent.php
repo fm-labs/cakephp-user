@@ -20,12 +20,12 @@ class UserSessionComponent extends Component
     /**
      * @var array
      */
-    public $components = ['User.Auth', 'Flash'];
+    public array $components = ['User.Auth', 'Flash'];
 
     /**
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'sessionKey' => 'UserSession', // Session storage key
         'sessionCheckEvent' => 'Controller.startup',
         'maxLifetimeSec' => 3600, // max user session lifetime in seconds. should be lower then global session timeout

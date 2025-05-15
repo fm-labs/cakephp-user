@@ -6,7 +6,6 @@ namespace User\Mailer;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\I18n\I18n;
-use Cake\Log\Log;
 use Cake\Mailer\Mailer;
 use Cake\Routing\Router;
 use Exception;
@@ -140,7 +139,7 @@ class UserMailer extends Mailer
      * @param array|string|null $config Email profile
      * @return $this
      */
-    public function setProfile($config): UserMailer
+    public function setProfile(array|string|null $config): UserMailer
     {
         parent::setProfile($config);
 
@@ -152,6 +151,7 @@ class UserMailer extends Mailer
         //@todo Evaluate this exception wrapper, if it is necessary
         try {
             $sent = parent::send($action, $args, $headers);
+
             return $sent;
         } catch (Exception $ex) {
             return ['message' => 'Failed to send email: ' . $ex->getMessage()];

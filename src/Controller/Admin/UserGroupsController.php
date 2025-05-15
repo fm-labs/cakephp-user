@@ -13,12 +13,12 @@ class UserGroupsController extends AppController
     /**
      * @var string
      */
-    public $modelClass = 'User.UserGroups';
+    public ?string $defaultTable = 'User.UserGroups';
 
     /**
      * @var array
      */
-    public $actions = [
+    public array $actions = [
         'index' => 'Admin.Index',
         'view' => 'Admin.View',
         'add' => 'Admin.Add',
@@ -26,15 +26,18 @@ class UserGroupsController extends AppController
         'delete' => 'Admin.Delete',
     ];
 
-    public function index() {
+    public function index(): void
+    {
         $this->Action->execute();
     }
 
-    public function add() {
+    public function add(): void
+    {
         $this->Action->execute();
     }
 
-    public function edit() {
+    public function edit(): void
+    {
         $this->Action->execute();
     }
 

@@ -9,7 +9,7 @@ use Cake\View\Helper;
  */
 class AuthHelper extends Helper
 {
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'sessionKey' => 'Auth'
     ];
 

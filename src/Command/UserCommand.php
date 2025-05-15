@@ -1,26 +1,26 @@
 <?php
 declare(strict_types=1);
 
-namespace User\Shell;
+namespace User\Command;
 
+use Cake\Command\Command;
 use Cake\Console\ConsoleOptionParser;
-use Cake\Console\Shell;
 
 /**
  * @property \user\Model\Table\UsersTable $Users
  * @deprecated Use UserCommand instead
  * @todo Migrate to UserCommand
  */
-class UserShell extends Shell
+class UserCommand extends Command
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getOptionParser(): ConsoleOptionParser
     {
         $parser = parent::getOptionParser();
         $parser
-            ->setDescription(__d('user', "Manage user"))
+            ->setDescription(__d('user', 'Manage user'))
             ->addSubcommand('add', [
                 'help' => 'Add user',
             ])
@@ -39,9 +39,9 @@ class UserShell extends Shell
     /**
      * @return void
      */
-    public function add()
+    public function add(): void
     {
-        $this->out("-- Setup root user --");
+        $this->out('-- Setup root user --');
         foreach ($this->args as $key => $val) {
             $this->out("Arg: $key - $val");
         }
@@ -54,21 +54,21 @@ class UserShell extends Shell
         $this->loadModel('User.Users');
 
         while (!$email) {
-            $email = trim($this->in("Enter email address: "));
+            $email = trim($this->in('Enter email address: '));
         }
 
         while (!$password) {
-            $pass1 = trim($this->in("Enter password for user: "));
+            $pass1 = trim($this->in('Enter password for user: '));
             if (strlen($pass1) < 1) {
-                $this->out("Please enter a password");
+                $this->out('Please enter a password');
                 continue;
             }
 
-            $pass2 = trim($this->in("Repeat password: "));
+            $pass2 = trim($this->in('Repeat password: '));
 
             $match = ($pass1 === $pass2);
             if (!$match) {
-                $this->out("Passwords do not match. Please try again.");
+                $this->out('Passwords do not match. Please try again.');
                 continue;
             }
 
@@ -90,9 +90,9 @@ class UserShell extends Shell
 
         if (!$this->Users->save($user)) {
             debug($user->getErrors());
-            $this->abort("Failed to create user");
+            $this->abort('Failed to create user');
         }
 
-        $this->out("<success>User added!</success>");
+        $this->out('<success>User added!</success>');
     }
 }

@@ -3,10 +3,8 @@ declare(strict_types=1);
 
 namespace User\Form;
 
-use Cake\Core\Configure;
 use Cake\Form\Schema;
 use Cake\Validation\Validator;
-use GoogleRecaptcha\Lib\Recaptcha2;
 use User\Model\Table\UsersTable;
 
 class UserRegisterForm extends UserForm
