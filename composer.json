@@ -19,7 +19,7 @@
     },
     "require": {
         "php": ">=8.2",
-        "cakephp/cakephp": "5.0.11",
+        "cakephp/cakephp": " ^5.1",
         "cakephp/authentication": "^3",
         "cakephp/authorization": "^3"
     },
