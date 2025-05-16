@@ -129,47 +129,47 @@ class UserPlugin extends BasePlugin implements AuthenticationServiceProviderInte
             $routes->connect(
                 '/login',
                 ['controller' => 'Auth', 'action' => 'login'],
-                ['_name' => 'user:login']
+                ['_name' => 'user:login'],
             );
             $routes->connect(
                 '/logout',
                 ['controller' => 'Auth', 'action' => 'logout'],
-                ['_name' => 'user:logout']
+                ['_name' => 'user:logout'],
             );
             $routes->connect(
                 '/register',
                 ['controller' => 'Signup', 'action' => 'register'],
-                ['_name' => 'user:register']
+                ['_name' => 'user:register'],
             );
             $routes->connect(
                 '/activate',
                 ['controller' => 'Signup', 'action' => 'activate'],
-                ['_name' => 'user:activate']
+                ['_name' => 'user:activate'],
             );
             $routes->connect(
                 '/password-forgotten',
                 ['controller' => 'Password', 'action' => 'passwordForgotten'],
-                ['_name' => 'user:passwordforgotten']
+                ['_name' => 'user:passwordforgotten'],
             );
             $routes->connect(
                 '/password-reset',
                 ['controller' => 'Password', 'action' => 'passwordReset'],
-                ['_name' => 'user:passwordreset']
+                ['_name' => 'user:passwordreset'],
             );
             $routes->connect(
                 '/password-change',
                 ['controller' => 'Password', 'action' => 'passwordChange'],
-                ['_name' => 'user:passwordchange']
+                ['_name' => 'user:passwordchange'],
             );
             $routes->connect(
                 '/session',
                 ['controller' => 'Auth', 'action' => 'session'],
-                ['_name' => 'user:checkauth']
+                ['_name' => 'user:checkauth'],
             );
             $routes->connect(
                 '/',
                 ['controller' => 'User', 'action' => 'index'],
-                ['_name' => 'user:profile']
+                ['_name' => 'user:profile'],
             );
             $routes->fallbacks('DashedRoute');
         });

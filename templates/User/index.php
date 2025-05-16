@@ -18,6 +18,6 @@ $this->assign('heading', '');
     <hr />
     <div class="actions" style="text-align: center;">
         <?= $this->Html->link(__d('user', 'Change password'), ['_name' => 'user:passwordchange']); ?><br />
-        <?= $this->Html->link(__d('user', 'Logout'), ['action' => 'logout']); ?>
+        <?= $this->Html->link(__d('user', 'Logout'), ['_name' => 'user:logout']); ?>
     </div>
 </div>
