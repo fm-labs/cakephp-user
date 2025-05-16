@@ -60,7 +60,7 @@ class UsersController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['UserGroups'],
+            //'contain' => ['UserGroups'],
             'order' => ['superuser' => 'DESC', 'username' => 'ASC'],
         ];
 
