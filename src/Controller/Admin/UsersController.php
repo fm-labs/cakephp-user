@@ -64,19 +64,24 @@ class UsersController extends AppController
             'order' => ['superuser' => 'DESC', 'username' => 'ASC'],
         ];
 
+        $query = $this->Users->find('all', [
+            'contain' => ['UserGroups'],
+        ]);
+        $this->set('queryObj', $query);
+
         $this->set('fields', [
             'superuser',
             'username' => ['formatter' => function ($val, $row, $args, $view) {
                 return $view->Html->link(
                     $val,
-                    ['action' => 'edit', $row->id]
+                    ['action' => 'edit', $row->id],
                 );
             }],
             'user_group' => ['formatter' => function ($val, $row, $args, $view) {
                 if ($val) {
                     return $view->Html->link(
                         $val->name,
-                        ['plugin' => 'User', 'controller' => 'UserGroups', 'action' => 'edit', $val->id]
+                        ['plugin' => 'User', 'controller' => 'UserGroups', 'action' => 'edit', $val->id],
                     );
                 }
             }],
@@ -157,10 +162,10 @@ class UsersController extends AppController
     /**
      * Change password of current user
      *
-     * @param $userId
+     * @param string|null $userId
      * @return \Cake\Http\Response|void
      */
-    public function passwordChange($userId = null)
+    public function passwordChange(?string $userId = null)
     {
         $authUserId = $this->Auth->user('id');
         if ($userId === null) {
@@ -186,10 +191,10 @@ class UsersController extends AppController
     /**
      * Change password of current user
      *
-     * @param $userId
+     * @param string|null $userId
      * @return \Cake\Http\Response|void
      */
-    public function passwordReset($userId = null)
+    public function passwordReset(?string $userId = null)
     {
         $authUserId = $this->Auth->user('id');
         if ($userId === null) {
@@ -215,10 +220,10 @@ class UsersController extends AppController
     /**
      * User emails
      *
-     * @param $id
+     * @param string|null $id
      * @return \Cake\Http\Response|void
      */
-    public function emails($id = null)
+    public function emails(?string $id = null)
     {
         $emailTypes = array_keys((array)Configure::read('User.Email'));
         $emailTypes = array_combine($emailTypes, $emailTypes);
