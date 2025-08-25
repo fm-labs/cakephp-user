@@ -14,7 +14,7 @@
         }
     ],
     "support": {
-       "email": "flowmotionlabs@gmail.com",
+        "email": "flowmotionlabs@gmail.com",
         "source": "https://github.com/fm-labs/cakephp-user"
     },
     "require": {
