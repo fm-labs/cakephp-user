@@ -228,10 +228,6 @@ class UserPlugin extends BasePlugin implements AuthenticationServiceProviderInte
             'queryParam' => 'redirect',
         ]);
 
-        if (Configure::read('User.Login.disabled')) {
-            return $service;
-        }
-
         $fields = [
             'username' => 'username',
             'password' => 'password',
