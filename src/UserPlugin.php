@@ -208,11 +208,16 @@ class UserPlugin extends BasePlugin implements AuthenticationServiceProviderInte
             $service->setConfig([
                 'unauthenticatedRedirect' => null,
                 'queryParam' => null,
+                'identifiers' => [
+                    'Authentication.Session',
+                    //'Authentication.Token',
+                    //'Authentication.Jwt',
+                ],
             ]);
 
             //@todo: add Token authenticator
             //@todo: add JWT authenticator
-            $service->loadAuthenticator('Authentication.Session');
+            //$service->loadAuthenticator('Authentication.Session');
 
             return $service; // return early
         }
@@ -223,29 +228,35 @@ class UserPlugin extends BasePlugin implements AuthenticationServiceProviderInte
             'queryParam' => 'redirect',
         ]);
 
+        if (Configure::read('User.Login.disabled')) {
+            return $service;
+        }
+
         $fields = [
             'username' => 'username',
             'password' => 'password',
         ];
 
-        // Load the authenticators, you want session first
-        $service->loadAuthenticator('Authentication.Session');
-
-        if (!Configure::read('User.Login.disabled')) {
-            $service->loadAuthenticator('Authentication.Form', [
-                'fields' => $fields,
-                //'loginUrl' => '/user/login',
-            ]);
-
-            // Load identifiers
-            $service->loadIdentifier('Authentication.Password', [
+        $passwordIdentifier = [
+            'Authentication.Password' => [
                 'resolver' => [
                     'className' => 'Authentication.Orm',
                     'userModel' => 'User.Users',
                 ],
                 'fields' => $fields,
-            ]);
-        }
+            ],
+        ];
+
+        // Load the authenticators, you want session first
+        $service->loadAuthenticator('Authentication.Session', [
+            'identifier' => $passwordIdentifier,
+        ]);
+
+        $service->loadAuthenticator('Authentication.Form', [
+            'identifier' => $passwordIdentifier,
+            'fields' => $fields,
+            //'loginUrl' => '/user/login',
+        ]);
 
         return $service;
     }
